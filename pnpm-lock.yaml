@@ -10,6 +10,7 @@ importers:
       eslint-config-prettier: 8.6.0
       eslint-plugin-import: 2.27.5
       eslint-plugin-jsx-a11y: 6.7.1
+      eslint-plugin-no-only-tests: 3.1.0
       eslint-plugin-react: 7.32.2
       eslint-plugin-react-hooks: 4.6.0
       nx: 15.6.3
@@ -23,6 +24,7 @@ importers:
       eslint-config-prettier: 8.6.0_eslint@8.33.0
       eslint-plugin-import: 2.27.5_ufewo3pl5nnmz6lltvjrdi2hii
       eslint-plugin-jsx-a11y: 6.7.1_eslint@8.33.0
+      eslint-plugin-no-only-tests: 3.1.0
       eslint-plugin-react: 7.32.2_eslint@8.33.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.33.0
       nx: 15.6.3
@@ -1207,6 +1209,11 @@ packages:
       object.entries: 1.1.6
       object.fromentries: 2.0.6
       semver: 6.3.0
+    dev: true
+
+  /eslint-plugin-no-only-tests/3.1.0:
+    resolution: {integrity: sha512-Lf4YW/bL6Un1R6A76pRZyE1dl1vr31G/ev8UzIc/geCgFWyrKil8hVjYqWVKGB/UIGmb6Slzs9T0wNezdSVegw==}
+    engines: {node: '>=5.0.0'}
     dev: true
 
   /eslint-plugin-react-hooks/4.6.0_eslint@8.33.0:
