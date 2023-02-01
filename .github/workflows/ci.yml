@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  pull_request:
+
+jobs:
+  check:
+    name: check
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      # remove on 2/13/22 when 18 is default
+      - name: setup node-18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          run_install: false
+      - name: get pnpm store path
+        id: pnpm-cache
+        shell: bash # do i need this?
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-store-
+      - name: setup just
+        uses: extractions/setup-just@v1
+      - name: test
+        run: just test
+      - name: typecheck
+        run: just typecheck
+      - name: format
+        run: just format-check
+      - name: lint
+        run: just lint
