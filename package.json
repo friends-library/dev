@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "keywords": [],
+  "packageManager": "pnpm@7.26.3",
   "author": "",
   "license": "MIT",
   "devDependencies": {

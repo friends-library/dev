@@ -1,7 +1,7 @@
 name: ci
 
 on:
-  pull_request:
+  push:
 
 jobs:
   check:
@@ -21,7 +21,7 @@ jobs:
           run_install: false
       - name: get pnpm store path
         id: pnpm-cache
-        shell: bash # do i need this?
+        # shell: bash # do i need this?
         run: |
           echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
       - uses: actions/cache@v3
@@ -29,6 +29,8 @@ jobs:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: pnpm-store-
+      - name: install pnpm deps
+        run: pnpm install
       - name: setup just
         uses: extractions/setup-just@v1
       - name: test
