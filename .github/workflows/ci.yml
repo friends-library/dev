@@ -15,6 +15,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: install libkrb # only for nodegit
+        run: sudo apt-get install libkrb5-dev -y
       - name: install pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -32,11 +34,13 @@ jobs:
         run: pnpm install
       - name: setup just
         uses: extractions/setup-just@v1
+      - name: compile
+        run: just compile
       - name: test
         run: just test
       - name: typecheck
         run: just typecheck
       - name: format
-        run: just format-check
+        run: just format
       - name: lint
         run: just lint

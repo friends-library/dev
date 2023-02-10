@@ -8,8 +8,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format": "just prettier",
+    "format:check": "just prettier-check"
   },
   "devDependencies": {
     "@friends-library/types": "workspace:*"

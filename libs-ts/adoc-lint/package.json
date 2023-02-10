@@ -10,8 +10,8 @@
     "test": "vitest run",
     "lint": "eslint . --rule 'no-irregular-whitespace: off'",
     "lint:fix": "eslint . --fix --rule 'no-irregular-whitespace: off'",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format": "just prettier",
+    "format:check": "just prettier-check"
   },
   "dependencies": {
     "@friends-library/adoc-utils": "workspace:*",

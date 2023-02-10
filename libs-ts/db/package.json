@@ -11,8 +11,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format": "just prettier",
+    "format:check": "just prettier-check"
   },
   "dependencies": {
     "@apollo/client": "^3.4.10",

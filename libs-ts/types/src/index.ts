@@ -17,11 +17,6 @@ export type PrintSizeVariant = (typeof PRINT_SIZE_VARIANTS)[number];
 export const AUDIO_QUALITIES = [`HQ`, `LQ`] as const;
 export type AudioQuality = (typeof AUDIO_QUALITIES)[number];
 
-// @TODO: move into doc-manifests
-// export interface FileManifest {
-//   [key: string]: string | Buffer;
-// }
-
 export interface CoverProps {
   lang: Lang;
   title: string;

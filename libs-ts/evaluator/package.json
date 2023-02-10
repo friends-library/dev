@@ -9,8 +9,8 @@
     "old:lint": "fldev lint --rule '@typescript-eslint/explicit-module-boundary-types: off'",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format": "just prettier",
+    "format:check": "just prettier-check"
   },
   "dependencies": {
     "@friends-library/locale": "workspace:*",

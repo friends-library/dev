@@ -11,8 +11,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "compile": "tsc --build",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format": "just prettier",
+    "format:check": "just prettier-check"
   },
   "dependencies": {
     "node-fetch": "^2.6.1",

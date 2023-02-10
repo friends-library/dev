@@ -41,6 +41,12 @@ nx-reset:
 clean: nx-reset
   @rm -rf apps/admin/node_modules/.vite
 
+prettier:
+  @pnpm prettier --write {{invocation_directory()}}
+
+prettier-check:
+  @pnpm prettier --check {{invocation_directory()}}
+
 # helpers
 
 [private]
