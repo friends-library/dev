@@ -14,7 +14,7 @@ start-reset-cache:
   @pnpm react-native start --reset-cache
 
 xcode:
-  @open apps/xnative/ios/xnative.xcworkspace
+  @open ios/xnative.xcworkspace
 
 pod-install:
   @cd ios && bundle exec pod install
