@@ -4,6 +4,7 @@ importers:
 
   .:
     specifiers:
+      '@babel/runtime': 7.21.0
       '@types/node': 18.11.18
       '@typescript-eslint/eslint-plugin': 5.50.0
       '@typescript-eslint/parser': 5.50.0
@@ -22,6 +23,7 @@ importers:
       typescript: 5.0.0-beta
       vitest: 0.28.3
     devDependencies:
+      '@babel/runtime': 7.21.0
       '@types/node': 18.11.18
       '@typescript-eslint/eslint-plugin': 5.50.0_32nakejalycpur4mf6ovtii7hq
       '@typescript-eslint/parser': 5.50.0_mzrukg5brbroig44qzsuvgydxe
@@ -458,7 +460,7 @@ importers:
     specifiers:
       '@babel/core': ^7.20.0
       '@babel/preset-env': ^7.20.0
-      '@babel/runtime': ^7.20.0
+      '@friends-library/locale': workspace:*
       '@react-native-community/cli-platform-android': 10.2.0
       '@react-native-community/cli-platform-ios': 10.2.0
       '@react-native-community/eslint-config': ^3.2.0
@@ -480,6 +482,7 @@ importers:
       react-test-renderer: 18.2.0
       typescript: 4.8.4
     dependencies:
+      '@friends-library/locale': link:../../libs-ts/locale
       '@react-native-community/cli-platform-android': 10.2.0
       '@react-native-community/cli-platform-ios': 10.2.0
       '@rnx-kit/metro-config': 1.3.5_pd72gx3rmf7fcoomnkd6cpwhti
@@ -491,7 +494,6 @@ importers:
     devDependencies:
       '@babel/core': 7.20.12
       '@babel/preset-env': 7.20.2_@babel+core@7.20.12
-      '@babel/runtime': 7.20.13
       '@react-native-community/eslint-config': 3.2.0_rwnkmyvnhpzlgw6yx3cmoot2cm
       '@tsconfig/react-native': 2.0.3
       '@types/jest': 29.4.0
@@ -2156,6 +2158,13 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.11
+
+  /@babel/runtime/7.21.0:
+    resolution: {integrity: sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.11
+    dev: true
 
   /@babel/template/7.20.7:
     resolution: {integrity: sha512-8SegXApWe6VoNw0r9JHpSteLKTpTiLZ4rMlGIm9JQ18KiCtyQiAMEazujAHrUS5flrcqYZa75ukev3P6QmUwUw==}
@@ -10216,7 +10225,7 @@ packages:
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
     dependencies:
-      '@babel/runtime': 7.20.13
+      '@babel/runtime': 7.21.0
       aria-query: 5.1.3
       array-includes: 3.1.6
       array.prototype.flatmap: 1.3.1
