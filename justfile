@@ -9,6 +9,9 @@ admin:
 jones:
   @pnpm --filter jones start
 
+native:
+  @cd apps/xnative && just
+
 # code quality
 
 check:

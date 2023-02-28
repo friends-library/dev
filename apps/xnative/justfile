@@ -1,0 +1,18 @@
+_default:
+  @just --choose
+
+run-ios:
+  @cd apps/xnative && pnpm react-native run-ios
+
+run-android:
+  @cd apps/xnative && pnpm react-native run-android
+
+start:
+  @cd apps/xnative && pnpm react-native start
+
+xcode:
+  @open apps/xnative/ios/xnative.xcworkspace
+
+pod-install:
+  @cd apps/xnative/ios && bundle exec pod install
+
