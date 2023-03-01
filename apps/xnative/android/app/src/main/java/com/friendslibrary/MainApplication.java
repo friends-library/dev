@@ -1,4 +1,4 @@
-package com.xnative;
+package com.friendslibrary;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

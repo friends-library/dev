@@ -5,4 +5,4 @@ import { AppRegistry } from 'react-native';
 import App from './App';
 
 // TrackPlayer.registerPlaybackService(() => PlaybackService);
-AppRegistry.registerComponent(`xnative`, () => App);
+AppRegistry.registerComponent(`FriendsLibrary`, () => App);

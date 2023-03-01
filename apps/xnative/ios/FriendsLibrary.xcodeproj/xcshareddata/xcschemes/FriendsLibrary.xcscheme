@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "xnative.app"
-               BlueprintName = "xnative"
-               ReferencedContainer = "container:xnative.xcodeproj">
+               BuildableName = "FriendsLibrary.app"
+               BlueprintName = "FriendsLibrary"
+               ReferencedContainer = "container:FriendsLibrary.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "xnativeTests.xctest"
-               BlueprintName = "xnativeTests"
-               ReferencedContainer = "container:xnative.xcodeproj">
+               BuildableName = "FriendsLibraryTests.xctest"
+               BlueprintName = "FriendsLibraryTests"
+               ReferencedContainer = "container:FriendsLibrary.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "xnative.app"
-            BlueprintName = "xnative"
-            ReferencedContainer = "container:xnative.xcodeproj">
+            BuildableName = "FriendsLibrary.app"
+            BlueprintName = "FriendsLibrary"
+            ReferencedContainer = "container:FriendsLibrary.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "xnative.app"
-            BlueprintName = "xnative"
-            ReferencedContainer = "container:xnative.xcodeproj">
+            BuildableName = "FriendsLibrary.app"
+            BlueprintName = "FriendsLibrary"
+            ReferencedContainer = "container:FriendsLibrary.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
