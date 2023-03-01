@@ -6,7 +6,7 @@ function App(): JSX.Element {
   setLocale(`es`);
   return (
     <SafeAreaView>
-      <Text>Test {t`Download`}</Text>
+      <Text>howdy {t`Download`}</Text>
     </SafeAreaView>
   );
 }

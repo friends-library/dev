@@ -1,11 +1,13 @@
 _default:
   @just --choose
 
-run-ios:
+install-ios:
   @pnpm react-native run-ios
 
-run-android:
+install-android:
   @pnpm react-native run-android
+
+install: install-ios install-android
 
 start:
   @pnpm react-native start
