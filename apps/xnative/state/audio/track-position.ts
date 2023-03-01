@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { EditionId } from '../../types';
 import type { Thunk, Dispatch, State } from '..';
 import * as select from '../selectors/audio-selectors';
-// import Service from '../../lib/service';
+import Service from '../../lib/service';
 import { AudioPartEntity } from '../../lib/models';
 import Editions from '../../lib/Editions';
 
@@ -77,7 +77,7 @@ function seek(
     setTrackPosition({ part: { editionId, index: partIndex }, position: newPosition }),
   );
   if (select.isAudioPartActive(editionId, partIndex, state)) {
-    // Service.audioSeekTo(newPosition); // rntodo
+    Service.audioSeekTo(newPosition);
   }
 }
 

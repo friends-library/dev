@@ -1,7 +1,7 @@
 import RNFS from 'react-native-fs';
 import { Platform } from 'react-native';
-// import base64 from 'react-native-base64'; // rntodo
-// import SparkMD5 from 'spark-md5'; // rntodo
+import base64 from 'react-native-base64';
+import SparkMD5 from 'spark-md5';
 import type { ValuesOf } from 'x-ts-utils';
 import type { FsPath } from './models';
 
@@ -53,13 +53,11 @@ export class FileSystem {
     try {
       if (file.fsPath.endsWith(`.png`)) {
         const encoded = await RNFS.readFile(this.abspath(file.fsPath), `base64`);
-        // const decoded = base64.decode(encoded); // rntodo
-        // return { md5: SparkMD5.hashBinary(decoded, false), contents: encoded };
-        return { md5: `rntodo`, contents: encoded };
+        const decoded = base64.decode(encoded);
+        return { md5: SparkMD5.hashBinary(decoded, false), contents: encoded };
       } else {
         const contents = await RNFS.readFile(this.abspath(file.fsPath));
-        // return { md5: SparkMD5.hash(contents), contents };
-        return { md5: `rntodo`, contents };
+        return { md5: SparkMD5.hash(contents), contents };
       }
     } catch {
       return null;

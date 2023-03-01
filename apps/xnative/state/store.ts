@@ -1,19 +1,19 @@
 import { Platform } from 'react-native';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-// import SplashScreen from 'react-native-splash-screen'; // rntodo
+import SplashScreen from 'react-native-splash-screen';
 import throttle from 'lodash.throttle';
 import merge from 'lodash.merge';
 import type { Store, AnyAction } from '@reduxjs/toolkit';
 import type { State } from './';
 import FS, { FileSystem } from '../lib/fs';
-// import Player from '../lib/player'; // rntodo
+import Player from '../lib/player';
 import Editions from '../lib/Editions';
 import rootReducer from './root-reducer';
 import migrate from './migrate/migrate';
 import { INITIAL_STATE } from './';
 
 export default async function getStore(): Promise<Store<any, AnyAction>> {
-  // Player.init(); // rntodo
+  Player.init();
   await FS.init();
   const editions = await FS.readJson(FileSystem.paths.editions);
   Editions.setResourcesIfValid(editions);
@@ -36,7 +36,7 @@ export default async function getStore(): Promise<Store<any, AnyAction>> {
   });
 
   // eslint-disable-next-line require-atomic-updates
-  // Player.dispatch = store.dispatch; // rntodo
+  Player.dispatch = store.dispatch;
 
   store.subscribe(
     throttle(
@@ -69,7 +69,7 @@ export default async function getStore(): Promise<Store<any, AnyAction>> {
     ),
   );
 
-  // SplashScreen.hide(); // rntodo
+  SplashScreen.hide();
 
   return store;
 }

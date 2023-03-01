@@ -486,15 +486,18 @@ importers:
       prettier: ^2.4.1
       react: 18.2.0
       react-native: 0.71.3
+      react-native-base64: 0.2.1
       react-native-fs: 2.20.0
       react-native-gesture-handler: 2.9.0
       react-native-gradle-plugin: 0.71.15
       react-native-reanimated: 3.0.0
+      react-native-splash-screen: 3.3.0
       react-native-track-player: 3.2.0
       react-redux: 7.2.1
       react-test-renderer: 18.2.0
       redux: 4.1.2
       redux-thunk: 2.4.1
+      spark-md5: 3.0.2
       typescript: 4.8.4
       x-exec: ^1.2.0
       x-ts-utils: ^1.2.0
@@ -514,14 +517,17 @@ importers:
       p-limit: 2.3.0
       react: 18.2.0
       react-native: 0.71.3_oo5no556diumlvgcr27pvljqai
+      react-native-base64: 0.2.1
       react-native-fs: 2.20.0_react-native@0.71.3
       react-native-gesture-handler: 2.9.0_yqouayos4dnow7nnkhah4yzuzq
       react-native-gradle-plugin: 0.71.15
       react-native-reanimated: 3.0.0_boqdh6piz5tzbam7hi2k63a7ci
+      react-native-splash-screen: 3.3.0_react-native@0.71.3
       react-native-track-player: 3.2.0_yqouayos4dnow7nnkhah4yzuzq
       react-redux: 7.2.1_sdx6x7glzdvxt5vxzuijljs3yi
       redux: 4.1.2
       redux-thunk: 2.4.1_redux@4.1.2
+      spark-md5: 3.0.2
       x-exec: 1.2.0
       x-ts-utils: 1.2.0
     devDependencies:
@@ -17599,6 +17605,10 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-native-base64/0.2.1:
+    resolution: {integrity: sha512-eHgt/MA8y5ZF0aHfZ1aTPcIkDWxza9AaEk4GcpIX+ZYfZ04RcaNahO+527KR7J44/mD3efYfM23O2C1N44ByWA==}
+    dev: false
+
   /react-native-codegen/0.71.5_@babel+preset-env@7.20.2:
     resolution: {integrity: sha512-rfsuc0zkuUuMjFnrT55I1mDZ+pBRp2zAiRwxck3m6qeGJBGK5OV5JH66eDQ4aa+3m0of316CqrJDRzVlYufzIg==}
     dependencies:
@@ -17663,6 +17673,14 @@ packages:
       string-hash-64: 1.0.3
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /react-native-splash-screen/3.3.0_react-native@0.71.3:
+    resolution: {integrity: sha512-rGjt6HkoSXxMqH4SQUJ1gnPQlPJV8+J47+4yhgTIan4bVvAwJhEeJH7wWt9hXSdH4+VfwTS0GTaflj1Tw83IhA==}
+    peerDependencies:
+      react-native: '>=0.57.0'
+    dependencies:
+      react-native: 0.71.3_oo5no556diumlvgcr27pvljqai
     dev: false
 
   /react-native-track-player/3.2.0_yqouayos4dnow7nnkhah4yzuzq:
@@ -18836,6 +18854,10 @@ packages:
   /source-map/0.7.4:
     resolution: {integrity: sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==}
     engines: {node: '>= 8'}
+
+  /spark-md5/3.0.2:
+    resolution: {integrity: sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==}
+    dev: false
 
   /spawn-command/0.0.2-1:
     resolution: {integrity: sha512-n98l9E2RMSJ9ON1AKisHzz7V42VDiBQGY6PB1BwRglz99wpVsSuGzQ+jOi6lFXBGVTCrRpltvjm+/XA+tpeJrg==}

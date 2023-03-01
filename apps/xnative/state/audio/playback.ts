@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { State, Dispatch, Thunk } from '..';
 import type { AudioPart, EditionId, PlayerState } from '../../types';
-// import Service from '../../lib/service';
+import Service from '../../lib/service';
 import { setLastAudiobookEditionId } from '../resume';
 import * as select from '../selectors/audio-selectors';
 import { canDownloadNow } from '../network';
@@ -55,22 +55,22 @@ async function skip(forward: boolean, dispatch: Dispatch, state: State): Promise
   const next = edition.audio?.parts[nextIndex];
   if (!next) return;
   dispatch(setActivePart({ editionId: edition.id, partIndex: next.index }));
-  // Service.audioPause(); // rntodo
+  Service.audioPause();
   dispatch(setState(`PAUSED`));
   const file = select.audioPartFile(edition.id, next.index, state);
   if (!isDownloaded(file)) {
     // typings are incorrect here, this actually DOES return a promise
     await dispatch(downloadAudio(edition.id, next.index));
   }
-  // forward ? Service.audioSkipNext() : Service.audioSkipBack(); // rntodo
+  forward ? Service.audioSkipNext() : Service.audioSkipBack();
   if (Platform.OS === `android`) {
-    // Service.audioResume(); // rntodo
+    Service.audioResume();
   }
   dispatch(setState(`PLAYING`));
 }
 
 export const resume = (): Thunk => async (dispatch) => {
-  // Service.audioResume(); // rntodo
+  Service.audioResume();
   dispatch(setState(`PLAYING`));
 };
 
@@ -83,13 +83,13 @@ export const play =
       dispatch(setActivePart({ editionId, partIndex }));
       dispatch(set({ editionId, state: `PLAYING` }));
       const trackId = new AudioPartEntity(editionId, partIndex).trackId;
-      // return Service.audioPlayTrack(trackId, queue); // rntodo
+      return Service.audioPlayTrack(trackId, queue);
     }
     return Promise.resolve();
   };
 
 export const pause = (): Thunk => async (dispatch) => {
-  // Service.audioPause(); // rntodo
+  Service.audioPause();
   dispatch(setState(`PAUSED`));
 };
 

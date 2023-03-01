@@ -18,7 +18,7 @@ import type {
 } from '../types';
 import { THREE_D_COVER_IMAGE_WIDTHS } from '../types';
 import { SQUARE_COVER_IMAGE_SIZES } from '../types';
-// import { FileSystem } from './fs'; // rntodo
+import { FileSystem } from './fs';
 
 export interface DocumentEntityInterface {
   readonly documentId: DocumentId;
@@ -127,8 +127,7 @@ export class AudioPartQualityEntity
   }
 
   public get fsPath(): string {
-    return `rntodo`;
-    // return `${FileSystem.dirs.audio}/${this.fsFilename}`;
+    return `${FileSystem.dirs.audio}/${this.fsFilename}`;
   }
 }
 
@@ -155,8 +154,7 @@ export class SquareCoverImageEntity
   }
 
   public get fsPath(): string {
-    return `rntodo`;
-    // return `${FileSystem.dirs.images}/${this.fsFilename}`;
+    return `${FileSystem.dirs.images}/${this.fsFilename}`;
   }
 }
 
@@ -183,8 +181,7 @@ export class ThreeDCoverImageEntity
   }
 
   public get fsPath(): string {
-    return `rntodo`;
-    // return `${FileSystem.dirs.images}/${this.fsFilename}`;
+    return `${FileSystem.dirs.images}/${this.fsFilename}`;
   }
 }
 
@@ -202,14 +199,12 @@ export class EbookEntity extends EditionEntity implements FsPath, FsFilename {
   }
 
   public get fsPath(): string {
-    return `rntodo`;
-    // return `${FileSystem.dirs.ebooks}/${this.fsFilename}`;
+    return `${FileSystem.dirs.ebooks}/${this.fsFilename}`;
   }
 }
 
 export class EbookCss implements FsPath {
-  // public readonly fsPath = `${FileSystem.dirs.ebooks}/ebook.css`;
-  public readonly fsPath = `rntodo`;
+  public readonly fsPath = `${FileSystem.dirs.ebooks}/ebook.css`;
 }
 
 function bestImageSize<T extends number[]>(layoutSize: number, sizes: T): T[number] {

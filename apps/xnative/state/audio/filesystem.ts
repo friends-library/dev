@@ -9,7 +9,7 @@ import { canDownloadNow } from '../network';
 import Editions from '../../lib/Editions';
 import { AudioPartQualityEntity } from '../../lib/models';
 import FS from '../../lib/fs';
-// import Service from '../../lib/service';
+import Service from '../../lib/service';
 import * as select from '../../state/selectors/audio-selectors';
 
 export interface FileState {
@@ -126,7 +126,7 @@ export const deleteAllAudioParts =
       });
     });
     dispatch(batchSet(deletedFiles));
-    // Service.fsBatchDelete(fsPaths); // rntodo
+    Service.fsBatchDelete(fsPaths);
   };
 
 export const deleteAllAudios = (): Thunk => async (dispatch, getState) => {
@@ -139,7 +139,7 @@ export const deleteAllAudios = (): Thunk => async (dispatch, getState) => {
     {},
   );
   dispatch(batchSet(deleted));
-  // Service.fsDeleteAllAudios(); // rntodo
+  Service.fsDeleteAllAudios();
 };
 
 const limit = pLimit(3);
