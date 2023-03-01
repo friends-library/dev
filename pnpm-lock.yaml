@@ -466,6 +466,7 @@ importers:
       '@react-native-community/cli-platform-android': 10.2.0
       '@react-native-community/cli-platform-ios': 10.2.0
       '@react-native-community/eslint-config': ^3.2.0
+      '@reduxjs/toolkit': 1.8.0
       '@rnx-kit/metro-config': 1.3.5
       '@rnx-kit/metro-resolver-symlinks': 0.1.26
       '@tsconfig/react-native': ^2.0.2
@@ -475,33 +476,54 @@ importers:
       '@types/react-test-renderer': ^18.0.0
       babel-jest: ^29.2.1
       eslint: ^8.19.0
+      filesize: 6.4.0
       jest: ^29.2.1
+      lodash.merge: 4.6.2
+      lodash.omit: ^4.5.0
+      lodash.throttle: 4.1.1
       metro-react-native-babel-preset: 0.73.7
+      p-limit: 2.3.0
       prettier: ^2.4.1
       react: 18.2.0
       react-native: 0.71.3
+      react-native-fs: 2.20.0
       react-native-gesture-handler: 2.9.0
       react-native-gradle-plugin: 0.71.15
       react-native-reanimated: 3.0.0
       react-native-track-player: 3.2.0
+      react-redux: 7.2.1
       react-test-renderer: 18.2.0
+      redux: 4.1.2
+      redux-thunk: 2.4.1
       typescript: 4.8.4
       x-exec: ^1.2.0
+      x-ts-utils: ^1.2.0
     dependencies:
       '@friends-library/locale': link:../../libs-ts/locale
       '@friends-library/theme': link:../../libs-ts/theme
       '@friends-library/types': link:../../libs-ts/types
       '@react-native-community/cli-platform-android': 10.2.0
       '@react-native-community/cli-platform-ios': 10.2.0
+      '@reduxjs/toolkit': 1.8.0_iotjnv663j3s4qd7hm7pzvy27u
       '@rnx-kit/metro-config': 1.3.5_pd72gx3rmf7fcoomnkd6cpwhti
       '@rnx-kit/metro-resolver-symlinks': 0.1.26
+      filesize: 6.4.0
+      lodash.merge: 4.6.2
+      lodash.omit: 4.5.0
+      lodash.throttle: 4.1.1
+      p-limit: 2.3.0
       react: 18.2.0
       react-native: 0.71.3_oo5no556diumlvgcr27pvljqai
+      react-native-fs: 2.20.0_react-native@0.71.3
       react-native-gesture-handler: 2.9.0_yqouayos4dnow7nnkhah4yzuzq
       react-native-gradle-plugin: 0.71.15
       react-native-reanimated: 3.0.0_boqdh6piz5tzbam7hi2k63a7ci
       react-native-track-player: 3.2.0_yqouayos4dnow7nnkhah4yzuzq
+      react-redux: 7.2.1_sdx6x7glzdvxt5vxzuijljs3yi
+      redux: 4.1.2
+      redux-thunk: 2.4.1_redux@4.1.2
       x-exec: 1.2.0
+      x-ts-utils: 1.2.0
     devDependencies:
       '@babel/core': 7.20.12
       '@babel/preset-env': 7.20.2_@babel+core@7.20.12
@@ -2186,7 +2208,6 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.13.11
-    dev: true
 
   /@babel/template/7.20.7:
     resolution: {integrity: sha512-8SegXApWe6VoNw0r9JHpSteLKTpTiLZ4rMlGIm9JQ18KiCtyQiAMEazujAHrUS5flrcqYZa75ukev3P6QmUwUw==}
@@ -5485,6 +5506,25 @@ packages:
     resolution: {integrity: sha512-K0aGNn1TjalKj+65D7ycc1//H9roAQ51GJVk5ZJQFb2teECGmzd86bYDC0aYdbRf7gtovescq4Zt6FR0tgXiHQ==}
     dev: false
 
+  /@reduxjs/toolkit/1.8.0_iotjnv663j3s4qd7hm7pzvy27u:
+    resolution: {integrity: sha512-cdfHWfcvLyhBUDicoFwG1u32JqvwKDxLxDd7zSmSoFw/RhYLOygIRtmaMjPRUUHmVmmAGAvquLLsKKU/677kSQ==}
+    peerDependencies:
+      react: ^16.9.0 || ^17.0.0 || 18.0.0-beta
+      react-redux: ^7.2.1 || ^8.0.0-beta
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-redux:
+        optional: true
+    dependencies:
+      immer: 9.0.19
+      react: 18.2.0
+      react-redux: 7.2.1_sdx6x7glzdvxt5vxzuijljs3yi
+      redux: 4.1.2
+      redux-thunk: 2.4.1_redux@4.1.2
+      reselect: 4.1.7
+    dev: false
+
   /@remix-run/router/1.3.1:
     resolution: {integrity: sha512-+eun1Wtf72RNRSqgU7qM2AMX/oHp+dnx7BHk1qhK5ZHzdHTUU4LA1mGG1vT+jMc8sbhG3orvsfOmryjzx2PzQw==}
     engines: {node: '>=14'}
@@ -7776,6 +7816,10 @@ packages:
 
   /balanced-match/1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
+
+  /base-64/0.1.0:
+    resolution: {integrity: sha512-Y5gU45svrR5tI2Vt/X9GPd3L0HNIKzGu202EjxrXMpuc2V2CiKgemAbUUsqYmZJvPtCXoUKjNZwBJzsNScUbXA==}
+    dev: false
 
   /base-x/3.0.9:
     resolution: {integrity: sha512-H7JU6iBHTal1gp56aKoaa//YUxEaAOUiydvrV/pILqIHXTtqxSkATOnDA2u+jZ/61sD+L/412+7kzXRtWukhpQ==}
@@ -11135,6 +11179,11 @@ packages:
       strip-outer: 1.0.1
       trim-repeated: 1.0.0
     dev: true
+
+  /filesize/6.4.0:
+    resolution: {integrity: sha512-mjFIpOHC4jbfcTfoh4rkWpI31mF7viw9ikj/JyLoKzqlwG/YsefKfvYlYhdYdg/9mtK2z1AzgN/0LvVQ3zdlSQ==}
+    engines: {node: '>= 0.4.0'}
+    dev: false
 
   /fill-range/4.0.0:
     resolution: {integrity: sha512-VcpLTWqWDiTerugjj8e3+esbg+skS3M9e54UuR3iCeIDMXCLTsAH8hTSzDQU/X6/6t3eYkOKoZSef2PlU6U1XQ==}
@@ -14579,7 +14628,6 @@ packages:
 
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
-    dev: true
 
   /lodash.omit/4.5.0:
     resolution: {integrity: sha512-XeqSp49hNGmlkj2EJlfrQFIzQ6lXdNro9sddtQzcJY8QaoC2GO0DT7xaIokHeyM+mIT0mPMlPvkYzg2xCuHdZg==}
@@ -15152,14 +15200,14 @@ packages:
   /metro-runtime/0.73.7:
     resolution: {integrity: sha512-2fxRGrF8FyrwwHY0TCitdUljzutfW6CWEpdvPilfrs8p0PI5X8xOWg8ficeYtw+DldHtHIAL2phT59PqzHTyVA==}
     dependencies:
-      '@babel/runtime': 7.20.13
+      '@babel/runtime': 7.21.0
       react-refresh: 0.4.3
     dev: false
 
   /metro-runtime/0.73.8:
     resolution: {integrity: sha512-M+Bg9M4EN5AEpJ8NkiUsawD75ifYvYfHi05w6QzHXaqOrsTeaRbbeLuOGCYxU2f/tPg17wQV97/rqUQzs9qEtA==}
     dependencies:
-      '@babel/runtime': 7.20.13
+      '@babel/runtime': 7.21.0
       react-refresh: 0.4.3
     dev: false
 
@@ -17563,6 +17611,20 @@ packages:
       - supports-color
     dev: false
 
+  /react-native-fs/2.20.0_react-native@0.71.3:
+    resolution: {integrity: sha512-VkTBzs7fIDUiy/XajOSNk0XazFE9l+QlMAce7lGuebZcag5CnjszB+u4BdqzwaQOdcYb5wsJIsqq4kxInIRpJQ==}
+    peerDependencies:
+      react-native: '*'
+      react-native-windows: '*'
+    peerDependenciesMeta:
+      react-native-windows:
+        optional: true
+    dependencies:
+      base-64: 0.1.0
+      react-native: 0.71.3_oo5no556diumlvgcr27pvljqai
+      utf8: 3.0.0
+    dev: false
+
   /react-native-gesture-handler/2.9.0_yqouayos4dnow7nnkhah4yzuzq:
     resolution: {integrity: sha512-a0BcH3Qb1tgVqUutc6d3VuWQkI1AM3+fJx8dkxzZs9t06qA27QgURYFoklpabuWpsUTzuKRpxleykp25E8m7tg==}
     peerDependencies:
@@ -17682,6 +17744,29 @@ packages:
       react: 18.2.0
       react-is: 16.13.1
       redux: 4.2.1
+    dev: false
+
+  /react-redux/7.2.1_sdx6x7glzdvxt5vxzuijljs3yi:
+    resolution: {integrity: sha512-T+VfD/bvgGTUA74iW9d2i5THrDQWbweXP0AVNI8tNd1Rk5ch1rnMiJkDD67ejw7YBKM4+REvcvqRuWJb7BLuEg==}
+    peerDependencies:
+      react: ^16.8.3
+      react-dom: '*'
+      react-native: '*'
+      redux: ^2.0.0 || ^3.0.0 || ^4.0.0-0
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.21.0
+      hoist-non-react-statics: 3.3.2
+      loose-envify: 1.4.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-is: 16.13.1
+      react-native: 0.71.3_oo5no556diumlvgcr27pvljqai
+      redux: 4.1.2
     dev: false
 
   /react-refresh/0.14.0:
@@ -17944,12 +18029,26 @@ packages:
       selectorator: 4.0.3
     dev: false
 
+  /redux-thunk/2.4.1_redux@4.1.2:
+    resolution: {integrity: sha512-OOYGNY5Jy2TWvTL1KgAlVy6dcx3siPJ1wTq741EPyUKfn6W6nChdICjZwCd0p8AZBs5kWpZlbkXW2nE/zjUa+Q==}
+    peerDependencies:
+      redux: ^4
+    dependencies:
+      redux: 4.1.2
+    dev: false
+
   /redux-thunk/2.4.2_redux@4.2.1:
     resolution: {integrity: sha512-+P3TjtnP0k/FEjcBL5FZpoovtvrTNT/UXd4/sluaSyrURlSlhLSzEdfsTBW7WsKB6yPvgd7q/iZPICFjW4o57Q==}
     peerDependencies:
       redux: ^4
     dependencies:
       redux: 4.2.1
+    dev: false
+
+  /redux/4.1.2:
+    resolution: {integrity: sha512-SH8PglcebESbd/shgf6mii6EIoRM0zrQyjcuQ+ojmfxjTtE0z9Y8pa62iA/OJ58qjP6j27uyW4kUF4jl/jd6sw==}
+    dependencies:
+      '@babel/runtime': 7.21.0
     dev: false
 
   /redux/4.2.1:
@@ -17972,7 +18071,7 @@ packages:
   /regenerator-transform/0.15.1:
     resolution: {integrity: sha512-knzmNAcuyxV+gQCufkYcvOqX/qIIfHLv0u5x79kRxuGojfYVky1f15TzZEu2Avte8QGepvUNTnLskf8E6X6Vyg==}
     dependencies:
-      '@babel/runtime': 7.20.13
+      '@babel/runtime': 7.21.0
 
   /regex-not/1.0.2:
     resolution: {integrity: sha512-J6SDjUgDxQj5NusnOtdFxDwN/+HWykR8GELwctJ7mdqhcyy1xEc4SRFHUXvxTp661YaVKAjfRLZ9cCqS6tn32A==}
@@ -20102,6 +20201,10 @@ packages:
   /use/3.1.1:
     resolution: {integrity: sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==}
     engines: {node: '>=0.10.0'}
+
+  /utf8/3.0.0:
+    resolution: {integrity: sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==}
+    dev: false
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}

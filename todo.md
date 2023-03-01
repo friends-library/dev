@@ -1,5 +1,6 @@
 ## Todo
 
+- [ ] native app shouldn't allow non-null assertions
 - [ ] remove fs-extra package from cli (elsewhere?)
 - [ ] _REWRITE_ jones, tried for 4+ hours to integrate w/ monorepo
 - [ ] break apart ci to speed up
