@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Added by jared @see https://github.com/wonday/react-native-orientation-locker
  */
-// import org.wonday.orientation.OrientationActivityLifecycle;
+import org.wonday.orientation.OrientationActivityLifecycle;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -66,7 +66,7 @@ public class MainApplication extends Application implements ReactApplication {
     /**
      * Added by jared @see https://github.com/wonday/react-native-orientation-locker
      */
-    // registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
+    registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
 
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }

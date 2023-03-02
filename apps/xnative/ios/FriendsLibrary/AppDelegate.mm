@@ -2,6 +2,16 @@
 
 #import <React/RCTBundleURLProvider.h>
 
+/**
+ * Added by jared @see https://github.com/flowkey/react-native-home-indicator
+ */
+#import <RNHomeIndicator.h>
+
+/**
+ * Added by jared @see https://github.com/wonday/react-native-orientation-locker
+ */
+#import "Orientation.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -23,6 +33,11 @@
 #endif
 }
 
+- (UIViewController *)createRootViewController
+{
+  return [HomeIndicatorViewController new];
+}
+
 /// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
 ///
 /// @see: https://reactjs.org/blog/2022/03/29/react-v18.html
@@ -31,6 +46,13 @@
 - (BOOL)concurrentRootEnabled
 {
   return true;
+}
+
+/**
+ * Added by jared @see https://github.com/wonday/react-native-orientation-locker
+ */
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 
 @end

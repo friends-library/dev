@@ -8,8 +8,8 @@ import com.facebook.react.defaults.DefaultReactActivityDelegate;
 /**
  * Added by jared @see https://github.com/wonday/react-native-orientation-locker
  */
-// import android.content.Intent;
-// import android.content.res.Configuration;
+import android.content.Intent;
+import android.content.res.Configuration;
 
 public class MainActivity extends ReactActivity {
 
@@ -42,12 +42,12 @@ public class MainActivity extends ReactActivity {
   /**
    * Added by jared @see https://github.com/wonday/react-native-orientation-locker
    */
-  // @Override
-  // public void onConfigurationChanged(Configuration newConfig) {
-  //   super.onConfigurationChanged(newConfig);
-  //   Intent intent = new Intent("onConfigurationChanged");
-  //   intent.putExtra("newConfig", newConfig);
-  //   this.sendBroadcast(intent);
-  // }
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    Intent intent = new Intent("onConfigurationChanged");
+    intent.putExtra("newConfig", newConfig);
+    this.sendBroadcast(intent);
+  }
 }
 
