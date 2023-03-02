@@ -37,7 +37,7 @@ module.exports = async function () {
           Player.dispatch(setPlaybackState(`DUCKED`));
         }
       } else if (permanent) {
-        Player.stop();
+        Player.pause();
         Player.dispatch(setPlaybackState(`STOPPED`));
       } else if (playerState === `DUCKED` || notAndroid) {
         Player.resume();

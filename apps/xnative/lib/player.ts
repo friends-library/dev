@@ -30,11 +30,6 @@ class Player {
     return RNTrackPlayer.play();
   }
 
-  public stop(): Promise<void> {
-    // return RNTrackPlayer.stop();
-    return Promise.resolve(); // rntodo
-  }
-
   public duck(): Promise<void> {
     this.ducked = true;
     return RNTrackPlayer.pause();
@@ -46,11 +41,6 @@ class Player {
 
   public getPosition(): Promise<number> {
     return RNTrackPlayer.getPosition();
-  }
-
-  public getCurrentTrackId(): Promise<string> {
-    // return RNTrackPlayer.getCurrentTrack();
-    return Promise.resolve(`rntodo`);
   }
 
   public seekTo(position: number): Promise<void> {
@@ -78,7 +68,7 @@ class Player {
   public async playPart(trackId: string, tracks: TrackData[]): Promise<void> {
     this.ducked = false;
     await RNTrackPlayer.reset();
-    RNTrackPlayer.add(
+    const index = await RNTrackPlayer.add(
       tracks.map((track) => ({
         id: track.id,
         url: track.filepath,
@@ -89,7 +79,9 @@ class Player {
         pitchAlgorithm: PitchAlgorithm.Voice,
       })),
     );
-    // await RNTrackPlayer.skip(trackId); // rntodo
+    if (index) {
+      await RNTrackPlayer.skip(index);
+    }
     return RNTrackPlayer.play();
   }
 
@@ -104,8 +96,8 @@ class Player {
       android: {
         appKilledPlaybackBehavior: AppKilledPlaybackBehavior.PausePlayback,
       },
-      // @ts-ignore rntodo: check if this is a thing
-      jumpInterval: 30,
+      forwardJumpInterval: 30,
+      backwardJumpInterval: 15,
       alwaysPauseOnInterruption: true,
       capabilities: [
         Capability.Play,
@@ -122,7 +114,7 @@ class Player {
     event: Event,
     listener: (data: any) => void,
   ): EmitterSubscription {
-    // rntodo: migrate docs say not to use this, to use hooks
+    // todo: migrate docs say not to use this, to use hooks
     // https://react-native-track-player.js.org/docs/v2-migration
     return RNTrackPlayer.addEventListener(event, listener);
   }
