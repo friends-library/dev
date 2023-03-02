@@ -1,5 +1,5 @@
-import { GestureResponderEvent } from 'react-native';
-import { Gesture } from '../types';
+import type { GestureResponderEvent } from 'react-native';
+import type { Gesture } from '../types';
 
 export function analyze(
   gestureEvent: GestureResponderEvent,

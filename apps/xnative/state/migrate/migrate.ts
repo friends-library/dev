@@ -1,5 +1,5 @@
 import omit from 'lodash.omit';
-import type { State} from '../';
+import type { State } from '../';
 import { INITIAL_STATE as INIT } from '../';
 
 export default function migrate(input: unknown): State {

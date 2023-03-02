@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import type { PropSelector} from '../state';
+import type { PropSelector } from '../state';
 import type { EditionId } from '../types';
 import tw from '../lib/tailwind';
 import { useSelector, useDispatch } from '../state';

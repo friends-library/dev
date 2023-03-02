@@ -1,7 +1,13 @@
 import { isNotNull } from 'x-ts-utils';
 import { t } from '@friends-library/locale';
 import type { State } from '..';
-import type { TrackData, EditionResource, AudioPart, EditionId, Audio } from '../../types';
+import type {
+  TrackData,
+  EditionResource,
+  AudioPart,
+  EditionId,
+  Audio,
+} from '../../types';
 import type { FileState } from '../audio/filesystem';
 import FS from '../../lib/fs';
 import { backgroundPartTitle } from '../../lib/utils';

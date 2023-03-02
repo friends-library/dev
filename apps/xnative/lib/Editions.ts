@@ -75,7 +75,7 @@ class Editions {
     this.changeListeners.forEach((listener) => listener());
   }
 
-  public setResourcesIfValid(resources: any): boolean {
+  public setResourcesIfValid(resources: unknown): boolean {
     if (editionResourcesValid(resources)) {
       this.setResources(resources);
       return true;

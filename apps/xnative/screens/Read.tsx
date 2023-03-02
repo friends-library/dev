@@ -22,7 +22,6 @@ import ReadFooter from '../components/ReadFooter';
 import SearchOverlay from '../components/SearchOverlay';
 import { SEARCH_OVERLAY_MAX_WIDTH } from './constants';
 
-
 export type Props =
   | {
       state: `loading`;

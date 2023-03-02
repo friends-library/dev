@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { EbookColorScheme, EditionResource, StackParamList } from '../types';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RouteProp } from '@react-navigation/native';
+import type { EbookColorScheme, EditionResource, StackParamList } from '../types';
+import type { PropSelector } from '../state';
 import Editions from '../lib/Editions';
-import { useSelector, PropSelector, useDispatch } from '../state';
-import { readScreenProps } from './read-helpers';
+import { useSelector, useDispatch } from '../state';
 import { setLastEbookEditionId } from '../state/resume';
+import { readScreenProps } from './read-helpers';
 import Read from './Read';
 
 /**

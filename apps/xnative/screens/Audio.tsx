@@ -4,10 +4,8 @@ import { t } from '@friends-library/locale';
 import { isNotNull } from 'x-ts-utils';
 import type { RouteProp } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
-import type {
-  Props as AudioControlsProps} from '../components/AudioControls';
-import type {
-  Props as DownloadablePartProps} from '../components/DownloadablePart';
+import type { Props as AudioControlsProps } from '../components/AudioControls';
+import type { Props as DownloadablePartProps } from '../components/DownloadablePart';
 import type { PropSelector } from '../state';
 import type {
   EditionResource,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import type { PropSelector} from '../state';
+import type { PropSelector } from '../state';
 import type { BookSortMethod } from '../types';
 import { useDispatch, useSelector } from '../state';
 import tw from '../lib/tailwind';
