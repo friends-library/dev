@@ -17,7 +17,7 @@ const INSTALL = GIT_BRANCH === `master` ? `release` : IS_RELEASE ? `beta` : `dev
 const APP_IDENTIFIER = getAppIdentifier();
 
 function main(): void {
-  exec.exit(`printf "// auto-generated, do not edit" > ${ENV}`);
+  exec.exit(`printf "// auto-generated, do not edit\n" > ${ENV}`);
   exec.exit(`printf "import type { Lang } from '@friends-library/types';\n\n" >> ${ENV}`);
   exec.exit(`cat ${ENV_DIR}/build-constants.ts >> ${ENV}`);
 

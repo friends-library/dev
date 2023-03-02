@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { View, StatusBar, Platform, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import Popover, { PopoverMode, Rect, PopoverPlacement } from 'react-native-popover-view';
+// @ts-ignore
 import PrefersHomeIndicatorAutoHidden from 'react-native-home-indicator';
 import type { AnyAction } from 'redux';
 import type { WebViewMessageEvent } from 'react-native-webview';
@@ -20,6 +21,7 @@ import { toggleShowingEbookHeader, toggleShowingEbookSettings } from '../state/e
 import ReadFooter from '../components/ReadFooter';
 import SearchOverlay from '../components/SearchOverlay';
 import { SEARCH_OVERLAY_MAX_WIDTH } from './constants';
+
 
 export type Props =
   | {
@@ -65,7 +67,7 @@ export default class Read extends PureComponent<Props, State> {
   private intervalRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>;
   private webViewRef: React.RefObject<WebView>;
 
-  public state: State = {
+  public override state: State = {
     position: undefined,
     showingFootnote: false,
     touchStartLocationX: -999,
@@ -102,7 +104,7 @@ export default class Read extends PureComponent<Props, State> {
     this.webViewRef.current?.injectJavaScript(`${js}; true;`);
   }
 
-  public componentWillUnmount(): void {
+  public override componentWillUnmount(): void {
     if (this.intervalRef.current) {
       clearInterval(this.intervalRef.current);
     }
@@ -111,7 +113,7 @@ export default class Read extends PureComponent<Props, State> {
     }
   }
 
-  public componentDidUpdate(prev: Props): void {
+  public override componentDidUpdate(prev: Props): void {
     if (this.props.state !== `ready` || prev.state !== `ready`) {
       return;
     }
@@ -158,7 +160,7 @@ export default class Read extends PureComponent<Props, State> {
       case `toggle_header_visibility`:
         return dispatch(toggleShowingEbookHeader());
       case `debug`:
-        return console.log(`WEBVIEW DEBUG: ${msg.value}`);
+        return process.stdout.write(`WEBVIEW DEBUG: ${msg.value}\n`);
       case `set_footnote_visibility`:
         return this.setState({ showingFootnote: msg.visible });
     }
@@ -229,7 +231,7 @@ export default class Read extends PureComponent<Props, State> {
     }
   };
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     if (this.props.state === `loading`) {
       return <FullscreenLoading colorScheme={this.props.colorScheme} />;
     }

@@ -96,7 +96,7 @@ export class AudioPartEntity
     super(editionId);
   }
 
-  public get stateKey(): string {
+  public override get stateKey(): string {
     return `${this.editionId}--${this.partIndex}`;
   }
 
@@ -118,7 +118,7 @@ export class AudioPartQualityEntity
     super(editionId, partIndex);
   }
 
-  public get stateKey(): string {
+  public override get stateKey(): string {
     return `${super.stateKey}--${this.quality}`;
   }
 
@@ -186,7 +186,7 @@ export class ThreeDCoverImageEntity
 }
 
 export class EbookEntity extends EditionEntity implements FsPath, FsFilename {
-  public static fromResource(resource: EditionResource): EbookEntity {
+  public static override fromResource(resource: EditionResource): EbookEntity {
     return new EbookEntity(resource.id);
   }
 

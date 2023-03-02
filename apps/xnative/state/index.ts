@@ -23,8 +23,8 @@ export const INITIAL_STATE: State = {
 
 export type { State };
 // this type derived from looking at `type of store.dispatch`
-export type Dispatch = ThunkDispatch<any, null, AnyAction> &
-  ThunkDispatch<any, undefined, AnyAction> &
+export type Dispatch = ThunkDispatch<any, unknown, AnyAction> &
+  ThunkDispatch<any, unknown, AnyAction> &
   RDXDispatch<AnyAction>;
 export type Thunk = ThunkAction<void, State, unknown, Action<string>>;
 export const useSelector = createSelectorHook<State>();

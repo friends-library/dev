@@ -1,7 +1,7 @@
 import { beforeEach, it, describe, expect } from '@jest/globals';
+import type { EbookData, EditionResource } from '../../types';
 import { readScreenProps } from '../read-helpers';
 import Service from '../../lib/service';
-import { EbookData, EditionResource } from 'types';
 
 jest.mock(`../../lib/service`);
 
