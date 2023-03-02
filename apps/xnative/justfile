@@ -4,8 +4,14 @@ _default:
 install-ios:
   @pnpm react-native run-ios
 
+install-ios-release:
+  @pnpm react-native run-ios --configuration Release
+
 install-android:
   @pnpm react-native run-android
+
+install-android-release:
+  @pnpm react-native run-android --mode release
 
 install: install-ios install-android
 

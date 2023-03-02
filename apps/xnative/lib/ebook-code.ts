@@ -19,6 +19,7 @@ const htmlClassList: Window['htmlClassList'] = (
   showingFootnote,
   justify,
 ) => {
+  'show source'; // prevent hermes [bytecode]
   const classes = [
     `version--gte-2_1_0`,
     `colorscheme--${colorScheme}`,
@@ -49,6 +50,7 @@ function injectIntoWebView(
   initialHeaderHeight: number,
   safeAreaVerticalOffset: number,
 ): void {
+  'show source'; // prevent hermes [bytecode]
   function docHeight(): number {
     return document.documentElement.scrollHeight;
   }
