@@ -3,6 +3,11 @@
 #import <React/RCTBundleURLProvider.h>
 
 /**
+ * Added by jared @see https://github.com/crazycodeboy/react-native-splash-screen
+ */
+#import "RNSplashScreen.h"
+
+/**
  * Added by jared @see https://github.com/flowkey/react-native-home-indicator
  */
 #import <RNHomeIndicator.h>
@@ -21,7 +26,13 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
-  return [super application:application didFinishLaunchingWithOptions:launchOptions];
+  /**
+   * Changed by jared @see https://github.com/crazycodeboy/react-native-splash-screen
+   * also @see https://github.com/crazycodeboy/react-native-splash-screen/issues/606#issuecomment-1396914012
+   */
+  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [RNSplashScreen show];
+  return YES;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

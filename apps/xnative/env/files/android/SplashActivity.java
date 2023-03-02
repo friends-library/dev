@@ -4,13 +4,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SplashActivity extends AppCompatActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+/**
+ * Added by jared @see https://github.com/crazycodeboy/react-native-splash-screen
+ */
+import org.devio.rn.splashscreen.SplashScreen;
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
+public class SplashActivity extends AppCompatActivity {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+
+    /**
+     * Added by jared @see https://github.com/crazycodeboy/react-native-splash-screen
+     */
+    SplashScreen.show(this);
+
+    super.onCreate(savedInstanceState);
+
+    Intent intent = new Intent(this, MainActivity.class);
+    startActivity(intent);
+    finish();
+  }
 }
