@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Serif } from './Text';
 import tw from '../lib/tailwind';
+import { Serif } from './Text';
 
 const FullscreenError: React.FC<{
   bgColor?: string;

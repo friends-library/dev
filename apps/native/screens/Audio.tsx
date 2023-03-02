@@ -1,31 +1,33 @@
 import React, { useEffect } from 'react';
 import { ScrollView, Dimensions, View, Alert } from 'react-native';
-import {
+import { t } from '@friends-library/locale';
+import { isNotNull } from 'x-ts-utils';
+import type { RouteProp } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { Props as AudioControlsProps } from '../components/AudioControls';
+import type { Props as DownloadablePartProps } from '../components/DownloadablePart';
+import type { PropSelector } from '../state';
+import type {
   EditionResource,
   Audio as AudioResource,
   StackParamList,
   EditionId,
 } from '../types';
-import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { t } from '@friends-library/locale';
 import { Sans } from '../components/Text';
 import IconButton from '../components/IconButton';
 import { ByLine, JustifiedDescription, MainTitle } from '../components/BookParts';
 import CoverImage from '../components/CoverImage';
 import {
   AudioControls,
-  Props as AudioControlsProps,
   propSelector as audioControlsPropSelector,
 } from '../components/AudioControls';
 import {
   DownloadablePart,
-  Props as DownloadablePartProps,
   propSelector as downloadablePartPropSelector,
 } from '../components/DownloadablePart';
 import tw from '../lib/tailwind';
 import { humansize } from '../lib/utils';
-import { useSelector, useDispatch, PropSelector } from '../state';
+import { useSelector, useDispatch } from '../state';
 import {
   isDownloading,
   isQueued,
@@ -35,9 +37,8 @@ import {
 } from '../state/audio/filesystem';
 import * as select from '../state/selectors/audio-selectors';
 import { LANG } from '../env';
-import { isNotNull } from 'x-ts-utils';
-import { EDITION_META_MAX_WIDTH } from './constants';
 import { audioHumanDuration } from '../lib/audio-duration';
+import { EDITION_META_MAX_WIDTH } from './constants';
 
 interface Props {
   edition: EditionResource;

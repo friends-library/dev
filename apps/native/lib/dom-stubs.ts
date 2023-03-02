@@ -1,5 +1,5 @@
-import { EbookColorScheme, SearchResult } from '../types';
-import { search } from './search';
+import type { EbookColorScheme, SearchResult } from '../types';
+import type { search } from './search';
 
 interface Scrollable {
   scrollTo(x: number, y: number): unknown;

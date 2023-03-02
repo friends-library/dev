@@ -204,7 +204,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: [`apps/admin/**`, `apps/cover-web-app/**`, `apps/xnative/**`],
+      files: [`apps/admin/**`, `apps/cover-web-app/**`, `apps/native/**`],
       rules: {
         '@typescript-eslint/no-non-null-assertion': `off`,
       },

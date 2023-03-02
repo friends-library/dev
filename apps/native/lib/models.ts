@@ -7,9 +7,17 @@
  * The methods on the classes in this file should be the ONLY PLACE were knowledge of
  * these conventions--how to create/assemble/dissemble these conventional strings--lives.
  */
-import { AudioQuality, EditionType } from '@friends-library/types';
 import { PixelRatio } from 'react-native';
-import { EditionId, DocumentId, EditionResource } from '../types';
+import type { AudioQuality, EditionType } from '@friends-library/types';
+import type {
+  EditionId,
+  DocumentId,
+  EditionResource,
+  SquareCoverImageSize,
+  ThreeDCoverImageWidth,
+} from '../types';
+import { THREE_D_COVER_IMAGE_WIDTHS } from '../types';
+import { SQUARE_COVER_IMAGE_SIZES } from '../types';
 import { FileSystem } from './fs';
 
 export interface DocumentEntityInterface {
@@ -88,7 +96,7 @@ export class AudioPartEntity
     super(editionId);
   }
 
-  public get stateKey(): string {
+  public override get stateKey(): string {
     return `${this.editionId}--${this.partIndex}`;
   }
 
@@ -110,7 +118,7 @@ export class AudioPartQualityEntity
     super(editionId, partIndex);
   }
 
-  public get stateKey(): string {
+  public override get stateKey(): string {
     return `${super.stateKey}--${this.quality}`;
   }
 
@@ -178,7 +186,7 @@ export class ThreeDCoverImageEntity
 }
 
 export class EbookEntity extends EditionEntity implements FsPath, FsFilename {
-  public static fromResource(resource: EditionResource): EbookEntity {
+  public static override fromResource(resource: EditionResource): EbookEntity {
     return new EbookEntity(resource.id);
   }
 
@@ -209,21 +217,3 @@ function bestImageSize<T extends number[]>(layoutSize: number, sizes: T): T[numb
   }
   return (imageSize || sizes[sizes.length - 1])!;
 }
-
-// below taken from old @friends-library/types repo
-// when we convert to using graphql, refactor and remove
-
-const THREE_D_COVER_IMAGE_WIDTHS = [
-  55, 110, 250, 400, 550, 700, 850, 1000, 1120,
-] as const;
-
-type ThreeDCoverImageWidth = typeof THREE_D_COVER_IMAGE_WIDTHS[number];
-
-const SQUARE_COVER_IMAGE_SIZES = [
-  45, 90, 180, 270, 300, 450, 600, 750, 900, 1150, 1400,
-] as const;
-
-type SquareCoverImageSize = typeof SQUARE_COVER_IMAGE_SIZES[number];
-
-export const LARGEST_THREE_D_COVER_IMAGE_WIDTH: ThreeDCoverImageWidth =
-  THREE_D_COVER_IMAGE_WIDTHS[THREE_D_COVER_IMAGE_WIDTHS.length - 1]!;

@@ -2,13 +2,13 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { t } from '@friends-library/locale';
-import { EditionId } from '../types';
-import { Sans, Serif } from './Text';
-import CoverImage from './CoverImage';
+import type { EditionId } from '../types';
 import tw from '../lib/tailwind';
 import Editions from '../lib/Editions';
 import { useSelector } from '../state';
 import { progress } from '../state/selectors/audio-selectors';
+import CoverImage from './CoverImage';
+import { Sans, Serif } from './Text';
 
 interface Props {
   type: 'audio' | 'ebook';

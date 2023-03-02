@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, TextInput, TouchableOpacity, ReturnKeyTypeOptions } from 'react-native';
+import { View, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { t } from '@friends-library/locale';
-import { Sans } from './Text';
+import type { ReturnKeyTypeOptions } from 'react-native';
 import tw from '../lib/tailwind';
+import { Sans } from './Text';
 
 interface Props {
   query: string;

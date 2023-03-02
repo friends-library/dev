@@ -1,4 +1,4 @@
-import { Lang } from '@friends-library/types';
+import type { Lang } from '@friends-library/types';
 
 // NOTE: This was ported over from @friends-library/friends -> Audio.ts
 // during the great graphql API refactor. This functionality was moved

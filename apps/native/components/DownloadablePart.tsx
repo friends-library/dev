@@ -2,8 +2,10 @@ import React from 'react';
 import { View, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { t } from '@friends-library/locale';
+import type { State, Dispatch } from '../state';
+import type { AudioPart, EditionId } from '../types';
 import tw from '../lib/tailwind';
-import { useSelector, useDispatch, State, Dispatch } from '../state';
+import { useSelector, useDispatch } from '../state';
 import {
   isDownloading,
   isDownloaded,
@@ -11,12 +13,11 @@ import {
   downloadAudio,
 } from '../state/audio/filesystem';
 import { togglePartPlayback } from '../state/audio/playback';
-import { AudioPart, EditionId } from '../types';
-import { Sans } from './Text';
 import { isAudioPartPlaying, audioPartFile } from '../state/selectors/audio-selectors';
 import { LANG } from '../env';
 import Editions from '../lib/Editions';
 import { EDITION_META_MAX_WIDTH } from '../screens/constants';
+import { Sans } from './Text';
 
 type CommonProps = {
   part: Pick<AudioPart, 'title'>;

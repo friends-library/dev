@@ -1,5 +1,6 @@
 import omit from 'lodash.omit';
-import { State, INITIAL_STATE as INIT } from '../';
+import type { State } from '../';
+import { INITIAL_STATE as INIT } from '../';
 
 export default function migrate(input: unknown): State {
   if (!input || typeof input !== `object` || Array.isArray(input)) {

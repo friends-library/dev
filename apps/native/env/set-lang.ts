@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 import exec from 'x-exec';
-import { Lang } from '@friends-library/types';
 import { MAROON_HEX, GOLD_HEX } from '@friends-library/theme';
+import type { Lang } from '@friends-library/types';
 import { BUILD_SEMVER_STRING, BUILD_NUM } from './build-constants';
 
 const ENV_DIR = __dirname;
@@ -17,11 +17,12 @@ const INSTALL = GIT_BRANCH === `master` ? `release` : IS_RELEASE ? `beta` : `dev
 const APP_IDENTIFIER = getAppIdentifier();
 
 function main(): void {
-  exec.exit(`printf "import { Lang } from '@friends-library/types';\n\n" > ${ENV}`);
+  exec.exit(`printf "// auto-generated, do not edit\n" > ${ENV}`);
+  exec.exit(`printf "import type { Lang } from '@friends-library/types';\n\n" >> ${ENV}`);
   exec.exit(`cat ${ENV_DIR}/build-constants.ts >> ${ENV}`);
 
   const API_URL =
-    INSTALL === `dev` ? `http://10.0.0.209:8080` : `https://api.friendslibrary.com`;
+    INSTALL === `dev` ? `http://192.168.10.227:8080` : `https://api.friendslibrary.com`;
 
   // @see https://xkcd.com/1638/
   const constants = [
@@ -34,29 +35,45 @@ function main(): void {
 
   exec.exit(`printf "${constants.join(`\n`)}" >> ${ENV}`);
 
-  // compile ./env/index.ts -> ./env/index.js
-  exec.exit(`npx tsc --project ./env`);
+  exec.exit(`mkdir -p ${APP_DIR}/android/app/src/debug/java/com/friendslibrary`);
+  exec.exit(`mkdir -p ${APP_DIR}/android/app/src/main/java/com/friendslibrary`);
+  exec.exit(`mkdir -p ${APP_DIR}/android/app/src/release/java/com/friendslibrary`);
 
+  // android
   copyFileWithEnv(`android/build.gradle`, `android/app/build.gradle`);
   copyFileWithEnv(`android/colors.xml`, `android/app/src/main/res/values/colors.xml`);
   copyFileWithEnv(`android/strings.xml`, `android/app/src/main/res/values/strings.xml`);
-  copyFileWithEnv(`android/_BUCK`, `android/app/_BUCK`);
   copyFileWithEnv(
     `android/MainApplication.java`,
     `android/app/src/main/java/com/friendslibrary/MainApplication.java`,
+  );
+  copyFileWithEnv(
+    `android/MainActivity.java`,
+    `android/app/src/main/java/com/friendslibrary/MainActivity.java`,
   );
   copyFileWithEnv(
     `android/SplashActivity.java`,
     `android/app/src/main/java/com/friendslibrary/SplashActivity.java`,
   );
   copyFileWithEnv(
-    `android/AndroidManifest.xml`,
-    `android/app/src/main/AndroidManifest.xml`,
+    `android/ReactNativeFlipper.debug.java`,
+    `android/app/src/debug/java/com/friendslibrary/ReactNativeFlipper.java`,
   );
   copyFileWithEnv(
-    `android/MainActivity.java`,
-    `android/app/src/main/java/com/friendslibrary/MainActivity.java`,
+    `android/ReactNativeFlipper.release.java`,
+    `android/app/src/release/java/com/friendslibrary/ReactNativeFlipper.java`,
   );
+  const resDirs = [
+    `drawable`,
+    `mipmap-hdpi`,
+    `mipmap-mdpi`,
+    `mipmap-xhdpi`,
+    `mipmap-xxhdpi`,
+    `mipmap-xxxhdpi`,
+  ];
+  resDirs.forEach((dir) => copyDir(`android/${LANG}/${dir}`, `android/app/src/main/res`));
+
+  // ios
   copyFileWithEnv(`ios/Info.plist`, `ios/FriendsLibrary/Info.plist`);
   copyFileWithEnv(
     `ios/${LANG}/LaunchScreen.storyboard`,
@@ -68,16 +85,6 @@ function main(): void {
     `ios/FriendsLibrary/Images.xcassets`,
   );
   copyDir(`ios/${LANG}/SplashIcon.imageset`, `ios/FriendsLibrary/Images.xcassets`);
-
-  const resDirs = [
-    `drawable`,
-    `mipmap-hdpi`,
-    `mipmap-mdpi`,
-    `mipmap-xhdpi`,
-    `mipmap-xxhdpi`,
-    `mipmap-xxxhdpi`,
-  ];
-  resDirs.forEach((dir) => copyDir(`android/${LANG}/${dir}`, `android/app/src/main/res`));
 
   const workspacePath = `${APP_DIR}/ios/FriendsLibrary.xcodeproj/project.pbxproj`;
   const workspaceCode = fs.readFileSync(workspacePath, `utf8`);
@@ -114,14 +121,19 @@ function copyFileWithEnv(src: string, dest: string): void {
     code = code.replace(new RegExp(pattern, `g`), value);
   }
 
-  let generatedComment = ``;
-  if (src.endsWith(`.xml`) || src.endsWith(`.plist`)) {
-    generatedComment = `<!-- AUTO-GENERATED DO NOT EDIT -->`;
+  let slashComment = ``;
+  if (src.endsWith(`.gradle`) || src.endsWith(`.java`)) {
+    slashComment = `// auto-generated, do not edit\n`;
   }
 
-  // insert comment on second line (comments not valid above xml declaration)
+  let xmlComment = ``;
+  if (src.endsWith(`.xml`) || src.endsWith(`.plist`) || src.endsWith(`.storyboard`)) {
+    xmlComment = `\n<!-- auto-generated, do not edit -->`;
+  }
+
+  // insert xml on second line (comments not valid above xml declaration)
   const lines = code.split(`\n`);
-  lines[0] = `${lines[0]}${generatedComment ? `\n${generatedComment}` : ``}`;
+  lines[0] = `${slashComment}${lines[0]}${xmlComment ? xmlComment : ``}`;
   code = lines.join(`\n`);
 
   fs.writeFileSync(`${APP_DIR}/${dest}`, code);

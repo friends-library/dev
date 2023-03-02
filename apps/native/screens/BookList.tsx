@@ -1,9 +1,9 @@
 import React from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RouteProp } from '@react-navigation/native';
+import type { StackParamList, BookListItem as BookListItemInterface } from '../types';
 import tw from '../lib/tailwind';
-import { StackParamList, BookListItem as BookListItemInterface } from '../types';
 import BookListItem from '../components/BookListItem';
 import { useSelector } from '../state';
 import selectAudiobooks from '../state/selectors/audio-booklist';

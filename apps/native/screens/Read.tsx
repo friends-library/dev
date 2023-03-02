@@ -1,30 +1,26 @@
 import React, { PureComponent } from 'react';
-import {
-  View,
-  StatusBar,
-  GestureResponderEvent,
-  Platform,
-  Dimensions,
-} from 'react-native';
-import { WebView, WebViewMessageEvent } from 'react-native-webview';
+import { View, StatusBar, Platform, Dimensions } from 'react-native';
+import { WebView } from 'react-native-webview';
 import Popover, { PopoverMode, Rect, PopoverPlacement } from 'react-native-popover-view';
-import { AnyAction } from 'redux';
-import * as T from '../types';
+// @ts-ignore
+import PrefersHomeIndicatorAutoHidden from 'react-native-home-indicator';
+import type { AnyAction } from 'redux';
+import type { WebViewMessageEvent } from 'react-native-webview';
+import type { GestureResponderEvent } from 'react-native';
+import type * as T from '../types';
+import type { Dispatch } from '../state';
+import type { Message } from '../lib/ebook-code';
 import FullscreenLoading from '../components/FullscreenLoading';
-import { SEARCH_OVERLAY_MAX_WIDTH } from './constants';
 import EbookError from '../components/EbookError';
 import tw from '../lib/tailwind';
-import { Dispatch } from '../state';
-import { wrapHtml, Message } from '../lib/ebook-code';
+import { wrapHtml } from '../lib/ebook-code';
 import * as gesture from '../lib/gesture';
 import { setEbookPosition } from '../state/ebook/position';
 import EbookSettings from '../components/EbookSettings';
 import { toggleShowingEbookHeader, toggleShowingEbookSettings } from '../state/ephemeral';
 import ReadFooter from '../components/ReadFooter';
 import SearchOverlay from '../components/SearchOverlay';
-
-// @ts-ignore
-import PrefersHomeIndicatorAutoHidden from 'react-native-home-indicator';
+import { SEARCH_OVERLAY_MAX_WIDTH } from './constants';
 
 export type Props =
   | {
@@ -70,7 +66,7 @@ export default class Read extends PureComponent<Props, State> {
   private intervalRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>;
   private webViewRef: React.RefObject<WebView>;
 
-  public state: State = {
+  public override state: State = {
     position: undefined,
     showingFootnote: false,
     touchStartLocationX: -999,
@@ -107,7 +103,7 @@ export default class Read extends PureComponent<Props, State> {
     this.webViewRef.current?.injectJavaScript(`${js}; true;`);
   }
 
-  public componentWillUnmount(): void {
+  public override componentWillUnmount(): void {
     if (this.intervalRef.current) {
       clearInterval(this.intervalRef.current);
     }
@@ -116,7 +112,7 @@ export default class Read extends PureComponent<Props, State> {
     }
   }
 
-  public componentDidUpdate(prev: Props): void {
+  public override componentDidUpdate(prev: Props): void {
     if (this.props.state !== `ready` || prev.state !== `ready`) {
       return;
     }
@@ -163,7 +159,7 @@ export default class Read extends PureComponent<Props, State> {
       case `toggle_header_visibility`:
         return dispatch(toggleShowingEbookHeader());
       case `debug`:
-        return console.log(`WEBVIEW DEBUG: ${msg.value}`);
+        return process.stdout.write(`WEBVIEW DEBUG: ${msg.value}\n`);
       case `set_footnote_visibility`:
         return this.setState({ showingFootnote: msg.visible });
     }
@@ -234,7 +230,7 @@ export default class Read extends PureComponent<Props, State> {
     }
   };
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     if (this.props.state === `loading`) {
       return <FullscreenLoading colorScheme={this.props.colorScheme} />;
     }

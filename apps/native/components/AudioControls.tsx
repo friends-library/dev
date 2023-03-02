@@ -1,14 +1,15 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AudioScrubber from './AudioScrubber';
+import type { PropSelector } from '../state';
+import type { EditionId } from '../types';
 import tw from '../lib/tailwind';
-import { PropSelector, useSelector, useDispatch } from '../state';
+import { useSelector, useDispatch } from '../state';
 import * as select from '../state/selectors/audio-selectors';
 import { togglePlayback, skipNext, skipBack } from '../state/audio/playback';
 import { downloadProgress, isDownloading } from '../state/audio/filesystem';
 import { seekRelative, seekTo } from '../state/audio/track-position';
-import { EditionId } from '../types';
+import AudioScrubber from './AudioScrubber';
 
 export interface Props {
   skipNext?: () => any;

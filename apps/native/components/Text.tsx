@@ -1,11 +1,13 @@
 import React from 'react';
-import { Text, Platform, TextStyle } from 'react-native';
+import { Text, Platform } from 'react-native';
+import type { TextStyle } from 'react-native';
 import tw from '../lib/tailwind';
 
 interface TextProps {
   size?: number;
   style?: TextStyle;
   numberOfLines?: number;
+  children: React.ReactNode;
 }
 
 export const Serif: React.FC<TextProps> = ({
@@ -54,6 +56,7 @@ interface ProseProps {
   size?: number;
   tailwindClasses?: string;
   variant?: 'italic' | 'bold';
+  children: React.ReactNode;
 }
 
 export const Prose: React.FC<ProseProps> = ({

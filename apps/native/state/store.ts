@@ -1,14 +1,16 @@
 import { Platform } from 'react-native';
-import { configureStore, getDefaultMiddleware, Store, AnyAction } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import SplashScreen from 'react-native-splash-screen';
 import throttle from 'lodash.throttle';
 import merge from 'lodash.merge';
-import rootReducer from './root-reducer';
+import type { Store, AnyAction } from '@reduxjs/toolkit';
+import type { State } from './';
 import FS, { FileSystem } from '../lib/fs';
 import Player from '../lib/player';
 import Editions from '../lib/Editions';
-import { INITIAL_STATE, State } from './';
+import rootReducer from './root-reducer';
 import migrate from './migrate/migrate';
+import { INITIAL_STATE } from './';
 
 export default async function getStore(): Promise<Store<any, AnyAction>> {
   Player.init();

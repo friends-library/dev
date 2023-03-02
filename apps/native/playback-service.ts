@@ -1,31 +1,32 @@
-import Player from './lib/player';
 import { Platform } from 'react-native';
+import { Event } from 'react-native-track-player';
+import Player from './lib/player';
 import { setCurrentTrackPosition } from './state/audio/track-position';
 import { maybeDownloadNextQueuedTrack } from './state/audio/filesystem';
 import { setState as setPlaybackState, maybeAdvanceQueue } from './state/audio/playback';
 
 module.exports = async function () {
-  Player.addEventListener(`remote-play`, () => {
+  Player.addEventListener(Event.RemotePlay, () => {
     Player.resume();
     Player.dispatch(setPlaybackState(`PLAYING`));
   });
 
-  Player.addEventListener(`remote-pause`, () => {
+  Player.addEventListener(Event.RemotePause, () => {
     Player.pause();
     Player.dispatch(setPlaybackState(`PAUSED`));
   });
 
-  Player.addEventListener(`remote-stop`, () => {
+  Player.addEventListener(Event.RemoteStop, () => {
     Player.pause();
     Player.dispatch(setPlaybackState(`PAUSED`));
   });
 
-  Player.addEventListener(`remote-jump-forward`, () => Player.seekRelative(30));
-  Player.addEventListener(`remote-jump-backward`, () => Player.seekRelative(-30));
-  Player.addEventListener(`remote-seek`, ({ position }) => Player.seekTo(position));
+  Player.addEventListener(Event.RemoteJumpForward, () => Player.seekRelative(30));
+  Player.addEventListener(Event.RemoteJumpBackward, () => Player.seekRelative(-30));
+  Player.addEventListener(Event.RemoteSeek, ({ position }) => Player.seekTo(position));
 
   Player.addEventListener(
-    `remote-duck`,
+    Event.RemoteDuck,
     async (event: { paused?: boolean; permanent?: boolean }) => {
       const { paused, permanent } = event;
       const playerState = await Player.getState();
@@ -36,7 +37,7 @@ module.exports = async function () {
           Player.dispatch(setPlaybackState(`DUCKED`));
         }
       } else if (permanent) {
-        Player.stop();
+        Player.pause();
         Player.dispatch(setPlaybackState(`STOPPED`));
       } else if (playerState === `DUCKED` || notAndroid) {
         Player.resume();
@@ -46,7 +47,7 @@ module.exports = async function () {
   );
 
   Player.addEventListener(
-    `playback-track-changed`,
+    Event.PlaybackTrackChanged,
     ({ nextTrack }: { nextTrack: null | string }) => {
       if (nextTrack) {
         Player.dispatch(maybeAdvanceQueue(nextTrack));

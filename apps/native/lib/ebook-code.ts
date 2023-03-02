@@ -1,9 +1,9 @@
 import css from 'x-syntax';
-import { EbookColorScheme, SearchResult } from '../types';
-import { Element, Document, Window } from './dom-stubs';
-import tw from '../lib/tailwind';
+import type { EbookColorScheme, SearchResult } from '../types';
+import type { Element, Document, Window } from './dom-stubs';
 import { LANG } from '../env';
-import { search } from '../lib/search';
+import tw from './tailwind';
+import { search } from './search';
 
 export type Message =
   | { type: 'update_position'; position: number }
@@ -19,6 +19,7 @@ const htmlClassList: Window['htmlClassList'] = (
   showingFootnote,
   justify,
 ) => {
+  'show source'; // prevent hermes [bytecode]
   const classes = [
     `version--gte-2_1_0`,
     `colorscheme--${colorScheme}`,
@@ -49,6 +50,7 @@ function injectIntoWebView(
   initialHeaderHeight: number,
   safeAreaVerticalOffset: number,
 ): void {
+  'show source'; // prevent hermes [bytecode]
   function docHeight(): number {
     return document.documentElement.scrollHeight;
   }
@@ -381,7 +383,7 @@ export function wrapHtml(
     justify,
   );
   return `
-  <html class="${classList}${position > 0 ? ` await-init-position` : ``}" lang="${LANG}"> 
+  <html class="${classList}${position > 0 ? ` await-init-position` : ``}" lang="${LANG}">
     <head>
        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
        <style>${cssVars(headerHeight)}</style>

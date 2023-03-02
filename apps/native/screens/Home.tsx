@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, SafeAreaView } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { RouteProp } from '@react-navigation/native';
 import { t } from '@friends-library/locale';
-import { StackParamList } from '../types';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RouteProp } from '@react-navigation/native';
+import type { StackParamList } from '../types';
 import { Sans } from '../components/Text';
 import Continue from '../components/Continue';
 import tw from '../lib/tailwind';

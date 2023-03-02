@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { t } from '@friends-library/locale';
-import { EbookColorScheme, SearchResult } from '../types';
+import type { EbookColorScheme, SearchResult } from '../types';
 import { SEARCH_OVERLAY_MAX_WIDTH } from '../screens/constants';
-import { Sans } from './Text';
 import tw from '../lib/tailwind';
+import { Sans } from './Text';
 import Search from './Search';
 
 interface Props {

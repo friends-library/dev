@@ -1,6 +1,6 @@
 packages:
   - 'apps/admin'
-  - 'apps/xnative'
+  - 'apps/native'
   - 'apps/cover-web-app'
   - 'apps/fell'
   - 'apps/cli'

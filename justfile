@@ -10,7 +10,7 @@ jones:
   @pnpm --filter jones start
 
 native:
-  @cd apps/xnative && just
+  @cd apps/native && just
 
 # code quality
 

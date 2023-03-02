@@ -1,5 +1,5 @@
 import React from 'react';
-import { EbookColorScheme } from '../types';
+import type { EbookColorScheme } from '../types';
 import tw from '../lib/tailwind';
 import { LANG } from '../env';
 import FullscreenError from './FullscreenError';

@@ -1,15 +1,15 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dimensions, View } from 'react-native';
-import { Sans } from './Text';
-import tw from '../lib/tailwind';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import { StackHeaderProps } from '@react-navigation/stack';
+import type { StackHeaderProps } from '@react-navigation/stack';
+import tw from '../lib/tailwind';
 import { useDispatch, useSelector } from '../state';
 import { toggleShowingEbookSettings } from '../state/ephemeral';
 import { setEbookHeaderHeight } from '../state/dimensions';
 import { colorSchemeSubtleDropshadowStyle } from '../lib/utils';
 import Editions from '../lib/Editions';
+import { Sans } from './Text';
 
 const ReadHeader: React.FC<StackHeaderProps> = ({ insets, navigation, scene }) => {
   const dispatch = useDispatch();

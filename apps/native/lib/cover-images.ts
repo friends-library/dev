@@ -1,5 +1,6 @@
-import { EditionId } from '../types';
-import { SquareCoverImageEntity, FsPath, ThreeDCoverImageEntity } from './models';
+import type { EditionId } from '../types';
+import type { FsPath } from './models';
+import { SquareCoverImageEntity, ThreeDCoverImageEntity } from './models';
 import FS from './fs';
 import Editions from './Editions';
 

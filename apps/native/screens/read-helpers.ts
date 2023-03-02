@@ -1,6 +1,6 @@
-import { Result } from 'x-ts-utils';
+import type { Result } from 'x-ts-utils';
+import type { EditionResource } from '../types';
 import Service from '../lib/service';
-import { EditionResource } from '../types';
 import { EbookEntity } from '../lib/models';
 import { INSTALL } from '../env';
 

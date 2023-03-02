@@ -1,7 +1,7 @@
-import { AudioQuality } from '@friends-library/types';
 import { isNotNull } from 'x-ts-utils';
-import { EditionId, EditionResource, Audio, AudioPart } from '../types';
-import { DocumentEntityInterface } from './models';
+import type { AudioQuality } from '@friends-library/types';
+import type { EditionId, EditionResource, Audio, AudioPart } from '../types';
+import type { DocumentEntityInterface } from './models';
 
 type EditionMap = Record<EditionId, EditionResource>;
 
@@ -75,7 +75,7 @@ class Editions {
     this.changeListeners.forEach((listener) => listener());
   }
 
-  public setResourcesIfValid(resources: any): boolean {
+  public setResourcesIfValid(resources: unknown): boolean {
     if (editionResourcesValid(resources)) {
       this.setResources(resources);
       return true;

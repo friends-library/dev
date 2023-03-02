@@ -1,9 +1,18 @@
-import { EventEmitter } from 'events';
-import RNTrackPlayer from 'react-native-track-player';
-import { TrackData, PlayerState } from '../types';
-import { Dispatch } from '../state';
+import RNTrackPlayer, {
+  AppKilledPlaybackBehavior,
+  Capability,
+  IOSCategory,
+  IOSCategoryMode,
+  IOSCategoryOptions,
+  PitchAlgorithm,
+  State,
+} from 'react-native-track-player';
+import type { Event } from 'react-native-track-player';
+import type { EmitterSubscription } from 'react-native/types';
+import type { TrackData, PlayerState } from '../types';
+import type { Dispatch } from '../state';
 
-class Player extends EventEmitter {
+class Player {
   private ducked = false;
 
   public dispatch: Dispatch = (): any => {};
@@ -21,10 +30,6 @@ class Player extends EventEmitter {
     return RNTrackPlayer.play();
   }
 
-  public stop(): Promise<void> {
-    return RNTrackPlayer.stop();
-  }
-
   public duck(): Promise<void> {
     this.ducked = true;
     return RNTrackPlayer.pause();
@@ -36,10 +41,6 @@ class Player extends EventEmitter {
 
   public getPosition(): Promise<number> {
     return RNTrackPlayer.getPosition();
-  }
-
-  public getCurrentTrackId(): Promise<string> {
-    return RNTrackPlayer.getCurrentTrack();
   }
 
   public seekTo(position: number): Promise<void> {
@@ -54,10 +55,10 @@ class Player extends EventEmitter {
   public async getState(): Promise<PlayerState> {
     const RNState = await RNTrackPlayer.getState();
     switch (RNState) {
-      case RNTrackPlayer.STATE_PLAYING:
-      case RNTrackPlayer.STATE_BUFFERING:
+      case State.Playing:
+      case State.Buffering:
         return `PLAYING`;
-      case RNTrackPlayer.STATE_PAUSED:
+      case State.Paused:
         return this.ducked ? `DUCKED` : `PAUSED`;
       default:
         return `STOPPED`;
@@ -67,7 +68,7 @@ class Player extends EventEmitter {
   public async playPart(trackId: string, tracks: TrackData[]): Promise<void> {
     this.ducked = false;
     await RNTrackPlayer.reset();
-    RNTrackPlayer.add(
+    const index = await RNTrackPlayer.add(
       tracks.map((track) => ({
         id: track.id,
         url: track.filepath,
@@ -75,40 +76,46 @@ class Player extends EventEmitter {
         artist: track.artist,
         artwork: track.artworkUrl,
         duration: track.duration,
-        pitchAlgorithm: RNTrackPlayer.PITCH_ALGORITHM_VOICE,
+        pitchAlgorithm: PitchAlgorithm.Voice,
       })),
     );
-    await RNTrackPlayer.skip(trackId);
+    if (index) {
+      await RNTrackPlayer.skip(index);
+    }
     return RNTrackPlayer.play();
   }
 
   public init(): void {
     RNTrackPlayer.setupPlayer({
-      iosCategory: `playback`,
-      iosCategoryMode: `spokenAudio`,
-      iosCategoryOptions: [`allowAirPlay`],
+      iosCategory: IOSCategory.Playback,
+      iosCategoryMode: IOSCategoryMode.SpokenAudio,
+      iosCategoryOptions: [IOSCategoryOptions.AllowAirPlay],
     });
 
     RNTrackPlayer.updateOptions({
-      stopWithApp: false,
-      jumpInterval: 30,
-      // @ts-ignore
+      android: {
+        appKilledPlaybackBehavior: AppKilledPlaybackBehavior.PausePlayback,
+      },
+      forwardJumpInterval: 30,
+      backwardJumpInterval: 15,
       alwaysPauseOnInterruption: true,
       capabilities: [
-        RNTrackPlayer.CAPABILITY_PLAY,
-        RNTrackPlayer.CAPABILITY_PAUSE,
-        RNTrackPlayer.CAPABILITY_SEEK_TO,
-        RNTrackPlayer.CAPABILITY_STOP,
-        RNTrackPlayer.CAPABILITY_JUMP_FORWARD,
-        RNTrackPlayer.CAPABILITY_JUMP_BACKWARD,
+        Capability.Play,
+        Capability.Pause,
+        Capability.SeekTo,
+        Capability.Stop,
+        Capability.JumpForward,
+        Capability.JumpBackward,
       ],
     });
   }
 
   public addEventListener(
-    event: RNTrackPlayer.EventType,
+    event: Event,
     listener: (data: any) => void,
-  ): RNTrackPlayer.EmitterSubscription {
+  ): EmitterSubscription {
+    // todo: migrate docs say not to use this, to use hooks
+    // https://react-native-track-player.js.org/docs/v2-migration
     return RNTrackPlayer.addEventListener(event, listener);
   }
 }

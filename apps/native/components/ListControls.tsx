@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { PropSelector, useDispatch, useSelector } from '../state';
+import type { PropSelector } from '../state';
+import type { BookSortMethod } from '../types';
+import { useDispatch, useSelector } from '../state';
 import tw from '../lib/tailwind';
-import { Sans } from './Text';
-import Search from './Search';
 import { LANG } from '../env';
-import { BookSortMethod } from '../types';
 import { setAudioSortHeaderHeight, setEbookSortHeaderHeight } from '../state/dimensions';
 import {
   setAudioSearchQuery,
@@ -13,6 +12,8 @@ import {
   setEbookSearchQuery,
   setSortEbooksBy,
 } from '../state/preferences';
+import Search from './Search';
+import { Sans } from './Text';
 
 interface Props {
   query: string;

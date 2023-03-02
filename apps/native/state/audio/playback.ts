@@ -1,16 +1,17 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { Platform } from 'react-native';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { State, Dispatch, Thunk } from '..';
+import type { AudioPart, EditionId, PlayerState } from '../../types';
 import Service from '../../lib/service';
-import { State, Dispatch, Thunk } from '..';
-import { downloadAudio, isDownloaded } from './filesystem';
 import { setLastAudiobookEditionId } from '../resume';
-import { set as setActivePart } from './active-part';
 import * as select from '../selectors/audio-selectors';
-import { seekTo } from './track-position';
-import { AudioPart, EditionId, PlayerState } from '../../types';
 import { canDownloadNow } from '../network';
 import Editions from '../../lib/Editions';
 import { AudioPartEntity } from '../../lib/models';
+import { seekTo } from './track-position';
+import { set as setActivePart } from './active-part';
+import { downloadAudio, isDownloaded } from './filesystem';
 
 export interface PlaybackState {
   editionId: EditionId | null;

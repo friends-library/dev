@@ -1,9 +1,9 @@
-import { State } from '../';
-import { BookListItem } from '../../types';
+import type { State } from '../';
+import type { BookListItem } from '../../types';
 import Editions from '../../lib/Editions';
-import * as select from './audio-selectors';
 import { LANG } from '../../env';
 import { audioHumanDuration } from '../../lib/audio-duration';
+import * as select from './audio-selectors';
 
 export default function selectAudioBooklist(state: State): {
   headerHeight: number;

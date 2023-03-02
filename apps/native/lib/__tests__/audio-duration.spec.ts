@@ -1,5 +1,5 @@
-import { Lang } from '@friends-library/types';
 import { describe, it, expect, test } from '@jest/globals';
+import type { Lang } from '@friends-library/types';
 import { audioHumanDuration } from '../audio-duration';
 
 const HOUR = 60 * 60;

@@ -1,6 +1,6 @@
-import { EditionType } from '@friends-library/types';
-import { State } from '..';
-import { DocumentEntityInterface } from '../../lib/models';
+import type { EditionType } from '@friends-library/types';
+import type { State } from '..';
+import type { DocumentEntityInterface } from '../../lib/models';
 import Editions from '../../lib/Editions';
 
 export function documentSelectedEdition(

@@ -1,8 +1,8 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
 import { utf8ShortTitle } from '@friends-library/adoc-utils';
-import { Serif } from './Text';
 import tw from '../lib/tailwind';
+import { Serif } from './Text';
 
 export const MainTitle: React.FC<{ title: string }> = ({ title }) => (
   <Serif size={30} style={tw`text-center py-4 px-8`}>

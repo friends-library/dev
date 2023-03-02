@@ -1,10 +1,11 @@
-import { Result } from 'x-ts-utils';
 import { InteractionManager } from 'react-native';
-import { EbookData, TrackData } from '../types';
+import type { Result } from 'x-ts-utils';
+import type { EbookData, TrackData } from '../types';
+import type { FsPath, EbookEntity } from './models';
+import { API_URL, LANG } from '../env';
 import FS from './fs';
 import Player from './player';
-import { API_URL, LANG } from '../env';
-import { FsPath, EbookCss, EbookEntity } from './models';
+import { EbookCss } from './models';
 
 export default class Service {
   public static audioSeekTo(position: number): Promise<void> {

@@ -1,6 +1,7 @@
-import { EditionType } from '@friends-library/types';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DocumentId } from '../../types';
+import { createSlice } from '@reduxjs/toolkit';
+import type { EditionType } from '@friends-library/types';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { DocumentId } from '../../types';
 import { DocumentEntity } from '../../lib/models';
 
 export type EbookSelectedEditionState = Record<DocumentId, EditionType | undefined>;

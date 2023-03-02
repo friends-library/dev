@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Switch, TouchableOpacity, Platform } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
 import { t } from '@friends-library/locale';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { RouteProp } from '@react-navigation/native';
+import type { StackParamList } from '../types';
 import FS from '../lib/fs';
 import tw from '../lib/tailwind';
-import { StackParamList } from '../types';
 import { Sans } from '../components/Text';
 import { useDispatch, useSelector } from '../state/';
 import { toggleQuality } from '../state/preferences';

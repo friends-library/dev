@@ -1,9 +1,15 @@
 import { isNotNull } from 'x-ts-utils';
 import { t } from '@friends-library/locale';
-import { State } from '..';
+import type { State } from '..';
+import type {
+  TrackData,
+  EditionResource,
+  AudioPart,
+  EditionId,
+  Audio,
+} from '../../types';
+import type { FileState } from '../audio/filesystem';
 import FS from '../../lib/fs';
-import { TrackData, EditionResource, AudioPart, EditionId, Audio } from '../../types';
-import { FileState } from '../audio/filesystem';
 import { backgroundPartTitle } from '../../lib/utils';
 import { AudioPartEntity, AudioPartQualityEntity } from '../../lib/models';
 import Editions from '../../lib/Editions';

@@ -1,7 +1,7 @@
-import { State } from '../';
-import { BookListItem } from '../../types';
-import { isNew, sortable } from './audio-booklist';
+import type { State } from '../';
+import type { BookListItem } from '../../types';
 import Editions from '../../lib/Editions';
+import { isNew, sortable } from './audio-booklist';
 
 export default function selectAudioBooklist({ ebook, preferences, dimensions }: State): {
   headerHeight: number;

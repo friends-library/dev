@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Image, ViewStyle } from 'react-native';
+import { View, Image } from 'react-native';
+import type { ViewStyle } from 'react-native';
+import type { EditionId } from '../types';
 import { useSelector } from '../state';
 import { coverImage } from '../lib/cover-images';
-import { EditionId } from '../types';
 import Service from '../lib/service';
 import tw from '../lib/tailwind';
 import { EditionEntity } from '../lib/models';

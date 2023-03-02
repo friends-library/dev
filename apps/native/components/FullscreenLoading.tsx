@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Image } from 'react-native';
 import { t } from '@friends-library/locale';
-import { EbookColorScheme } from '../types';
-import { Serif } from './Text';
+import type { EbookColorScheme } from '../types';
 import tw from '../lib/tailwind';
+import { Serif } from './Text';
 
 const FullscreenLoading: React.FC<{ colorScheme?: EbookColorScheme | 'transparent' }> = ({
   colorScheme = `transparent`,

@@ -1,7 +1,7 @@
-import { Action, AnyAction, Dispatch as RDXDispatch } from '@reduxjs/toolkit';
 import { useDispatch as RDXUseDispatch, createSelectorHook } from 'react-redux';
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { State } from './root-reducer';
+import type { Action, AnyAction, Dispatch as RDXDispatch } from '@reduxjs/toolkit';
+import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import type { State } from './root-reducer';
 import { initialState as prefsInitialState } from './preferences';
 import { initialState as networkInitialState } from './network';
 import { initialState as ephemeralInitialState } from './ephemeral';
@@ -23,8 +23,8 @@ export const INITIAL_STATE: State = {
 
 export type { State };
 // this type derived from looking at `type of store.dispatch`
-export type Dispatch = ThunkDispatch<any, null, AnyAction> &
-  ThunkDispatch<any, undefined, AnyAction> &
+export type Dispatch = ThunkDispatch<any, unknown, AnyAction> &
+  ThunkDispatch<any, unknown, AnyAction> &
   RDXDispatch<AnyAction>;
 export type Thunk = ThunkAction<void, State, unknown, Action<string>>;
 export const useSelector = createSelectorHook<State>();

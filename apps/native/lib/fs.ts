@@ -1,9 +1,9 @@
 import RNFS from 'react-native-fs';
 import { Platform } from 'react-native';
-import { ValuesOf } from 'x-ts-utils';
 import base64 from 'react-native-base64';
 import SparkMD5 from 'spark-md5';
-import { FsPath } from './models';
+import type { ValuesOf } from 'x-ts-utils';
+import type { FsPath } from './models';
 
 export class FileSystem {
   private manifest: Record<string, number | undefined> = {};
@@ -231,7 +231,7 @@ export class FileSystem {
 
   public async writeJson(
     path: ValuesOf<typeof FileSystem.paths>,
-    data: any,
+    data: unknown,
   ): Promise<void> {
     try {
       const string = JSON.stringify(data);

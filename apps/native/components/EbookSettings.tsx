@@ -3,8 +3,7 @@ import { View, useWindowDimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { t } from '@friends-library/locale';
-import { EbookColorScheme } from '../types';
-import { Sans } from './Text';
+import type { EbookColorScheme } from '../types';
 import tw from '../lib/tailwind';
 import { useSelector, useDispatch } from '../state';
 import {
@@ -13,6 +12,7 @@ import {
   setEbookJustify,
 } from '../state/preferences';
 import { toggleShowingEbookSettings } from '../state/ephemeral';
+import { Sans } from './Text';
 
 interface Props {
   fontSize: number;

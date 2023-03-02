@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { t } from '@friends-library/locale';
-import { StackParamList } from '../types';
+import type { StackParamList } from '../types';
 import Home from '../screens/Home';
 import BookList from '../screens/BookList';
 import Audio from '../screens/Audio';
@@ -18,9 +18,9 @@ import { useDispatch, useSelector } from '../state';
 import { setConnected } from '../state/network';
 import Service from '../lib/service';
 import FS, { FileSystem } from '../lib/fs';
-import ReadHeader from './ReadHeader';
 import Editions from '../lib/Editions';
 import tw from '../lib/tailwind';
+import ReadHeader from './ReadHeader';
 
 const Stack = createStackNavigator<StackParamList>();
 

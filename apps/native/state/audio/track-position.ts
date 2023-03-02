@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { EditionId } from '../../types';
+import type { Thunk, Dispatch, State } from '..';
 import * as select from '../selectors/audio-selectors';
 import Service from '../../lib/service';
-import { EditionId } from '../../types';
-import { Thunk, Dispatch, State } from '..';
 import { AudioPartEntity } from '../../lib/models';
 import Editions from '../../lib/Editions';
 
