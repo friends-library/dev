@@ -27,8 +27,14 @@ xcode:
 pod-install:
   @cd ios && bundle exec pod install
 
-set-lang lang:
-  @pnpm ts-node ./env/set-lang.ts {{lang}}
+set-env lang:
+  @pnpm ts-node ./env/set-env.ts {{lang}}
+
+set-env-en:
+  @just set-env en
+
+set-env-es:
+  @just set-env es
 
 clean:
   @cd android && ./gradlew clean
