@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test": "test -e ./env/index.ts || just set-env en; jest",
+    "test": "test -e .env || cp .env.example .env && just set-env; jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

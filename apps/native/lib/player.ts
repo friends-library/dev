@@ -80,6 +80,7 @@ class Player {
       })),
     );
     if (index) {
+      // i do not know why this is here...
       await RNTrackPlayer.skip(index);
     }
     return RNTrackPlayer.play();

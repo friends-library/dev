@@ -7,33 +7,32 @@ import { BUILD_SEMVER_STRING, BUILD_NUM } from './build-constants';
 
 const ENV_DIR = __dirname;
 const APP_DIR = path.resolve(ENV_DIR, `..`);
-const ENV = `${ENV_DIR}/index.ts`;
-const IS_RELEASE = process.argv.includes(`--release`);
-const LANG: Lang = process.argv[2] === `es` ? `es` : `en`;
+const GENERATED_FILE = `${ENV_DIR}/index.ts`;
+const [LANG, MODE] = getEnv();
 const APP_NAME = LANG === `en` ? `Friends Library` : `Biblioteca de los Amigos`;
 const PRIMARY_COLOR_HEX = LANG === `en` ? MAROON_HEX : GOLD_HEX;
-const GIT_BRANCH = exec.exit(`git branch --show-current`).trim();
-const INSTALL = GIT_BRANCH === `master` ? `release` : IS_RELEASE ? `beta` : `dev`;
 const APP_IDENTIFIER = getAppIdentifier();
 
 function main(): void {
-  exec.exit(`printf "// auto-generated, do not edit\n" > ${ENV}`);
-  exec.exit(`printf "import type { Lang } from '@friends-library/types';\n\n" >> ${ENV}`);
-  exec.exit(`cat ${ENV_DIR}/build-constants.ts >> ${ENV}`);
+  exec.exit(`printf "// auto-generated, do not edit\n" > ${GENERATED_FILE}`);
+  exec.exit(
+    `printf "import type { Lang } from '@friends-library/types';\n\n" >> ${GENERATED_FILE}`,
+  );
+  exec.exit(`cat ${ENV_DIR}/build-constants.ts >> ${GENERATED_FILE}`);
 
   const API_URL =
-    INSTALL === `dev` ? `http://192.168.10.227:8080` : `https://api.friendslibrary.com`;
+    MODE === `dev` ? `http://192.168.10.227:8080` : `https://api.friendslibrary.com`;
 
   // @see https://xkcd.com/1638/
   const constants = [
     `export const LANG: Lang = \\\`${LANG}\\\`;`,
     `export const PRIMARY_COLOR_HEX = \\\`${PRIMARY_COLOR_HEX}\\\`;`,
     `export const APP_NAME = \\\`${APP_NAME}\\\`;`,
-    `export const INSTALL: 'release' | 'beta' | 'dev' = \\\`${INSTALL}\\\`;`,
+    `export const MODE: 'release' | 'beta' | 'dev' = \\\`${MODE}\\\`;`,
     `export const API_URL = \\\`${API_URL}\\\`;`,
   ];
 
-  exec.exit(`printf "${constants.join(`\n`)}" >> ${ENV}`);
+  exec.exit(`printf "${constants.join(`\n`)}" >> ${GENERATED_FILE}`);
 
   exec.exit(`mkdir -p ${APP_DIR}/android/app/src/debug/java/com/friendslibrary`);
   exec.exit(`mkdir -p ${APP_DIR}/android/app/src/main/java/com/friendslibrary`);
@@ -80,10 +79,7 @@ function main(): void {
     `ios/FriendsLibrary/LaunchScreen.storyboard`,
   );
 
-  copyDir(
-    `ios/${LANG}/${INSTALL}/AppIcon.appiconset`,
-    `ios/FriendsLibrary/Images.xcassets`,
-  );
+  copyDir(`ios/${LANG}/${MODE}/AppIcon.appiconset`, `ios/FriendsLibrary/Images.xcassets`);
   copyDir(`ios/${LANG}/SplashIcon.imageset`, `ios/FriendsLibrary/Images.xcassets`);
 
   const workspacePath = `${APP_DIR}/ios/FriendsLibrary.xcodeproj/project.pbxproj`;
@@ -111,7 +107,7 @@ function copyFileWithEnv(src: string, dest: string): void {
     [`{APP_NAME}`, APP_NAME],
     [`{BUILD_NUM}`, String(BUILD_NUM)],
     [`{APP_IDENTIFIER}`, APP_IDENTIFIER],
-    [`{ANDROID_APP_IDENTIFIER}`, IS_RELEASE ? APP_IDENTIFIER : `com.friendslibrary`],
+    [`{ANDROID_APP_IDENTIFIER}`, MODE !== `dev` ? APP_IDENTIFIER : `com.friendslibrary`],
     [`{BUILD_SEMVER_STRING}`, BUILD_SEMVER_STRING],
     [`{PRIMARY_COLOR_HEX}`, PRIMARY_COLOR_HEX],
     [`{ALLOW_INSECURE_LOCALHOST}`, ALLOW_INSECURE_LOCALHOST],
@@ -141,15 +137,41 @@ function copyFileWithEnv(src: string, dest: string): void {
 
 function getAppIdentifier(): string {
   const base = `com.friendslibrary.FriendsLibrary`;
-  if (INSTALL === `beta` && LANG === `en`) {
+  if (MODE === `beta` && LANG === `en`) {
     return base; // match original bundle id for ios english test flight
   }
-  return `${base}.${LANG}.${INSTALL}`;
+  return `${base}.${LANG}.${MODE}`;
 }
 
-const ALLOW_INSECURE_LOCALHOST = IS_RELEASE
-  ? `<!-- omit localhost http exception for release -->`
-  : `<key>NSExceptionDomains</key>
+function getEnv(): [Lang, 'dev' | 'beta' | 'release'] {
+  const env = fs.readFileSync(`${APP_DIR}/.env`, `utf8`).trim();
+  const langMatch = env.match(/LANG=(\w+)/);
+  if (!langMatch || !langMatch[1]) {
+    throw new Error(`Invalid .env file: ${env}, missing LANG`);
+  }
+
+  const lang = langMatch[1];
+  if (lang !== `en` && lang !== `es`) {
+    throw new Error(`Invalid lang: ${langMatch[1]}`);
+  }
+
+  const modeMatch = env.match(/MODE=(\w+)/);
+  if (!modeMatch || !modeMatch[1]) {
+    throw new Error(`Invalid .env file: ${env}, missing MODE`);
+  }
+
+  const mode = modeMatch[1];
+  if (mode !== `dev` && mode !== `beta` && mode !== `release`) {
+    throw new Error(`Invalid mode: ${mode}`);
+  }
+
+  return [lang, mode];
+}
+
+const ALLOW_INSECURE_LOCALHOST =
+  MODE !== `dev`
+    ? `<!-- omit localhost http exception for release/beta -->`
+    : `<key>NSExceptionDomains</key>
        <dict>
          <key>localhost</key>
          <dict>

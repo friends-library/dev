@@ -2,7 +2,7 @@ import type { Result } from 'x-ts-utils';
 import type { EditionResource } from '../types';
 import Service from '../lib/service';
 import { EbookEntity } from '../lib/models';
-import { INSTALL } from '../env';
+import { MODE } from '../env';
 
 export async function readScreenProps(
   edition: EditionResource,
@@ -57,7 +57,7 @@ export async function readScreenProps(
   // (if we have it) we are not sure is the latest, so we'll try to get fresh
 
   // don't log for re-download of fresh version (or dev)
-  const urlKey = fsData || INSTALL === `dev` ? `directDownloadUrl` : `loggedDownloadUrl`;
+  const urlKey = fsData || MODE === `dev` ? `directDownloadUrl` : `loggedDownloadUrl`;
   const networkUrl = edition.ebook[urlKey];
 
   // if we get here, we either have NO fsData, or it's stale,
