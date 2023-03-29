@@ -10,6 +10,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      - name: meta
+        id: meta
+        uses: friends-library/dev/actions/ts-pack/actions/meta@merge-ts-actions
+        with:
+          github_token: ${{ github.token }}
       - name: install libkrb # only for nodegit
         run: sudo apt-get install libkrb5-dev -y
       - name: install pnpm

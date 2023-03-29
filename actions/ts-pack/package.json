@@ -15,7 +15,7 @@
     "format:check": "just prettier-check"
   },
   "dependencies": {
-    "@actions/core": "1.2.6",
+    "@actions/core": "1.10.0",
     "@friends-library/adoc-lint": "workspace:*",
     "@friends-library/cloud": "workspace:*",
     "@friends-library/doc-artifacts": "workspace:*",

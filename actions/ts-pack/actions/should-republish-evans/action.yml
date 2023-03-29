@@ -10,5 +10,5 @@ outputs:
   build_data_cloud_filepath:
     description: cloud filepath of build data for deploy error handling
 runs:
-  using: node18
+  using: node16
   main: ./bundled/index.js

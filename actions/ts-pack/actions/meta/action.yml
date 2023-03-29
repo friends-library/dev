@@ -12,5 +12,5 @@ outputs:
   pull_request_title:
     description: Pull request title, if available
 runs:
-  using: node18
+  using: node16
   main: ./bundled/index.js

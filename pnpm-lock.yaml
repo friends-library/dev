@@ -44,7 +44,7 @@ importers:
 
   actions/ts-pack:
     specifiers:
-      '@actions/core': 1.2.6
+      '@actions/core': 1.10.0
       '@friends-library/adoc-lint': workspace:*
       '@friends-library/cloud': workspace:*
       '@friends-library/doc-artifacts': workspace:*
@@ -63,7 +63,7 @@ importers:
       x-chalk: ^1.0.1
       x-exec: ^1.2.0
     dependencies:
-      '@actions/core': 1.2.6
+      '@actions/core': 1.10.0
       '@friends-library/adoc-lint': link:../../libs-ts/adoc-lint
       '@friends-library/cloud': link:../../libs-ts/cloud
       '@friends-library/doc-artifacts': link:../../libs-ts/doc-artifacts
@@ -1196,8 +1196,17 @@ importers:
 
 packages:
 
-  /@actions/core/1.2.6:
-    resolution: {integrity: sha512-ZQYitnqiyBc3D+k7LsgSBmMDVkOVidaagDG7j3fOym77jNunWRuYx7VSHa9GNfFZh+zh61xsCjRj4JxMZlDqTA==}
+  /@actions/core/1.10.0:
+    resolution: {integrity: sha512-2aZDDa3zrrZbP5ZYg159sNoLRb61nQ7awl5pSvIq5Qpj81vwDzdMRKzkWJGJuwVvWpvZKx7vspJALyvaaIQyug==}
+    dependencies:
+      '@actions/http-client': 2.1.0
+      uuid: 8.3.2
+    dev: false
+
+  /@actions/http-client/2.1.0:
+    resolution: {integrity: sha512-BonhODnXr3amchh4qkmjPMUO8mFi/zLaaCeCAJZqch8iQqyDnVIkySjB38VHAC8IJ+bnlgfOqlhpyCUZHlQsqw==}
+    dependencies:
+      tunnel: 0.0.6
     dev: false
 
   /@algolia/cache-browser-local-storage/4.15.0:
@@ -31359,6 +31368,11 @@ packages:
     resolution: {integrity: sha512-McnNiV1l8RYeY8tBgEpuodCC1mLUdbSN+CYBL7kJsJNInOP8UjDDEwdk6Mw60vdLLrr5NHKZhMAOSrR2NZuQ+w==}
     dependencies:
       safe-buffer: 5.2.1
+
+  /tunnel/0.0.6:
+    resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
+    engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
+    dev: false
 
   /twrnc/3.6.0_react-native@0.71.3:
     resolution: {integrity: sha512-ee3etAeEfJyH7a9iiQD6JEYJN7nQiZumO6KXCaAmgj9xL5BIFgZfjWsVfQ0eV+anSqgXVit/a2ZUNX3LFlbdhA==}
