@@ -87,9 +87,9 @@ jobs:
       - name: build-storybook
         run: cd apps/storybook-web && pnpm build
 
+env:
+  DOCS_REPOS_ROOT: /
+
 concurrency:
   group: ${{ github.ref }}-ci-typescript
   cancel-in-progress: true
-
-env:
-  DOCS_REPOS_ROOT: /

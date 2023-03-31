@@ -73,10 +73,6 @@ jobs:
             - English: [${{ env.EN_URL }}](${{ env.EN_URL }})
             - Spanish: [${{ env.ES_URL }}](${{ env.ES_URL }})
 
-concurrency:
-  group: ${{ github.ref }}-deploy-evans
-  cancel-in-progress: true
-
 env:
   CLOUD_STORAGE_BUCKET_URL: ${{ secrets.CLOUD_STORAGE_BUCKET_URL }}
   GATSBY_ALGOLIA_APP_ID: ${{ secrets.GATSBY_ALGOLIA_APP_ID }}
@@ -92,3 +88,7 @@ env:
   DEPLOYING: true
   GATSBY_NETLIFY_CONTEXT:
     ${{ github.ref == 'refs/heads/master' && 'production' || 'preview'}}
+
+concurrency:
+  group: ${{ github.ref }}-deploy-evans
+  cancel-in-progress: true
