@@ -19,6 +19,8 @@ apps/evans/src/ssg/.dpc-cache.json
 apps/storybook-web/storybook-static/
 apps/poster/src/part-titles.ts
 apps/poster/src/cover-props.ts
+apps/cli/src/cmd/audio/derived/
+apps/cli/src/cmd/audio/.soundcloud-token
 **/.parcel-cache
 **/.netlify/
 

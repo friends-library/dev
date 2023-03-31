@@ -25,7 +25,10 @@ export async function create(
   const workDir = `${m4bDir}/${relWorkDir}`;
   const isMultipart = audio.parts.length > 1;
 
-  fs.rmSync(m4bDir, { recursive: true });
+  if (fs.existsSync(m4bDir)) {
+    fs.rmSync(m4bDir, { recursive: true });
+  }
+
   fs.ensureDirSync(workDir);
   exec.exit(`cp ${src.derivedPath}/cover.png "${workDir}"`);
   fs.writeFileSync(`${workDir}/description.txt`, document.description);

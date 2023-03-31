@@ -21,6 +21,14 @@ storybook:
 poster:
   @pnpm --filter poster start
 
+# cli
+
+fl *args:
+  @cd apps/cli && pnpm ts-node ./src/app.ts {{args}}
+
+fell *args:
+  @cd apps/fell && pnpm ts-node ./src/app.ts {{args}}
+
 # code quality
 
 check:
@@ -64,9 +72,6 @@ prettier:
 
 prettier-check:
   @pnpm prettier --check {{invocation_directory()}}
-
-fl *args:
-  @cd apps/cli && pnpm ts-node ./src/app.ts {{args}}
 
 # api
 
