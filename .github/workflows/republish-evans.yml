@@ -1,0 +1,152 @@
+name: republish-evans
+
+on:
+  schedule:
+    - cron: 0/30 * * * *
+
+jobs:
+  check_should_republish:
+    name: check-should-republish
+    runs-on: ubuntu-latest
+    outputs:
+      should_republish: ${{ steps.check.outputs.should_republish }}
+      build_data_cloud_filepath: ${{ steps.check.outputs.build_data_cloud_filepath }}
+    steps:
+      - name: check
+        id: check
+        uses: friends-library/dev/actions/ts-pack/actions/should-republish-evans@master
+        with:
+          flp_api_token: ${{ secrets.FLP_API_TOKEN_PROD }}
+          flp_api_endpoint: ${{ secrets.FLP_GRAPHQL_API_ENDPOINT_PROD }}
+
+  republish_en:
+    name: republish-en
+    needs: check_should_republish
+    runs-on: ubuntu-latest
+    if: needs.check_should_republish.outputs.should_republish == 'true'
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup ts
+        uses: ./.github/actions/setup-ts
+      - name: clone-friend-repos
+        run: pnpm ts-node ./libs-ts/friend-repos/src/cli-clone.ts apps/evans
+      - name: build
+        run: cd apps/evans && just build-en
+      - name: deploy
+        id: deploy
+        uses: friends-library/dev/actions/ts-pack/actions/deploy@master
+        with:
+          netlify_api_token: ${{ secrets.NETLIFY_API_TOKEN }}
+          site_id: ${{ secrets.EVANS_DEPLOY_SITE_ID_EN }}
+          build_dir: evans/public
+          github_token: ${{ github.token }}
+
+  republish_es:
+    name: republish-es
+    needs: check_should_republish
+    runs-on: ubuntu-latest
+    if: needs.check_should_republish.outputs.should_republish == 'true'
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup ts
+        uses: ./.github/actions/setup-ts
+      - name: clone-friend-repos
+        run: pnpm ts-node ./libs-ts/friend-repos/src/cli-clone.ts apps/evans
+      - name: build
+        run: cd apps/evans && just build-es
+      - name: deploy
+        id: deploy
+        uses: friends-library/dev/actions/ts-pack/actions/deploy@master
+        with:
+          netlify_api_token: ${{ secrets.NETLIFY_API_TOKEN }}
+          site_id: ${{ secrets.EVANS_DEPLOY_SITE_ID_ES }}
+          build_dir: evans/public
+          github_token: ${{ github.token }}
+
+  skip_republish:
+    name: skip-republish
+    needs: check_should_republish
+    runs-on: ubuntu-latest
+    if: needs.check_should_republish.outputs.should_republish != 'true'
+    steps:
+      - name: slack-on-skip-republish
+        uses: archive/github-actions-slack@v2.7.0
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_API_TOKEN_WORKSPACE_BOT }}
+          slack-channel: C01G2V6U0KZ #debug
+          slack-text: No auto-republish necessary for FLP websites
+          slack-optional-icon_emoji: robot_face
+          slack-optional-username: FLP Bot
+
+  on_fail:
+    name: on-fail
+    needs:
+      - check_should_republish
+      - republish_es
+      - republish_en
+    if:
+      always() && (needs.republish_en.result == 'failure' || needs.republish_es .result ==
+      'failure')
+    runs-on: ubuntu-latest
+    steps:
+      - name: set-empty-build-data
+        run: echo "[]" >> ./data.json
+      - name: upload-empty-build-data
+        uses: friends-library/dev/actions/do-spaces-upload@master
+        with:
+          acl: public-read
+          src-file-path: ./data.json
+          destination-object-key:
+            ${{ needs.check_should_republish.outputs.build_data_cloud_filepath }}
+          access-key-id: ${{ secrets.CLOUD_STORAGE_KEY }}
+          access-key-secret: ${{ secrets.CLOUD_STORAGE_SECRET }}
+          bucket: ${{ secrets.CLOUD_STORAGE_BUCKET }}
+          region: ${{ secrets.CLOUD_STORAGE_REGION }}
+      - name: slack-on-republish-fail
+        uses: archive/github-actions-slack@v2.7.0
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_API_TOKEN_WORKSPACE_MAIN }}
+          slack-channel: G6007H2NM #errors
+          slack-optional-icon_emoji: fire_engine
+          slack-optional-username: FLP Bot
+          slack-text:
+            Error auto-republishing FLP websites! Check
+            <https://github.com/friends-library/dev/actions|actions> for more info.
+
+  on_succeed:
+    name: on-succeed
+    needs:
+      - republish_es
+      - republish_en
+    runs-on: ubuntu-latest
+    steps:
+      - name: slack-on-republish-success
+        uses: archive/github-actions-slack@v2.7.0
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_API_TOKEN_WORKSPACE_MAIN }}
+          slack-channel: G013VJRTE2K #info
+          slack-optional-icon_emoji: robot_face
+          slack-optional-username: FLP Bot
+          slack-text: Successfully auto-republished FLP websites
+
+env:
+  GATSBY_ALGOLIA_APP_ID: ${{ secrets.GATSBY_ALGOLIA_APP_ID }}
+  ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
+  FLP_API_TOKEN_PROD: ${{ secrets.FLP_API_TOKEN_PROD }}
+  GATSBY_ALGOLIA_SEARCH_ONLY_KEY: ${{ secrets.GATSBY_ALGOLIA_SEARCH_ONLY_KEY }}
+  GATSBY_PROD_STRIPE_PUBLISHABLE_KEY: ${{ secrets.GATSBY_PROD_STRIPE_PUBLISHABLE_KEY }}
+  GATSBY_FLP_API_ENDPOINT_PROD: ${{ secrets.GATSBY_FLP_API_ENDPOINT_PROD }}
+  DOCS_REPOS_ROOT: ${{ github.workspace }}/evans
+  SLACK_API_TOKEN_WORKSPACE_MAIN: ${{ secrets.SLACK_API_TOKEN_WORKSPACE_MAIN }}
+  SLACK_API_TOKEN_WORKSPACE_BOT: ${{ secrets.SLACK_API_TOKEN_WORKSPACE_BOT }}
+  CLOUD_STORAGE_BUCKET_URL: ${{ secrets.CLOUD_STORAGE_BUCKET_URL }}
+  CLOUD_STORAGE_BUCKET: ${{ secrets.CLOUD_STORAGE_BUCKET }}
+  CLOUD_STORAGE_ENDPOINT: ${{ secrets.CLOUD_STORAGE_ENDPOINT }}
+  CLOUD_STORAGE_KEY: ${{ secrets.CLOUD_STORAGE_KEY }}
+  CLOUD_STORAGE_SECRET: ${{ secrets.CLOUD_STORAGE_SECRET }}
+  GATSBY_NETLIFY_CONTEXT: 'production'
+  DEPLOYING: true
+
+concurrency:
+  group: ${{ github.ref }}-republish-evans
+  cancel-in-progress: true

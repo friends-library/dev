@@ -76,10 +76,6 @@ jobs:
       - name: test api
         run: cd apps/api && swift test
 
-concurrency:
-  group: ${{ github.ref }}-ci-swift
-  cancel-in-progress: true
-
 env:
   SWIFT_DETERMINISTIC_HASHING: 1
   DATABASE_HOST: postgres
@@ -107,3 +103,7 @@ env:
   SELF_URL: /not-real
   WEBSITE_URL_EN: /not-real
   WEBSITE_URL_ES: /not-real
+
+concurrency:
+  group: ${{ github.ref }}-ci-swift
+  cancel-in-progress: true

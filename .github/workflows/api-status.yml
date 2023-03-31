@@ -1,0 +1,24 @@
+name: api-status
+
+on:
+  schedule:
+    - cron: 15/45 * * * *
+
+jobs:
+  check_api_statuses:
+    name: check-api-statuses
+    runs-on: ubuntu-latest
+    steps:
+      - uses: friends-library/dev/actions/ts-pack/actions/api-status@master
+        with:
+          flp_api_status_query_token: ${{ secrets.FLP_API_STATUS_QUERY_TOKEN }}
+          flp_api_endpoint: ${{ secrets.FLP_GRAPHQL_API_ENDPOINT_PROD }}
+          gertrude_api_endpoint: ${{ secrets.GERTRUDE_API_ENDPOINT }}
+
+env:
+  SLACK_API_TOKEN_WORKSPACE_MAIN: ${{ secrets.SLACK_API_TOKEN_WORKSPACE_MAIN }}
+  SLACK_API_TOKEN_WORKSPACE_BOT: ${{ secrets.SLACK_API_TOKEN_WORKSPACE_BOT }}
+
+concurrency:
+  group: ${{ github.ref }}-api-status
+  cancel-in-progress: true
