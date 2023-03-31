@@ -43,6 +43,11 @@ export default async function handler(passedArgv: Argv): Promise<void> {
   ffmpeg.ensureExists();
   m4bTool.ensureExists();
   const audios = await getAudios(argv.lang, argv.pattern, argv.limit);
+  if (audios.length === 0) {
+    logError(`No audios matched`);
+    return;
+  }
+
   for (const audio of audios) {
     await handleAudio(audio);
   }

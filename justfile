@@ -66,7 +66,7 @@ prettier-check:
   @pnpm prettier --check {{invocation_directory()}}
 
 fl *args:
-  cd apps/cli && ../../node_modules/.bin/ts-node ./src/app.ts {{args}}
+  @cd apps/cli && pnpm ts-node ./src/app.ts {{args}}
 
 # api
 
