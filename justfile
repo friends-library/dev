@@ -27,6 +27,9 @@ covers:
 next:
   @cd apps/next-evans && just
 
+storybook-next:
+  @pnpm --filter storybook storybook
+
 # code quality
 
 check:
