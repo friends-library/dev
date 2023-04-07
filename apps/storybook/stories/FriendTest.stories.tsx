@@ -10,6 +10,8 @@ const meta: Meta<typeof FriendTest> = {
 export default meta;
 type Story = StoryObj<typeof FriendTest>;
 
+// bg-flprimary text-white
+
 // More on writing stories with args: https://storybook.js.org/docs/7.0/react/writing-stories/args
 export const Primary: Story = {
   args: {
