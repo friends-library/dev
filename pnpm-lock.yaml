@@ -758,6 +758,7 @@ importers:
       '@types/react': 18.0.33
       '@types/react-dom': 18.0.11
       autoprefixer: 10.4.14
+      classnames: 2.3.2
       next: 13.3.0
       postcss: 8.4.21
       prisma: 4.12.0
@@ -779,6 +780,7 @@ importers:
     devDependencies:
       '@friends-library/theme': link:../../libs-ts/theme
       '@prisma/client': 4.12.0_prisma@4.12.0
+      classnames: 2.3.2
       prisma: 4.12.0
 
   apps/poster:
