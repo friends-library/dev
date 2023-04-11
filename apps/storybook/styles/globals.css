@@ -1,3 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
+
 @tailwind base;
 @tailwind components;
+
+.body-text {
+  @apply font-serif antialiased text-gray-800 text-base tracking-wide leading-relaxed;
+}
+
+.body-text i,
+.body-text em,
+.MDX blockquote.italic p {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  opacity: 0.875;
+  font-size: 0.825em;
+  @apply tracking-wider subpixel-antialiased;
+}
+
 @tailwind utilities;

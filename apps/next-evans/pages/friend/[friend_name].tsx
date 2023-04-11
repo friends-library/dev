@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { Lang } from '@/../../libs-ts/types/src';
 import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
+import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const prisma = new PrismaClient();
@@ -26,25 +28,31 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     };
   }
   const friend = await prisma.friends.findFirst({
-    where: { slug: context.params.friend_name },
+    where: {
+      slug: context.params.friend_name,
+      lang: process.env.NEXT_PUBLIC_LANG as Lang,
+    },
+    select: {
+      name: true,
+      gender: true,
+      description: true,
+      friend_quotes: {
+        select: {
+          text: true,
+          source: true,
+        },
+      },
+    },
   });
   if (!friend) {
     return {
       notFound: true,
     };
   }
-  const friendQuote = await prisma.friend_quotes.findFirst({
-    where: { friend_id: friend.id },
-  });
   return {
     props: {
-      name: friend.name,
-      gender: friend.gender,
-      blurb: friend.description,
-      quote: friendQuote && {
-        text: friendQuote.text,
-        cite: friendQuote.source,
-      },
+      ...friend,
+      quotes: friend.friend_quotes.map((q) => ({ quote: q.text, cite: q.source })),
     },
   };
 };
@@ -52,15 +60,16 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
 interface Props {
   name: string;
   gender: 'male' | 'female' | 'mixed';
-  blurb: string;
-  quote: { text: string; cite: string } | null;
+  description: string;
+  quotes: Array<{ quote: string; cite: string }>;
 }
 
-const Friend: React.FC<Props> = ({ name, gender, blurb, quote }) => {
+const Friend: React.FC<Props> = ({ name, gender, description, quotes }) => {
   return (
     <div>
-      <FriendBlock name={name} gender={gender} blurb={blurb} />
-      {quote && <FeaturedQuoteBlock cite={quote.cite} quote={quote.text} />}
+      <FriendBlock name={name} gender={gender} blurb={description} />
+      {quotes[0] && <FeaturedQuoteBlock cite={quotes[0].cite} quote={quotes[0].quote} />}
+      <TestimonialsBlock testimonials={quotes.slice(1, quotes.length)} />
     </div>
   );
 };
