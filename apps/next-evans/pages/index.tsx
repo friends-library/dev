@@ -1,31 +1,47 @@
 import React from 'react';
 import { PrismaClient } from '@prisma/client';
 import type { GetStaticProps } from 'next';
-import FriendTest from '@/components/FriendTest';
+import { LANG } from '@/lib/env';
+import Link from 'next/link';
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<Props> = async () => {
   const prisma = new PrismaClient();
-  const friends = await prisma.friends.findMany();
+  const friends = await prisma.friends.findMany({
+    select: { name: true, slug: true, id: true, gender: true },
+  });
   return {
     props: {
-      friends: friends.map((friend: any) => ({
-        name: friend.name,
-        gender: friend.gender,
-      })),
+      friends,
     },
   };
 };
 
-const Home: React.FC<{
-  friends: Array<{ id: string; name: string; gender: 'male' | 'female' | 'mixed' }>;
-}> = ({ friends }) => (
+interface Props {
+  friends: Array<{
+    name: string;
+    slug: string;
+    id: string;
+    gender: 'male' | 'female' | 'mixed';
+  }>;
+}
+
+const Home: React.FC<Props> = ({ friends }) => (
   <div>
-    <h1 className="bg-flprimary text-white">
-      Home, lang is <code className="text-red-700">{process.env.NEXT_PUBLIC_LANG}</code>
+    <h1 className="bg-flprimary text-white p-3">
+      Home, lang is <code className="text-red-200">{LANG}</code>
     </h1>
-    <ul>
+    <ul className="bg-gray-50 grid grid-cols-5 gap-4 p-8">
       {friends.map((friend) => (
-        <FriendTest key={friend.id} name={friend.name} gender={friend.gender} />
+        <Link
+          href={`/${
+            LANG === 'en' ? 'friend' : friend.gender === 'male' ? 'amigo' : 'amiga'
+          }/${friend.slug}`}
+          className="mt-2 bg-white p-4 shadow-md rounded-xl hover:bg-slate-100"
+          key={friend.id}
+        >
+          <h2 className="font-bold">{friend.name}</h2>
+          <h3 className="text-flprimary">{friend.gender}</h3>
+        </Link>
       ))}
     </ul>
   </div>
