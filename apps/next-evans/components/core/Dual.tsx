@@ -1,5 +1,5 @@
 import React from 'react';
-import { LANG } from '../../lib/env';
+import { LANG } from '@/lib/env';
 
 interface Props {
   className?: string;

@@ -1,14 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import invariant from 'tiny-invariant';
-import type { GetStaticPaths, GetStaticProps } from 'next';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
-import { LANG } from '../../lib/env';
-import { Edition, mostModernEdition } from '../../lib/editions';
-import FriendBlock from '../../components/pages/friend/FriendBlock';
-import FeaturedQuoteBlock from '../../components/pages/friend/FeaturedQuoteBlock';
-import BookByFriend from '../../components/pages/friend/BookByFriend';
-import TestimonialsBlock from '../../components/pages/friend/TestimonialsBlock';
+import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { Edition } from '@/lib/editions';
+import { LANG } from '@/lib/env';
+import { mostModernEdition } from '@/lib/editions';
+import FriendBlock from '@/components/pages/friend/FriendBlock';
+import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
+import BookByFriend from '@/components/pages/friend/BookByFriend';
+import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 
 const client = new PrismaClient();
 
@@ -21,12 +22,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = allFriends.map((friend) => {
     if (LANG === `en`) {
       return {
-        params: { friend: 'friend', friend_slug: friend.slug },
+        params: { friend: `friend`, friend_slug: friend.slug },
       };
     }
     return {
       params: {
-        friend: friend.gender === 'female' ? 'amiga' : 'amigo',
+        friend: friend.gender === `female` ? `amiga` : `amigo`,
         friend_slug: friend.slug,
       },
     };
@@ -166,10 +167,10 @@ const Friend: React.FC<Props> = ({
         >
           {documents
             .sort((doc) => {
-              if (doc.editionTypes.includes('updated')) {
+              if (doc.editionTypes.includes(`updated`)) {
                 return -1;
               }
-              if (doc.editionTypes.includes('modernized')) {
+              if (doc.editionTypes.includes(`modernized`)) {
                 return 0;
               }
               return 1;
@@ -192,15 +193,15 @@ const Friend: React.FC<Props> = ({
                   description={doc.shortDescription}
                   lang={LANG}
                   title={doc.title.replace(/-- Volume \d/g, ``)}
-                  blurb={''} // never see the back of a book in this component
+                  blurb={``} // never see the back of a book in this component
                   isCompilation={gender === `mixed`}
                   author={name}
                   size={docSizeProp}
                   edition={mostModernEdition(doc.editionTypes)}
-                  isbn={''} // never see the isbn either
+                  isbn={``} // never see the isbn either
                   // todo
-                  customCss={''}
-                  customHtml={''}
+                  customCss={``}
+                  customHtml={``}
                 />
               );
             })}

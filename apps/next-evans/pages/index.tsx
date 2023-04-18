@@ -1,8 +1,8 @@
 import React from 'react';
 import { PrismaClient } from '@prisma/client';
-import type { GetStaticProps } from 'next';
 import Link from 'next/link';
 import cx from 'classnames';
+import type { GetStaticProps } from 'next';
 import { LANG } from '@/lib/env';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
@@ -35,11 +35,11 @@ const Home: React.FC<Props> = ({ friends }) => (
       {friends.map((friend) => (
         <Link
           href={`/${
-            LANG === 'en' ? 'friend' : friend.gender === 'male' ? 'amigo' : 'amiga'
+            LANG === `en` ? `friend` : friend.gender === `male` ? `amigo` : `amiga`
           }/${friend.slug}`}
           className={cx(
-            'mt-2 bg-white p-4 shadow-md rounded-xl hover:bg-slate-100',
-            friend.name === 'Compilations' && 'bg-flprimary/20 hover:bg-flprimary/30',
+            `mt-2 bg-white p-4 shadow-md rounded-xl hover:bg-slate-100`,
+            friend.name === `Compilations` && `bg-flprimary/20 hover:bg-flprimary/30`,
           )}
           key={friend.id}
         >
