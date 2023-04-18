@@ -1,10 +1,10 @@
 _default:
   @just --choose
 
-dev-en:
+dev-en: write-cover-css
   @NEXT_PUBLIC_LANG=en pnpm dev --port 7222
 
-dev-es:
+dev-es: write-cover-css
   @NEXT_PUBLIC_LANG=es pnpm dev --port 7333
 
 storybook:
@@ -15,3 +15,7 @@ prisma-generate:
   @cp ../../.env ./.env
   @pnpm prisma generate
   @rm ./.env
+
+[private]
+write-cover-css:
+  @pnpm ts-node ./lib/cover-static-css.ts

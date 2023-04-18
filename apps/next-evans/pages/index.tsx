@@ -1,8 +1,9 @@
 import React from 'react';
 import { PrismaClient } from '@prisma/client';
 import type { GetStaticProps } from 'next';
-import { LANG } from '@/lib/env';
 import Link from 'next/link';
+import cx from 'classnames';
+import { LANG } from '@/lib/env';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const prisma = new PrismaClient();
@@ -36,7 +37,10 @@ const Home: React.FC<Props> = ({ friends }) => (
           href={`/${
             LANG === 'en' ? 'friend' : friend.gender === 'male' ? 'amigo' : 'amiga'
           }/${friend.slug}`}
-          className="mt-2 bg-white p-4 shadow-md rounded-xl hover:bg-slate-100"
+          className={cx(
+            'mt-2 bg-white p-4 shadow-md rounded-xl hover:bg-slate-100',
+            friend.name === 'Compilations' && 'bg-flprimary/20 hover:bg-flprimary/30',
+          )}
           key={friend.id}
         >
           <h2 className="font-bold">{friend.name}</h2>

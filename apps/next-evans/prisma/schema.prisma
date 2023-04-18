@@ -19,7 +19,7 @@ model fluent_enums {
 model fluent_migrations {
   id         String    @id @db.Uuid
   name       String    @unique(map: "uq:_fluent_migrations.name")
-  batch      BigInt
+  batch      Int
   created_at DateTime? @db.Timestamptz(6)
   updated_at DateTime? @db.Timestamptz(6)
 
@@ -49,7 +49,7 @@ model documents {
   title                                                             String              @unique(map: "uq:documents.title")
   slug                                                              String
   filename                                                          String              @unique(map: "uq:documents.filename")
-  published                                                         BigInt?
+  published                                                         Int?
   original_title                                                    String?
   incomplete                                                        Boolean
   description                                                       String
@@ -73,7 +73,7 @@ model downloads {
   source            download_source
   is_mobile         Boolean
   audio_quality     audio_quality?
-  audio_part_number BigInt?
+  audio_part_number Int?
   user_agent        String?
   os                String?
   browser           String?
@@ -96,12 +96,12 @@ model edition_audio_parts {
   audio_id       String         @db.Uuid
   title          String
   duration       Float
-  chapters       BigInt[]
-  order          BigInt
-  mp3_size_hq    BigInt
-  mp3_size_lq    BigInt
-  external_id_hq BigInt?
-  external_id_lq BigInt?
+  chapters       Int[]
+  order          Int
+  mp3_size_hq    Int
+  mp3_size_lq    Int
+  external_id_hq Int?
+  external_id_lq Int?
   created_at     DateTime       @db.Timestamptz(6)
   updated_at     DateTime       @db.Timestamptz(6)
   edition_audios edition_audios @relation(fields: [audio_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
@@ -114,12 +114,12 @@ model edition_audios {
   edition_id              String                @unique(map: "uq:edition_audios.edition_id") @db.Uuid
   reader                  String
   is_incomplete           Boolean
-  mp3_zip_size_hq         BigInt
-  mp3_zip_size_lq         BigInt
-  m4b_size_hq             BigInt
-  m4b_size_lq             BigInt
-  external_playlist_id_hq BigInt?
-  external_playlist_id_lq BigInt?
+  mp3_zip_size_hq         Int
+  mp3_zip_size_lq         Int
+  m4b_size_hq             Int
+  m4b_size_lq             Int
+  external_playlist_id_hq Int?
+  external_playlist_id_lq Int?
   created_at              DateTime              @db.Timestamptz(6)
   updated_at              DateTime              @db.Timestamptz(6)
   edition_audio_parts     edition_audio_parts[]
@@ -129,11 +129,11 @@ model edition_audios {
 model edition_chapters {
   id                    String   @id @db.Uuid
   edition_id            String   @db.Uuid
-  order                 BigInt
+  order                 Int
   custom_id             String?
   short_heading         String
   is_intermediate_title Boolean
-  sequence_number       BigInt?
+  sequence_number       Int?
   non_sequence_title    String?
   created_at            DateTime @db.Timestamptz(6)
   updated_at            DateTime @db.Timestamptz(6)
@@ -145,9 +145,9 @@ model edition_chapters {
 model edition_impressions {
   id                            String              @id @db.Uuid
   edition_id                    String              @unique(map: "uq:edition_impressions.edition_id") @db.Uuid
-  adoc_length                   BigInt
+  adoc_length                   Int
   paperback_size_variant        print_size_variants
-  paperback_volumes             BigInt[]
+  paperback_volumes             Int[]
   published_revision            String
   production_toolchain_revision String
   created_at                    DateTime            @db.Timestamptz(6)
@@ -160,7 +160,7 @@ model editions {
   type                    edition_type
   editor                  String?
   is_draft                Boolean
-  paperback_splits        BigInt[]
+  paperback_splits        Int[]
   paperback_override_size print_size_variants?
   created_at              DateTime             @db.Timestamptz(6)
   updated_at              DateTime             @db.Timestamptz(6)
@@ -199,7 +199,7 @@ model friend_quotes {
   friend_id  String   @db.Uuid
   source     String
   text       String
-  order      BigInt
+  order      Int
   context    String?
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
@@ -211,8 +211,8 @@ model friend_quotes {
 model friend_residence_durations {
   id                  String             @id @db.Uuid
   friend_residence_id String?            @db.Uuid
-  start               BigInt?
-  end                 BigInt?
+  start               Int?
+  end                 Int?
   created_at          DateTime?          @db.Timestamptz(6)
   friend_residences   friend_residences? @relation(fields: [friend_residence_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
@@ -235,8 +235,8 @@ model friends {
   slug              String
   gender            gender
   description       String
-  born              BigInt?
-  died              BigInt?
+  born              Int?
+  died              Int?
   published         DateTime?           @db.Timestamptz(6)
   created_at        DateTime            @db.Timestamptz(6)
   updated_at        DateTime            @db.Timestamptz(6)
@@ -260,8 +260,8 @@ model isbns {
 model order_items {
   id         String    @id @db.Uuid
   order_id   String    @db.Uuid
-  quantity   BigInt
-  unit_price BigInt
+  quantity   Int
+  unit_price Int
   created_at DateTime  @db.Timestamptz(6)
   edition_id String?   @db.Uuid
   editions   editions? @relation(fields: [edition_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -272,11 +272,11 @@ model orders {
   id                    String                 @id @db.Uuid
   payment_id            String
   print_job_status      order_print_job_status
-  print_job_id          BigInt?
-  amount                BigInt
-  shipping              BigInt
-  taxes                 BigInt
-  cc_fee_offset         BigInt
+  print_job_id          Int?
+  amount                Int
+  shipping              Int
+  taxes                 Int
+  cc_fee_offset         Int
   shipping_level        order_shipping_level
   email                 String
   address_name          String
@@ -291,7 +291,7 @@ model orders {
   created_at            DateTime               @db.Timestamptz(6)
   updated_at            DateTime               @db.Timestamptz(6)
   free_order_request_id String?                @db.Uuid
-  fees                  BigInt?                @default(0)
+  fees                  Int?                   @default(0)
   order_items           order_items[]
   free_order_requests   free_order_requests?   @relation(fields: [free_order_request_id], references: [id], onUpdate: NoAction)
 }
@@ -322,7 +322,7 @@ model tokens {
   value        String         @unique(map: "uq:tokens.value") @db.Uuid
   description  String
   created_at   DateTime       @db.Timestamptz(6)
-  uses         BigInt?
+  uses         Int?
   token_scopes token_scopes[]
 }
 
