@@ -3,12 +3,12 @@ import cx from 'classnames';
 import { ThreeD } from '@friends-library/cover-component';
 import { t, translate } from '@friends-library/locale';
 import type { CoverProps } from '@friends-library/types';
-import Button from '@/components/core/Button';
-import Dual from '@/components/core/Dual';
 import ClockIcon from '../../icons/Clock';
 import AudioIcon from '../../icons/Audio';
 import TagsIcon from '../../icons/Tags';
 import DownloadIcon from '../../icons/Download';
+import Dual from '../../core/Dual';
+import Button from '../../core/Button';
 
 type Props = Omit<CoverProps, 'pages'> & {
   htmlShortTitle: string;

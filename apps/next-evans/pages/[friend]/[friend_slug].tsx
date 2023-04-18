@@ -2,25 +2,35 @@ import { PrismaClient } from '@prisma/client';
 import invariant from 'tiny-invariant';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import cx from 'classnames';
-import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
-import FriendBlock from '@/components/pages/friend/FriendBlock';
-import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
-import { LANG } from '@/lib/env';
 import { t } from '@friends-library/locale';
-import BookByFriend from '@/components/pages/friend/BookByFriend';
-import { Edition, mostModernEdition } from '@/lib/editions';
+import { LANG } from '../../lib/env';
+import { Edition, mostModernEdition } from '../../lib/editions';
+import FriendBlock from '../../components/pages/friend/FriendBlock';
+import FeaturedQuoteBlock from '../../components/pages/friend/FeaturedQuoteBlock';
+import BookByFriend from '../../components/pages/friend/BookByFriend';
+import TestimonialsBlock from '../../components/pages/friend/TestimonialsBlock';
 
 const client = new PrismaClient();
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const allFriends = await client.friends.findMany({
     where: { lang: LANG },
-    select: { slug: true },
+    select: { slug: true, gender: true },
   });
 
-  const paths = allFriends.map((friend) => ({
-    params: { friend_slug: friend.slug },
-  }));
+  const paths = allFriends.map((friend) => {
+    if (LANG === `en`) {
+      return {
+        params: { friend: 'friend', friend_slug: friend.slug },
+      };
+    }
+    return {
+      params: {
+        friend: friend.gender === 'female' ? 'amiga' : 'amigo',
+        friend_slug: friend.slug,
+      },
+    };
+  });
 
   return { paths, fallback: false };
 };
