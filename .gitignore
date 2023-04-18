@@ -17,6 +17,7 @@ apps/evans/.cache/
 apps/evans/public/
 apps/evans/src/css/cover.css
 apps/evans/src/ssg/.dpc-cache.json
+apps/next-evans/styles/cover.css
 apps/storybook-web/storybook-static/
 apps/poster/src/part-titles.ts
 apps/poster/src/cover-props.ts
