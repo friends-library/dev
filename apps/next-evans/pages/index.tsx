@@ -41,6 +41,14 @@ const Home: React.FC<Props> = ({ friends }) => (
         <ChevronRightIcon className="h-5 ml-4" />
       </Link>
     </div>
+    <div className="flex justify-center items-center p-8 border-b">
+      <Link
+        href="/getting-started"
+        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600"
+      >
+        Getting started
+      </Link>
+    </div>
     <ul className="bg-gray-50 grid grid-cols-5 gap-4 p-8">
       {friends.map((friend) => (
         <Link
