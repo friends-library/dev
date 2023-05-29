@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
+import { useEffect, useState } from 'react';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { Edition } from '@/lib/editions';
 import { LANG } from '@/lib/env';
@@ -18,10 +19,18 @@ const client = new PrismaClient();
 export const getStaticPaths: GetStaticPaths = async () => {
   const allFriends = await client.friends.findMany({
     where: { lang: LANG },
-    select: { slug: true, gender: true },
+    select: {
+      slug: true,
+      gender: true,
+      documents: { select: { editions: { select: { is_draft: true } } } },
+    },
   });
 
-  const paths = allFriends.map((friend) => {
+  const publishedFriends = allFriends.filter((friend) =>
+    friend.documents.some((doc) => doc.editions.some((edition) => !edition.is_draft)),
+  );
+
+  const paths = publishedFriends.map((friend) => {
     if (LANG === `en`) {
       return {
         params: { friend: `friend`, friend_slug: friend.slug },
@@ -38,11 +47,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: false };
 };
 
-export const getStaticProps: GetStaticProps<Props> = async (context) => {
-  invariant(typeof context.params?.friend_slug === `string`);
+async function getFriend(slug: string): Promise<Props> {
   const friend = await client.friends.findFirst({
     where: {
-      slug: context.params.friend_slug,
+      slug,
       lang: LANG,
     },
     select: {
@@ -119,18 +127,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
       },
     },
   });
-
   invariant(friend !== null);
-
-  const hasNoNonDraftEditions = friend.documents.every((doc) =>
-    doc.editions.every((edition) => edition.is_draft),
-  );
-
-  if (hasNoNonDraftEditions) {
-    return {
-      notFound: true,
-    };
-  }
 
   const friendProps = {
     ...friend,
@@ -160,8 +157,15 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
       };
     }),
   };
+  return friendProps;
+}
+
+export const getStaticProps: GetStaticProps<Props> = async (context) => {
+  invariant(typeof context.params?.friend_slug === `string`);
+  const friend = await getFriend(context.params.friend_slug);
+
   return {
-    props: friendProps,
+    props: friend,
   };
 };
 
@@ -189,6 +193,8 @@ interface Props {
     numDownloads: number;
     numPages: number[];
     size: 's' | 'm' | 'xl' | 'xlCondensed';
+    customCSS?: string;
+    customHTML?: string;
   }>;
 }
 
@@ -203,6 +209,10 @@ const Friend: React.FC<Props> = ({
   born,
   died,
 }) => {
+  const [customCSSAndHTML, setCustomCSSAndHTML] = useState<Record<
+    string,
+    { css?: string; html?: string }
+  > | null>(null);
   const onlyOneBook = documents.length === 1;
   const isCompilations = name.startsWith(`Compila`);
   const mapData = getResidences(residences);
@@ -234,6 +244,13 @@ const Friend: React.FC<Props> = ({
       />
     );
   }
+
+  useEffect(() => {
+    getCustomCode(
+      slug,
+      documents.map((d) => d.slug),
+    ).then(setCustomCSSAndHTML);
+  }, [documents, slug]);
 
   return (
     <div>
@@ -284,9 +301,12 @@ const Friend: React.FC<Props> = ({
                   size={docSizeProp}
                   edition={mostModernEdition(doc.editionTypes)}
                   isbn={``} // never see the isbn either
-                  // todo
-                  customCss={``}
-                  customHtml={``}
+                  customCss={
+                    customCSSAndHTML ? customCSSAndHTML[doc.slug]?.css || `` : ``
+                  }
+                  customHtml={
+                    customCSSAndHTML ? customCSSAndHTML[doc.slug]?.html || `` : ``
+                  }
                 />
               );
             })}
@@ -299,3 +319,37 @@ const Friend: React.FC<Props> = ({
 };
 
 export default Friend;
+
+function getCustomCode(
+  slug: string,
+  documents: string[],
+): Promise<Record<string, { css?: string; html?: string }>> {
+  return Promise.all(
+    documents.map((document) =>
+      Promise.all([getCode(slug, document, `css`), getCode(slug, document, `html`)]).then(
+        ([css, html]) => ({ css, html, slug: document }),
+      ),
+    ),
+  ).then((codes) =>
+    codes.reduce((acc: Record<string, { css?: string; html?: string }>, code) => {
+      acc[code.slug] = { css: code.css, html: code.html };
+      return acc;
+    }, {}),
+  );
+}
+
+async function getCode(
+  friend: string,
+  document: string,
+  type: 'css' | 'html',
+): Promise<string | undefined> {
+  const res = await fetch(
+    `https://raw.githubusercontent.com/${
+      LANG === `en` ? `friends-library` : `biblioteca-de-los-amigos`
+    }/${friend}/master/${document}/paperback-cover.${type}`,
+  );
+  if (res.status === 404) {
+    return undefined;
+  }
+  return res.text();
+}
