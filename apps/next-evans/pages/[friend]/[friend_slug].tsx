@@ -1,8 +1,8 @@
+import React from 'react';
 import { PrismaClient } from '@prisma/client';
 import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
-import { useEffect, useState } from 'react';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { Edition } from '@/lib/editions';
 import { LANG } from '@/lib/env';
@@ -128,6 +128,10 @@ async function getFriend(slug: string): Promise<Props> {
     },
   });
   invariant(friend !== null);
+  const customCode = await getCustomCode(
+    friend.slug,
+    friend.documents.map((d) => d.slug),
+  );
 
   const friendProps = {
     ...friend,
@@ -154,6 +158,8 @@ async function getFriend(slug: string): Promise<Props> {
         numDownloads: firstEdition.downloads.length,
         numPages: firstEdition.edition_impressions.paperback_volumes,
         size: firstEdition.edition_impressions.paperback_size_variant,
+        customCSS: customCode[doc.slug]?.css || null,
+        customHTML: customCode[doc.slug]?.html || null,
       };
     }),
   };
@@ -193,8 +199,8 @@ interface Props {
     numDownloads: number;
     numPages: number[];
     size: 's' | 'm' | 'xl' | 'xlCondensed';
-    customCSS?: string;
-    customHTML?: string;
+    customCSS: string | null;
+    customHTML: string | null;
   }>;
 }
 
@@ -209,10 +215,6 @@ const Friend: React.FC<Props> = ({
   born,
   died,
 }) => {
-  const [customCSSAndHTML, setCustomCSSAndHTML] = useState<Record<
-    string,
-    { css?: string; html?: string }
-  > | null>(null);
   const onlyOneBook = documents.length === 1;
   const isCompilations = name.startsWith(`Compila`);
   const mapData = getResidences(residences);
@@ -244,13 +246,6 @@ const Friend: React.FC<Props> = ({
       />
     );
   }
-
-  useEffect(() => {
-    getCustomCode(
-      slug,
-      documents.map((d) => d.slug),
-    ).then(setCustomCSSAndHTML);
-  }, [documents, slug]);
 
   return (
     <div>
@@ -301,12 +296,8 @@ const Friend: React.FC<Props> = ({
                   size={docSizeProp}
                   edition={mostModernEdition(doc.editionTypes)}
                   isbn={``} // never see the isbn either
-                  customCss={
-                    customCSSAndHTML ? customCSSAndHTML[doc.slug]?.css || `` : ``
-                  }
-                  customHtml={
-                    customCSSAndHTML ? customCSSAndHTML[doc.slug]?.html || `` : ``
-                  }
+                  customCss={doc.customCSS || ``}
+                  customHtml={doc.customHTML || ``}
                 />
               );
             })}
