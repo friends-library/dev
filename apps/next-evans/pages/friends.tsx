@@ -11,8 +11,8 @@ import ControlsBlock from '@/components/pages/friends/ControlsBlock';
 import CompilationsBlock from '@/components/pages/friends/CompilationsBlock';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const client = new PrismaClient();
-  const friends = await client.friends.findMany({
+  const prisma = new PrismaClient();
+  const friends = await prisma.friends.findMany({
     where: { lang: LANG },
     select: {
       name: true,

@@ -13,11 +13,12 @@ import BookByFriend from '@/components/pages/friend/BookByFriend';
 import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
+import getCustomCode from '@/lib/get-custom-code';
 
-const client = new PrismaClient();
+const prisma = new PrismaClient();
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const allFriends = await client.friends.findMany({
+  const allFriends = await prisma.friends.findMany({
     where: { lang: LANG },
     select: {
       slug: true,
@@ -48,7 +49,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 async function getFriend(slug: string): Promise<Props> {
-  const friend = await client.friends.findFirst({
+  const friend = await prisma.friends.findFirst({
     where: {
       slug,
       lang: LANG,
@@ -310,37 +311,3 @@ const Friend: React.FC<Props> = ({
 };
 
 export default Friend;
-
-function getCustomCode(
-  slug: string,
-  documents: string[],
-): Promise<Record<string, { css?: string; html?: string }>> {
-  return Promise.all(
-    documents.map((document) =>
-      Promise.all([getCode(slug, document, `css`), getCode(slug, document, `html`)]).then(
-        ([css, html]) => ({ css, html, slug: document }),
-      ),
-    ),
-  ).then((codes) =>
-    codes.reduce((acc: Record<string, { css?: string; html?: string }>, code) => {
-      acc[code.slug] = { css: code.css, html: code.html };
-      return acc;
-    }, {}),
-  );
-}
-
-async function getCode(
-  friend: string,
-  document: string,
-  type: 'css' | 'html',
-): Promise<string | undefined> {
-  const res = await fetch(
-    `https://raw.githubusercontent.com/${
-      LANG === `en` ? `friends-library` : `biblioteca-de-los-amigos`
-    }/${friend}/master/${document}/paperback-cover.${type}`,
-  );
-  if (res.status === 404) {
-    return undefined;
-  }
-  return res.text();
-}
