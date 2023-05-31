@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-// import './DuoToneWaveBlock.css';
 
 const DuoToneWaveBlock: React.FC<{
   children: React.ReactNode;

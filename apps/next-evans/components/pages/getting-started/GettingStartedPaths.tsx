@@ -1,9 +1,10 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
 import type { CoverProps } from '@friends-library/types';
-import type { NeededCoverProps } from '@/pages/getting-started';
+import type { GettingStartedCoverProps } from '@/pages/getting-started';
 import PathBlock from './PathBlock';
 import { LANG } from '@/lib/env';
+import { getFriendUrl, isCompilations } from '@/lib/friend';
 
 interface Props {
   HistoryBlurb: React.FC;
@@ -11,10 +12,10 @@ interface Props {
   DevotionalBlurb: React.FC;
   DoctrineBlurb: React.FC;
   books: {
-    history: Array<NeededCoverProps>;
-    doctrine: Array<NeededCoverProps>;
-    spiritualLife: Array<NeededCoverProps>;
-    journals: Array<NeededCoverProps>;
+    history: Array<GettingStartedCoverProps>;
+    doctrine: Array<GettingStartedCoverProps>;
+    spiritualLife: Array<GettingStartedCoverProps>;
+    journals: Array<GettingStartedCoverProps>;
   };
 }
 
@@ -63,7 +64,7 @@ const GettingStartedPaths: React.FC<Props> = ({
 
 export default GettingStartedPaths;
 
-function prepareBooks(books: NeededCoverProps[]): (CoverProps & {
+function prepareBooks(books: GettingStartedCoverProps[]): (CoverProps & {
   documentUrl: string;
   authorUrl: string;
   htmlShortTitle: string;
@@ -72,7 +73,7 @@ function prepareBooks(books: NeededCoverProps[]): (CoverProps & {
   return books.map((book) => ({
     lang: LANG,
     title: book.title,
-    isCompilation: book.author.startsWith(`Compila`),
+    isCompilation: isCompilations(book.author),
     author: book.author,
     size: `s`,
     pages: 7,
@@ -81,8 +82,8 @@ function prepareBooks(books: NeededCoverProps[]): (CoverProps & {
     blurb: ``,
     customCss: book.customCss,
     customHtml: book.customHtml,
-    documentUrl: `#`,
-    authorUrl: `/${LANG === `en` ? `friend` : `amigo`}/${book.authorSlug}`,
+    documentUrl: `/${book.authorSlug}/${book.documentSlug}`,
+    authorUrl: getFriendUrl(book.authorSlug, book.authorGender),
     htmlShortTitle: book.title,
     hasAudio: book.hasAudio,
   }));

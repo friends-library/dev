@@ -45,7 +45,7 @@ const PathBlock: React.FC<Props> = ({ slug, books, title, color, children }) => 
           `before:opacity-[0.7]`,
           LANG === `en`
             ? `before:content-['Start_Here']`
-            : `before:content-['Empiezar_Aquí'] before:-rotate-90 translate-x-[10px] translate-y-[-18px]`,
+            : `before:content-['Empiezar_Aquí'] before:translate-x-[-14px] before:translate-y-[-12px]`,
           `md:before:absolute md:before:top-[150px] md:before:left-[-18px] md:before:-rotate-90`,
         )}
       >
@@ -62,10 +62,10 @@ const PathBlock: React.FC<Props> = ({ slug, books, title, color, children }) => 
                   `w-[30px] h-[16px] [margin:0_auto_38px_auto] block rotate-90 opacity-[0.7]`,
                   `md:absolute md:right-[-15px] md:top-[58%] md:rotate-0`,
                   (index + 1) % 2 === 0 &&
-                    `md:[transform:rotate(135deg)] md:right-auto md:left-[-15px] md:top-[108%] xl:rotate-0 xl:right-0 xl:top-[58%] xl:left-auto`,
+                    `md:[transform:rotate(135deg)] md:right-auto md:left-[-15px] md:top-[109%] xl:rotate-0 xl:right-0 xl:top-[58%] xl:left-auto`,
                   index === arr.length - 1 && `md:hidden`,
                   index === 3 &&
-                    `xl:[transform:rotate(155deg)] xl:right-auto xl:left-[-108%] xl:top-[111%]`,
+                    `xl:[transform:rotate(155deg)] xl:right-auto xl:left-[-109%] xl:top-[110%]`,
                 )}
                 style={{
                   background: `url("${ArrowRight.src}")`,

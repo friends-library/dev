@@ -8,7 +8,7 @@ const recommendedBooks = {
     ],
     es: [
       { title: `restauracion-del-cristianismo-primitivo`, author: `william-penn` },
-      { title: `historia-de-los-cuaqueros`, author: `william-sewell` },
+      { title: `historia-de-los-cuaqueros`, author: `william-sewel` },
     ],
   },
   doctrine: {
@@ -66,7 +66,7 @@ const recommendedBooks = {
       { title: `vida`, author: `james-parnell` },
       {
         title: `sufrimientos-de-catharine-evans-sarah-cheevers`,
-        author: `william-sewell`,
+        author: `william-sewel`,
       },
     ],
   },

@@ -2,10 +2,10 @@ import { LANG } from './env';
 
 export default function getCustomCode(
   friendSlug: string,
-  documents: string[],
+  documentSlugs: string[],
 ): Promise<Record<string, { css?: string; html?: string }>> {
   return Promise.all(
-    documents.map((documentSlug) =>
+    documentSlugs.map((documentSlug) =>
       Promise.all([
         getCode(friendSlug, documentSlug, `css`),
         getCode(friendSlug, documentSlug, `html`),
@@ -20,14 +20,14 @@ export default function getCustomCode(
 }
 
 async function getCode(
-  friend: string,
-  document: string,
+  friendSlug: string,
+  documentSlug: string,
   type: 'css' | 'html',
 ): Promise<string | undefined> {
   const res = await fetch(
     `https://raw.githubusercontent.com/${
       LANG === `en` ? `friends-library` : `biblioteca-de-los-amigos`
-    }/${friend}/master/${document}/paperback-cover.${type}`,
+    }/${friendSlug}/master/${documentSlug}/paperback-cover.${type}`,
   );
   if (res.status === 404) {
     return undefined;

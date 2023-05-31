@@ -14,6 +14,7 @@ import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
 import getCustomCode from '@/lib/get-custom-code';
+import { isCompilations } from '@/lib/friend';
 
 const prisma = new PrismaClient();
 
@@ -217,10 +218,9 @@ const Friend: React.FC<Props> = ({
   died,
 }) => {
   const onlyOneBook = documents.length === 1;
-  const isCompilations = name.startsWith(`Compila`);
   const mapData = getResidences(residences);
   let mapBlock;
-  if (!isCompilations) {
+  if (!isCompilations(name)) {
     invariant(mapData[0] !== undefined);
     mapBlock = (
       <MapBlock

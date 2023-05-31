@@ -9,6 +9,7 @@ import FriendsPageHero from '@/components/pages/friends/FriendsPageHero';
 import FriendCard from '@/components/pages/friends/FriendCard';
 import ControlsBlock from '@/components/pages/friends/ControlsBlock';
 import CompilationsBlock from '@/components/pages/friends/CompilationsBlock';
+import { getFriendUrl, isCompilations } from '@/lib/friend';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const prisma = new PrismaClient();
@@ -47,7 +48,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
           (friend) =>
             !friend.documents.every((doc) =>
               doc.editions.every((edition) => edition.is_draft),
-            ) && !friend.name.startsWith(`Compila`),
+            ) && !isCompilations(friend.name),
         )
         .map((friend) => {
           invariant(
@@ -102,9 +103,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
               featured
               born={friend.born || undefined}
               died={friend.died || undefined}
-              url={`/${
-                LANG === `en` ? `friend` : friend.gender === `female` ? `amiga` : `amigo`
-              }/${friend.slug}`}
+              url={getFriendUrl(friend.slug, friend.gender)}
               color={i === 0 ? `blue` : `green`}
               className="xl:w-1/2 xl:max-w-screen-sm"
               key={friend.slug}

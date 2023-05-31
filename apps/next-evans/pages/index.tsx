@@ -5,6 +5,7 @@ import cx from 'classnames';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';
 import { LANG } from '@/lib/env';
+import { getFriendUrl } from '@/lib/friend';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const prisma = new PrismaClient();
@@ -52,9 +53,7 @@ const Home: React.FC<Props> = ({ friends }) => (
     <ul className="bg-gray-50 grid grid-cols-5 gap-4 p-8">
       {friends.map((friend) => (
         <Link
-          href={`/${
-            LANG === `en` ? `friend` : friend.gender === `male` ? `amigo` : `amiga`
-          }/${friend.slug}`}
+          href={getFriendUrl(friend.slug, friend.gender)}
           className={cx(
             `mt-2 bg-white p-4 shadow-md rounded-xl hover:bg-slate-100`,
             friend.name === `Compilations` && `bg-flprimary/20 hover:bg-flprimary/30`,

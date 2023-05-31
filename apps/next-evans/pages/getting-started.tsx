@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import type { gender as Gender } from '@prisma/client';
 import type { GetStaticProps } from 'next';
 import type { CoverProps } from '@friends-library/types';
 import Dual from '@/components/core/Dual';
@@ -26,6 +27,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     select: {
       slug: true,
       name: true,
+      gender: true,
       documents: {
         select: {
           slug: true,
@@ -54,45 +56,23 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     ),
   );
 
-  const allBooks: NeededCoverProps[] = friends.flatMap((friend, index) => {
+  const allBooks: GettingStartedCoverProps[] = friends.flatMap((friend, index) => {
     const codeForFriend = customCode[index];
     return friend.documents.map((doc) => {
       const codeForDocument = codeForFriend ? codeForFriend[doc.slug] : undefined;
       return {
         authorSlug: friend.slug,
+        authorGender: friend.gender,
         author: friend.name,
         title: doc.title,
         edition: mostModernEdition(doc.editions.map((edition) => edition.type)),
         customCss: codeForDocument ? codeForDocument.css || `` : ``,
         customHtml: codeForDocument ? codeForDocument.html || `` : ``,
         hasAudio: doc.editions.some((edition) => edition.edition_audios),
-        slug: doc.slug,
+        documentSlug: doc.slug,
       };
     });
   });
-
-  function filterBooks(
-    books: Array<NeededCoverProps>,
-    category: 'history' | 'doctrine' | 'spiritualLife' | 'journals',
-  ): Array<NeededCoverProps> {
-    return books
-      .filter((book) =>
-        recommendedBooks[category][LANG].some(
-          (recommendedBook) =>
-            recommendedBook.author === book.authorSlug &&
-            recommendedBook.title === book.slug,
-        ),
-      )
-      .sort(
-        (a, b) =>
-          recommendedBooks[category][LANG].findIndex(
-            (book) => book.title === a.slug && book.author === a.authorSlug,
-          ) -
-          recommendedBooks[category][LANG].findIndex(
-            (book) => book.title === b.slug && book.author === b.authorSlug,
-          ),
-      );
-  }
 
   const organizedBooks = {
     history: filterBooks(allBooks, `history`),
@@ -104,21 +84,22 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return { props: { books: organizedBooks, numBooks: allBooks.length } };
 };
 
-export type NeededCoverProps = Pick<
+export type GettingStartedCoverProps = Pick<
   CoverProps,
   'title' | 'author' | 'edition' | 'customCss' | 'customHtml'
 > & {
   authorSlug: string;
   hasAudio: boolean;
-  slug: string;
+  documentSlug: string;
+  authorGender: Gender;
 };
 
 interface Props {
   books: {
-    history: Array<NeededCoverProps>;
-    doctrine: Array<NeededCoverProps>;
-    spiritualLife: Array<NeededCoverProps>;
-    journals: Array<NeededCoverProps>;
+    history: Array<GettingStartedCoverProps>;
+    doctrine: Array<GettingStartedCoverProps>;
+    spiritualLife: Array<GettingStartedCoverProps>;
+    journals: Array<GettingStartedCoverProps>;
   };
   numBooks: number;
 }
@@ -349,3 +330,26 @@ export const HistoryBlurb: React.FC = () => (
     </>
   </Dual.Frag>
 );
+
+function filterBooks(
+  books: Array<GettingStartedCoverProps>,
+  category: 'history' | 'doctrine' | 'spiritualLife' | 'journals',
+): Array<GettingStartedCoverProps> {
+  return books
+    .filter((book) =>
+      recommendedBooks[category][LANG].some(
+        (recommendedBook) =>
+          recommendedBook.author === book.authorSlug &&
+          recommendedBook.title === book.documentSlug,
+      ),
+    )
+    .sort(
+      (a, b) =>
+        recommendedBooks[category][LANG].findIndex(
+          (book) => book.title === a.documentSlug && book.author === a.authorSlug,
+        ) -
+        recommendedBooks[category][LANG].findIndex(
+          (book) => book.title === b.documentSlug && book.author === b.authorSlug,
+        ),
+    );
+}

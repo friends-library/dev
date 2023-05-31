@@ -54,7 +54,7 @@ const WaveBottomBlock: React.FC<Props> = ({ id, color, children, className }) =>
       id={id}
       className={cx(className)}
       style={{
-        backgroundImage: `url(${waves.light.src}), url(${waves.medium.src}), url(${waves.dark.src})`,
+        backgroundImage: `url(${waves.medium.src}), url(${waves.dark.src}), url(${waves.light.src})`,
         backgroundRepeat: `no-repeat`,
         backgroundPosition: `left 53% bottom -70px, left 45% bottom -44px, left 58% bottom -10px`,
         backgroundSize: `5900px 305px, 5000px 405px, 5000px 405px`,
