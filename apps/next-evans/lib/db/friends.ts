@@ -1,8 +1,13 @@
+// 1. make head req first, see which ones are 404s and then only get the ones that have custom code
+// 2. put gh token in header
+// 3. batch the promises
+
 import invariant from 'tiny-invariant';
 import type { Edition } from '../editions';
+import type { CustomCode } from './custom-code';
 import { LANG } from '../env';
 import { prisma } from './prisma';
-import { CustomCode, getAllCustomCode } from './custom-code';
+import getAllCustomCode from './custom-code';
 
 export interface FriendProps {
   name: string;
@@ -183,14 +188,10 @@ function addCustomCodeToFriends(
     const friendDocuments = friend.documents.map((document) => {
       const documentSlug = document.slug;
       const documentCustomCode = customCode[`${friendSlug}/${documentSlug}`];
-      invariant(
-        documentCustomCode,
-        `no custom code found for ${friendSlug}/${documentSlug}`,
-      );
       return {
         ...document,
-        customCSS: documentCustomCode.css ?? null,
-        customHTML: documentCustomCode.html ?? null,
+        customCSS: documentCustomCode?.css ?? null,
+        customHTML: documentCustomCode?.html ?? null,
       };
     });
     acc[friendSlug] = {

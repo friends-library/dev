@@ -1,39 +1,76 @@
+import invariant from 'tiny-invariant';
 import { LANG } from '../env';
 import { prisma } from './prisma';
 
 export type CustomCode = { css?: string; html?: string };
+type FriendSlug = string;
+type DocSlug = string;
+type FriendDocCombination = string;
 
-// { 'friend-slug/document-slug': { css?: string; html?: string }, ... }
-let codePromise: Promise<Record<string, CustomCode>> | null = null;
+let codePromise: Promise<Record<FriendDocCombination, CustomCode>> | null = null;
+let friendDocumentsPromise: Promise<Record<FriendSlug, DocSlug[]>> | null = null;
 
-let friendDocumentsPromise: Promise<Record<string, string[]>> | null = null;
-
-export async function getAllCustomCode(): Promise<Record<string, CustomCode>> {
+export default function getAllCustomCode(): Promise<
+  Record<FriendDocCombination, CustomCode>
+> {
   if (codePromise) {
     process.stdout.write(`cache used!\n`);
     return codePromise;
   }
   process.stdout.write(`fetching custom code...\n`);
-  const friendDocuments = await getFriendDocuments();
-  const customCode = await Promise.all(
-    Object.entries(friendDocuments).map(([friendSlug, documentSlugs]) =>
-      _getCustomCode(friendSlug, documentSlugs).then((code) =>
-        Object.entries(code).reduce<Record<string, CustomCode>>(
-          (acc, [documentSlug, { css, html }]) => {
-            acc[`${friendSlug}/${documentSlug}`] = { css, html };
-            return acc;
-          },
-          {},
-        ),
-      ),
-    ),
-  );
-  const code = customCode.reduce((acc, code) => ({ ...acc, ...code }), {});
-  codePromise = Promise.resolve(code);
-  return customCode.reduce((acc, code) => ({ ...acc, ...code }), {});
+  codePromise = getFriendDocuments().then(getGithubCode);
+  return codePromise;
 }
 
-async function getFriendDocuments(): Promise<Record<string, string[]>> {
+function getGithubCode(
+  friendDocuments: Record<FriendSlug, DocSlug[]>,
+): Promise<Record<FriendDocCombination, CustomCode>> {
+  const urls = Object.keys(friendDocuments).flatMap((friendSlug) => {
+    const documentSlugs = friendDocuments[friendSlug];
+    invariant(documentSlugs);
+    return documentSlugs.map((docSlug) => `${friendSlug}/${docSlug}`);
+  });
+  return Promise.all(
+    urls.slice(0, 100).map((url) => {
+      const [friendSlug, documentSlug] = url.split(`/`);
+      invariant(friendSlug);
+      invariant(documentSlug);
+      const foo = Promise.all([
+        getCode(friendSlug, documentSlug, `css`),
+        getCode(friendSlug, documentSlug, `html`),
+      ]).then(([css, html]) => ({ url, css, html }));
+      return foo;
+    }),
+  ).then((code) =>
+    code.reduce(
+      (acc, obj) => ({ ...acc, [obj.url]: { css: obj.css, html: obj.html } }),
+      {},
+    ),
+  );
+}
+
+async function getCode(
+  friendSlug: string,
+  documentSlug: string,
+  type: 'css' | 'html',
+): Promise<string | undefined> {
+  try {
+    var res = await fetch(
+      `https://raw.githubusercontent.com/${
+        LANG === `en` ? `friends-library` : `biblioteca-de-los-amigos`
+      }/${friendSlug}/master/${documentSlug}/paperback-cover.${type}`,
+    );
+  } catch (err) {
+    console.error(err);
+    return;
+  }
+  if (res.status === 404) {
+    return undefined;
+  }
+  return res.text();
+}
+
+async function getFriendDocuments(): Promise<Record<FriendSlug, DocSlug[]>> {
   if (friendDocumentsPromise) {
     return friendDocumentsPromise;
   }
@@ -41,7 +78,7 @@ async function getFriendDocuments(): Promise<Record<string, string[]>> {
   return friendDocumentsPromise;
 }
 
-async function _getFriendDocuments(): Promise<Record<string, string[]>> {
+async function _getFriendDocuments(): Promise<Record<FriendSlug, DocSlug[]>> {
   const friends = await prisma.friends.findMany({
     where: {
       lang: LANG,
@@ -66,38 +103,4 @@ async function _getFriendDocuments(): Promise<Record<string, string[]>> {
     acc[friend.slug] = friend.documents.map((doc) => doc.slug);
     return acc;
   }, {});
-}
-
-async function _getCustomCode(
-  friendSlug: string,
-  documentSlugs: string[],
-): Promise<Record<string, CustomCode>> {
-  const codes = await Promise.all(
-    documentSlugs.map((documentSlug) =>
-      Promise.all([
-        getCode(friendSlug, documentSlug, `css`),
-        getCode(friendSlug, documentSlug, `html`),
-      ]).then(([css, html]) => ({ css, html, slug: documentSlug })),
-    ),
-  );
-  return codes.reduce((acc: Record<string, { css?: string; html?: string }>, code) => {
-    acc[code.slug] = { css: code.css, html: code.html };
-    return acc;
-  }, {});
-}
-
-async function getCode(
-  friendSlug: string,
-  documentSlug: string,
-  type: 'css' | 'html',
-): Promise<string | undefined> {
-  const res = await fetch(
-    `https://raw.githubusercontent.com/${
-      LANG === `en` ? `friends-library` : `biblioteca-de-los-amigos`
-    }/${friendSlug}/master/${documentSlug}/paperback-cover.${type}`,
-  );
-  if (res.status === 404) {
-    return undefined;
-  }
-  return res.text();
 }
