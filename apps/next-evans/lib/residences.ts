@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant';
 import type { friend_residences as FriendResidence } from '@prisma/client';
-import type { Residence } from './types';
+import type { Region, Residence } from './types';
 
 type Map = 'UK' | 'US' | 'Europe';
 
@@ -254,5 +254,36 @@ function getPosition(residence: Pick<FriendResidence, 'city' | 'region'>): Posit
       return { top: 17.1, left: 50.9, map: `UK` };
     default:
       throw new Error(`Unknown residence: ${place}`);
+  }
+}
+
+export function getPrimaryResidence(residences: Array<Residence>): Residence {
+  invariant(residences[0], `Expected at least one residence`);
+  return residences[0];
+}
+
+export function documentRegion(region: string): Region {
+  switch (region) {
+    case `Ireland`:
+      return `Ireland`;
+    case `England`:
+      return `England`;
+    case `Scotland`:
+      return `Scotland`;
+    case `Wales`:
+    case `Netherlands`:
+    case `France`:
+      return `Other`;
+    case `Ohio`:
+      return `Western US`;
+    case `Delaware`:
+    case `Pennsylvania`:
+    case `New Jersey`:
+    case `Rhode Island`:
+    case `New York`:
+    case `Vermont`:
+      return `Eastern US`;
+    default:
+      throw new Error(`Error inferring explore region for friend: ${region}`);
   }
 }

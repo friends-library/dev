@@ -46,3 +46,17 @@ export type DocumentWithFriendMeta = Document & {
 };
 
 export type Edition = 'original' | 'modernized' | 'updated';
+
+export type Region =
+  | 'Eastern US'
+  | 'Western US'
+  | 'England'
+  | 'Scotland'
+  | 'Ireland'
+  | 'Other';
+
+export type Residence = {
+  city: string;
+  region: string;
+  durations: Array<{ start: number | null; end: number | null }>;
+};

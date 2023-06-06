@@ -1,7 +1,7 @@
 import React from 'react';
 import { PrismaClient } from '@prisma/client';
 import type { GetStaticProps } from 'next';
-import type { BookPreviewProps } from '@/lib/types';
+import type { BookPreviewProps, Residence } from '@/lib/types';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import Dual from '@/components/core/Dual';
 import HeroImg from '@/public/images/explore-books.jpg';
@@ -13,8 +13,10 @@ import { mostModernEdition } from '@/lib/editions';
 import GettingStartedLinkBlock from '@/components/pages/explore/GettingStartedLinkBlock';
 import AudioBooksBlock from '@/components/pages/explore/AudioBooksBlock';
 import NewBooksBlock from '@/components/pages/explore/NewBooksBlock';
+import ExploreRegionsBlock from '@/components/pages/explore/RegionBlock';
 import { getBookUrl, getFriendUrl } from '@/lib/friend';
 import { months } from '@/lib/dates';
+import { documentRegion, getPrimaryResidence } from '@/lib/residences';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const prisma = new PrismaClient();
@@ -25,6 +27,18 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       slug: true,
       name: true,
       gender: true,
+      friend_residences: {
+        select: {
+          city: true,
+          region: true,
+          friend_residence_durations: {
+            select: {
+              start: true,
+              end: true,
+            },
+          },
+        },
+      },
       documents: {
         select: {
           slug: true,
@@ -65,6 +79,11 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
           authorSlug: friend.slug,
           authorGender: friend.gender,
           author: friend.name,
+          authorResidences: friend.friend_residences.map((residence) => ({
+            city: residence.city,
+            region: residence.region,
+            durations: residence.friend_residence_durations,
+          })),
           title: doc.title,
           edition: mostModernEdition(doc.editions.map((edition) => edition.type)),
           customCss: codeForDocument ? codeForDocument.css || `` : ``,
@@ -102,6 +121,7 @@ interface Props {
       documentUrl: string;
       authorUrl: string;
       description: string;
+      authorResidences: Array<Residence>;
       badgeText?: string;
       className?: string;
     }
@@ -109,46 +129,53 @@ interface Props {
 }
 
 const ExploreBooks: React.FC<Props> = ({ numBooks, books }) => (
-    <div>
-      <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
-        <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
-          <WhiteOverlay>
-            <Dual.H1 className="sans-wider text-3xl mb-6">
-              <>Explore Books</>
-              <>Explorar Libros</>
-            </Dual.H1>
-            <Dual.P className="body-text">
-              <>
-                We currently have {numBooks} books freely available on this site.
-                Overwhelmed? On this page you can browse all the titles by edition,
-                region, time period, tags, and more&mdash;or search the full library to
-                find exactly what you’re looking for.
-              </>
-              <>
-                Actualmente tenemos {numBooks} libros disponibles de forma gratuita en
-                este sitio, y más están siendo traducidos y añadidos regularmente. En
-                nuestra página de “Explorar” puedes navegar por todos nuestros libros y
-                audiolibros, o buscar libros en la categoría particular que más te
-                interese.
-              </>
-            </Dual.P>
-          </WhiteOverlay>
-        </div>
-      </BackgroundImage>
-      <NavBlock />
-      <UpdatedEditionsBlock books={books.filter((book) => book.edition === `updated`)} />
-      <GettingStartedLinkBlock />
-      <AudioBooksBlock books={books.filter((book) => book.hasAudio)} />
-      <NewBooksBlock
+  <div>
+    <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
+      <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
+        <WhiteOverlay>
+          <Dual.H1 className="sans-wider text-3xl mb-6">
+            <>Explore Books</>
+            <>Explorar Libros</>
+          </Dual.H1>
+          <Dual.P className="body-text">
+            <>
+              We currently have {numBooks} books freely available on this site.
+              Overwhelmed? On this page you can browse all the titles by edition, region,
+              time period, tags, and more&mdash;or search the full library to find exactly
+              what you’re looking for.
+            </>
+            <>
+              Actualmente tenemos {numBooks} libros disponibles de forma gratuita en este
+              sitio, y más están siendo traducidos y añadidos regularmente. En nuestra
+              página de “Explorar” puedes navegar por todos nuestros libros y audiolibros,
+              o buscar libros en la categoría particular que más te interese.
+            </>
+          </Dual.P>
+        </WhiteOverlay>
+      </div>
+    </BackgroundImage>
+    <NavBlock />
+    <UpdatedEditionsBlock books={books.filter((book) => book.edition === `updated`)} />
+    <GettingStartedLinkBlock />
+    <AudioBooksBlock books={books.filter((book) => book.hasAudio)} />
+    <NewBooksBlock
+      books={books
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .slice(0, 4)
+        .map((book) => ({ ...book, audioDuration: undefined }))}
+    />
+    {LANG === `en` && (
+      <ExploreRegionsBlock
         books={books
-          .sort(
-            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-          )
-          .slice(0, 4)
-          .map((book) => ({ ...book, audioDuration: undefined }))}
+          .filter((book) => book.authorResidences.length > 0)
+          .map((book) => ({
+            ...book,
+            region: documentRegion(getPrimaryResidence(book.authorResidences).region),
+          }))}
       />
-    </div>
-  );
+    )}
+  </div>
+);
 
 export default ExploreBooks;
 
