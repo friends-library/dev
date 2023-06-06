@@ -1,5 +1,6 @@
 import type { gender as Gender } from '@prisma/client';
 import type { ArrowRightIcon } from '@heroicons/react/24/outline';
+import type { CoverProps } from '@friends-library/types';
 
 export type HeroIcon = typeof ArrowRightIcon;
 

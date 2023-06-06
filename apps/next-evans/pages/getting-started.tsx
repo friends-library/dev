@@ -45,10 +45,10 @@ export type GettingStartedCoverProps = Pick<
 
 interface Props {
   books: {
-    history: Array<GettingStartedCoverProps>;
-    doctrine: Array<GettingStartedCoverProps>;
-    spiritualLife: Array<GettingStartedCoverProps>;
-    journals: Array<GettingStartedCoverProps>;
+    history: Array<BookPreviewProps>;
+    doctrine: Array<BookPreviewProps>;
+    spiritualLife: Array<BookPreviewProps>;
+    journals: Array<BookPreviewProps>;
   };
   numBooks: number;
 }
@@ -281,9 +281,9 @@ export const HistoryBlurb: React.FC = () => (
 );
 
 function filterBooks(
-  books: Array<GettingStartedCoverProps>,
+  books: Array<BookPreviewProps>,
   category: 'history' | 'doctrine' | 'spiritualLife' | 'journals',
-): Array<GettingStartedCoverProps> {
+): Array<BookPreviewProps> {
   return books
     .filter((book) =>
       recommendedBooks[category][LANG].some(

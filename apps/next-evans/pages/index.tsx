@@ -31,21 +31,27 @@ const Home: React.FC<Props> = ({ friends }) => (
     <h1 className="bg-flprimary text-white p-3">
       Home, lang is <code className="text-red-200">{LANG}</code>
     </h1>
-    <div className="flex justify-center items-center p-8 bg-slate-400 text-white rounded-b-3xl">
+    <div className="flex justify-center space-x-8 items-center p-8 border-b">
       <Link
         href={LANG === `en` ? `/friends` : `/amigos`}
-        className="shadow-md bg-white text-black rounded-full pl-6 pr-4 py-2 font-bold flex items-center hover:scale-105 transition duration-100 active:scale-95"
+        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600 flex items-center"
       >
         All friends
-        <ChevronRightIcon className="h-5 ml-4" />
+        <ChevronRightIcon className="h-5 ml-2" />
       </Link>
-    </div>
-    <div className="flex justify-center items-center p-8 border-b">
       <Link
         href="/getting-started"
-        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600"
+        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600 flex items-center"
       >
         Getting started
+        <ChevronRightIcon className="h-5 ml-2" />
+      </Link>
+      <Link
+        href="/explore"
+        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600 flex items-center"
+      >
+        Explore
+        <ChevronRightIcon className="h-5 ml-2" />
       </Link>
     </div>
     <ul className="bg-gray-50 grid grid-cols-5 gap-4 p-8">
