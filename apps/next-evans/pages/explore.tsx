@@ -17,6 +17,7 @@ import ExploreRegionsBlock from '@/components/pages/explore/RegionBlock';
 import { getBookUrl, getFriendUrl } from '@/lib/friend';
 import { months } from '@/lib/dates';
 import { documentRegion, getPrimaryResidence } from '@/lib/residences';
+import TimelineBlock from '@/components/pages/explore/TimelineBlock';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const prisma = new PrismaClient();
@@ -27,6 +28,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       slug: true,
       name: true,
       gender: true,
+      born: true,
+      died: true,
       friend_residences: {
         select: {
           city: true,
@@ -79,6 +82,10 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
           authorSlug: friend.slug,
           authorGender: friend.gender,
           author: friend.name,
+          date:
+            friend.died && friend.born
+              ? (friend.died - friend.born) / 2 + friend.born
+              : null,
           authorResidences: friend.friend_residences.map((residence) => ({
             city: residence.city,
             region: residence.region,
@@ -122,6 +129,7 @@ interface Props {
       authorUrl: string;
       description: string;
       authorResidences: Array<Residence>;
+      date: number | null;
       badgeText?: string;
       className?: string;
     }
@@ -172,6 +180,13 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, books }) => (
             ...book,
             region: documentRegion(getPrimaryResidence(book.authorResidences).region),
           }))}
+      />
+    )}
+    {LANG === `en` && (
+      <TimelineBlock
+        books={books
+          .filter((book) => book.date)
+          .map((book) => ({ ...book, date: book.date! }))}
       />
     )}
   </div>

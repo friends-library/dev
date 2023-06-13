@@ -57,13 +57,14 @@ const MapSlider: React.FC<Props> = ({ className, region, setRegion }) => {
       />
       <ChevronRightIcon
         className={cx(
-          `absolute text-white px-4 opacity-25 cursor-pointer md:hidden`,
-          `transform -translate-y-1/2 h-8 top-[50%] text-[4rem]`,
+          `absolute text-white px-4 opacity-50 cursor-pointer md:hidden z-20`,
+          `transform -translate-y-1/2 h-16 top-[50%] text-[4rem] text-white`,
           {
             'rotate-180 left-0': focus === `UK`,
             'right-0': focus === `US`,
           },
         )}
+        onClick={toggleFocus}
       />
     </Swipeable>
   );
