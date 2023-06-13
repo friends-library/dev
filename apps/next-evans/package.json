@@ -13,6 +13,7 @@
     "format:check": "just ../../prettier-check"
   },
   "dependencies": {
+    "@headlessui/react": "^1.4.3",
     "@heroicons/react": "2.0.17",
     "@reach/accordion": "^0.11.2",
     "@types/node": "18.15.11",

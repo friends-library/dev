@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
-// import './NavBlock.css';
 import { makeScroller } from '@/lib/scroll';
 import { LANG } from '@/lib/env';
 

@@ -754,6 +754,7 @@ importers:
       '@friends-library/locale': workspace:*
       '@friends-library/theme': workspace:*
       '@friends-library/types': workspace:*
+      '@headlessui/react': ^1.4.3
       '@heroicons/react': 2.0.17
       '@prisma/client': 4.13.0
       '@reach/accordion': ^0.11.2
@@ -774,6 +775,7 @@ importers:
       typescript: 5.0.2
       use-interval: ^1.3.0
     dependencies:
+      '@headlessui/react': 1.7.8_biqbaboplfbrettd7655fr4n2y
       '@heroicons/react': 2.0.17_react@18.2.0
       '@reach/accordion': 0.11.2_biqbaboplfbrettd7655fr4n2y
       '@types/node': 18.15.11

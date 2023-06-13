@@ -41,6 +41,8 @@ export type DocumentWithFriendMeta = DocumentType & {
 
 export type Edition = 'original' | 'modernized' | 'updated';
 
+export type Period = 'early' | 'mid' | 'late';
+
 export type Region =
   | 'Eastern US'
   | 'Western US'

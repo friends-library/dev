@@ -15,6 +15,7 @@ import TimelineBlock from '@/components/pages/explore/TimelineBlock';
 import AltSiteBlock from '@/components/pages/explore/AltSiteBlock';
 import { getAllDocuments } from '@/lib/db/friends';
 import { mostModernEdition } from '@/lib/editions';
+import SearchBlock from '@/components/pages/explore/SearchBlock';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const documents = Object.values(await getAllDocuments());
@@ -88,6 +89,14 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, books }) => (
       url={
         LANG === `en` ? `https://bibliotecadelosamigos.org` : `https://friendslibrary.com`
       }
+    />
+    <SearchBlock
+      books={books.map((book) => ({
+        ...book,
+        edition: mostModernEdition(book.editionTypes),
+        region: `England`,
+        period: `early`,
+      }))}
     />
   </div>
 );

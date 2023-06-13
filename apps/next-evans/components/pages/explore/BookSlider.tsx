@@ -33,7 +33,6 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
   }, [books]);
 
   return (
-    // @ts-ignore
     <Swipeable
       onSwipedRight={() =>
         notMobile && canGoLeft && setCurrentHorizPage(currentHorizPage - 1)
@@ -90,7 +89,7 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
                 scope="1-4"
                 shadow
                 {...book}
-                size={book.size === `xlCondensed` ? `xl` : book.size}
+                size={`m`}
               />
             </Link>
             <h3

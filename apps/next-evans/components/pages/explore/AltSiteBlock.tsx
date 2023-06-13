@@ -5,7 +5,6 @@ import { LANG } from '@/lib/env';
 import AmigosLogo from '@/components/core/LogoAmigos';
 import FriendsLogo from '@/components/core/LogoFriends';
 import Dual from '@/components/core/Dual';
-// import './AltSiteBlock.css';
 
 const AltSiteBlock: React.FC<{ numBooks: number; url: string }> = ({ numBooks, url }) => {
   const Logo = LANG === `en` ? AmigosLogo : FriendsLogo;

@@ -7,7 +7,6 @@ import type { Region } from '@/lib/types';
 import SelectableMap from './SelectableMap';
 import { useWindowWidth } from '@/lib/hooks/window-width';
 import { SCREEN_MD } from '@/lib/constants';
-// import './MapSlider.css';
 
 interface Props {
   className?: string;
@@ -28,7 +27,6 @@ const MapSlider: React.FC<Props> = ({ className, region, setRegion }) => {
   }, 12000);
 
   return (
-    // @ts-ignore
     <Swipeable
       onSwiped={({ dir }) => {
         if ([`Right`, `Left`].includes(dir) && winWidth < SCREEN_MD) {
