@@ -3,7 +3,7 @@ import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { FriendProps } from '@/lib/types';
+import type { FriendType } from '@/lib/types';
 import { LANG } from '@/lib/env';
 import { mostModernEdition } from '@/lib/editions';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
@@ -35,7 +35,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: false };
 };
 
-export const getStaticProps: GetStaticProps<FriendProps> = async (context) => {
+export const getStaticProps: GetStaticProps<FriendType> = async (context) => {
   invariant(typeof context.params?.friend_slug === `string`);
   const friend = await getFriend(context.params.friend_slug);
   invariant(friend);
@@ -45,7 +45,7 @@ export const getStaticProps: GetStaticProps<FriendProps> = async (context) => {
   };
 };
 
-const Friend: React.FC<FriendProps> = ({
+const Friend: React.FC<FriendType> = ({
   name,
   gender,
   slug,

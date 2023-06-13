@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
+import type { DocumentWithFriendMeta } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
-import { BookPreviewProps } from '@/lib/types';
+import TimePicker from './TimePicker';
 import { useWindowWidth } from '@/lib/hooks/window-width';
 import { SCREEN_MD } from '@/lib/constants';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import PillDropdown from '@/components/core/PillDropdown';
 import PillDropdownDropdown from '@/components/core/PillDropdownDropdown';
 import PillDropdownItem from '@/components/core/PillDropdownItem';
-import TimePicker from './TimePicker';
 import CastleBgImage from '@/public/images/castle.jpg';
 
 interface Props {
-  books: (BookPreviewProps & { date: number })[];
+  books: (DocumentWithFriendMeta & { date: number })[];
 }
 
 const TimelineBlock: React.FC<Props> = ({ books }) => {
@@ -34,9 +34,9 @@ const TimelineBlock: React.FC<Props> = ({ books }) => {
           <BgWordBlock
             word="Timeline"
             className={cx(
-              'TimelineBlock__BgWord px-12 pt-40 pb-24 sm:pb-32',
-              '[&_.BackgroundWord]:pt-[75px] [&_.BackgroundWord]:text-white [&_.BackgroundWord]:z-30 [&_.BackgroundWord]:text-[90px]',
-              'sm:[&_.BackgroundWord]:pt-[38px] sm:[&_.BackgroundWord]:text-[130px]',
+              `TimelineBlock__BgWord px-12 pt-40 pb-24 sm:pb-32`,
+              `[&_.BackgroundWord]:pt-[75px] [&_.BackgroundWord]:text-white [&_.BackgroundWord]:z-30 [&_.BackgroundWord]:text-[90px]`,
+              `sm:[&_.BackgroundWord]:pt-[38px] sm:[&_.BackgroundWord]:text-[130px]`,
             )}
           >
             <div className="bg-white px-10 py-12 text-center max-w-screen-md mx-auto">

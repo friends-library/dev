@@ -2,15 +2,16 @@ import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import type { BookPreviewProps } from '@/lib/types';
+import type { DocumentWithFriendMeta } from '@/lib/types';
 import AudiobooksHero from './AudiobooksHero';
-import { getBookUrl, isCompilations } from '@/lib/friend';
 import Album from '@/components/core/Album';
 import Button from '@/components/core/Button';
 import { LANG } from '@/lib/env';
+import { getDocumentUrl, isCompilations } from '@/lib/friend';
+import { mostModernEdition } from '@/lib/editions';
 
 interface Props {
-  books: Omit<BookPreviewProps, 'authorUrl'>[];
+  books: Array<DocumentWithFriendMeta>;
 }
 
 const AudioBooksBlock: React.FC<Props> = ({ books }) => (
@@ -25,17 +26,21 @@ const AudioBooksBlock: React.FC<Props> = ({ books }) => (
     >
       {books.slice(0, 4).map((book) => (
         <Link
-          href={`${getBookUrl(book.authorSlug, book.documentSlug)}#audiobook`}
+          href={`${getDocumentUrl(book.authorSlug, book.slug)}#audiobook`}
           className={cx(
             `flex flex-col items-center mb-10 group`,
             `md:w-64 md:mx-12`,
             `lg:mx-4 lg:w-56`,
           )}
-          key={getBookUrl(book.authorSlug, book.documentSlug)}
+          key={getDocumentUrl(book.authorSlug, book.slug)}
         >
           <Album
+            author={book.authorName}
+            edition={mostModernEdition(book.editionTypes)}
+            customCss={book.customCSS ?? ``}
+            customHtml={book.customHTML ?? ``}
             lang={LANG}
-            isCompilation={isCompilations(book.author)}
+            isCompilation={isCompilations(book.authorSlug)}
             isbn={``}
             className="mb-8"
             {...book}

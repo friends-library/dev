@@ -257,11 +257,6 @@ function getPosition(residence: Pick<FriendResidence, 'city' | 'region'>): Posit
   }
 }
 
-export function getPrimaryResidence(residences: Array<Residence>): Residence {
-  invariant(residences[0], `Expected at least one residence`);
-  return residences[0];
-}
-
 export function documentRegion(region: string): Region {
   switch (region) {
     case `Ireland`:

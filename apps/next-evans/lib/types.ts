@@ -1,10 +1,9 @@
 import type { gender as Gender } from '@prisma/client';
 import type { ArrowRightIcon } from '@heroicons/react/24/outline';
-import type { CoverProps } from '@friends-library/types';
 
 export type HeroIcon = typeof ArrowRightIcon;
 
-export interface FriendProps {
+export interface FriendType {
   name: string;
   slug: string;
   id: string;
@@ -15,16 +14,10 @@ export interface FriendProps {
   died: number | null;
   dateAdded: string;
   residences: Residence[];
-  documents: Document[];
+  documents: DocumentType[];
 }
 
-export interface Residence {
-  city: string;
-  region: string;
-  durations: Array<{ start: string; end: string }>;
-}
-
-export interface Document {
+export interface DocumentType {
   title: string;
   slug: string;
   id: string;
@@ -37,9 +30,10 @@ export interface Document {
   size: 's' | 'm' | 'xl' | 'xlCondensed';
   customCSS: string | null;
   customHTML: string | null;
+  dateAdded: string;
 }
 
-export type DocumentWithFriendMeta = Document & {
+export type DocumentWithFriendMeta = DocumentType & {
   authorSlug: string;
   authorName: string;
   authorGender: Gender;

@@ -1,8 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
-import type { Props as BookTeaserCardProps } from '@/components/core/BookTeaserCard';
+import type { DocumentWithFriendMeta } from '@/lib/types';
 import BookTeaserCard from '../../core/BookTeaserCard';
-import { getBookUrl } from '@/lib/friend';
+import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 
 interface Props {
   className?: string;
@@ -11,7 +11,7 @@ interface Props {
   titleEl: 'h1' | 'h2' | 'h3' | 'h4';
   bgColor: string;
   titleTextColor: string;
-  books: BookTeaserCardProps[];
+  books: DocumentWithFriendMeta[];
 }
 
 const BookTeaserCards: React.FC<Props> = ({
@@ -47,8 +47,27 @@ const BookTeaserCards: React.FC<Props> = ({
         {books.map((book) => (
           <BookTeaserCard
             className="pt-16 md:pt-0 md:mb-16 xl:mx-6"
-            key={getBookUrl(book.authorSlug, book.documentSlug)}
-            {...book}
+            key={getDocumentUrl(book.authorSlug, book.slug)}
+            title={book.title}
+            slug={book.slug}
+            id={book.id}
+            editionTypes={book.editionTypes}
+            shortDescription={book.shortDescription}
+            hasAudio={book.hasAudio}
+            tags={book.tags}
+            numDownloads={book.numDownloads}
+            numPages={book.numPages}
+            size={book.size}
+            customCSS={book.customCSS}
+            customHTML={book.customHTML}
+            authorSlug={book.authorSlug}
+            authorName={book.authorName}
+            authorGender={book.authorGender}
+            htmlShortTitle={book.title}
+            documentUrl={getDocumentUrl(book.authorSlug, book.slug)}
+            authorUrl={getFriendUrl(book.authorSlug, book.authorGender)}
+            description={book.shortDescription}
+            dateAdded={book.dateAdded}
           />
         ))}
       </div>

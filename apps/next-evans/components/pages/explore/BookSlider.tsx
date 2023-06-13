@@ -4,15 +4,16 @@ import { Swipeable } from 'react-swipeable';
 import { Front } from '@friends-library/cover-component';
 import Link from 'next/link';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import type { BookPreviewProps } from '@/lib/types';
+import type { DocumentWithFriendMeta } from '@/lib/types';
 import { useWindowWidth } from '@/lib/hooks/window-width';
 import { SCREEN_LG, SCREEN_MD, SCREEN_XL } from '@/lib/constants';
-import { getBookUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
+import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
+import { mostModernEdition } from '@/lib/editions';
 
 interface Props {
-  books: BookPreviewProps[];
+  books: DocumentWithFriendMeta[];
   className?: string;
 }
 
@@ -69,24 +70,27 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
       >
         {books.map((book, idx) => (
           <div
-            key={getBookUrl(book.authorSlug, book.documentSlug)}
+            key={getDocumentUrl(book.authorSlug, book.slug)}
             className={cx(
               idx < vertCutoff ? `flex` : `hidden md:flex`,
               `BookSlider__Book max-w-xs flex-col items-center mb-12 px-10 text-center`,
               `md:px-6 md:mb-0 md:min-w-[224px] md:min-w-[224px]`,
             )}
           >
-            <Link href={getBookUrl(book.authorSlug, book.documentSlug)}>
+            <Link href={getDocumentUrl(book.authorSlug, book.slug)}>
               <Front
-                {...book}
+                author={book.authorName}
+                edition={mostModernEdition(book.editionTypes)}
+                customCss={book.customCSS ?? ``}
+                customHtml={book.customHTML ?? ``}
                 isbn=""
-                isCompilation={isCompilations(book.author)}
+                isCompilation={isCompilations(book.authorSlug)}
                 lang={LANG}
-                className=""
-                size="m"
                 scaler={1 / 4}
                 scope="1-4"
                 shadow
+                {...book}
+                size={book.size === `xlCondensed` ? `xl` : book.size}
               />
             </Link>
             <h3
@@ -97,7 +101,7 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
               href={getFriendUrl(book.authorSlug, book.authorGender)}
               className="fl-underline text-sm text-flprimary"
             >
-              {book.author}
+              {book.authorName}
             </Link>
           </div>
         ))}

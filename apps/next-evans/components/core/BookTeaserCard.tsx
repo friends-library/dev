@@ -3,14 +3,14 @@ import cx from 'classnames';
 import { Front } from '@friends-library/cover-component';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import type { BookPreviewProps } from '@/lib/types';
+import type { DocumentWithFriendMeta } from '@/lib/types';
 import AudioDuration from './AudioDuration';
 import Album from '@/components/core/Album';
 import { LANG } from '@/lib/env';
 import { isCompilations } from '@/lib/friend';
 import Button from '@/components/core/Button';
 
-export type Props = BookPreviewProps & {
+export type Props = DocumentWithFriendMeta & {
   audioDuration?: string;
   htmlShortTitle: string;
   documentUrl: string;
@@ -23,7 +23,7 @@ export type Props = BookPreviewProps & {
 const BookTeaserCard: React.FC<Props> = (props) => {
   const {
     htmlShortTitle,
-    author,
+    authorName,
     audioDuration,
     className,
     authorUrl,
@@ -54,10 +54,14 @@ const BookTeaserCard: React.FC<Props> = (props) => {
           {isAudio && (
             <Link href={`${props.documentUrl}#audiobook`}>
               <Album
+                author={authorName}
+                edition={`original`}
+                customCss={``}
+                customHtml={``}
                 {...props}
                 className=""
                 lang={LANG}
-                isCompilation={isCompilations(props.author)}
+                isCompilation={isCompilations(props.authorName)}
                 isbn=""
               />
             </Link>
@@ -65,6 +69,10 @@ const BookTeaserCard: React.FC<Props> = (props) => {
           {!isAudio && (
             <Link href={props.documentUrl}>
               <Front
+                author={authorName}
+                edition={`original`}
+                customCss={props.customCSS || ``}
+                customHtml={props.customHTML || ``}
                 {...props}
                 className=""
                 size="m"
@@ -72,7 +80,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
                 scope="1-3"
                 shadow
                 lang={LANG}
-                isCompilation={isCompilations(props.author)}
+                isCompilation={isCompilations(props.authorName)}
                 isbn=""
               />
             </Link>
@@ -93,7 +101,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
           />
         </h3>
         <Link href={authorUrl} className="fl-underline text-sm text-flprimary">
-          {author}
+          {authorName}
         </Link>
         {isAudio && (
           <AudioDuration className="mt-8 md:justify-start">{audioDuration}</AudioDuration>
