@@ -1,10 +1,10 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { DocumentWithMeta } from '@/lib/types';
 import BookTeaserCards from './BookTeaserCards';
 
 interface Props {
-  books: DocumentWithFriendMeta[];
+  books: DocumentWithMeta[];
 }
 
 const NewBooksBlock: React.FC<Props> = ({ books }) => (

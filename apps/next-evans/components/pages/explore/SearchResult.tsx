@@ -1,12 +1,12 @@
 import React from 'react';
 import { Front } from '@friends-library/cover-component';
 import Link from 'next/link';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { DocumentWithMeta } from '@/lib/types';
 import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import { LANG } from '@/lib/env';
 import { mostModernEdition } from '@/lib/editions';
 
-const SearchResult: React.FC<DocumentWithFriendMeta> = (book) => (
+const SearchResult: React.FC<DocumentWithMeta> = (book) => (
   <Link href={getDocumentUrl(book.authorSlug, book.slug)}>
     <Front
       lang={LANG}

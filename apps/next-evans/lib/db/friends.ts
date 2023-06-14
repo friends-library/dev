@@ -1,20 +1,34 @@
 import invariant from 'tiny-invariant';
+import type { Lang } from '@friends-library/types';
 import type { CustomCode } from './custom-code';
-import type { DocumentWithFriendMeta, FriendType } from '../types';
+import type { DocumentWithMeta, FriendType } from '../types';
 import { LANG } from '../env';
+import { documentRegion, getPrimaryResidence } from '../residences';
 import { prisma } from './prisma';
 import getAllCustomCode from './custom-code';
 
-let friendsPromise: Promise<Record<string, FriendType>> | null = null;
+let friendsPromise_en: Promise<Record<string, FriendType>> | null = null;
+let friendsPromise_es: Promise<Record<string, FriendType>> | null = null;
 
-export async function getAllFriends(): Promise<Record<string, FriendType>> {
-  if (friendsPromise) {
-    return friendsPromise;
+export async function getAllFriends(
+  lang: Lang = LANG,
+): Promise<Record<string, FriendType>> {
+  if (lang === `en`) {
+    if (friendsPromise_en) {
+      return friendsPromise_en;
+    }
+    friendsPromise_en = Promise.all([getFriendsFromDB(lang), getAllCustomCode()]).then(
+      ([friends, customCode]) => addCustomCodeToFriends(friends, customCode),
+    );
+    return friendsPromise_en;
   }
-  friendsPromise = Promise.all([_getFriends(), getAllCustomCode()]).then(
+  if (friendsPromise_es) {
+    return friendsPromise_es;
+  }
+  friendsPromise_es = Promise.all([getFriendsFromDB(lang), getAllCustomCode()]).then(
     ([friends, customCode]) => addCustomCodeToFriends(friends, customCode),
   );
-  return friendsPromise;
+  return friendsPromise_es;
 }
 
 export default async function getFriend(
@@ -25,13 +39,22 @@ export default async function getFriend(
 }
 
 // { `friendSlug/documentSlug`: Document }
-export async function getAllDocuments(): Promise<Record<string, DocumentWithFriendMeta>> {
-  const friends = await getAllFriends();
-  const documents: Record<string, DocumentWithFriendMeta> = {};
+export async function getAllDocuments(
+  lang: Lang = LANG,
+): Promise<Record<string, DocumentWithMeta>> {
+  const friends = await getAllFriends(lang);
+  const documents: Record<string, DocumentWithMeta> = {};
   Object.values(friends).forEach((friend) => {
     friend.documents.forEach((doc) => {
+      const primaryResidence = getPrimaryResidence(friend.residences);
+      const firstStay = primaryResidence?.durations[0];
+      const publicationDate = firstStay ? firstStay.start ?? firstStay.end : null;
       documents[`${friend.slug}/${doc.slug}`] = {
         ...doc,
+        publishedRegion: primaryResidence?.region
+          ? documentRegion(primaryResidence?.region)
+          : `Other`,
+        publishedDate: publicationDate ?? friend.died ?? friend.born ?? 1650,
         authorGender: friend.gender,
         authorName: friend.name,
         authorSlug: friend.slug,
@@ -41,10 +64,14 @@ export async function getAllDocuments(): Promise<Record<string, DocumentWithFrie
   return documents;
 }
 
-async function _getFriends(): Promise<Record<string, FriendType>> {
+export async function getNumDocuments(lang: Lang): Promise<number> {
+  return Object.values(await getAllDocuments(lang)).length;
+}
+
+async function getFriendsFromDB(lang: Lang): Promise<Record<string, FriendType>> {
   const publishedFriends = await prisma.friends.findMany({
     where: {
-      lang: LANG,
+      lang,
     },
     select: {
       name: true,

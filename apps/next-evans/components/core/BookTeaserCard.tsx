@@ -3,14 +3,14 @@ import cx from 'classnames';
 import { Front } from '@friends-library/cover-component';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { DocumentWithMeta } from '@/lib/types';
 import AudioDuration from './AudioDuration';
 import Album from '@/components/core/Album';
 import { LANG } from '@/lib/env';
 import { isCompilations } from '@/lib/friend';
 import Button from '@/components/core/Button';
 
-export type Props = DocumentWithFriendMeta & {
+export type Props = DocumentWithMeta & {
   audioDuration?: string;
   htmlShortTitle: string;
   documentUrl: string;

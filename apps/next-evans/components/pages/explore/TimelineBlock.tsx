@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { DocumentWithMeta } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import TimePicker from './TimePicker';
@@ -13,7 +13,7 @@ import PillDropdownItem from '@/components/core/PillDropdownItem';
 import CastleBgImage from '@/public/images/castle.jpg';
 
 interface Props {
-  books: (DocumentWithFriendMeta & { date: number })[];
+  books: (DocumentWithMeta & { date: number })[];
 }
 
 const TimelineBlock: React.FC<Props> = ({ books }) => {
@@ -50,7 +50,7 @@ const TimelineBlock: React.FC<Props> = ({ books }) => {
               </p>
             </div>
           </BgWordBlock>
-          <div className="sm:hidden pb-32 -mt-12">
+          <div className="sm:hidden flex flex-col pb-24 -mt-12">
             <label className="font-sans text-center text-white uppercase antialiased mt-0 mb-2 block tracking-widest">
               Pick a Date
             </label>

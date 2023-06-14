@@ -1,6 +1,6 @@
 import React from 'react';
 import type { GetStaticProps } from 'next';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { DocumentWithMeta, Period } from '@/lib/types';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import Dual from '@/components/core/Dual';
 import HeroImg from '@/public/images/explore-books.jpg';
@@ -13,26 +13,29 @@ import NewBooksBlock from '@/components/pages/explore/NewBooksBlock';
 import ExploreRegionsBlock from '@/components/pages/explore/RegionBlock';
 import TimelineBlock from '@/components/pages/explore/TimelineBlock';
 import AltSiteBlock from '@/components/pages/explore/AltSiteBlock';
-import { getAllDocuments } from '@/lib/db/friends';
+import { getAllDocuments, getNumDocuments } from '@/lib/db/friends';
 import { mostModernEdition } from '@/lib/editions';
 import SearchBlock from '@/components/pages/explore/SearchBlock';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const documents = Object.values(await getAllDocuments());
+  const numBooksInAltLang = await getNumDocuments(LANG === `en` ? `es` : `en`);
   return {
     props: {
       books: documents,
       numBooks: documents.length,
+      numBooksInAltLang,
     },
   };
 };
 
 interface Props {
   numBooks: number;
-  books: Array<DocumentWithFriendMeta>;
+  numBooksInAltLang: number;
+  books: Array<DocumentWithMeta>;
 }
 
-const ExploreBooks: React.FC<Props> = ({ numBooks, books }) => (
+const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) => (
   <div>
     <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
       <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
@@ -72,31 +75,34 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, books }) => (
     />
     {LANG === `en` && (
       <ExploreRegionsBlock
-        // TODO ~ get real region
         books={books.map((book) => ({
           ...book,
-          region: `Western US`,
+          region: book.publishedRegion,
         }))}
       />
     )}
     {LANG === `en` && (
-      // TODO ~ get real publication date
-      <TimelineBlock books={books.map((book) => ({ ...book, date: 1700 }))} />
+      <TimelineBlock
+        books={books.map((book) => ({ ...book, date: book.publishedDate }))}
+      />
     )}
     <AltSiteBlock
-      // TODO ~ get real book count
-      numBooks={7}
+      numBooks={numBooksInAltLang}
       url={
         LANG === `en` ? `https://bibliotecadelosamigos.org` : `https://friendslibrary.com`
       }
     />
     <SearchBlock
-      books={books.map((book) => ({
-        ...book,
-        edition: mostModernEdition(book.editionTypes),
-        region: `England`,
-        period: `early`,
-      }))}
+      books={books
+        .flatMap((book) =>
+          book.editionTypes.map((editionType) => ({ ...book, edition: editionType })),
+        )
+        .map((book) => ({
+          ...book,
+          edition: book.edition,
+          region: book.publishedRegion,
+          period: getPeriod(book.publishedDate),
+        }))}
     />
   </div>
 );
@@ -108,3 +114,9 @@ export const WhiteOverlay: React.FC<{ children: React.ReactNode }> = ({ children
     {children}
   </div>
 );
+
+function getPeriod(date: number): Period {
+  if (date < 1725) return `early`;
+  if (date < 1815) return `mid`;
+  return `late`;
+}

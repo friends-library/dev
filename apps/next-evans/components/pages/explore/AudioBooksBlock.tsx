@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { DocumentWithMeta } from '@/lib/types';
 import AudiobooksHero from './AudiobooksHero';
 import Album from '@/components/core/Album';
 import Button from '@/components/core/Button';
@@ -11,7 +11,7 @@ import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import { mostModernEdition } from '@/lib/editions';
 
 interface Props {
-  books: Array<DocumentWithFriendMeta>;
+  books: Array<DocumentWithMeta>;
 }
 
 const AudioBooksBlock: React.FC<Props> = ({ books }) => (

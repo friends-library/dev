@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import type { DocumentWithFriendMeta, Region } from '@/lib/types';
+import type { DocumentWithMeta, Region } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import MapSlider from './MapSlider';
 
 interface Props {
-  books: (DocumentWithFriendMeta & { region: Region })[];
+  books: (DocumentWithMeta & { region: Region })[];
 }
 
 const ExploreRegionsBlock: React.FC<Props> = ({ books }) => {

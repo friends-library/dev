@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { DocumentWithMeta } from '@/lib/types';
 import Dual from '@/components/core/Dual';
 import Heading from '@/components/core/Heading';
 import BackgroundImage from '@/components/core/BackgroundImage';
@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 export type GettingStartedCoverProps = Pick<
-  DocumentWithFriendMeta,
+  DocumentWithMeta,
   | 'authorGender'
   | 'authorName'
   | 'authorSlug'

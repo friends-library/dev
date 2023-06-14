@@ -1,10 +1,9 @@
 import Button from '@evans/core/Button';
-import type { Meta, StoryFn, StoryObj } from '@storybook/react';
-import { props } from './helpers';
+import type { Meta, StoryFn } from '@storybook/react';
 import { ComponentProps } from 'react';
 
 const meta = {
-  title: 'Friend/Button', // eslint-disable-line
+  title: 'Core/Button', // eslint-disable-line
   component: Button,
   parameters: { layout: `centered` },
 } satisfies Meta<typeof Button>;

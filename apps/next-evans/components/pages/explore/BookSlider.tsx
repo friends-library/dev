@@ -4,7 +4,7 @@ import { Swipeable } from 'react-swipeable';
 import { Front } from '@friends-library/cover-component';
 import Link from 'next/link';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { DocumentWithMeta } from '@/lib/types';
 import { useWindowWidth } from '@/lib/hooks/window-width';
 import { SCREEN_LG, SCREEN_MD, SCREEN_XL } from '@/lib/constants';
 import { LANG } from '@/lib/env';
@@ -13,7 +13,7 @@ import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 import { mostModernEdition } from '@/lib/editions';
 
 interface Props {
-  books: DocumentWithFriendMeta[];
+  books: DocumentWithMeta[];
   className?: string;
 }
 

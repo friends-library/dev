@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { DocumentWithMeta } from '@/lib/types';
 import BookTeaserCard from '../../core/BookTeaserCard';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 
@@ -11,7 +11,7 @@ interface Props {
   titleEl: 'h1' | 'h2' | 'h3' | 'h4';
   bgColor: string;
   titleTextColor: string;
-  books: DocumentWithFriendMeta[];
+  books: DocumentWithMeta[];
 }
 
 const BookTeaserCards: React.FC<Props> = ({
@@ -68,6 +68,8 @@ const BookTeaserCards: React.FC<Props> = ({
             authorUrl={getFriendUrl(book.authorSlug, book.authorGender)}
             description={book.shortDescription}
             dateAdded={book.dateAdded}
+            publishedRegion={book.publishedRegion}
+            publishedDate={book.publishedDate}
           />
         ))}
       </div>

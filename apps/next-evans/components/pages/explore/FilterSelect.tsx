@@ -12,7 +12,7 @@ const FilterSelect: React.FC<Props> = ({ selected, setSelected }) => (
   <Popover className="relative flex flex-col items-center">
     {({ open }) => (
       <>
-        <Popover.Button className="border border-flgray-400 rounded-full bg-white pl-8 pr-4 py-2 flex justify-between items-center">
+        <Popover.Button className="border border-flgray-400 rounded-full bg-white w-64 pl-8 pr-4 py-2 flex justify-between items-center">
           <span className="text-flgray-500 tracking-wider text-lg shrink-0">
             All books
           </span>
@@ -23,7 +23,7 @@ const FilterSelect: React.FC<Props> = ({ selected, setSelected }) => (
             )}
           />
         </Popover.Button>
-        <Popover.Panel className="border-[0.5px] border-flgray-200 bg-white shadow-xl absolute z-10 p-2 top-14 w-72 rounded-xl border-flgray-400 overflow:hidden">
+        <Popover.Panel className="border-[0.5px] border-flgray-200 bg-white shadow-xl absolute z-10 p-2 top-14 w-72 rounded-xl overflow:hidden">
           <div className="flex justify-center p-2">
             <h4 className="text-flgray-700">Select one or more filters</h4>
           </div>
@@ -60,9 +60,9 @@ const FilterSelect: React.FC<Props> = ({ selected, setSelected }) => (
             title="Time Period"
             category="period"
             options={[
-              { display: `Early`, value: `early` },
-              { display: `Mid`, value: `mid` },
-              { display: `Late`, value: `late` },
+              { display: `Early (1650-1725)`, value: `early` },
+              { display: `Mid (1725-1815)`, value: `mid` },
+              { display: `Late (1815-1895)`, value: `late` },
             ]}
           />
           <FilterCategoryAccordion
@@ -117,7 +117,7 @@ const FilterCategoryAccordion: React.FC<AccordionProps> = ({
         <Disclosure.Panel>
           <ul className="flex flex-col pb-4">
             {options.map((option) => (
-              <li
+              <button
                 key={option.value}
                 className={cx(
                   `py-2 px-4 rounded-xl text-base text-center hover:bg-flgray-100 border cursor-pointer text-flgray-600 transition duration-100`,
@@ -144,7 +144,7 @@ const FilterCategoryAccordion: React.FC<AccordionProps> = ({
                 }}
               >
                 {option.display}
-              </li>
+              </button>
             ))}
           </ul>
         </Disclosure.Panel>

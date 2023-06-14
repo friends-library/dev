@@ -33,10 +33,12 @@ export interface DocumentType {
   dateAdded: string;
 }
 
-export type DocumentWithFriendMeta = DocumentType & {
+export type DocumentWithMeta = DocumentType & {
   authorSlug: string;
   authorName: string;
   authorGender: Gender;
+  publishedRegion: Region;
+  publishedDate: number;
 };
 
 export type Edition = 'original' | 'modernized' | 'updated';

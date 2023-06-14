@@ -1,14 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { t } from '@friends-library/locale';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { DocumentWithMeta } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import { LANG } from '@/lib/env';
 import Dual from '@/components/core/Dual';
 
 interface Props {
-  books: DocumentWithFriendMeta[];
+  books: DocumentWithMeta[];
 }
 
 const UpdatedEditionsBlock: React.FC<Props> = ({ books }) => (

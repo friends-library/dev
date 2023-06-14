@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { t } from '@friends-library/locale';
-import type { DocumentWithFriendMeta, Edition, Period, Region } from '@/lib/types';
+import type { DocumentWithMeta, Edition, Period, Region } from '@/lib/types';
 import SearchControls from './SearchControls';
 import SearchResult from './SearchResult';
 import { getDocumentUrl } from '@/lib/friend';
@@ -10,9 +10,7 @@ import RiverPath from '@/public/images/water-path.jpg';
 interface Props {
   initialFilters?: string[];
   initialUsed?: boolean;
-  books: Array<
-    DocumentWithFriendMeta & { period: Period; region: Region; edition: Edition }
-  >;
+  books: Array<DocumentWithMeta & { period: Period; region: Region; edition: Edition }>;
 }
 
 const SearchBlock: React.FC<Props> = ({ books, initialFilters, initialUsed }) => {
@@ -47,12 +45,7 @@ const SearchBlock: React.FC<Props> = ({ books, initialFilters, initialUsed }) =>
         </div>
       )}
       {matches.length === 0 && (
-        <BackgroundImage
-          // style={{ minHeight: `45vh` }}
-          src={RiverPath}
-          fit="cover"
-          position="object-bottom"
-        >
+        <BackgroundImage src={RiverPath} fit="cover" position="object-bottom">
           <div className="bg-gradient-to-b from-black/30 to-black/30 px-16 sm:px-32 flex flex-col justify-center min-h-[45vh]">
             <p className="text-white text-2xl sm:text-3xl sans-wider text-center">
               {used
