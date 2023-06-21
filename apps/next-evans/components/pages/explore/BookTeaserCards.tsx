@@ -11,7 +11,7 @@ interface Props {
   titleEl: 'h1' | 'h2' | 'h3' | 'h4';
   bgColor: string;
   titleTextColor: string;
-  books: DocumentWithMeta[];
+  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
 }
 
 const BookTeaserCards: React.FC<Props> = ({
@@ -56,8 +56,8 @@ const BookTeaserCards: React.FC<Props> = ({
             hasAudio={book.hasAudio}
             tags={book.tags}
             numDownloads={book.numDownloads}
-            numPages={book.numPages}
-            size={book.size}
+            numPages={[7]}
+            size={`m`}
             customCSS={book.customCSS}
             customHTML={book.customHTML}
             authorSlug={book.authorSlug}
@@ -70,6 +70,10 @@ const BookTeaserCards: React.FC<Props> = ({
             dateAdded={book.dateAdded}
             publishedRegion={book.publishedRegion}
             publishedDate={book.publishedDate}
+            badgeText={new Date(book.dateAdded).toLocaleDateString(`en-US`, {
+              month: `short`,
+              day: `numeric`,
+            })}
           />
         ))}
       </div>

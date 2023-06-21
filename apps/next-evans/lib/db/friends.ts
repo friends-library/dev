@@ -3,32 +3,28 @@ import type { Lang } from '@friends-library/types';
 import type { CustomCode } from './custom-code';
 import type { DocumentWithMeta, FriendType } from '../types';
 import { LANG } from '../env';
-import { documentRegion, getPrimaryResidence } from '../residences';
+import { getPublicationDate, getPublicationRegion } from '../document';
 import { prisma } from './prisma';
 import getAllCustomCode from './custom-code';
 
-let friendsPromise_en: Promise<Record<string, FriendType>> | null = null;
-let friendsPromise_es: Promise<Record<string, FriendType>> | null = null;
+const friendsPromise: {
+  en: Promise<Record<string, FriendType>> | null;
+  es: Promise<Record<string, FriendType>> | null;
+} = { en: null, es: null };
 
 export async function getAllFriends(
   lang: Lang = LANG,
 ): Promise<Record<string, FriendType>> {
-  if (lang === `en`) {
-    if (friendsPromise_en) {
-      return friendsPromise_en;
-    }
-    friendsPromise_en = Promise.all([getFriendsFromDB(lang), getAllCustomCode()]).then(
-      ([friends, customCode]) => addCustomCodeToFriends(friends, customCode),
-    );
-    return friendsPromise_en;
+  let languageSpecificFriends = friendsPromise[lang];
+  if (languageSpecificFriends) {
+    return languageSpecificFriends;
   }
-  if (friendsPromise_es) {
-    return friendsPromise_es;
-  }
-  friendsPromise_es = Promise.all([getFriendsFromDB(lang), getAllCustomCode()]).then(
-    ([friends, customCode]) => addCustomCodeToFriends(friends, customCode),
-  );
-  return friendsPromise_es;
+  languageSpecificFriends = Promise.all([
+    getFriendsFromDB(lang),
+    getAllCustomCode(),
+  ]).then(([friends, customCode]) => addCustomCodeToFriends(friends, customCode));
+  friendsPromise[lang] = languageSpecificFriends;
+  return languageSpecificFriends;
 }
 
 export default async function getFriend(
@@ -46,15 +42,10 @@ export async function getAllDocuments(
   const documents: Record<string, DocumentWithMeta> = {};
   Object.values(friends).forEach((friend) => {
     friend.documents.forEach((doc) => {
-      const primaryResidence = getPrimaryResidence(friend.residences);
-      const firstStay = primaryResidence?.durations[0];
-      const publicationDate = firstStay ? firstStay.start ?? firstStay.end : null;
       documents[`${friend.slug}/${doc.slug}`] = {
         ...doc,
-        publishedRegion: primaryResidence?.region
-          ? documentRegion(primaryResidence?.region)
-          : `Other`,
-        publishedDate: publicationDate ?? friend.died ?? friend.born ?? 1650,
+        publishedRegion: getPublicationRegion(friend.residences),
+        publishedDate: getPublicationDate(friend.residences, friend.born, friend.died),
         authorGender: friend.gender,
         authorName: friend.name,
         authorSlug: friend.slug,

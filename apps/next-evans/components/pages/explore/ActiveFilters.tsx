@@ -22,18 +22,13 @@ const ActiveFilters: React.FC<Props> = ({ groups, clearAll }) => (
       <>Active Filters:</>
       <>Filtros Activos:</>
     </Dual.Span>
-    <div
-      className={cx(
-        `flex flex-col md:flex-row md:flex-wrap`,
-        `[&_.ActiveFilters__Group_+_.ActiveFilters__Group]:[border-top:1px_solid_rgba(0,0,0,0.06)] [&_.ActiveFilters__Group_+_.ActiveFilters__Group]:pt-[0.65rem]`,
-        `md:[&_.ActiveFilters__Group_+_.ActiveFilters__Group]:border-t-0 md:[&_.ActiveFilters__Group_+_.ActiveFilters__Group]:pt-0`,
-      )}
-    >
-      {groups.map((group) => (
+    <div className={cx(`flex flex-col md:flex-row md:flex-wrap`)}>
+      {groups.map((group, index) => (
         <div
           className={cx(
-            `ActiveFilters__Group bg-blue-200* my-1 mb-2`,
-            `md:flex md:flex-wrap md:mx-2`,
+            `border-flgray-400 py-2`,
+            index === groups.length - 1 ? `border-b-0` : `border-b md:border-b-0`,
+            `md:flex md:flex-wrap md:mx-3`,
           )}
           key={group.label}
         >

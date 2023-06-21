@@ -38,7 +38,7 @@ export type DocumentWithMeta = DocumentType & {
   authorName: string;
   authorGender: Gender;
   publishedRegion: Region;
-  publishedDate: number;
+  publishedDate: number | null;
 };
 
 export type Edition = 'original' | 'modernized' | 'updated';

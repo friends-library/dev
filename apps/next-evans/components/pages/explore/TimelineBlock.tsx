@@ -13,7 +13,7 @@ import PillDropdownItem from '@/components/core/PillDropdownItem';
 import CastleBgImage from '@/public/images/castle.jpg';
 
 interface Props {
-  books: (DocumentWithMeta & { date: number })[];
+  books: (Omit<DocumentWithMeta, 'numPages' | 'size'> & { date: number })[];
 }
 
 const TimelineBlock: React.FC<Props> = ({ books }) => {
@@ -34,7 +34,7 @@ const TimelineBlock: React.FC<Props> = ({ books }) => {
           <BgWordBlock
             word="Timeline"
             className={cx(
-              `TimelineBlock__BgWord px-12 pt-40 pb-24 sm:pb-32`,
+              `px-12 pt-40 pb-24 sm:pb-32`,
               `[&_.BackgroundWord]:pt-[75px] [&_.BackgroundWord]:text-white [&_.BackgroundWord]:z-30 [&_.BackgroundWord]:text-[90px]`,
               `sm:[&_.BackgroundWord]:pt-[38px] sm:[&_.BackgroundWord]:text-[130px]`,
             )}

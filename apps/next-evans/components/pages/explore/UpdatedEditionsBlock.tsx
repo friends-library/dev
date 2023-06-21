@@ -8,7 +8,7 @@ import { LANG } from '@/lib/env';
 import Dual from '@/components/core/Dual';
 
 interface Props {
-  books: DocumentWithMeta[];
+  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
 }
 
 const UpdatedEditionsBlock: React.FC<Props> = ({ books }) => (

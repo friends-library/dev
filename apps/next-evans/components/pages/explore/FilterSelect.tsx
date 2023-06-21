@@ -23,62 +23,65 @@ const FilterSelect: React.FC<Props> = ({ selected, setSelected }) => (
             )}
           />
         </Popover.Button>
-        <Popover.Panel className="border-[0.5px] border-flgray-200 bg-white shadow-xl absolute z-10 p-2 top-14 w-72 rounded-xl overflow:hidden">
-          <div className="flex justify-center p-2">
+        <Popover.Panel className="border-[0.5px] border-flgray-200 bg-white shadow-xl absolute flex flex-col items-center z-10 top-16 w-72 rounded-xl">
+          <div className="border-l-[0.5px] border-t-[0.5px] border-flgray-200 rounded-sm w-5 h-5 rotate-45 bg-white absolute -top-2.5" />
+          <div className="flex justify-center p-4">
             <h4 className="text-flgray-700">Select one or more filters</h4>
           </div>
-          <FilterCategoryAccordion
-            selected={selected}
-            setSelected={setSelected}
-            title="Editions"
-            category="edition"
-            options={[
-              { display: `Updated`, value: `updated` },
-              { display: `Modernized`, value: `modernized` },
-              { display: `Original`, value: `original` },
-            ]}
-          />
-          <FilterCategoryAccordion
-            selected={selected}
-            setSelected={setSelected}
-            title="Tags"
-            category="tag"
-            options={[
-              { display: `Journal`, value: `journal` },
-              { display: `Letters`, value: `letters` },
-              { display: `Exhortation`, value: `exhortation` },
-              { display: `Doctrinal`, value: `doctrinal` },
-              { display: `Treatise`, value: `treatise` },
-              { display: `History`, value: `history` },
-              { display: `Allegory`, value: `allegory` },
-              { display: `Spiritual Life`, value: `spiritual-life` },
-            ]}
-          />
-          <FilterCategoryAccordion
-            selected={selected}
-            setSelected={setSelected}
-            title="Time Period"
-            category="period"
-            options={[
-              { display: `Early (1650-1725)`, value: `early` },
-              { display: `Mid (1725-1815)`, value: `mid` },
-              { display: `Late (1815-1895)`, value: `late` },
-            ]}
-          />
-          <FilterCategoryAccordion
-            selected={selected}
-            setSelected={setSelected}
-            title="Region"
-            category="region"
-            options={[
-              { display: `England`, value: `England` },
-              { display: `Ireland`, value: `Ireland` },
-              { display: `Scotland`, value: `Scotland` },
-              { display: `Eastern US`, value: `Eastern US` },
-              { display: `Western US`, value: `Western US` },
-              { display: `Other`, value: `Other` },
-            ]}
-          />
+          <div className="relative overflow-hidden rounded-b-xl self-stretch">
+            <FilterCategoryAccordion
+              selected={selected}
+              setSelected={setSelected}
+              title="Editions"
+              category="edition"
+              options={[
+                { display: `Updated`, value: `updated` },
+                { display: `Modernized`, value: `modernized` },
+                { display: `Original`, value: `original` },
+              ]}
+            />
+            <FilterCategoryAccordion
+              selected={selected}
+              setSelected={setSelected}
+              title="Tags"
+              category="tag"
+              options={[
+                { display: `Journal`, value: `journal` },
+                { display: `Letters`, value: `letters` },
+                { display: `Exhortation`, value: `exhortation` },
+                { display: `Doctrinal`, value: `doctrinal` },
+                { display: `Treatise`, value: `treatise` },
+                { display: `History`, value: `history` },
+                { display: `Allegory`, value: `allegory` },
+                { display: `Spiritual Life`, value: `spiritual-life` },
+              ]}
+            />
+            <FilterCategoryAccordion
+              selected={selected}
+              setSelected={setSelected}
+              title="Time Period"
+              category="period"
+              options={[
+                { display: `Early (1650-1725)`, value: `early` },
+                { display: `Mid (1725-1815)`, value: `mid` },
+                { display: `Late (1815-1895)`, value: `late` },
+              ]}
+            />
+            <FilterCategoryAccordion
+              selected={selected}
+              setSelected={setSelected}
+              title="Region"
+              category="region"
+              options={[
+                { display: `England`, value: `england` },
+                { display: `Ireland`, value: `ireland` },
+                { display: `Scotland`, value: `scotland` },
+                { display: `Eastern US`, value: `eastern-us` },
+                { display: `Western US`, value: `western-us` },
+                { display: `Other`, value: `other` },
+              ]}
+            />
+          </div>
         </Popover.Panel>
       </>
     )}
@@ -105,8 +108,8 @@ const FilterCategoryAccordion: React.FC<AccordionProps> = ({
   <Disclosure>
     {({ open }) => (
       <div className="last:rounded-b-xl flex flex-col overflow:hidden">
-        <Disclosure.Button className="font-bold flex justify-between items-center space-x-2 p-4 hover:bg-flgray-100 transition duration-200 rounded-2xl">
-          <span className="text-flgray-700 text-lg">{title}</span>
+        <Disclosure.Button className="bg-flgray-100 flex justify-center items-center space-x-2 p-4 hover:bg-flgray-100 transition duration-200">
+          <span className="text-flgray-500 text-lg">{title}</span>
           <ChevronDownIcon
             className={cx(
               `h-5 text-flgray-500 transition duration-100`,
@@ -120,10 +123,10 @@ const FilterCategoryAccordion: React.FC<AccordionProps> = ({
               <button
                 key={option.value}
                 className={cx(
-                  `py-2 px-4 rounded-xl text-base text-center hover:bg-flgray-100 border cursor-pointer text-flgray-600 transition duration-100`,
+                  `py-2 px-4 text-base text-center border cursor-pointer text-flgray-600 transition duration-100 first:mt-4`,
                   selected.includes(`${category}.${option.value}`)
-                    ? `border-flgray-400 bg-flgray-100`
-                    : `border-transparent`,
+                    ? `border-yellow-100 bg-yellow-50 hover:bg-yellow-100`
+                    : `border-transparent hover:bg-flgray-200`,
                 )}
                 onClick={() => {
                   if (selected.includes(`${category}.${option.value}`)) {

@@ -18,7 +18,7 @@ const Album: React.FC<Props> = (props) => {
     <div
       className={cx(
         props.className,
-        `Album box-content shadow-xl relative w-[1.8333333in] h-[1.8333333in] overflow-hidden [border:10px_solid_white] [&_.Cover]:translate-y-[-0.58in] [&_.Cover_.author]:opacity-0 rounded`,
+        `box-content shadow-xl relative w-[1.8333333in] h-[1.8333333in] overflow-hidden [border:10px_solid_white] [&_.Cover]:translate-y-[-0.58in] [&_.Cover_.author]:opacity-0 rounded`,
       )}
     >
       <Logo

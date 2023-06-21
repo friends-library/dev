@@ -5,7 +5,7 @@ import BookSlider from './BookSlider';
 import MapSlider from './MapSlider';
 
 interface Props {
-  books: (DocumentWithMeta & { region: Region })[];
+  books: (Omit<DocumentWithMeta, 'numPages' | 'size'> & { region: Region })[];
 }
 
 const ExploreRegionsBlock: React.FC<Props> = ({ books }) => {

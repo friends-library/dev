@@ -10,7 +10,13 @@ import RiverPath from '@/public/images/water-path.jpg';
 interface Props {
   initialFilters?: string[];
   initialUsed?: boolean;
-  books: Array<DocumentWithMeta & { period: Period; region: Region; edition: Edition }>;
+  books: Array<
+    Omit<DocumentWithMeta, 'numPages' | 'size'> & {
+      period: Period;
+      region: Region;
+      edition: Edition;
+    }
+  >;
 }
 
 const SearchBlock: React.FC<Props> = ({ books, initialFilters, initialUsed }) => {

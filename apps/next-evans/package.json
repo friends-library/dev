@@ -30,6 +30,7 @@
     "typescript": "5.0.2"
   },
   "devDependencies": {
+    "@friends-library/adoc-utils": "workspace:*",
     "@friends-library/cover-component": "workspace:*",
     "@friends-library/locale": "workspace:*",
     "@friends-library/theme": "workspace:*",

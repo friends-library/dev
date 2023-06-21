@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { Front } from '@friends-library/cover-component';
+import { htmlTitle } from '@friends-library/adoc-utils';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
 import type { DocumentWithMeta } from '@/lib/types';
@@ -9,6 +10,7 @@ import Album from '@/components/core/Album';
 import { LANG } from '@/lib/env';
 import { isCompilations } from '@/lib/friend';
 import Button from '@/components/core/Button';
+import { mostModernEdition } from '@/lib/editions';
 
 export type Props = DocumentWithMeta & {
   audioDuration?: string;
@@ -35,9 +37,9 @@ const BookTeaserCard: React.FC<Props> = (props) => {
     <div
       className={cx(
         className,
-        `BookTeaserCard text-white items-start [background-image:linear-gradient(to_bottom,transparent_0,transparent_210px,white_210px,white_100%)]`,
+        `text-white items-start [background-image:linear-gradient(to_bottom,transparent_0,transparent_210px,white_210px,white_100%)]`,
         isAudio &&
-          `BookTeaserCard__Audio [background-image:linear-gradient(to_bottom,transparent_0,transparent_100px,white_100px,white_100%)] md:[background-image:linear-gradient(to_right,transparent_0,transparent_85px,white_85px,white_100%)]`,
+          `[background-image:linear-gradient(to_bottom,transparent_0,transparent_100px,white_100px,white_100%)] md:[background-image:linear-gradient(to_right,transparent_0,transparent_85px,white_85px,white_100%)]`,
         `sm:mx-24`,
         `md:flex md:mx-auto md:max-w-[700px] md:[background-image:linear-gradient(to_top,transparent_0,transparent_45px,white_45px,white_100%)]`,
         `xl:min-w-[550px]`,
@@ -55,7 +57,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
             <Link href={`${props.documentUrl}#audiobook`}>
               <Album
                 author={authorName}
-                edition={`original`}
+                edition={mostModernEdition(props.editionTypes)}
                 customCss={``}
                 customHtml={``}
                 {...props}
@@ -70,7 +72,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
             <Link href={props.documentUrl}>
               <Front
                 author={authorName}
-                edition={`original`}
+                edition={mostModernEdition(props.editionTypes)}
                 customCss={props.customCSS || ``}
                 customHtml={props.customHTML || ``}
                 {...props}
@@ -97,7 +99,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
           <Link
             href={props.documentUrl}
             className="hover:underline"
-            dangerouslySetInnerHTML={{ __html: htmlShortTitle }}
+            dangerouslySetInnerHTML={{ __html: htmlTitle(htmlShortTitle) }}
           />
         </h3>
         <Link href={authorUrl} className="fl-underline text-sm text-flprimary">

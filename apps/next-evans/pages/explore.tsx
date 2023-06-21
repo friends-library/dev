@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 interface Props {
   numBooks: number;
   numBooksInAltLang: number;
-  books: Array<DocumentWithMeta>;
+  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
 }
 
 const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) => (
@@ -83,7 +83,9 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     )}
     {LANG === `en` && (
       <TimelineBlock
-        books={books.map((book) => ({ ...book, date: book.publishedDate }))}
+        books={books
+          .filter((book) => book.publishedDate)
+          .map((book) => ({ ...book, date: book.publishedDate ?? 1650 }))}
       />
     )}
     <AltSiteBlock
@@ -101,7 +103,7 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
           ...book,
           edition: book.edition,
           region: book.publishedRegion,
-          period: getPeriod(book.publishedDate),
+          period: book.publishedDate ? getPeriod(book.publishedDate) : `early`,
         }))}
     />
   </div>
