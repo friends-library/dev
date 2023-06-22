@@ -5,6 +5,10 @@ import FeaturedBooksBlock from '@/components/pages/home/FeaturedBooksBlock';
 import HeroBlock from '@/components/pages/home/HeroBlock';
 import SubHeroBlock from '@/components/pages/home/SubHeroBlock';
 import { getDocument } from '@/lib/db/documents';
+import GettingStartedBlock from '@/components/pages/home/GettingStartedBlock';
+import WhoWereTheQuakersBlock from '@/components/pages/home/WhoWereTheQuakersBlock';
+import FormatsBlock from '@/components/pages/home/FormatsBlock';
+import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const featuredBooks = (
@@ -33,6 +37,10 @@ const Home: React.FC<Props> = ({ featuredBooks }) => (
     <HeroBlock />
     <SubHeroBlock numTotalBooks={0} />
     <FeaturedBooksBlock books={featuredBooks} />
+    <GettingStartedBlock />
+    <WhoWereTheQuakersBlock />
+    <FormatsBlock />
+    <ExploreBooksBlock numTotalBooks={0} />
   </main>
 );
 
