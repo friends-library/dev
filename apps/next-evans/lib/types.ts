@@ -23,6 +23,7 @@ export interface DocumentType {
   id: string;
   editionTypes: Edition[];
   shortDescription: string;
+  featuredDescription: string | null;
   hasAudio: boolean;
   tags: Array<string>;
   numDownloads: number;

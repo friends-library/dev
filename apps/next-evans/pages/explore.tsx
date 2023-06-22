@@ -13,9 +13,9 @@ import NewBooksBlock from '@/components/pages/explore/NewBooksBlock';
 import ExploreRegionsBlock from '@/components/pages/explore/RegionBlock';
 import TimelineBlock from '@/components/pages/explore/TimelineBlock';
 import AltSiteBlock from '@/components/pages/explore/AltSiteBlock';
-import { getAllDocuments, getNumDocuments } from '@/lib/db/friends';
 import { mostModernEdition } from '@/lib/editions';
 import SearchBlock from '@/components/pages/explore/SearchBlock';
+import { getAllDocuments, getNumDocuments } from '@/lib/db/documents';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const documents = Object.values(await getAllDocuments());
@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 interface Props {
   numBooks: number;
   numBooksInAltLang: number;
-  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
+  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'>>;
 }
 
 const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) => (

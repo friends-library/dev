@@ -13,7 +13,7 @@ import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 import { mostModernEdition } from '@/lib/editions';
 
 interface Props {
-  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
+  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'>>;
   className?: string;
 }
 

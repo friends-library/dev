@@ -4,7 +4,7 @@ import type { DocumentWithMeta } from '@/lib/types';
 import BookTeaserCards from './BookTeaserCards';
 
 interface Props {
-  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
+  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'>>;
 }
 
 const NewBooksBlock: React.FC<Props> = ({ books }) => (

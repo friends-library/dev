@@ -13,7 +13,9 @@ import PillDropdownItem from '@/components/core/PillDropdownItem';
 import CastleBgImage from '@/public/images/castle.jpg';
 
 interface Props {
-  books: (Omit<DocumentWithMeta, 'numPages' | 'size'> & { date: number })[];
+  books: (Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'> & {
+    date: number;
+  })[];
 }
 
 const TimelineBlock: React.FC<Props> = ({ books }) => {

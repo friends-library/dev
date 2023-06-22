@@ -11,7 +11,7 @@ interface Props {
   titleEl: 'h1' | 'h2' | 'h3' | 'h4';
   bgColor: string;
   titleTextColor: string;
-  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
+  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'>>;
 }
 
 const BookTeaserCards: React.FC<Props> = ({
