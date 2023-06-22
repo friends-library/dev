@@ -6,7 +6,9 @@ import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import { LANG } from '@/lib/env';
 
 const SearchResult: React.FC<
-  Omit<DocumentWithMeta, 'numPages' | 'size'> & { edition: Edition }
+  Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'> & {
+    edition: Edition;
+  }
 > = (book) => (
   <Link href={getDocumentUrl(book.authorSlug, book.slug)}>
     <Front

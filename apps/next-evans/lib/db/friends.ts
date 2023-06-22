@@ -1,9 +1,8 @@
 import invariant from 'tiny-invariant';
 import type { Lang } from '@friends-library/types';
 import type { CustomCode } from './custom-code';
-import type { DocumentWithMeta, FriendType } from '../types';
+import type { FriendType } from '../types';
 import { LANG } from '../env';
-import { getPublicationDate, getPublicationRegion } from '../document';
 import { prisma } from './prisma';
 import getAllCustomCode from './custom-code';
 
@@ -32,31 +31,6 @@ export default async function getFriend(
 ): Promise<FriendType | undefined> {
   const friends = await getAllFriends();
   return friends[friendSlug];
-}
-
-// { `friendSlug/documentSlug`: Document }
-export async function getAllDocuments(
-  lang: Lang = LANG,
-): Promise<Record<string, DocumentWithMeta>> {
-  const friends = await getAllFriends(lang);
-  const documents: Record<string, DocumentWithMeta> = {};
-  Object.values(friends).forEach((friend) => {
-    friend.documents.forEach((doc) => {
-      documents[`${friend.slug}/${doc.slug}`] = {
-        ...doc,
-        publishedRegion: getPublicationRegion(friend.residences),
-        publishedDate: getPublicationDate(friend.residences, friend.born, friend.died),
-        authorGender: friend.gender,
-        authorName: friend.name,
-        authorSlug: friend.slug,
-      };
-    });
-  });
-  return documents;
-}
-
-export async function getNumDocuments(lang: Lang): Promise<number> {
-  return Object.values(await getAllDocuments(lang)).length;
 }
 
 async function getFriendsFromDB(lang: Lang): Promise<Record<string, FriendType>> {
@@ -104,6 +78,7 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, FriendType>>
           created_at: true,
           slug: true,
           partial_description: true,
+          featured_description: true,
           id: true,
           document_tags: {
             select: {
@@ -164,6 +139,7 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, FriendType>>
             created_at: null,
             isbn: firstEdition.isbns[0]?.code ?? ``,
             dateAdded: doc.created_at.toISOString(),
+            featuredDescription: doc.featured_description,
             editionTypes: doc.editions.map((e) => e.type),
             shortDescription: doc.partial_description,
             hasAudio: doc.editions.some((e) => e.edition_audios?.id),

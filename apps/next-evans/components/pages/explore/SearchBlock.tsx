@@ -11,7 +11,7 @@ interface Props {
   initialFilters?: string[];
   initialUsed?: boolean;
   books: Array<
-    Omit<DocumentWithMeta, 'numPages' | 'size'> & {
+    Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'> & {
       period: Period;
       region: Region;
       edition: Edition;

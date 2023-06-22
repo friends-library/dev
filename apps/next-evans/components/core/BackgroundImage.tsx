@@ -39,7 +39,7 @@ const BackgroundImage: React.FC<Props> = ({
       className={cx(fit && fitMap[fit], position, `absolute top-0 left-0`)}
       style={{ width: `100%`, height: `100%`, ...fineTuneImageStyles }}
     />
-    <div className="relative Content">{children}</div>
+    <div className="relative Content h-full">{children}</div>
   </div>
 );
 
