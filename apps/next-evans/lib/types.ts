@@ -59,3 +59,10 @@ export type Residence = {
   region: string;
   durations: Array<{ start: number | null; end: number | null }>;
 };
+
+export type NewsFeedType =
+  | `book`
+  | `audiobook`
+  | `spanish_translation`
+  | `feature`
+  | `chapter`;
