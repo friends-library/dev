@@ -74,6 +74,7 @@ const BookTeaserCards: React.FC<Props> = ({
               month: `short`,
               day: `numeric`,
             })}
+            isbn={book.isbn}
           />
         ))}
       </div>

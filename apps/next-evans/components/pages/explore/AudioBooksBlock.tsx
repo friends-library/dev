@@ -41,7 +41,6 @@ const AudioBooksBlock: React.FC<Props> = ({ books }) => (
             customHtml={book.customHTML ?? ``}
             lang={LANG}
             isCompilation={isCompilations(book.authorSlug)}
-            isbn={``}
             className="mb-8"
             {...book}
           />

@@ -162,6 +162,7 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, FriendType>>
           return {
             ...doc,
             created_at: null,
+            isbn: firstEdition.isbns[0]?.code ?? ``,
             dateAdded: doc.created_at.toISOString(),
             editionTypes: doc.editions.map((e) => e.type),
             shortDescription: doc.partial_description,

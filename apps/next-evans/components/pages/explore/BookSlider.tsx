@@ -83,7 +83,6 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
                 edition={mostModernEdition(book.editionTypes)}
                 customCss={book.customCSS ?? ``}
                 customHtml={book.customHTML ?? ``}
-                isbn=""
                 isCompilation={isCompilations(book.authorSlug)}
                 lang={LANG}
                 scaler={1 / 4}

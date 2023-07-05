@@ -13,15 +13,13 @@ const SearchResult: React.FC<
       lang={LANG}
       isCompilation={isCompilations(book.authorName)}
       author={book.authorName}
-      edition={book.edition}
-      isbn={``}
       customCss={book.customCSS ?? ``}
       customHtml={book.customHTML ?? ``}
       className="mx-1"
       scaler={1 / 3}
       scope="1-3"
+      {...book}
       size="m"
-      title={book.title}
     />
   </Link>
 );

@@ -31,6 +31,7 @@ export interface DocumentType {
   customCSS: string | null;
   customHTML: string | null;
   dateAdded: string;
+  isbn: string;
 }
 
 export type DocumentWithMeta = DocumentType & {
