@@ -21,7 +21,7 @@ const TimelineBlock: React.FC<Props> = ({ books }) => {
   const windowWidth = useWindowWidth();
   const nextDate = date + (windowWidth < SCREEN_MD ? 50 : 25);
   return (
-    <div className="TimelineBlock">
+    <div>
       <BackgroundImage
         src={CastleBgImage}
         className=""
@@ -75,7 +75,7 @@ const TimelineBlock: React.FC<Props> = ({ books }) => {
             </PillDropdown>
           </div>
           <TimePicker
-            className="hidden sm:flex pb-32 mx-20 -mt-6 max-w-screen-lg lg:mx-auto"
+            className="hidden sm:flex pb-32 mx-24 -mt-6 max-w-screen-lg xl:mx-auto"
             selected={date}
             setSelected={setDate}
           />

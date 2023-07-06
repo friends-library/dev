@@ -30,9 +30,9 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 interface Props {
+  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
   numBooks: number;
   numBooksInAltLang: number;
-  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
 }
 
 const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) => (
