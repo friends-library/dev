@@ -1,9 +1,9 @@
 import { t } from '@friends-library/locale';
+import { htmlShortTitle } from '@friends-library/adoc-utils';
 import type { Lang } from '@friends-library/types';
 import type { Audiobook, DocumentWithMeta, NewsFeedType } from '@/lib/types';
 import { months } from '@/lib/dates';
 import { LANG } from '@/lib/env';
-import { htmlShortTitle } from '@friends-library/adoc-utils';
 import { isNotNull } from '@/lib/utils';
 import { getDocumentUrl } from '@/lib/friend';
 
@@ -55,7 +55,7 @@ function getRecentAdditions(
   documents: Array<NewsfeedDocumentProps>,
   altLanguageDocuments: Array<NewsfeedDocumentProps> = [],
 ): FeedItem[] {
-  const type = LANG === `en` && lang === 'es' ? `spanish_translation` : `book`;
+  const type = LANG === `en` && lang === `es` ? `spanish_translation` : `book`;
   return documents
     .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
     .map((doc) => {
@@ -67,7 +67,7 @@ function getRecentAdditions(
             : `${htmlShortTitle(doc.title)}${LANG === `en` ? ` &mdash; (Spanish)` : ``}`,
         ...dateFields(doc.mostModernEdition.impressionCreatedAt, LANG),
         description:
-          type === 'book'
+          type === `book`
             ? LANG === `en`
               ? `Download free eBook or pdf, or purchase a paperback at cost.`
               : `Descárgalo en formato ebook o pdf, o compra el libro impreso a precio de costo.`
@@ -98,9 +98,8 @@ function getRecentAudios(
           if (
             ed.audiobook &&
             new Date(ed.audiobook.dateAdded).getTime() >
-              new Date(acc ? acc.dateAdded : 'January 1, 1970').getTime()
+              new Date(acc ? acc.dateAdded : `January 1, 1970`).getTime()
           ) {
-            ed.audiobook;
             return {
               ...ed.audiobook,
               title: htmlShortTitle(doc.title),
@@ -130,7 +129,7 @@ function dateFields(
   lang: Lang,
 ): Pick<FeedItem, 'month' | 'year' | 'day' | 'date'> {
   const date = new Date(dateStr);
-  let month = months[lang][date.getMonth()]?.substring(0, 3) || ``;
+  const month = months[lang][date.getMonth()]?.substring(0, 3) || ``;
 
   return {
     month,

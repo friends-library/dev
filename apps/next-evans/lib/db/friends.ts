@@ -3,9 +3,9 @@ import type { Lang } from '@friends-library/types';
 import type { CustomCode } from './custom-code';
 import type { Edition, Friend } from '../types';
 import { LANG } from '../env';
+import { mostModernEdition } from '../editions';
 import { prisma } from './prisma';
 import getAllCustomCode from './custom-code';
-import { mostModernEdition } from '../editions';
 
 const friendsPromise: {
   en: Promise<Record<string, Friend>> | null;

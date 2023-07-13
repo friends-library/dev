@@ -54,7 +54,7 @@ function localeFromEnv(): Lang {
       typeof process !== `undefined` &&
       process.env &&
       // !!! keep full, exact token: `process.env.GATSBY_LANG` for Webpack.definePlugin !!!
-      process.env.GATSBY_LANG === `es`
+      (process.env.GATSBY_LANG === `es` || process.env.NEXT_PUBLIC_LANG === `es`)
     ) {
       return `es`;
     }

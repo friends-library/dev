@@ -39,7 +39,7 @@ const NewsFeedIcon: React.FC<Props> = ({ className, type }) => {
         `flex justify-center items-center text-white w-10 h-10 rounded-full bg-${COLOR_MAP[type]} shrink-0`,
       )}
     >
-      <Icon className={type === 'audiobook' ? `h-6` : `h-7`} />
+      <Icon className={type === `audiobook` ? `h-6` : `h-7`} />
     </div>
   );
 };

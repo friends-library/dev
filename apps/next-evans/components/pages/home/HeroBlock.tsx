@@ -19,7 +19,7 @@ const HeroBlock: React.FC = () => {
       >
         <div
           className={cx(
-            'md:[background-image:none] md:bg-white px-12 sm:px-16 py-12 sm:py-20 md:px-20 lg:p-24 text-white md:text-gray-900',
+            `md:[background-image:none] md:bg-white px-12 sm:px-16 py-12 sm:py-20 md:px-20 lg:p-24 text-white md:text-gray-900`,
             backgroundOverlay,
           )}
         >
@@ -54,7 +54,7 @@ const HeroBlock: React.FC = () => {
         className="HeroBlock__bg md:w-1/3 xl:w-2/5 hidden md:block"
         fit="cover"
       >
-        <div className={cx('w-full h-full', backgroundOverlay)} />
+        <div className={cx(`w-full h-full`, backgroundOverlay)} />
       </BackgroundImage>
     </section>
   );
