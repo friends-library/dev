@@ -16,6 +16,7 @@ import AltSiteBlock from '@/components/pages/explore/AltSiteBlock';
 import { mostModernEdition } from '@/lib/editions';
 import SearchBlock from '@/components/pages/explore/SearchBlock';
 import { getAllDocuments, getNumDocuments } from '@/lib/db/documents';
+import { editionTypes } from '@/lib/document';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const documents = Object.values(await getAllDocuments());
@@ -63,7 +64,9 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     </BackgroundImage>
     <NavBlock />
     <UpdatedEditionsBlock
-      books={books.filter((book) => mostModernEdition(book.editionTypes) === `updated`)}
+      books={books.filter(
+        (book) => mostModernEdition(editionTypes(book.editions)) === `updated`,
+      )}
     />
     <GettingStartedLinkBlock />
     <AudioBooksBlock books={books.filter((book) => book.hasAudio)} />
@@ -97,7 +100,10 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     <SearchBlock
       books={books
         .flatMap((book) =>
-          book.editionTypes.map((editionType) => ({ ...book, edition: editionType })),
+          editionTypes(book.editions).map((editionType) => ({
+            ...book,
+            edition: editionType,
+          })),
         )
         .map((book) => ({
           ...book,

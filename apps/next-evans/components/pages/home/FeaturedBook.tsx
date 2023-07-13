@@ -9,6 +9,7 @@ import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
 import { mostModernEdition } from '@/lib/editions';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
+import { editionTypes } from '@/lib/document';
 
 const Book: React.FC<DocumentWithMeta & { isCurrent: boolean }> = (props) => (
   <div
@@ -23,9 +24,9 @@ const Book: React.FC<DocumentWithMeta & { isCurrent: boolean }> = (props) => (
           lang={LANG}
           isCompilation={isCompilations(props.authorSlug)}
           author={props.authorName}
-          pages={props.numPages[0] ?? 80}
-          edition={mostModernEdition(props.editionTypes)}
-          isbn={``}
+          pages={props.editions[0]?.numPages[0] ?? 80}
+          edition={mostModernEdition(editionTypes(props.editions))}
+          isbn={props.isbn}
           blurb={``}
           customCss={props.customCSS ?? ``}
           customHtml={props.customHTML ?? ``}
@@ -41,9 +42,9 @@ const Book: React.FC<DocumentWithMeta & { isCurrent: boolean }> = (props) => (
           lang={LANG}
           isCompilation={isCompilations(props.authorSlug)}
           author={props.authorName}
-          pages={props.numPages[0] ?? 80}
-          edition={mostModernEdition(props.editionTypes)}
-          isbn={``}
+          pages={props.editions[0]?.numPages[0] ?? 80}
+          edition={mostModernEdition(editionTypes(props.editions))}
+          isbn={props.isbn}
           blurb={``}
           customCss={props.customCSS ?? ``}
           customHtml={props.customHTML ?? ``}

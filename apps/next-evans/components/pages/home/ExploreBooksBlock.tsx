@@ -8,7 +8,7 @@ import BgImage from '@/public/images/explore-books.jpg';
 
 const ExploreBooksBlock: React.FC<{ numTotalBooks: number }> = ({ numTotalBooks }) => (
   <BackgroundImage src={BgImage} fit="cover">
-    <div className="px-10 sm:px-16 py-16 md:py-32 md:px-32 [background:radial-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.95))]">
+    <div className="px-10 sm:px-16 py-16 md:py-32 md:px-32 [background:radial-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.85),rgba(0,0,0,0.98))]">
       <Heading darkBg className="text-white">
         <Dual.Frag>
           <>Explore Books</>

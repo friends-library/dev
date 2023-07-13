@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import invariant from 'tiny-invariant';
 import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
-import type { FriendType } from '@/lib/types';
+import type { Friend } from '@/lib/types';
 import FriendsPageHero from '@/components/pages/friends/FriendsPageHero';
 import FriendCard from '@/components/pages/friends/FriendCard';
 import ControlsBlock from '@/components/pages/friends/ControlsBlock';
@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 type AllFriendsFriendProps = Pick<
-  FriendType,
+  Friend,
   'born' | 'died' | 'name' | 'slug' | 'residences' | 'gender' | 'id' | 'dateAdded'
 > & { numBooks: number };
 

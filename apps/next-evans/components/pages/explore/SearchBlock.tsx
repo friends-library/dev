@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { t } from '@friends-library/locale';
-import type { DocumentWithMeta, Edition, Period, Region } from '@/lib/types';
+import type { DocumentWithMeta, EditionType, Period, Region } from '@/lib/types';
 import SearchControls from './SearchControls';
 import SearchResult from './SearchResult';
 import { getDocumentUrl } from '@/lib/friend';
@@ -14,7 +14,7 @@ interface Props {
     Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'> & {
       period: Period;
       region: Region;
-      edition: Edition;
+      edition: EditionType;
     }
   >;
 }

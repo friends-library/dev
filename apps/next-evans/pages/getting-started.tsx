@@ -36,7 +36,7 @@ export type GettingStartedCoverProps = Pick<
   | 'authorSlug'
   | 'customCSS'
   | 'customHTML'
-  | 'editionTypes'
+  | 'editions'
   | 'hasAudio'
   | 'id'
   | 'slug'

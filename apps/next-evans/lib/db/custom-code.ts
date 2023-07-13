@@ -51,15 +51,16 @@ async function getCode(
   documentSlug: string,
   type: 'css' | 'html',
 ): Promise<string | undefined> {
-  const res = await fetch(
-    `https://raw.githubusercontent.com/${
-      LANG === `en` ? `friends-library` : `biblioteca-de-los-amigos`
-    }/${friendSlug}/master/${documentSlug}/paperback-cover.${type}`,
-  );
-  if (res.status === 404) {
-    return undefined;
-  }
-  return res.text();
+  return undefined;
+  // const res = await fetch(
+  //   `https://raw.githubusercontent.com/${
+  //     LANG === `en` ? `friends-library` : `biblioteca-de-los-amigos`
+  //   }/${friendSlug}/master/${documentSlug}/paperback-cover.${type}`,
+  // );
+  // if (res.status === 404) {
+  //   return undefined;
+  // }
+  // return res.text();
 }
 
 async function getFriendDocuments(): Promise<Record<FriendSlug, DocSlug[]>> {

@@ -6,6 +6,7 @@ import PathBlock from './PathBlock';
 import { LANG } from '@/lib/env';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 import { mostModernEdition } from '@/lib/editions';
+import { editionTypes } from '@/lib/document';
 
 interface Props {
   HistoryBlurb: React.FC;
@@ -78,7 +79,7 @@ function prepareBooks(books: GettingStartedCoverProps[]): (CoverProps & {
     author: book.authorName,
     size: `s`,
     pages: 7,
-    edition: mostModernEdition(book.editionTypes),
+    edition: mostModernEdition(editionTypes(book.editions)),
     isbn: ``,
     blurb: ``,
     customCss: book.customCSS || ``,

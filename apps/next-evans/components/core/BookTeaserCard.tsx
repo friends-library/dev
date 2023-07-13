@@ -11,8 +11,12 @@ import { LANG } from '@/lib/env';
 import { isCompilations } from '@/lib/friend';
 import Button from '@/components/core/Button';
 import { mostModernEdition } from '@/lib/editions';
+import { editionTypes } from '@/lib/document';
 
-export type Props = DocumentWithMeta & {
+export type Props = Omit<
+  DocumentWithMeta,
+  'numPages' | 'size' | 'featuredDescription' | 'mostModernEdition' | 'altLanguageId'
+> & {
   audioDuration?: string;
   htmlShortTitle: string;
   documentUrl: string;
@@ -57,7 +61,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
             <Link href={`${props.documentUrl}#audiobook`}>
               <Album
                 author={authorName}
-                edition={mostModernEdition(props.editionTypes)}
+                edition={mostModernEdition(editionTypes(props.editions))}
                 customCss={``}
                 customHtml={``}
                 {...props}
@@ -72,7 +76,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
             <Link href={props.documentUrl}>
               <Front
                 author={authorName}
-                edition={mostModernEdition(props.editionTypes)}
+                edition={mostModernEdition(editionTypes(props.editions))}
                 customCss={props.customCSS || ``}
                 customHtml={props.customHTML || ``}
                 {...props}

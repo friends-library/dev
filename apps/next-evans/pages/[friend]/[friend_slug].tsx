@@ -3,7 +3,7 @@ import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { FriendType } from '@/lib/types';
+import { Friend } from '@/lib/types';
 import { LANG } from '@/lib/env';
 import { mostModernEdition } from '@/lib/editions';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
@@ -14,6 +14,7 @@ import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
 import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import getFriend, { getAllFriends } from '@/lib/db/friends';
+import { editionTypes } from '@/lib/document';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const friends = await getAllFriends();
@@ -35,7 +36,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: false };
 };
 
-export const getStaticProps: GetStaticProps<FriendType> = async (context) => {
+export const getStaticProps: GetStaticProps<Friend> = async (context) => {
   invariant(typeof context.params?.friend_slug === `string`);
   const friend = await getFriend(context.params.friend_slug);
   invariant(friend);
@@ -45,7 +46,7 @@ export const getStaticProps: GetStaticProps<FriendType> = async (context) => {
   };
 };
 
-const Friend: React.FC<FriendType> = ({
+const Friend: React.FC<Friend> = ({
   name,
   gender,
   slug,
@@ -104,16 +105,19 @@ const Friend: React.FC<FriendType> = ({
         >
           {documents
             .sort((doc) => {
-              if (doc.editionTypes.includes(`updated`)) {
+              if (editionTypes(doc.editions).includes(`updated`)) {
                 return -1;
               }
-              if (doc.editionTypes.includes(`modernized`)) {
+              if (editionTypes(doc.editions).includes(`modernized`)) {
                 return 0;
               }
               return 1;
             })
             .map((doc) => {
-              const docSizeProp = doc.size === `xlCondensed` ? `xl` : doc.size;
+              const docSizeProp =
+                doc.mostModernEdition.size === `xlCondensed`
+                  ? `xl`
+                  : doc.mostModernEdition.size;
               return (
                 <BookByFriend
                   key={doc.id}
@@ -126,7 +130,7 @@ const Friend: React.FC<FriendType> = ({
                   hasAudio={doc.hasAudio}
                   bookUrl={getDocumentUrl(slug, doc.slug)}
                   numDownloads={doc.numDownloads}
-                  pages={doc.numPages}
+                  pages={doc.mostModernEdition.numPages}
                   description={doc.shortDescription}
                   lang={LANG}
                   title={doc.title.replace(/-- Volume \d/g, ``)}
@@ -134,8 +138,8 @@ const Friend: React.FC<FriendType> = ({
                   isCompilation={gender === `mixed`}
                   author={name}
                   size={docSizeProp}
-                  edition={mostModernEdition(doc.editionTypes)}
-                  isbn={``} // never see the isbn either
+                  edition={mostModernEdition(editionTypes(doc.editions))}
+                  isbn={doc.isbn}
                   customCss={doc.customCSS || ``}
                   customHtml={doc.customHTML || ``}
                 />

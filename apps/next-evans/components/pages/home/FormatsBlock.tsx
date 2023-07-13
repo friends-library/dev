@@ -10,7 +10,7 @@ import BgImage from '@/public/images/formats-books.png';
 import BgImageMobile from '@/public/images/formats-books-mobile.png';
 
 const FormatsBlock: React.FC = () => (
-  <section className="FormatsBlock min-[1680px]:pl-[10%] py-16 px-12 sm:px-16 relative xl:pl-24 xl:py-24">
+  <section className="FormatsBlock min-[1680px]:pl-[10%] py-16 px-12 sm:px-16 relative xl:pl-24 xl:py-24 bg-gray-50">
     <Heading left={[`md`]} className="text-gray-900 md:text-left">
       <Dual.Frag>
         <>Formats &amp; Editions</>

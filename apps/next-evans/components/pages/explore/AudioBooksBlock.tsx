@@ -9,6 +9,7 @@ import Button from '@/components/core/Button';
 import { LANG } from '@/lib/env';
 import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import { mostModernEdition } from '@/lib/editions';
+import { editionTypes } from '@/lib/document';
 
 interface Props {
   books: Array<Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'>>;
@@ -36,7 +37,7 @@ const AudioBooksBlock: React.FC<Props> = ({ books }) => (
         >
           <Album
             author={book.authorName}
-            edition={mostModernEdition(book.editionTypes)}
+            edition={mostModernEdition(editionTypes(book.editions))}
             customCss={book.customCSS ?? ``}
             customHtml={book.customHTML ?? ``}
             lang={LANG}

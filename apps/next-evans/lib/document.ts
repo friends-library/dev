@@ -1,4 +1,4 @@
-import type { Region, Residence } from './types';
+import type { Edition, EditionType, Region, Residence } from './types';
 import { getPrimaryResidence } from './residences';
 
 export function getPublicationDate(
@@ -44,4 +44,8 @@ export function documentRegion(region: string): Region {
     default:
       throw new Error(`Error inferring explore region for friend: ${region}`);
   }
+}
+
+export function editionTypes(editions: Edition[]): EditionType[] {
+  return editions.map(({ type }) => type);
 }

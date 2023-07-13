@@ -1,13 +1,13 @@
 import React from 'react';
 import { Front } from '@friends-library/cover-component';
 import Link from 'next/link';
-import type { DocumentWithMeta, Edition } from '@/lib/types';
+import type { DocumentWithMeta, EditionType } from '@/lib/types';
 import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import { LANG } from '@/lib/env';
 
 const SearchResult: React.FC<
   Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'> & {
-    edition: Edition;
+    edition: EditionType;
   }
 > = (book) => (
   <Link href={getDocumentUrl(book.authorSlug, book.slug)}>

@@ -12,6 +12,7 @@ import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 import { mostModernEdition } from '@/lib/editions';
+import { editionTypes } from '@/lib/document';
 
 interface Props {
   books: Array<Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'>>;
@@ -80,7 +81,7 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
             <Link href={getDocumentUrl(book.authorSlug, book.slug)}>
               <Front
                 author={book.authorName}
-                edition={mostModernEdition(book.editionTypes)}
+                edition={mostModernEdition(editionTypes(book.editions))}
                 customCss={book.customCSS ?? ``}
                 customHtml={book.customHTML ?? ``}
                 isCompilation={isCompilations(book.authorSlug)}

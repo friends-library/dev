@@ -1,15 +1,23 @@
 import React from 'react';
+import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import Heading from '@/components/core/Heading';
 import Dual from '@/components/core/Dual';
 import Button from '@/components/core/Button';
 import TowerBridgeImg from '@/public/images/london.jpg';
-// import './WhoWereTheQuakersBlock.css';
+import { LANG } from '@/lib/env';
 
 const WhoWereTheQuakersBlock: React.FC = () => (
   <BackgroundImage src={TowerBridgeImg} fit="cover" position="object-[center_20%]">
-    <div className="[background:linear-gradient(rgba(110,45,70,0.9),rgba(114,59,71,0.9))] text-white flex flex-col items-center py-12 sm:py-16 px-12  md:px-16 lg:px-20 lg:py-24">
+    <div
+      className={cx(
+        'text-white flex flex-col items-center py-12 sm:py-16 px-12  md:px-16 lg:px-20 lg:py-24',
+        LANG === `en`
+          ? `[background:linear-gradient(rgba(110,45,70,0.9),rgba(110,45,70,0.9))]`
+          : `[background:linear-gradient(rgba(195,142,97,0.9),rgba(195,142,97,0.9))]`,
+      )}
+    >
       <Heading darkBg>
         <Dual.Frag>
           <>Who were the Quakers?</>
