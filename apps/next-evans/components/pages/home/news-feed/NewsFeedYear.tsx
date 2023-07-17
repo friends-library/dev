@@ -7,8 +7,8 @@ interface Props {
 }
 
 const NewsFeedYear: React.FC<Props> = ({ year, items }) => (
-  <div className="NewsFeedYear sm:flex self-stretch mt-6 first:mt-0 sm:rounded-lg overflow-hidden relative">
-    <div className="NewsFeedYear__Year bg-flprimary text-white text-center p-2 sm:p-1 antialiased text-xl sans-widest flex items-center justify-center shrink-0">
+  <div className="sm:flex self-stretch mt-6 first:mt-0 sm:rounded-lg overflow-hidden relative">
+    <div className="bg-flprimary text-white text-center p-2 sm:p-1 antialiased text-xl sans-widest flex items-center justify-center shrink-0">
       <div className="sm:-rotate-90 tracking-wider">{year}</div>
     </div>
     <div className="flex-grow">

@@ -6,11 +6,21 @@ import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import { LANG } from '@/lib/env';
 
 const SearchResult: React.FC<
-  Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'> & {
+  Pick<
+    DocumentWithMeta,
+    | 'title'
+    | 'slug'
+    | 'customCSS'
+    | 'customHTML'
+    | 'isbn'
+    | 'authorSlug'
+    | 'authorName'
+    | 'authorGender'
+  > & {
     edition: EditionType;
   }
 > = (book) => (
-  <Link href={getDocumentUrl(book.authorSlug, book.slug)}>
+  <Link href={getDocumentUrl(book)}>
     <Front
       lang={LANG}
       isCompilation={isCompilations(book.authorName)}

@@ -40,6 +40,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     props: {
       featuredBooks,
       newsFeedItems,
+      numTotalBooks: Object.values(documents[LANG]).length,
     },
   };
 };
@@ -47,9 +48,10 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 interface Props {
   featuredBooks: DocumentWithMeta[];
   newsFeedItems: FeedItem[];
+  numTotalBooks: number;
 }
 
-const Home: React.FC<Props> = ({ featuredBooks, newsFeedItems }) => (
+const Home: React.FC<Props> = ({ featuredBooks, newsFeedItems, numTotalBooks }) => (
   <main className="overflow-hidden">
     <HeroBlock />
     <SubHeroBlock numTotalBooks={0} />
@@ -58,7 +60,7 @@ const Home: React.FC<Props> = ({ featuredBooks, newsFeedItems }) => (
     <GettingStartedBlock />
     <WhoWereTheQuakersBlock />
     <FormatsBlock />
-    <ExploreBooksBlock numTotalBooks={0} />
+    <ExploreBooksBlock numTotalBooks={numTotalBooks} />
   </main>
 );
 

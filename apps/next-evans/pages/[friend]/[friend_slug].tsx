@@ -5,7 +5,7 @@ import { t, translateOptional as trans } from '@friends-library/locale';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { Friend } from '@/lib/types';
 import { LANG } from '@/lib/env';
-import { mostModernEdition } from '@/lib/editions';
+import { mostModernEditionType } from '@/lib/editions';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
 import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
 import BookByFriend from '@/components/pages/friend/BookByFriend';
@@ -138,7 +138,7 @@ const Friend: React.FC<Friend> = ({
                   isCompilation={gender === `mixed`}
                   author={name}
                   size={docSizeProp}
-                  edition={mostModernEdition(editionTypes(doc.editions))}
+                  edition={mostModernEditionType(doc.editions)}
                   isbn={doc.isbn}
                   customCss={doc.customCSS || ``}
                   customHtml={doc.customHTML || ``}

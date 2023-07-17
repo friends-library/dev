@@ -5,9 +5,22 @@ import BookSlider from './BookSlider';
 import MapSlider from './MapSlider';
 
 interface Props {
-  books: (Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'> & {
-    region: Region;
-  })[];
+  books: Array<
+    Pick<
+      DocumentWithMeta,
+      | 'title'
+      | 'slug'
+      | 'editions'
+      | 'customCSS'
+      | 'customHTML'
+      | 'isbn'
+      | 'authorSlug'
+      | 'authorName'
+      | 'authorGender'
+    > & {
+      region: Region;
+    }
+  >;
 }
 
 const ExploreRegionsBlock: React.FC<Props> = ({ books }) => {

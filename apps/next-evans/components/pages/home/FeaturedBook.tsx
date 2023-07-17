@@ -7,7 +7,7 @@ import { htmlTitle } from '@friends-library/adoc-utils';
 import type { DocumentWithMeta } from '@/lib/types';
 import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
-import { mostModernEdition } from '@/lib/editions';
+import { mostModernEditionType } from '@/lib/editions';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 import { editionTypes } from '@/lib/document';
 
@@ -25,7 +25,7 @@ const Book: React.FC<DocumentWithMeta & { isCurrent: boolean }> = (props) => (
           isCompilation={isCompilations(props.authorSlug)}
           author={props.authorName}
           pages={props.editions[0]?.numPages[0] ?? 80}
-          edition={mostModernEdition(editionTypes(props.editions))}
+          edition={mostModernEditionType(props.editions)}
           isbn={props.isbn}
           blurb={``}
           customCss={props.customCSS ?? ``}
@@ -43,7 +43,7 @@ const Book: React.FC<DocumentWithMeta & { isCurrent: boolean }> = (props) => (
           isCompilation={isCompilations(props.authorSlug)}
           author={props.authorName}
           pages={props.editions[0]?.numPages[0] ?? 80}
-          edition={mostModernEdition(editionTypes(props.editions))}
+          edition={mostModernEditionType(props.editions)}
           isbn={props.isbn}
           blurb={``}
           customCss={props.customCSS ?? ``}
@@ -86,7 +86,7 @@ const Book: React.FC<DocumentWithMeta & { isCurrent: boolean }> = (props) => (
       )}
       <Button
         bg="green"
-        to={getDocumentUrl(props.authorSlug, props.slug)}
+        to={getDocumentUrl(props)}
         className={cx(`mx-auto md:mx-0`, {
           'mt-12': isCompilations(props.authorSlug),
           'sm:mt-0 md:mt-10': !isCompilations(props.authorSlug),

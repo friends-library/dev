@@ -8,11 +8,23 @@ import Album from '@/components/core/Album';
 import Button from '@/components/core/Button';
 import { LANG } from '@/lib/env';
 import { getDocumentUrl, isCompilations } from '@/lib/friend';
-import { mostModernEdition } from '@/lib/editions';
+import { mostModernEditionType } from '@/lib/editions';
 import { editionTypes } from '@/lib/document';
 
 interface Props {
-  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'>>;
+  books: Array<
+    Pick<
+      DocumentWithMeta,
+      | 'title'
+      | 'slug'
+      | 'editions'
+      | 'customCSS'
+      | 'customHTML'
+      | 'isbn'
+      | 'authorSlug'
+      | 'authorName'
+    >
+  >;
 }
 
 const AudioBooksBlock: React.FC<Props> = ({ books }) => (
@@ -27,17 +39,17 @@ const AudioBooksBlock: React.FC<Props> = ({ books }) => (
     >
       {books.slice(0, 4).map((book) => (
         <Link
-          href={`${getDocumentUrl(book.authorSlug, book.slug)}#audiobook`}
+          href={`${getDocumentUrl(book)}#audiobook`}
           className={cx(
             `flex flex-col items-center mb-10 group`,
             `md:w-64 md:mx-12`,
             `lg:mx-4 lg:w-56`,
           )}
-          key={getDocumentUrl(book.authorSlug, book.slug)}
+          key={getDocumentUrl(book)}
         >
           <Album
             author={book.authorName}
-            edition={mostModernEdition(editionTypes(book.editions))}
+            edition={mostModernEditionType(book.editions)}
             customCss={book.customCSS ?? ``}
             customHtml={book.customHTML ?? ``}
             lang={LANG}

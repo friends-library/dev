@@ -11,14 +11,13 @@ import DeviceArrayImg from '@/public/images/device-array.png';
 import BookIcon from '@/public/images/icon-book.svg';
 import PhoneIcon from '@/public/images/icon-phone.svg';
 import HeadphonesIcon from '@/public/images/icon-headphones.svg';
-// import './SubHeroBlock.css';
 
 interface Props {
   numTotalBooks: number;
 }
 
 const SubHeroBlock: React.FC<Props> = ({ numTotalBooks }) => (
-  <section className="SubHeroBlock bg-flprimary p-10 pb-48 relative overflow-hidden md:px-20 lg:px-24 md:pt-20 md:pb-2 md:overflow-visible xl:py-20">
+  <section className="bg-flprimary p-10 pb-48 relative overflow-hidden md:px-20 lg:px-24 md:pt-20 md:pb-2 md:overflow-visible xl:py-20">
     <Image
       className="w-[45vw] top-[-5%] right-[-9%] md:top-[-13%] lg:w-[35vw] lg:top-[-15%] lg:right-[-5%] xl:top-[-21%] xl:w-[30vw] xl:max-w-[460px] xl:right-0 2xl:top-[-27%] 2xl:w-[26vw] absolute hidden md:block"
       src={DeviceArrayImg}

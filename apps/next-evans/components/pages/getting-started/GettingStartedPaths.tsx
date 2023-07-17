@@ -5,7 +5,7 @@ import type { GettingStartedCoverProps } from '@/pages/getting-started';
 import PathBlock from './PathBlock';
 import { LANG } from '@/lib/env';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
-import { mostModernEdition } from '@/lib/editions';
+import { mostModernEditionType } from '@/lib/editions';
 import { editionTypes } from '@/lib/document';
 
 interface Props {
@@ -79,12 +79,12 @@ function prepareBooks(books: GettingStartedCoverProps[]): (CoverProps & {
     author: book.authorName,
     size: `s`,
     pages: 7,
-    edition: mostModernEdition(editionTypes(book.editions)),
+    edition: mostModernEditionType(book.editions),
     isbn: ``,
     blurb: ``,
     customCss: book.customCSS || ``,
     customHtml: book.customHTML || ``,
-    documentUrl: getDocumentUrl(book.authorSlug, book.slug),
+    documentUrl: getDocumentUrl(book),
     authorUrl: getFriendUrl(book.authorSlug, book.authorGender),
     htmlShortTitle: book.title,
     hasAudio: book.hasAudio,

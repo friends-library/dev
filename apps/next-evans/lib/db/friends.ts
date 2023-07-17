@@ -3,7 +3,7 @@ import type { Lang } from '@friends-library/types';
 import type { CustomCode } from './custom-code';
 import type { Edition, Friend } from '../types';
 import { LANG } from '../env';
-import { mostModernEdition } from '../editions';
+import { mostModernEditionType } from '../editions';
 import { prisma } from './prisma';
 import getAllCustomCode from './custom-code';
 
@@ -49,7 +49,7 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, Friend>> {
           invariant(firstEdition !== undefined);
           invariant(firstEdition.edition_impressions !== null);
           const newestEdition = doc.editions.find(
-            (e) => e.type === mostModernEdition(doc.editions.map((ed) => ed.type)),
+            (e) => e.type === mostModernEditionType(doc.editions.map((ed) => ed.type)),
           );
           invariant(newestEdition !== undefined);
 

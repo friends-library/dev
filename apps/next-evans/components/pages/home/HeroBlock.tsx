@@ -12,11 +12,7 @@ const HeroBlock: React.FC = () => {
       : `[background:linear-gradient(rgba(195,142,97,0.5),rgba(195,142,97,0.5))]`;
   return (
     <section className="HeroBlock flex w-full">
-      <BackgroundImage
-        src={TreeRootsImage}
-        className="HeroBlock__text md:w-2/3 xl:w-3/5"
-        fit="cover"
-      >
+      <BackgroundImage src={TreeRootsImage} className="md:w-2/3 xl:w-3/5" fit="cover">
         <div
           className={cx(
             `md:[background-image:none] md:bg-white px-12 sm:px-16 py-12 sm:py-20 md:px-20 lg:p-24 text-white md:text-gray-900`,
@@ -51,7 +47,7 @@ const HeroBlock: React.FC = () => {
       </BackgroundImage>
       <BackgroundImage
         src={TreeRootsImage}
-        className="HeroBlock__bg md:w-1/3 xl:w-2/5 hidden md:block"
+        className="md:w-1/3 xl:w-2/5 hidden md:block"
         fit="cover"
       >
         <div className={cx(`w-full h-full`, backgroundOverlay)} />

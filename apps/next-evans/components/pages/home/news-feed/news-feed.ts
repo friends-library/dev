@@ -2,7 +2,7 @@ import { t } from '@friends-library/locale';
 import { htmlShortTitle } from '@friends-library/adoc-utils';
 import type { Lang } from '@friends-library/types';
 import type { Audiobook, DocumentWithMeta, NewsFeedType } from '@/lib/types';
-import { months } from '@/lib/dates';
+import { months, newestFirst } from '@/lib/dates';
 import { LANG } from '@/lib/env';
 import { isNotNull } from '@/lib/utils';
 import { getDocumentUrl } from '@/lib/friend';
@@ -46,7 +46,7 @@ export async function getNewsFeedItems(
   return recentAdditions
     .concat(outOfBandEvents.filter((item) => item.lang.includes(lang)))
     .concat(recentAudios)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .sort((a, b) => newestFirst(a.date, b.date))
     .slice(0, MAX_NUM_NEWS_FEED_ITEMS);
 }
 
@@ -57,7 +57,7 @@ function getRecentAdditions(
 ): FeedItem[] {
   const type = LANG === `en` && lang === `es` ? `spanish_translation` : `book`;
   return documents
-    .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
+    .sort((a, b) => newestFirst(a.dateAdded, b.dateAdded))
     .map((doc) => {
       return {
         type,
@@ -71,14 +71,14 @@ function getRecentAdditions(
             ? LANG === `en`
               ? `Download free eBook or pdf, or purchase a paperback at cost.`
               : `Descárgalo en formato ebook o pdf, o compra el libro impreso a precio de costo.`
-            : `${doc.authorName}'s <em>${
+            : `${doc.authorName}&rsquo;s <em>${
                 altLanguageDocuments.find((altDoc) => altDoc.altLanguageId === doc.id)
                   ?.title ?? ``
               }</em> is now translated and available on the Spanish site.`,
         url:
           type === `spanish_translation`
             ? `https://bibliotecadelosamigos.org/${doc.authorSlug}/${doc.slug}`
-            : `/${doc.authorSlug}/${doc.slug}`,
+            : getDocumentUrl(doc),
       };
     });
 }
@@ -103,7 +103,7 @@ function getRecentAudios(
             return {
               ...ed.audiobook,
               title: htmlShortTitle(doc.title),
-              url: `${getDocumentUrl(doc.authorSlug, doc.slug)}#audiobook`,
+              url: `${getDocumentUrl(doc)}#audiobook`,
             };
           }
           return acc;

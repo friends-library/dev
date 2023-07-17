@@ -38,8 +38,8 @@ const FeaturedBooksBlock: React.FC<Props> = ({ books }) => {
       }}
     >
       <Heading className="text-gray-800">{t`Featured Books`}</Heading>
-      <div className="BooksViewer w-[calc(100vw-(100vw-100%))] overflow-hidden">
-        <div className="BookWrap w-[600vw] flex">
+      <div className="w-[calc(100vw-(100vw-100%))] overflow-hidden">
+        <div className="w-[600vw] flex">
           {books.map((book, bkIdx) => (
             <FeaturedBook key={book.title} {...book} isCurrent={bkIdx === index} />
           ))}

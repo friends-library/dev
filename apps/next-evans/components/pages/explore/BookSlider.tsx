@@ -11,11 +11,23 @@ import { SCREEN_LG, SCREEN_MD, SCREEN_XL } from '@/lib/constants';
 import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
-import { mostModernEdition } from '@/lib/editions';
-import { editionTypes } from '@/lib/document';
+import { mostModernEditionType } from '@/lib/editions';
 
 interface Props {
-  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'>>;
+  books: Array<
+    Pick<
+      DocumentWithMeta,
+      | 'title'
+      | 'slug'
+      | 'editions'
+      | 'customCSS'
+      | 'customHTML'
+      | 'isbn'
+      | 'authorSlug'
+      | 'authorName'
+      | 'authorGender'
+    >
+  >;
   className?: string;
 }
 
@@ -71,17 +83,17 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
       >
         {books.map((book, idx) => (
           <div
-            key={getDocumentUrl(book.authorSlug, book.slug)}
+            key={getDocumentUrl(book)}
             className={cx(
               idx < vertCutoff ? `flex` : `hidden md:flex`,
               `BookSlider__Book max-w-xs flex-col items-center mb-12 px-10 text-center`,
               `md:px-6 md:mb-0 md:min-w-[224px] md:min-w-[224px]`,
             )}
           >
-            <Link href={getDocumentUrl(book.authorSlug, book.slug)}>
+            <Link href={getDocumentUrl(book)}>
               <Front
                 author={book.authorName}
-                edition={mostModernEdition(editionTypes(book.editions))}
+                edition={mostModernEditionType(book.editions)}
                 customCss={book.customCSS ?? ``}
                 customHtml={book.customHTML ?? ``}
                 isCompilation={isCompilations(book.authorSlug)}

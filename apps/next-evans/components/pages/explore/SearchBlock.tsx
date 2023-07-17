@@ -11,7 +11,29 @@ interface Props {
   initialFilters?: string[];
   initialUsed?: boolean;
   books: Array<
-    Omit<DocumentWithMeta, 'numPages' | 'size' | 'featuredDescription'> & {
+    Pick<
+      DocumentWithMeta,
+      //
+      | 'title'
+      | 'altLanguageId'
+      | 'slug'
+      | 'id'
+      | 'editions'
+      | 'mostModernEdition'
+      | 'shortDescription'
+      | 'hasAudio'
+      | 'tags'
+      | 'numDownloads'
+      | 'customCSS'
+      | 'customHTML'
+      | 'dateAdded'
+      | 'isbn'
+      | 'authorSlug'
+      | 'authorName'
+      | 'authorGender'
+      | 'publishedRegion'
+      | 'publishedDate'
+    > & {
       period: Period;
       region: Region;
       edition: EditionType;
@@ -43,10 +65,7 @@ const SearchBlock: React.FC<Props> = ({ books, initialFilters, initialUsed }) =>
       {matches.length > 0 && (
         <div className="flex flex-wrap justify-center py-8 bg-flgray-100">
           {matches.map((book) => (
-            <SearchResult
-              key={`${getDocumentUrl(book.authorSlug, book.slug)}/${book.edition}`}
-              {...book}
-            />
+            <SearchResult key={`${getDocumentUrl(book)}/${book.edition}`} {...book} />
           ))}
         </div>
       )}
