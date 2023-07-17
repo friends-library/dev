@@ -6,7 +6,6 @@ import PathBlock from './PathBlock';
 import { LANG } from '@/lib/env';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 import { mostModernEditionType } from '@/lib/editions';
-import { editionTypes } from '@/lib/document';
 
 interface Props {
   HistoryBlurb: React.FC;

@@ -13,7 +13,6 @@ interface Props {
   books: Array<
     Pick<
       DocumentWithMeta,
-      //
       | 'title'
       | 'altLanguageId'
       | 'slug'

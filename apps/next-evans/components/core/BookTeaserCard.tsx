@@ -14,7 +14,7 @@ import { mostModernEditionType } from '@/lib/editions';
 
 export type Props = Pick<
   DocumentWithMeta,
-  'title' | 'authorName' | 'editions' | 'customCSS' | 'customHTML'
+  'title' | 'authorName' | 'editions' | 'customCSS' | 'customHTML' | 'isbn'
 > & {
   audioDuration?: string;
   htmlShortTitle: string;
@@ -64,10 +64,9 @@ const BookTeaserCard: React.FC<Props> = (props) => {
                 customCss={``}
                 customHtml={``}
                 {...props}
-                className=""
                 lang={LANG}
                 isCompilation={isCompilations(props.authorName)}
-                isbn=""
+                isbn={props.isbn}
               />
             </Link>
           )}
@@ -86,7 +85,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
                 shadow
                 lang={LANG}
                 isCompilation={isCompilations(props.authorName)}
-                isbn=""
+                isbn={props.isbn}
               />
             </Link>
           )}

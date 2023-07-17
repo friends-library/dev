@@ -17,6 +17,7 @@ interface Props {
       | 'authorSlug'
       | 'authorName'
       | 'authorGender'
+      | 'isbn'
     >
   >;
 }

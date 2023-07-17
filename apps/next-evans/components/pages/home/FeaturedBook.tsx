@@ -9,7 +9,6 @@ import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
 import { mostModernEditionType } from '@/lib/editions';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
-import { editionTypes } from '@/lib/document';
 
 const Book: React.FC<DocumentWithMeta & { isCurrent: boolean }> = (props) => (
   <div

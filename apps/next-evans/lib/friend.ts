@@ -15,12 +15,12 @@ export function getFriendUrl(friendSlug: string, gender: Gender): string {
 }
 
 export function getDocumentUrl(doc: { authorSlug: string; slug: string }): string;
-export function getDocumentUrl(str1: string, str2: string): string;
+export function getDocumentUrl(friendSlug: string, documentSlug: string): string;
 export function getDocumentUrl(
   arg1: { authorSlug: string; slug: string } | string,
   arg2?: string,
 ): string {
-  if (typeof arg1 === 'string') {
+  if (typeof arg1 === `string`) {
     return `/${arg1}/${arg2}`;
   }
   return `/${arg1.authorSlug}/${arg1.slug}`;

@@ -1,10 +1,11 @@
 import { t } from '@friends-library/locale';
 import { htmlShortTitle } from '@friends-library/adoc-utils';
+import invariant from 'tiny-invariant';
 import type { Lang } from '@friends-library/types';
 import type { Audiobook, DocumentWithMeta, NewsFeedType } from '@/lib/types';
 import { months, newestFirst } from '@/lib/dates';
 import { LANG } from '@/lib/env';
-import { isNotNull } from '@/lib/utils';
+import { isNotNullish } from '@/lib/utils';
 import { getDocumentUrl } from '@/lib/friend';
 
 export interface FeedItem {
@@ -98,7 +99,7 @@ function getRecentAudios(
           if (
             ed.audiobook &&
             new Date(ed.audiobook.dateAdded).getTime() >
-              new Date(acc ? acc.dateAdded : `January 1, 1970`).getTime()
+              new Date(acc?.dateAdded ?? `January 1, 1970`).getTime()
           ) {
             return {
               ...ed.audiobook,
@@ -111,10 +112,10 @@ function getRecentAudios(
         null,
       ),
     )
-    .filter(isNotNull)
+    .filter(isNotNullish)
     .map((audio) => ({
       type: `audiobook`,
-      title: `${audio.title} &mdash; (${LANG === `en` ? `Audiobook` : `Audiolibro`})`,
+      title: `${audio.title} &mdash; (${t`Audiobook`})`,
       ...dateFields(audio.dateAdded, LANG),
       description:
         LANG === `en`
@@ -129,7 +130,8 @@ function dateFields(
   lang: Lang,
 ): Pick<FeedItem, 'month' | 'year' | 'day' | 'date'> {
   const date = new Date(dateStr);
-  const month = months[lang][date.getMonth()]?.substring(0, 3) || ``;
+  const month = months[lang][date.getMonth()]?.substring(0, 3);
+  invariant(month !== undefined);
 
   return {
     month,

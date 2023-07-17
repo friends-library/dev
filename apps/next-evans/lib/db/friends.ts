@@ -65,7 +65,7 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, Friend>> {
             shortDescription: doc.partial_description,
             hasAudio: doc.editions.some((e) => e.edition_audios?.id),
             tags: doc.document_tags.map((t) => t.type),
-            numDownloads: doc.editions.reduce((acc, ed) => acc + ed.downloads.length, 0), // TODO ~ maybe figure out if prisma can just count the downloads so don't have to get the ids
+            numDownloads: doc.editions.reduce((acc, ed) => acc + ed.downloads.length, 0),
             customCSS: null,
             customHTML: null,
           };
@@ -80,18 +80,18 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, Friend>> {
   }, {});
 }
 
-function toEdition(
-  apiEdition: Awaited<
-    ReturnType<typeof queryFriends>
-  >[number]['documents'][number]['editions'][number],
-): Edition {
-  const audiobook = apiEdition.edition_audios;
-  invariant(apiEdition.edition_impressions !== null); // TODO ~ prisma types are wrong
+type DBEdition = Awaited<
+  ReturnType<typeof queryFriends>
+>[number]['documents'][number]['editions'][number];
+
+function toEdition(dbEdition: DBEdition): Edition {
+  const audiobook = dbEdition.edition_audios;
+  invariant(dbEdition.edition_impressions !== null); // TODO ~ prisma types are wrong
   return {
-    type: apiEdition.type,
-    impressionCreatedAt: apiEdition.edition_impressions.created_at.toISOString(),
-    numPages: apiEdition.edition_impressions.paperback_volumes,
-    size: apiEdition.edition_impressions.paperback_size_variant,
+    type: dbEdition.type,
+    impressionCreatedAt: dbEdition.edition_impressions.created_at.toISOString(),
+    numPages: dbEdition.edition_impressions.paperback_volumes,
+    size: dbEdition.edition_impressions.paperback_size_variant,
     audiobook: audiobook && {
       id: audiobook.id,
       isIncomplete: audiobook.is_incomplete,

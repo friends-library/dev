@@ -24,6 +24,7 @@ interface Props {
       | 'authorSlug'
       | 'authorName'
       | 'authorGender'
+      | 'isbn'
     >
   >;
 }
@@ -75,6 +76,7 @@ const BookTeaserCards: React.FC<Props> = ({
               month: `short`,
               day: `numeric`,
             })}
+            isbn={book.isbn}
           />
         ))}
       </div>

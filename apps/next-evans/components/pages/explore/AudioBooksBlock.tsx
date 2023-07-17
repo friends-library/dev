@@ -9,7 +9,6 @@ import Button from '@/components/core/Button';
 import { LANG } from '@/lib/env';
 import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import { mostModernEditionType } from '@/lib/editions';
-import { editionTypes } from '@/lib/document';
 
 interface Props {
   books: Array<

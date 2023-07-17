@@ -1,3 +1,3 @@
-export function isNotNull<T>(x: T | null): x is T {
-  return x !== null;
+export function isNotNullish<T>(x: T | null | undefined): x is T {
+  return x !== null && x !== undefined;
 }
