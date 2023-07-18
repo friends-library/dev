@@ -28,3 +28,10 @@ export const months = {
     `diciembre`,
   ],
 };
+
+export function newestFirst(
+  a: Date | string | number,
+  b: Date | string | number,
+): number {
+  return new Date(b).getTime() - new Date(a).getTime();
+}

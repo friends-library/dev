@@ -3,7 +3,7 @@ import Link from 'next/link';
 import cx from 'classnames';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';
-import type { FriendType } from '@/lib/types';
+import type { Friend } from '@/lib/types';
 import { LANG } from '@/lib/env';
 import { getFriendUrl } from '@/lib/friend';
 import { getAllFriends } from '@/lib/db/friends';
@@ -23,7 +23,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 interface Props {
-  friends: Array<Pick<FriendType, 'name' | 'slug' | 'gender' | 'id'>>;
+  friends: Array<Pick<Friend, 'name' | 'slug' | 'gender' | 'id'>>;
 }
 
 const Home: React.FC<Props> = ({ friends }) => (
@@ -51,6 +51,13 @@ const Home: React.FC<Props> = ({ friends }) => (
         className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600 flex items-center"
       >
         Explore
+        <ChevronRightIcon className="h-5 ml-2" />
+      </Link>
+      <Link
+        href="/home"
+        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600 flex items-center"
+      >
+        Home
         <ChevronRightIcon className="h-5 ml-2" />
       </Link>
     </div>

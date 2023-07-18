@@ -3,7 +3,7 @@ import type { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export type HeroIcon = typeof ArrowRightIcon;
 
-export interface FriendType {
+export interface Friend {
   name: string;
   slug: string;
   id: string;
@@ -17,17 +17,26 @@ export interface FriendType {
   documents: DocumentType[];
 }
 
+export interface Edition {
+  type: EditionType;
+  numPages: number[];
+  size: 's' | 'm' | 'xl' | 'xlCondensed';
+  audiobook: Audiobook | null;
+  impressionCreatedAt: string;
+}
+
 export interface DocumentType {
   title: string;
+  altLanguageId: string | null;
   slug: string;
   id: string;
-  editionTypes: Edition[];
+  editions: Array<Edition>;
+  mostModernEdition: Edition;
   shortDescription: string;
+  featuredDescription: string | null;
   hasAudio: boolean;
   tags: Array<string>;
   numDownloads: number;
-  numPages: number[];
-  size: 's' | 'm' | 'xl' | 'xlCondensed';
   customCSS: string | null;
   customHTML: string | null;
   dateAdded: string;
@@ -42,7 +51,13 @@ export type DocumentWithMeta = DocumentType & {
   publishedDate: number | null;
 };
 
-export type Edition = 'original' | 'modernized' | 'updated';
+export interface Audiobook {
+  id: string;
+  isIncomplete: boolean;
+  dateAdded: string;
+}
+
+export type EditionType = 'original' | 'modernized' | 'updated';
 
 export type Period = 'early' | 'mid' | 'late';
 
@@ -59,3 +74,10 @@ export type Residence = {
   region: string;
   durations: Array<{ start: number | null; end: number | null }>;
 };
+
+export type NewsFeedType =
+  | `book`
+  | `audiobook`
+  | `spanish_translation`
+  | `feature`
+  | `chapter`;

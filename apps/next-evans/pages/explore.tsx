@@ -13,9 +13,11 @@ import NewBooksBlock from '@/components/pages/explore/NewBooksBlock';
 import ExploreRegionsBlock from '@/components/pages/explore/RegionBlock';
 import TimelineBlock from '@/components/pages/explore/TimelineBlock';
 import AltSiteBlock from '@/components/pages/explore/AltSiteBlock';
-import { getAllDocuments, getNumDocuments } from '@/lib/db/friends';
-import { mostModernEdition } from '@/lib/editions';
+import { mostModernEditionType } from '@/lib/editions';
 import SearchBlock from '@/components/pages/explore/SearchBlock';
+import { getAllDocuments, getNumDocuments } from '@/lib/db/documents';
+import { editionTypes } from '@/lib/document';
+import { newestFirst } from '@/lib/dates';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const documents = Object.values(await getAllDocuments());
@@ -30,9 +32,32 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 interface Props {
-  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
   numBooks: number;
   numBooksInAltLang: number;
+  books: Array<
+    Pick<
+      DocumentWithMeta,
+      | 'title'
+      | 'altLanguageId'
+      | 'slug'
+      | 'id'
+      | 'editions'
+      | 'mostModernEdition'
+      | 'shortDescription'
+      | 'hasAudio'
+      | 'tags'
+      | 'numDownloads'
+      | 'customCSS'
+      | 'customHTML'
+      | 'dateAdded'
+      | 'isbn'
+      | 'authorSlug'
+      | 'authorName'
+      | 'authorGender'
+      | 'publishedRegion'
+      | 'publishedDate'
+    >
+  >;
 }
 
 const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) => (
@@ -63,13 +88,13 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     </BackgroundImage>
     <NavBlock />
     <UpdatedEditionsBlock
-      books={books.filter((book) => mostModernEdition(book.editionTypes) === `updated`)}
+      books={books.filter((book) => mostModernEditionType(book.editions) === `updated`)}
     />
     <GettingStartedLinkBlock />
     <AudioBooksBlock books={books.filter((book) => book.hasAudio)} />
     <NewBooksBlock
       books={books
-        .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
+        .sort((a, b) => newestFirst(a.dateAdded, b.dateAdded))
         .slice(0, 4)
         .map((book) => ({ ...book, audioDuration: undefined }))}
     />
@@ -97,7 +122,10 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     <SearchBlock
       books={books
         .flatMap((book) =>
-          book.editionTypes.map((editionType) => ({ ...book, edition: editionType })),
+          editionTypes(book.editions).map((editionType) => ({
+            ...book,
+            edition: editionType,
+          })),
         )
         .map((book) => ({
           ...book,

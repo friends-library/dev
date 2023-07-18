@@ -4,7 +4,22 @@ import type { DocumentWithMeta } from '@/lib/types';
 import BookTeaserCards from './BookTeaserCards';
 
 interface Props {
-  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
+  books: Array<
+    Pick<
+      DocumentWithMeta,
+      | 'title'
+      | 'slug'
+      | 'editions'
+      | 'shortDescription'
+      | 'customCSS'
+      | 'customHTML'
+      | 'dateAdded'
+      | 'authorSlug'
+      | 'authorName'
+      | 'authorGender'
+      | 'isbn'
+    >
+  >;
 }
 
 const NewBooksBlock: React.FC<Props> = ({ books }) => (

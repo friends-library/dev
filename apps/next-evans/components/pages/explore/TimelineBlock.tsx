@@ -11,9 +11,25 @@ import PillDropdown from '@/components/core/PillDropdown';
 import PillDropdownDropdown from '@/components/core/PillDropdownDropdown';
 import PillDropdownItem from '@/components/core/PillDropdownItem';
 import CastleBgImage from '@/public/images/castle.jpg';
+import { newestFirst } from '@/lib/dates';
 
 interface Props {
-  books: (Omit<DocumentWithMeta, 'numPages' | 'size'> & { date: number })[];
+  books: (Pick<
+    DocumentWithMeta,
+    | 'title'
+    | 'slug'
+    | 'editions'
+    | 'customCSS'
+    | 'customHTML'
+    | 'isbn'
+    | 'authorSlug'
+    | 'authorName'
+    | 'authorGender'
+    | 'publishedRegion'
+    | 'publishedDate'
+  > & {
+    date: number;
+  })[];
 }
 
 const TimelineBlock: React.FC<Props> = ({ books }) => {
@@ -91,7 +107,7 @@ const TimelineBlock: React.FC<Props> = ({ books }) => {
         <BookSlider
           books={books
             .filter((b) => b.date >= date && b.date < nextDate)
-            .sort((a, b) => (a.date < b.date ? -1 : 1))}
+            .sort((a, b) => newestFirst(a.date, b.date))}
           className="z-0 sm:z-10"
         />
       </div>

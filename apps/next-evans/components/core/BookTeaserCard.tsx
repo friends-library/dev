@@ -10,9 +10,12 @@ import Album from '@/components/core/Album';
 import { LANG } from '@/lib/env';
 import { isCompilations } from '@/lib/friend';
 import Button from '@/components/core/Button';
-import { mostModernEdition } from '@/lib/editions';
+import { mostModernEditionType } from '@/lib/editions';
 
-export type Props = DocumentWithMeta & {
+export type Props = Pick<
+  DocumentWithMeta,
+  'title' | 'authorName' | 'editions' | 'customCSS' | 'customHTML' | 'isbn'
+> & {
   audioDuration?: string;
   htmlShortTitle: string;
   documentUrl: string;
@@ -57,14 +60,13 @@ const BookTeaserCard: React.FC<Props> = (props) => {
             <Link href={`${props.documentUrl}#audiobook`}>
               <Album
                 author={authorName}
-                edition={mostModernEdition(props.editionTypes)}
+                edition={mostModernEditionType(props.editions)}
                 customCss={``}
                 customHtml={``}
                 {...props}
-                className=""
                 lang={LANG}
                 isCompilation={isCompilations(props.authorName)}
-                isbn=""
+                isbn={props.isbn}
               />
             </Link>
           )}
@@ -72,7 +74,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
             <Link href={props.documentUrl}>
               <Front
                 author={authorName}
-                edition={mostModernEdition(props.editionTypes)}
+                edition={mostModernEditionType(props.editions)}
                 customCss={props.customCSS || ``}
                 customHtml={props.customHTML || ``}
                 {...props}
@@ -83,7 +85,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
                 shadow
                 lang={LANG}
                 isCompilation={isCompilations(props.authorName)}
-                isbn=""
+                isbn={props.isbn}
               />
             </Link>
           )}

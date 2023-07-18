@@ -14,7 +14,7 @@ import { LANG } from '@/lib/env';
 import { makeScroller } from '@/lib/scroll';
 import GettingStartedPaths from '@/components/pages/getting-started/GettingStartedPaths';
 import recommendedBooks from '@/lib/recommended-books';
-import { getAllDocuments } from '@/lib/db/friends';
+import { getAllDocuments } from '@/lib/db/documents';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const documents = Object.values(await getAllDocuments());
@@ -36,7 +36,7 @@ export type GettingStartedCoverProps = Pick<
   | 'authorSlug'
   | 'customCSS'
   | 'customHTML'
-  | 'editionTypes'
+  | 'editions'
   | 'hasAudio'
   | 'id'
   | 'slug'

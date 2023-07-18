@@ -11,7 +11,22 @@ interface Props {
   titleEl: 'h1' | 'h2' | 'h3' | 'h4';
   bgColor: string;
   titleTextColor: string;
-  books: Array<Omit<DocumentWithMeta, 'numPages' | 'size'>>;
+  books: Array<
+    Pick<
+      DocumentWithMeta,
+      | 'title'
+      | 'slug'
+      | 'editions'
+      | 'shortDescription'
+      | 'customCSS'
+      | 'customHTML'
+      | 'dateAdded'
+      | 'authorSlug'
+      | 'authorName'
+      | 'authorGender'
+      | 'isbn'
+    >
+  >;
 }
 
 const BookTeaserCards: React.FC<Props> = ({
@@ -47,29 +62,16 @@ const BookTeaserCards: React.FC<Props> = ({
         {books.map((book) => (
           <BookTeaserCard
             className="pt-16 md:pt-0 md:mb-16 xl:mx-6"
-            key={getDocumentUrl(book.authorSlug, book.slug)}
+            key={getDocumentUrl(book)}
             title={book.title}
-            slug={book.slug}
-            id={book.id}
-            editionTypes={book.editionTypes}
-            shortDescription={book.shortDescription}
-            hasAudio={book.hasAudio}
-            tags={book.tags}
-            numDownloads={book.numDownloads}
-            numPages={[7]}
-            size={`m`}
+            editions={book.editions}
             customCSS={book.customCSS}
             customHTML={book.customHTML}
-            authorSlug={book.authorSlug}
             authorName={book.authorName}
-            authorGender={book.authorGender}
             htmlShortTitle={book.title}
-            documentUrl={getDocumentUrl(book.authorSlug, book.slug)}
+            documentUrl={getDocumentUrl(book)}
             authorUrl={getFriendUrl(book.authorSlug, book.authorGender)}
             description={book.shortDescription}
-            dateAdded={book.dateAdded}
-            publishedRegion={book.publishedRegion}
-            publishedDate={book.publishedDate}
             badgeText={new Date(book.dateAdded).toLocaleDateString(`en-US`, {
               month: `short`,
               day: `numeric`,

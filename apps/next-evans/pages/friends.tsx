@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import invariant from 'tiny-invariant';
 import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
-import type { FriendType } from '@/lib/types';
+import type { Friend } from '@/lib/types';
 import FriendsPageHero from '@/components/pages/friends/FriendsPageHero';
 import FriendCard from '@/components/pages/friends/FriendCard';
 import ControlsBlock from '@/components/pages/friends/ControlsBlock';
@@ -10,6 +10,7 @@ import CompilationsBlock from '@/components/pages/friends/CompilationsBlock';
 import { getFriendUrl, isCompilations } from '@/lib/friend';
 import { getAllFriends } from '@/lib/db/friends';
 import { getPrimaryResidence } from '@/lib/residences';
+import { newestFirst } from '@/lib/dates';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const friends = Object.values(await getAllFriends()).filter(
@@ -27,7 +28,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 type AllFriendsFriendProps = Pick<
-  FriendType,
+  Friend,
   'born' | 'died' | 'name' | 'slug' | 'residences' | 'gender' | 'id' | 'dateAdded'
 > & { numBooks: number };
 
@@ -37,7 +38,7 @@ interface Props {
 
 const Friends: React.FC<Props> = ({ friends }) => {
   const mostRecentFriends = friends
-    .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
+    .sort((a, b) => newestFirst(a.dateAdded, b.dateAdded))
     .slice(0, 2);
 
   const [searchQuery, setSearchQuery] = useState<string>(``);
