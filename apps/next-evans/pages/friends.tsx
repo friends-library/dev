@@ -37,9 +37,7 @@ interface Props {
 }
 
 const Friends: React.FC<Props> = ({ friends }) => {
-  const mostRecentFriends = friends
-    .sort((a, b) => newestFirst(a.createdAt, b.createdAt))
-    .slice(0, 2);
+  const mostRecentFriends = friends.sort(newestFirst).slice(0, 2);
 
   const [searchQuery, setSearchQuery] = useState<string>(``);
   const [sortOption, setSortOption] = useState<string>(`First Name`);

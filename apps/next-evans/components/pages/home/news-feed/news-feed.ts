@@ -47,7 +47,7 @@ export async function getNewsFeedItems(
   return recentAdditions
     .concat(outOfBandEvents.filter((item) => item.lang.includes(lang)))
     .concat(recentAudios)
-    .sort((a, b) => newestFirst(a.date, b.date))
+    .sort(newestFirst)
     .slice(0, MAX_NUM_NEWS_FEED_ITEMS);
 }
 
@@ -57,31 +57,29 @@ function getRecentAdditions(
   altLanguageDocuments: Array<NewsfeedDocumentProps> = [],
 ): FeedItem[] {
   const type = LANG === `en` && lang === `es` ? `spanish_translation` : `book`;
-  return documents
-    .sort((a, b) => newestFirst(a.createdAt, b.createdAt))
-    .map((doc) => {
-      return {
-        type,
-        title:
-          lang === `en`
-            ? htmlShortTitle(doc.title)
-            : `${htmlShortTitle(doc.title)}${LANG === `en` ? ` &mdash; (Spanish)` : ``}`,
-        ...dateFields(doc.mostModernEdition.impressionCreatedAt, LANG),
-        description:
-          type === `book`
-            ? LANG === `en`
-              ? `Download free eBook or pdf, or purchase a paperback at cost.`
-              : `Descárgalo en formato ebook o pdf, o compra el libro impreso a precio de costo.`
-            : `${doc.authorName}&rsquo;s <em>${
-                altLanguageDocuments.find((altDoc) => altDoc.altLanguageId === doc.id)
-                  ?.title ?? ``
-              }</em> is now translated and available on the Spanish site.`,
-        url:
-          type === `spanish_translation`
-            ? `https://bibliotecadelosamigos.org/${doc.authorSlug}/${doc.slug}`
-            : getDocumentUrl(doc),
-      };
-    });
+  return documents.sort(newestFirst).map((doc) => {
+    return {
+      type,
+      title:
+        lang === `en`
+          ? htmlShortTitle(doc.title)
+          : `${htmlShortTitle(doc.title)}${LANG === `en` ? ` &mdash; (Spanish)` : ``}`,
+      ...dateFields(doc.mostModernEdition.impressionCreatedAt, LANG),
+      description:
+        type === `book`
+          ? LANG === `en`
+            ? `Download free eBook or pdf, or purchase a paperback at cost.`
+            : `Descárgalo en formato ebook o pdf, o compra el libro impreso a precio de costo.`
+          : `${doc.authorName}&rsquo;s <em>${
+              altLanguageDocuments.find((altDoc) => altDoc.altLanguageId === doc.id)
+                ?.title ?? ``
+            }</em> is now translated and available on the Spanish site.`,
+      url:
+        type === `spanish_translation`
+          ? `https://bibliotecadelosamigos.org/${doc.authorSlug}/${doc.slug}`
+          : getDocumentUrl(doc),
+    };
+  });
 }
 
 function getRecentAudios(

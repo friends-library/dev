@@ -11,7 +11,6 @@ import PillDropdown from '@/components/core/PillDropdown';
 import PillDropdownDropdown from '@/components/core/PillDropdownDropdown';
 import PillDropdownItem from '@/components/core/PillDropdownItem';
 import CastleBgImage from '@/public/images/castle.jpg';
-import { newestFirst } from '@/lib/dates';
 
 interface Props {
   books: Array<
@@ -96,7 +95,7 @@ const TimelineBlock: React.FC<Props> = ({ books }) => {
         <BookSlider
           books={books
             .filter((b) => b.date >= date && b.date < nextDate)
-            .sort((a, b) => newestFirst(a.date, b.date))}
+            .sort((a, b) => b.date - a.date)}
           className="z-0 sm:z-10"
         />
       </div>

@@ -85,7 +85,7 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     <AudioBooksBlock books={books.filter((book) => book.hasAudio)} />
     <NewBooksBlock
       books={books
-        .sort((a, b) => newestFirst(a.createdAt, b.createdAt))
+        .sort(newestFirst)
         .slice(0, 4)
         .map((book) => ({ ...book, audioDuration: undefined }))}
     />
