@@ -2,10 +2,10 @@ _default:
   @just --choose
 
 dev-en: write-cover-css
-  @NEXT_PUBLIC_LANG=en pnpm dev --port 7222
+  @NEXT_PUBLIC_LANG=en pnpm next dev --port 7222
 
 dev-es: write-cover-css
-  @NEXT_PUBLIC_LANG=es pnpm dev --port 7333
+  @NEXT_PUBLIC_LANG=es pnpm next dev --port 7333
 
 build-en: prisma-generate write-cover-css
   @NEXT_PUBLIC_LANG=en pnpm next build
