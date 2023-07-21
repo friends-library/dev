@@ -21,15 +21,15 @@ export interface FeedItem {
 
 type NewsfeedDocumentProps = Pick<
   Document,
-  | 'authorName'
-  | 'createdAt'
   | 'id'
-  | 'title'
-  | 'authorSlug'
   | 'slug'
+  | 'title'
   | 'editions'
-  | 'mostModernEdition'
+  | 'createdAt'
+  | 'authorName'
+  | 'authorSlug'
   | 'altLanguageId'
+  | 'mostModernEdition'
 >;
 
 export async function getNewsFeedItems(
@@ -88,7 +88,7 @@ function getRecentAudios(
   documents: Array<
     Pick<
       Document,
-      'authorName' | 'createdAt' | 'id' | 'title' | 'authorSlug' | 'slug' | 'editions'
+      'id' | 'slug' | 'title' | 'editions' | 'createdAt' | 'authorName' | 'authorSlug'
     >
   >,
 ): FeedItem[] {

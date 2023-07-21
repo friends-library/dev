@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
-import type { Document } from '@/lib/types';
+import type { Doc } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import TimePicker from './TimePicker';
@@ -14,22 +14,11 @@ import CastleBgImage from '@/public/images/castle.jpg';
 import { newestFirst } from '@/lib/dates';
 
 interface Props {
-  books: (Pick<
-    Document,
-    | 'title'
-    | 'slug'
-    | 'editions'
-    | 'customCSS'
-    | 'customHTML'
-    | 'isbn'
-    | 'authorSlug'
-    | 'authorName'
-    | 'authorGender'
-    | 'publishedRegion'
-    | 'publishedYear'
-  > & {
-    date: number;
-  })[];
+  books: Array<
+    Doc<'editions' | 'authorGender' | 'publishedYear' | 'publishedRegion'> & {
+      date: number;
+    }
+  >;
 }
 
 const TimelineBlock: React.FC<Props> = ({ books }) => {

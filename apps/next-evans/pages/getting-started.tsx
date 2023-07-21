@@ -34,13 +34,13 @@ export type GettingStartedCoverProps = Pick<
   | 'id'
   | 'slug'
   | 'title'
-  | 'authorGender'
-  | 'authorName'
-  | 'authorSlug'
-  | 'customCSS'
-  | 'customHTML'
   | 'editions'
   | 'hasAudio'
+  | 'customCSS'
+  | 'authorName'
+  | 'authorSlug'
+  | 'customHTML'
+  | 'authorGender'
 >;
 
 interface Props {

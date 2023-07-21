@@ -29,7 +29,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 type AllFriendsFriendProps = Pick<
   Friend,
-  'born' | 'died' | 'name' | 'slug' | 'residences' | 'gender' | 'id' | 'createdAt'
+  'id' | 'born' | 'died' | 'name' | 'slug' | 'gender' | 'createdAt' | 'residences'
 > & { numBooks: number };
 
 interface Props {

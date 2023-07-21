@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import type { Document } from '@/lib/types';
+import type { Doc } from '@/lib/types';
 import AudiobooksHero from './AudiobooksHero';
 import Album from '@/components/core/Album';
 import Button from '@/components/core/Button';
@@ -11,19 +11,7 @@ import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import { mostModernEditionType } from '@/lib/editions';
 
 interface Props {
-  books: Array<
-    Pick<
-      Document,
-      | 'title'
-      | 'slug'
-      | 'editions'
-      | 'customCSS'
-      | 'customHTML'
-      | 'isbn'
-      | 'authorSlug'
-      | 'authorName'
-    >
-  >;
+  books: Array<Doc<'editions'>>;
 }
 
 const AudioBooksBlock: React.FC<Props> = ({ books }) => (

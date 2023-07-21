@@ -40,15 +40,15 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
 
 type Props = Pick<
   Friend,
+  | 'born'
+  | 'died'
   | 'name'
-  | 'gender'
   | 'slug'
-  | 'description'
+  | 'gender'
   | 'quotes'
   | 'documents'
   | 'residences'
-  | 'born'
-  | 'died'
+  | 'description'
 >;
 
 const Friend: React.FC<Props> = ({

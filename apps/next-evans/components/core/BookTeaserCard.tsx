@@ -14,7 +14,7 @@ import { mostModernEditionType } from '@/lib/editions';
 
 export type Props = Pick<
   Document,
-  'title' | 'authorName' | 'editions' | 'customCSS' | 'customHTML' | 'isbn'
+  'isbn' | 'title' | 'editions' | 'customCSS' | 'authorName' | 'customHTML'
 > & {
   audioDuration?: string;
   htmlShortTitle: string;

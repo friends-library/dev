@@ -1,6 +1,6 @@
 import React from 'react';
 import type { GetStaticProps } from 'next';
-import type { Document, Period } from '@/lib/types';
+import type { Doc, Period } from '@/lib/types';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import Dual from '@/components/core/Dual';
 import HeroImg from '@/public/images/explore-books.jpg';
@@ -35,26 +35,18 @@ interface Props {
   numBooks: number;
   numBooksInAltLang: number;
   books: Array<
-    Pick<
-      Document,
+    Doc<
       | 'id'
-      | 'title'
-      | 'slug'
-      | 'editions'
-      | 'mostModernEdition'
-      | 'shortDescription'
-      | 'hasAudio'
       | 'tags'
-      | 'numDownloads'
-      | 'customCSS'
-      | 'customHTML'
+      | 'editions'
+      | 'hasAudio'
       | 'createdAt'
-      | 'isbn'
-      | 'authorSlug'
-      | 'authorName'
       | 'authorGender'
-      | 'publishedRegion'
+      | 'numDownloads'
       | 'publishedYear'
+      | 'publishedRegion'
+      | 'shortDescription'
+      | 'mostModernEdition'
     >
   >;
 }

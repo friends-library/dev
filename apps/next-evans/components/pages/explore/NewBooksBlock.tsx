@@ -1,25 +1,10 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import type { Document } from '@/lib/types';
+import type { Doc } from '@/lib/types';
 import BookTeaserCards from './BookTeaserCards';
 
 interface Props {
-  books: Array<
-    Pick<
-      Document,
-      | 'title'
-      | 'slug'
-      | 'editions'
-      | 'shortDescription'
-      | 'customCSS'
-      | 'customHTML'
-      | 'createdAt'
-      | 'authorSlug'
-      | 'authorName'
-      | 'authorGender'
-      | 'isbn'
-    >
-  >;
+  books: Array<Doc<'editions' | 'createdAt' | 'authorGender' | 'shortDescription'>>;
 }
 
 const NewBooksBlock: React.FC<Props> = ({ books }) => (

@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import type { Document } from '@/lib/types';
+import type { Doc } from '@/lib/types';
 import BookTeaserCard from '../../core/BookTeaserCard';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 
@@ -11,22 +11,7 @@ interface Props {
   titleEl: 'h1' | 'h2' | 'h3' | 'h4';
   bgColor: string;
   titleTextColor: string;
-  books: Array<
-    Pick<
-      Document,
-      | 'title'
-      | 'slug'
-      | 'editions'
-      | 'shortDescription'
-      | 'customCSS'
-      | 'customHTML'
-      | 'createdAt'
-      | 'authorSlug'
-      | 'authorName'
-      | 'authorGender'
-      | 'isbn'
-    >
-  >;
+  books: Array<Doc<'editions' | 'createdAt' | 'authorGender' | 'shortDescription'>>;
 }
 
 const BookTeaserCards: React.FC<Props> = ({

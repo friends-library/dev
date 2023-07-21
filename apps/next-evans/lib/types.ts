@@ -16,7 +16,7 @@ export interface Friend {
   died: number | null;
   createdAt: ISODateString;
   residences: Residence[];
-  documents: DocumentCore[];
+  documents: FriendDocument[];
 }
 
 export interface Edition {
@@ -27,7 +27,7 @@ export interface Edition {
   impressionCreatedAt: ISODateString;
 }
 
-interface DocumentCore {
+interface FriendDocument {
   id: UUID;
   altLanguageId: UUID | null;
   title: string;
@@ -45,7 +45,12 @@ interface DocumentCore {
   isbn: string;
 }
 
-export interface Document extends DocumentCore {
+export type Doc<T extends keyof Document = never> = Pick<
+  Document,
+  'isbn' | 'title' | 'slug' | 'customCSS' | 'customHTML' | 'authorName' | 'authorSlug' | T
+>;
+
+export interface Document extends FriendDocument {
   authorSlug: string;
   authorName: string;
   authorGender: Gender;

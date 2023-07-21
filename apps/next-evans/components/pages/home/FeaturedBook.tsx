@@ -4,24 +4,13 @@ import cx from 'classnames';
 import { ThreeD as Front } from '@friends-library/cover-component';
 import { t } from '@friends-library/locale';
 import { htmlTitle } from '@friends-library/adoc-utils';
-import type { Document } from '@/lib/types';
+import type { Doc } from '@/lib/types';
 import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 
-export type Props = Pick<
-  Document,
-  | 'title'
-  | 'slug'
-  | 'customCSS'
-  | 'customHTML'
-  | 'mostModernEdition'
-  | 'featuredDescription'
-  | 'shortDescription'
-  | 'isbn'
-  | 'authorSlug'
-  | 'authorName'
-  | 'authorGender'
+export type Props = Doc<
+  'authorGender' | 'shortDescription' | 'mostModernEdition' | 'featuredDescription'
 > & { isCurrent: boolean };
 
 const Book: React.FC<Props> = (props) => (

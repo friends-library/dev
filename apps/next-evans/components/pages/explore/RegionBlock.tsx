@@ -1,23 +1,12 @@
 import React, { useState } from 'react';
-import type { Document, Region } from '@/lib/types';
+import type { Doc, Region } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import MapSlider from './MapSlider';
 
 interface Props {
   books: Array<
-    Pick<
-      Document,
-      | 'title'
-      | 'slug'
-      | 'editions'
-      | 'customCSS'
-      | 'customHTML'
-      | 'isbn'
-      | 'authorSlug'
-      | 'authorName'
-      | 'authorGender'
-    > & {
+    Doc<'editions' | 'authorGender'> & {
       region: Region;
     }
   >;

@@ -1,27 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { t } from '@friends-library/locale';
-import type { Document } from '@/lib/types';
+import type { Doc } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import { LANG } from '@/lib/env';
 import Dual from '@/components/core/Dual';
 
 interface Props {
-  books: Array<
-    Pick<
-      Document,
-      | 'title'
-      | 'slug'
-      | 'editions'
-      | 'customCSS'
-      | 'customHTML'
-      | 'isbn'
-      | 'authorSlug'
-      | 'authorName'
-      | 'authorGender'
-    >
-  >;
+  books: Array<Doc<'editions' | 'authorGender'>>;
 }
 
 const UpdatedEditionsBlock: React.FC<Props> = ({ books }) => (
