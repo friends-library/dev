@@ -5,7 +5,7 @@ import Dual from '@/components/core/Dual';
 
 interface Filter {
   text: string;
-  clear: () => any;
+  clear(): unknown;
 }
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
     label: string;
     filters: Filter[];
   }[];
-  clearAll: () => any;
+  clearAll(): unknown;
 }
 
 const ActiveFilters: React.FC<Props> = ({ groups, clearAll }) => (

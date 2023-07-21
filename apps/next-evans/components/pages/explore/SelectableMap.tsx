@@ -7,7 +7,7 @@ import map from '@/public/images/full_map.png';
 
 interface Props {
   selectedRegion: string;
-  selectRegion: (region: Region) => any;
+  selectRegion(region: Region): unknown;
   className?: string;
   style?: Record<string, number | string>;
 }

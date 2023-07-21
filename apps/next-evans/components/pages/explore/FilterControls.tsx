@@ -6,9 +6,9 @@ import SearchInput from '@/components/core/SearchInput';
 
 interface Props {
   activeFilters: string[];
-  setActiveFilters: (selected: string[]) => any;
+  setActiveFilters(selected: string[]): unknown;
   searchQuery: string;
-  setSearchQuery: (query: string) => any;
+  setSearchQuery(query: string): unknown;
 }
 
 const FilterControls: React.FC<Props> = ({

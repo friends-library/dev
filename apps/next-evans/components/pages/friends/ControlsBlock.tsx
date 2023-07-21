@@ -8,9 +8,9 @@ import SearchInput from '@/components/core/SearchInput';
 
 interface Props {
   sortOption: string;
-  setSortOption: (option: string) => any;
+  setSortOption(option: string): unknown;
   searchQuery: string;
-  setSearchQuery: (query: string) => any;
+  setSearchQuery(query: string): unknown;
 }
 
 const ControlsBlock: React.FC<Props> = ({

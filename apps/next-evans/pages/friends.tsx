@@ -9,7 +9,7 @@ import ControlsBlock from '@/components/pages/friends/ControlsBlock';
 import CompilationsBlock from '@/components/pages/friends/CompilationsBlock';
 import { getFriendUrl, isCompilations } from '@/lib/friend';
 import { getAllFriends } from '@/lib/db/friends';
-import { getPrimaryResidence } from '@/lib/residences';
+import { primaryResidence } from '@/lib/residences';
 import { newestFirst } from '@/lib/dates';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
@@ -29,7 +29,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 type AllFriendsFriendProps = Pick<
   Friend,
-  'born' | 'died' | 'name' | 'slug' | 'residences' | 'gender' | 'id' | 'dateAdded'
+  'born' | 'died' | 'name' | 'slug' | 'residences' | 'gender' | 'id' | 'createdAt'
 > & { numBooks: number };
 
 interface Props {
@@ -38,7 +38,7 @@ interface Props {
 
 const Friends: React.FC<Props> = ({ friends }) => {
   const mostRecentFriends = friends
-    .sort((a, b) => newestFirst(a.dateAdded, b.dateAdded))
+    .sort((a, b) => newestFirst(a.createdAt, b.createdAt))
     .slice(0, 2);
 
   const [searchQuery, setSearchQuery] = useState<string>(``);
@@ -54,14 +54,14 @@ const Friends: React.FC<Props> = ({ friends }) => {
         <h2 className="text-center pb-8 sans-wider text-2xl px-8">{t`Recently Added Authors`}</h2>
         <div className="flex flex-col xl:flex-row justify-center xl:items-center space-y-16 xl:space-y-0 xl:space-x-12">
           {mostRecentFriends.map((friend, i) => {
-            const primaryResidence = getPrimaryResidence(friend.residences);
+            const residence = primaryResidence(friend.residences);
             return (
               <FriendCard
                 gender={friend.gender === `mixed` ? `male` : friend.gender}
                 name={friend.name}
                 region={
-                  primaryResidence
-                    ? `${primaryResidence.city}, ${primaryResidence.region}`
+                  residence
+                    ? `${residence.city}, ${residence.region}`
                     : `Unknown residence`
                 }
                 numBooks={friend.numBooks}
@@ -85,15 +85,15 @@ const Friends: React.FC<Props> = ({ friends }) => {
       />
       <ul className="bg-flgray-200 flex justify-center flex-row flex-wrap pb-16">
         {filteredFriends.map((friend, i) => {
-          const primaryResidence = getPrimaryResidence(friend.residences);
-          invariant(primaryResidence);
+          const residence = primaryResidence(friend.residences);
+          invariant(residence);
           return (
             <FriendCard
               key={friend.slug}
               className="m-8 xl:m-12"
               gender={friend.gender === `mixed` ? `male` : friend.gender}
               name={friend.name}
-              region={`${primaryResidence.city}, ${primaryResidence.region}`}
+              region={`${residence.city}, ${residence.region}`}
               numBooks={friend.numBooks}
               url={getFriendUrl(friend.slug, friend.gender)}
               born={friend.born || undefined}

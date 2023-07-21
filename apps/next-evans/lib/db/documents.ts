@@ -1,21 +1,20 @@
 import type { Lang } from '@friends-library/types';
-import type { DocumentWithMeta } from '../types';
+import type { Document } from '../types';
 import { LANG } from '../env';
-import { getPublicationDate, getPublicationRegion } from '../document';
+import { publishedYear, publicationRegion } from '../document';
 import { getAllFriends } from './friends';
 
-// { `friendSlug/documentSlug`: Document }
 export async function getAllDocuments(
   lang: Lang = LANG,
-): Promise<Record<string, DocumentWithMeta>> {
+): Promise<Record<string, Document>> {
   const friends = await getAllFriends(lang);
-  const documents: Record<string, DocumentWithMeta> = {};
+  const documents: Record<string /* `friendSlug/documentSlug` */, Document> = {};
   Object.values(friends).forEach((friend) => {
     friend.documents.forEach((doc) => {
       documents[`${friend.slug}/${doc.slug}`] = {
         ...doc,
-        publishedRegion: getPublicationRegion(friend.residences),
-        publishedDate: getPublicationDate(friend.residences, friend.born, friend.died),
+        publishedRegion: publicationRegion(friend.residences),
+        publishedYear: publishedYear(friend.residences, friend.born, friend.died),
         authorGender: friend.gender,
         authorName: friend.name,
         authorSlug: friend.slug,
@@ -28,7 +27,7 @@ export async function getAllDocuments(
 export async function getDocument(
   friendSlug: string,
   documentSlug: string,
-): Promise<DocumentWithMeta | undefined> {
+): Promise<Document | undefined> {
   const documents = await getAllDocuments();
   return documents[`${friendSlug}/${documentSlug}`];
 }

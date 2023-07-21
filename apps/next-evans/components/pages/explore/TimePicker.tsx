@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 interface Props {
   className?: string;
-  setSelected: (selected: number) => any;
+  setSelected(selected: number): unknown;
   selected: number;
 }
 

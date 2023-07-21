@@ -4,13 +4,27 @@ import cx from 'classnames';
 import { ThreeD as Front } from '@friends-library/cover-component';
 import { t } from '@friends-library/locale';
 import { htmlTitle } from '@friends-library/adoc-utils';
-import type { DocumentWithMeta } from '@/lib/types';
+import type { Document } from '@/lib/types';
 import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
-import { mostModernEditionType } from '@/lib/editions';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 
-const Book: React.FC<DocumentWithMeta & { isCurrent: boolean }> = (props) => (
+export type Props = Pick<
+  Document,
+  | 'title'
+  | 'slug'
+  | 'customCSS'
+  | 'customHTML'
+  | 'mostModernEdition'
+  | 'featuredDescription'
+  | 'shortDescription'
+  | 'isbn'
+  | 'authorSlug'
+  | 'authorName'
+  | 'authorGender'
+> & { isCurrent: boolean };
+
+const Book: React.FC<Props> = (props) => (
   <div
     className={cx(
       `Book px-12 md:px-16 flex flex-col md:flex-row w-screen`,
@@ -23,8 +37,8 @@ const Book: React.FC<DocumentWithMeta & { isCurrent: boolean }> = (props) => (
           lang={LANG}
           isCompilation={isCompilations(props.authorSlug)}
           author={props.authorName}
-          pages={props.editions[0]?.numPages[0] ?? 80}
-          edition={mostModernEditionType(props.editions)}
+          pages={props.mostModernEdition.numPages[0] ?? 80}
+          edition={props.mostModernEdition.type}
           isbn={props.isbn}
           blurb={``}
           customCss={props.customCSS ?? ``}
@@ -41,8 +55,8 @@ const Book: React.FC<DocumentWithMeta & { isCurrent: boolean }> = (props) => (
           lang={LANG}
           isCompilation={isCompilations(props.authorSlug)}
           author={props.authorName}
-          pages={props.editions[0]?.numPages[0] ?? 80}
-          edition={mostModernEditionType(props.editions)}
+          pages={props.mostModernEdition.numPages[0] ?? 80}
+          edition={props.mostModernEdition.type}
           isbn={props.isbn}
           blurb={``}
           customCss={props.customCSS ?? ``}

@@ -5,7 +5,7 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   selected: string[];
-  setSelected: (selected: string[]) => any;
+  setSelected(selected: string[]): unknown;
 }
 
 const FilterSelect: React.FC<Props> = ({ selected, setSelected }) => (
@@ -95,7 +95,7 @@ interface AccordionProps {
   category: string;
   options: Array<{ display: string; value: string }>;
   selected: string[];
-  setSelected: (selected: string[]) => any;
+  setSelected(selected: string[]): unknown;
 }
 
 const FilterCategoryAccordion: React.FC<AccordionProps> = ({

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
-import type { DocumentWithMeta } from '@/lib/types';
+import type { Document } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import TimePicker from './TimePicker';
@@ -15,7 +15,7 @@ import { newestFirst } from '@/lib/dates';
 
 interface Props {
   books: (Pick<
-    DocumentWithMeta,
+    Document,
     | 'title'
     | 'slug'
     | 'editions'
@@ -26,7 +26,7 @@ interface Props {
     | 'authorName'
     | 'authorGender'
     | 'publishedRegion'
-    | 'publishedDate'
+    | 'publishedYear'
   > & {
     date: number;
   })[];

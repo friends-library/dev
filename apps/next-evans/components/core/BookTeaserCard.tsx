@@ -4,7 +4,7 @@ import { Front } from '@friends-library/cover-component';
 import { htmlTitle } from '@friends-library/adoc-utils';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import type { DocumentWithMeta } from '@/lib/types';
+import type { Document } from '@/lib/types';
 import AudioDuration from './AudioDuration';
 import Album from '@/components/core/Album';
 import { LANG } from '@/lib/env';
@@ -13,7 +13,7 @@ import Button from '@/components/core/Button';
 import { mostModernEditionType } from '@/lib/editions';
 
 export type Props = Pick<
-  DocumentWithMeta,
+  Document,
   'title' | 'authorName' | 'editions' | 'customCSS' | 'customHTML' | 'isbn'
 > & {
   audioDuration?: string;

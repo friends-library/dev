@@ -38,7 +38,7 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, Friend>> {
         ...friend,
         quotes: friend.friend_quotes.map((q) => ({ quote: q.text, cite: q.source })),
         created_at: null,
-        dateAdded: friend.created_at.toISOString(),
+        createdAt: friend.created_at.toISOString(),
         residences: friend.friend_residences.map((r) => ({
           city: r.city,
           region: r.region,
@@ -49,7 +49,7 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, Friend>> {
           invariant(firstEdition !== undefined);
           invariant(firstEdition.edition_impressions !== null);
           const newestEdition = doc.editions.find(
-            (e) => e.type === mostModernEditionType(doc.editions.map((ed) => ed.type)),
+            (edition) => edition.type === mostModernEditionType(doc.editions),
           );
           invariant(newestEdition !== undefined);
 
@@ -58,7 +58,7 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, Friend>> {
             altLanguageId: doc.alt_language_id,
             created_at: null,
             isbn: firstEdition.isbns[0]?.code ?? ``,
-            dateAdded: doc.created_at.toISOString(),
+            createdAt: doc.created_at.toISOString(),
             featuredDescription: doc.featured_description,
             mostModernEdition: toEdition(newestEdition),
             editions: doc.editions.map(toEdition),
@@ -68,6 +68,7 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, Friend>> {
             numDownloads: doc.editions.reduce((acc, ed) => acc + ed.downloads.length, 0),
             customCSS: null,
             customHTML: null,
+            authorSlug: friend.slug,
           };
         }),
       };
@@ -95,7 +96,7 @@ function toEdition(dbEdition: DBEdition): Edition {
     audiobook: audiobook && {
       id: audiobook.id,
       isIncomplete: audiobook.is_incomplete,
-      dateAdded: audiobook.created_at.toISOString(),
+      createdAt: audiobook.created_at.toISOString(),
     },
   };
 }

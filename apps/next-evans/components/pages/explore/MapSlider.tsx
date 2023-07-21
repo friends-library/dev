@@ -11,14 +11,14 @@ import { SCREEN_MD } from '@/lib/constants';
 interface Props {
   className?: string;
   region: Region;
-  setRegion: (region: Region) => any;
+  setRegion(region: Region): unknown;
 }
 
 const MapSlider: React.FC<Props> = ({ className, region, setRegion }) => {
   const winWidth = useWindowWidth();
   const [focus, setFocus] = useState<'UK' | 'US'>(`UK`);
   const [controlled, setControlled] = useState<boolean>(false);
-  const toggleFocus: () => any = () => setFocus(focus === `UK` ? `US` : `UK`);
+  const toggleFocus: () => unknown = () => setFocus(focus === `UK` ? `US` : `UK`);
 
   useInterval(() => {
     if (winWidth < SCREEN_MD && !controlled) {

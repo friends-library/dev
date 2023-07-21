@@ -1,19 +1,19 @@
 import type { Edition, EditionType, Region, Residence } from './types';
-import { getPrimaryResidence } from './residences';
+import { primaryResidence } from './residences';
 
-export function getPublicationDate(
+export function publishedYear(
   authorResidences: Residence[],
   authorBirthDate: number | null,
   authorDeathDate: number | null,
 ): number | null {
-  const primaryResidence = getPrimaryResidence(authorResidences);
-  const firstStay = primaryResidence?.durations[0];
+  const residence = primaryResidence(authorResidences);
+  const firstStay = residence?.durations[0];
   const publicationDate = firstStay ? firstStay.start ?? firstStay.end : null;
   return publicationDate ?? authorDeathDate ?? authorBirthDate ?? null;
 }
 
-export function getPublicationRegion(authorResidences: Residence[]): Region {
-  const primaryResidenceRegion = getPrimaryResidence(authorResidences)?.region;
+export function publicationRegion(authorResidences: Residence[]): Region {
+  const primaryResidenceRegion = primaryResidence(authorResidences)?.region;
   if (!primaryResidenceRegion) {
     return `Other`;
   }

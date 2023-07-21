@@ -44,7 +44,7 @@ function deriveMap(positions: Position[]): 'UK' | 'US' | 'Europe' {
   return arrays[0][0];
 }
 
-export function getPrimaryResidence(residences: Residence[]): Residence | null {
+export function primaryResidence(residences: Residence[]): Residence | null {
   return residences.reduce<Residence | null>((acc, residence) => {
     if (acc === null) return residence;
     if (

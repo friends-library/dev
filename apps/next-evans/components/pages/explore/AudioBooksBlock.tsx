@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import type { DocumentWithMeta } from '@/lib/types';
+import type { Document } from '@/lib/types';
 import AudiobooksHero from './AudiobooksHero';
 import Album from '@/components/core/Album';
 import Button from '@/components/core/Button';
@@ -13,7 +13,7 @@ import { mostModernEditionType } from '@/lib/editions';
 interface Props {
   books: Array<
     Pick<
-      DocumentWithMeta,
+      Document,
       | 'title'
       | 'slug'
       | 'editions'

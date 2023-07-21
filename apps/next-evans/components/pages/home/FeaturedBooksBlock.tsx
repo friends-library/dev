@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { Swipeable } from 'react-swipeable';
 import { t } from '@friends-library/locale';
-import type { DocumentWithMeta } from '@/lib/types';
-import FeaturedBook from './FeaturedBook';
+import FeaturedBook, { type Props as FeaturedBookProps } from './FeaturedBook';
 import Heading from '@/components/core/Heading';
 import WoodgrainSVG from '@/public/images/woodgrain.svg';
 
-interface Props {
-  books: DocumentWithMeta[];
+export interface Props {
+  books: Array<Omit<FeaturedBookProps, 'isCurrent'>>;
 }
 
 const FeaturedBooksBlock: React.FC<Props> = ({ books }) => {
@@ -26,7 +25,7 @@ const FeaturedBooksBlock: React.FC<Props> = ({ books }) => {
   return (
     <Swipeable
       nodeName="section"
-      className="py-10 sm:py-12 md:py-20 bg-[#f9f9f9] [background-sie:cover] md:[background-size:200%] lg:[background-size:150%] bg-center"
+      className="py-10 sm:py-12 md:py-20 bg-[#f9f9f9] [background-size:cover] md:[background-size:200%] lg:[background-size:150%] bg-center"
       style={{ backgroundImage: `url(${WoodgrainSVG.src})` }}
       onSwipedRight={() => {
         setControlled(true);

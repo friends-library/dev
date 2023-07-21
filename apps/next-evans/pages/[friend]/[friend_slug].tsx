@@ -2,10 +2,10 @@ import React from 'react';
 import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
+import { htmlShortTitle } from '@friends-library/adoc-utils';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { Friend } from '@/lib/types';
 import { LANG } from '@/lib/env';
-import { mostModernEditionType } from '@/lib/editions';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
 import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
 import BookByFriend from '@/components/pages/friend/BookByFriend';
@@ -18,25 +18,17 @@ import { editionTypes } from '@/lib/document';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const friends = await getAllFriends();
-
-  const paths = Object.values(friends).map((friend) => {
-    if (LANG === `en`) {
-      return {
-        params: { friend: `friend`, friend_slug: friend.slug },
-      };
-    }
-    return {
-      params: {
-        friend: friend.gender === `female` ? `amiga` : `amigo`,
-        friend_slug: friend.slug,
-      },
-    };
-  });
+  const paths = Object.values(friends).map((friend) => ({
+    params: {
+      friend: LANG === `en` ? `friend` : friend.gender === `female` ? `amiga` : `amigo`,
+      friend_slug: friend.slug,
+    },
+  }));
 
   return { paths, fallback: false };
 };
 
-export const getStaticProps: GetStaticProps<Friend> = async (context) => {
+export const getStaticProps: GetStaticProps<Props> = async (context) => {
   invariant(typeof context.params?.friend_slug === `string`);
   const friend = await getFriend(context.params.friend_slug);
   invariant(friend);
@@ -46,7 +38,20 @@ export const getStaticProps: GetStaticProps<Friend> = async (context) => {
   };
 };
 
-const Friend: React.FC<Friend> = ({
+type Props = Pick<
+  Friend,
+  | 'name'
+  | 'gender'
+  | 'slug'
+  | 'description'
+  | 'quotes'
+  | 'documents'
+  | 'residences'
+  | 'born'
+  | 'died'
+>;
+
+const Friend: React.FC<Props> = ({
   name,
   gender,
   slug,
@@ -121,9 +126,7 @@ const Friend: React.FC<Friend> = ({
               return (
                 <BookByFriend
                   key={doc.id}
-                  htmlShortTitle={doc.title
-                    .replace(/Volume/g, `Vol.`)
-                    .replace(/--/g, `—`)}
+                  htmlShortTitle={htmlShortTitle(doc.title)}
                   isAlone={onlyOneBook}
                   className="mb-8 lg:mb-12"
                   tags={doc.tags}
@@ -133,12 +136,12 @@ const Friend: React.FC<Friend> = ({
                   pages={doc.mostModernEdition.numPages}
                   description={doc.shortDescription}
                   lang={LANG}
-                  title={doc.title.replace(/-- Volume \d/g, ``)}
+                  title={doc.title}
                   blurb={``} // never see the back of a book in this component
-                  isCompilation={gender === `mixed`}
+                  isCompilation={isCompilations(name)}
                   author={name}
                   size={docSizeProp}
-                  edition={mostModernEditionType(doc.editions)}
+                  edition={doc.mostModernEdition.type}
                   isbn={doc.isbn}
                   customCss={doc.customCSS || ``}
                   customHtml={doc.customHTML || ``}

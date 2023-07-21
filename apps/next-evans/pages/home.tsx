@@ -1,6 +1,5 @@
 import React from 'react';
 import type { GetStaticProps } from 'next';
-import type { DocumentWithMeta } from '@/lib/types';
 import type { FeedItem } from '@/components/pages/home/news-feed/news-feed';
 import FeaturedBooksBlock from '@/components/pages/home/FeaturedBooksBlock';
 import HeroBlock from '@/components/pages/home/HeroBlock';
@@ -47,7 +46,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 interface Props {
-  featuredBooks: DocumentWithMeta[];
+  featuredBooks: React.ComponentProps<typeof FeaturedBooksBlock>['books'];
   newsFeedItems: FeedItem[];
   numTotalBooks: number;
 }

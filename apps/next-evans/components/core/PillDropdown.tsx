@@ -19,7 +19,7 @@ const PillDropdown: React.FC<Props> = ({
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
-    const click: (event: any) => any = (event) => {
+    const click: (event: any) => unknown = (event) => {
       if (
         ref.current &&
         (!ref.current.contains(event.target) || (autoHide && dropdownVisible))
@@ -27,7 +27,7 @@ const PillDropdown: React.FC<Props> = ({
         setDropdownVisible(false);
       }
     };
-    const escape: (e: KeyboardEvent) => any = ({ keyCode }) => {
+    const escape: (e: KeyboardEvent) => unknown = ({ keyCode }) => {
       keyCode === 27 && setDropdownVisible(false);
     };
     document.addEventListener(`click`, click);

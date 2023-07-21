@@ -5,7 +5,7 @@ import Link from 'next/link';
 interface Props {
   className?: string;
   to?: string;
-  onClick?: () => any;
+  onClick?(): unknown;
   disabled?: boolean;
   shadow?: boolean;
   width?: number | string;

@@ -8,7 +8,7 @@ export function useWindowWidth(): number {
   }, []);
 
   useEffect(() => {
-    const updateWinWidth: () => any = () => setWinWidth(window.innerWidth);
+    const updateWinWidth: () => unknown = () => setWinWidth(window.innerWidth);
     window.addEventListener(`resize`, updateWinWidth);
     return () => window.removeEventListener(`resize`, updateWinWidth);
   });

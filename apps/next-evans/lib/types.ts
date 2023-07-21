@@ -6,17 +6,17 @@ export { type EditionType };
 export type HeroIcon = typeof ArrowRightIcon;
 
 export interface Friend {
+  id: UUID;
   name: string;
   slug: string;
-  id: string;
   gender: 'male' | 'female' | 'mixed';
   description: string;
   quotes: Array<{ quote: string; cite: string }>;
   born: number | null;
   died: number | null;
-  dateAdded: string;
+  createdAt: ISODateString;
   residences: Residence[];
-  documents: DocumentType[];
+  documents: DocumentCore[];
 }
 
 export interface Edition {
@@ -24,14 +24,14 @@ export interface Edition {
   numPages: number[];
   size: 's' | 'm' | 'xl' | 'xlCondensed';
   audiobook: Audiobook | null;
-  impressionCreatedAt: string;
+  impressionCreatedAt: ISODateString;
 }
 
-export interface DocumentType {
+interface DocumentCore {
+  id: UUID;
+  altLanguageId: UUID | null;
   title: string;
-  altLanguageId: string | null;
   slug: string;
-  id: string;
   editions: Array<Edition>;
   mostModernEdition: Edition;
   shortDescription: string;
@@ -41,22 +41,22 @@ export interface DocumentType {
   numDownloads: number;
   customCSS: string | null;
   customHTML: string | null;
-  dateAdded: string;
+  createdAt: ISODateString;
   isbn: string;
 }
 
-export type DocumentWithMeta = DocumentType & {
+export interface Document extends DocumentCore {
   authorSlug: string;
   authorName: string;
   authorGender: Gender;
   publishedRegion: Region;
-  publishedDate: number | null;
-};
+  publishedYear: number | null;
+}
 
 export interface Audiobook {
-  id: string;
+  id: UUID;
   isIncomplete: boolean;
-  dateAdded: string;
+  createdAt: ISODateString;
 }
 
 export type Period = 'early' | 'mid' | 'late';

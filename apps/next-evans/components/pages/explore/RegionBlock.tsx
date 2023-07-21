@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { DocumentWithMeta, Region } from '@/lib/types';
+import type { Document, Region } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import MapSlider from './MapSlider';
@@ -7,7 +7,7 @@ import MapSlider from './MapSlider';
 interface Props {
   books: Array<
     Pick<
-      DocumentWithMeta,
+      Document,
       | 'title'
       | 'slug'
       | 'editions'

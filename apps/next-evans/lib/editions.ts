@@ -1,9 +1,13 @@
 import type { Edition, EditionType } from './types';
 
-export function mostModernEditionType(editions: EditionType[]): EditionType;
 export function mostModernEditionType(editions: Edition[]): EditionType;
+export function mostModernEditionType(
+  editions: Array<{ type: EditionType }>,
+): EditionType;
 
-export function mostModernEditionType(editions: EditionType[] | Edition[]): EditionType {
+export function mostModernEditionType(
+  editions: EditionType[] | Array<{ type: EditionType }>,
+): EditionType {
   const editionTypes = editions.map((edition) => {
     if (typeof edition === `string`) {
       return edition;

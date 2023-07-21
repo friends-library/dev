@@ -7,7 +7,7 @@ import FilterControls from './FilterControls';
 
 interface Filter {
   text: string;
-  clear: () => any;
+  clear(): unknown;
 }
 
 type FilterType = 'edition' | 'tag' | 'period' | 'region';
@@ -27,9 +27,9 @@ interface BookMeta {
 interface Props {
   books: BookMeta[];
   filters: string[];
-  setFilters: (filters: string[]) => any;
+  setFilters(filters: string[]): unknown;
   searchQuery: string;
-  setSearchQuery: (query: string) => any;
+  setSearchQuery(query: string): unknown;
 }
 
 const SearchControls: React.FC<Props> = ({
@@ -59,9 +59,9 @@ export default SearchControls;
 
 function groupify(
   filters: string[],
-  setFilters: (filters: string[]) => any,
+  setFilters: (filters: string[]) => unknown,
   books: BookMeta[],
-): { label: string; filters: { text: string; clear: () => any }[] }[] {
+): { label: string; filters: { text: string; clear(): unknown }[] }[] {
   const groups: { [k in FilterType]: Group } = {
     edition: { label: `Editions`, filters: [] },
     tag: { label: t`Tags`, filters: [] },

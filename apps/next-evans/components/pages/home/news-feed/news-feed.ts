@@ -2,7 +2,7 @@ import { t } from '@friends-library/locale';
 import { htmlShortTitle } from '@friends-library/adoc-utils';
 import invariant from 'tiny-invariant';
 import type { Lang } from '@friends-library/types';
-import type { Audiobook, DocumentWithMeta, NewsFeedType } from '@/lib/types';
+import type { Audiobook, Document, NewsFeedType } from '@/lib/types';
 import { months, newestFirst } from '@/lib/dates';
 import { LANG } from '@/lib/env';
 import { isNotNullish } from '@/lib/utils';
@@ -20,9 +20,9 @@ export interface FeedItem {
 }
 
 type NewsfeedDocumentProps = Pick<
-  DocumentWithMeta,
+  Document,
   | 'authorName'
-  | 'dateAdded'
+  | 'createdAt'
   | 'id'
   | 'title'
   | 'authorSlug'
@@ -58,7 +58,7 @@ function getRecentAdditions(
 ): FeedItem[] {
   const type = LANG === `en` && lang === `es` ? `spanish_translation` : `book`;
   return documents
-    .sort((a, b) => newestFirst(a.dateAdded, b.dateAdded))
+    .sort((a, b) => newestFirst(a.createdAt, b.createdAt))
     .map((doc) => {
       return {
         type,
@@ -87,8 +87,8 @@ function getRecentAdditions(
 function getRecentAudios(
   documents: Array<
     Pick<
-      DocumentWithMeta,
-      'authorName' | 'dateAdded' | 'id' | 'title' | 'authorSlug' | 'slug' | 'editions'
+      Document,
+      'authorName' | 'createdAt' | 'id' | 'title' | 'authorSlug' | 'slug' | 'editions'
     >
   >,
 ): FeedItem[] {
@@ -98,8 +98,8 @@ function getRecentAudios(
         (acc, ed) => {
           if (
             ed.audiobook &&
-            new Date(ed.audiobook.dateAdded).getTime() >
-              new Date(acc?.dateAdded ?? `January 1, 1970`).getTime()
+            new Date(ed.audiobook.createdAt).getTime() >
+              new Date(acc?.createdAt ?? `January 1, 1970`).getTime()
           ) {
             return {
               ...ed.audiobook,
@@ -116,7 +116,7 @@ function getRecentAudios(
     .map((audio) => ({
       type: `audiobook`,
       title: `${audio.title} &mdash; (${t`Audiobook`})`,
-      ...dateFields(audio.dateAdded, LANG),
+      ...dateFields(audio.createdAt, LANG),
       description:
         LANG === `en`
           ? `Free audiobook is now available for download or listening online.`

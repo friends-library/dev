@@ -4,7 +4,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   query: string;
-  setQuery: (query: string) => any;
+  setQuery(query: string): unknown;
   small?: boolean;
   open?: boolean;
   textColor?: string;

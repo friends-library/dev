@@ -4,7 +4,7 @@ import cx from 'classnames';
 interface Props {
   className?: string;
   dismissable?: boolean;
-  onClick: () => any;
+  onClick(): unknown;
   children: React.ReactNode;
 }
 

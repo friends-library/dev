@@ -1,19 +1,19 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import type { DocumentWithMeta } from '@/lib/types';
+import type { Document } from '@/lib/types';
 import BookTeaserCards from './BookTeaserCards';
 
 interface Props {
   books: Array<
     Pick<
-      DocumentWithMeta,
+      Document,
       | 'title'
       | 'slug'
       | 'editions'
       | 'shortDescription'
       | 'customCSS'
       | 'customHTML'
-      | 'dateAdded'
+      | 'createdAt'
       | 'authorSlug'
       | 'authorName'
       | 'authorGender'
