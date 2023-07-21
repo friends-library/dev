@@ -1,6 +1,8 @@
+import type { EditionType } from '@friends-library/types';
 import type { gender as Gender } from '@prisma/client';
 import type { ArrowRightIcon } from '@heroicons/react/24/outline';
 
+export { type EditionType };
 export type HeroIcon = typeof ArrowRightIcon;
 
 export interface Friend {
@@ -56,8 +58,6 @@ export interface Audiobook {
   isIncomplete: boolean;
   dateAdded: string;
 }
-
-export type EditionType = 'original' | 'modernized' | 'updated';
 
 export type Period = 'early' | 'mid' | 'late';
 
