@@ -60,6 +60,7 @@ export interface Document extends FriendDocument {
 
 export interface Audiobook {
   id: UUID;
+  duration: number;
   isIncomplete: boolean;
   createdAt: ISODateString;
 }

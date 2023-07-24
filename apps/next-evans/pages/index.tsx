@@ -60,6 +60,13 @@ const Home: React.FC<Props> = ({ friends }) => (
         Home
         <ChevronRightIcon className="h-5 ml-2" />
       </Link>
+      <Link
+        href="/audiobooks"
+        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600 flex items-center"
+      >
+        Audio books
+        <ChevronRightIcon className="h-5 ml-2" />
+      </Link>
     </div>
     <ul className="bg-gray-50 grid grid-cols-5 gap-4 p-8">
       {friends.map((friend) => (

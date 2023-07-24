@@ -95,6 +95,10 @@ function toEdition(dbEdition: DBEdition): Edition {
     size: dbEdition.edition_impressions.paperback_size_variant,
     audiobook: audiobook && {
       id: audiobook.id,
+      duration: audiobook.edition_audio_parts.reduce(
+        (acc, part) => acc + part.duration,
+        0,
+      ),
       isIncomplete: audiobook.is_incomplete,
       createdAt: audiobook.created_at.toISOString(),
     },
@@ -193,6 +197,11 @@ function queryFriends(lang: Lang) {
                   id: true,
                   created_at: true,
                   is_incomplete: true,
+                  edition_audio_parts: {
+                    select: {
+                      duration: true,
+                    },
+                  },
                 },
               },
               isbns: {
