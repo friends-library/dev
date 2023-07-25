@@ -7,7 +7,6 @@ const meta = {
   title: 'Home/WhoWereTheQuakersBlock', // eslint-disable-line
   component: WhoWereTheQuakersBlock,
   parameters: { layout: `fullscreen` },
-  decorators: [WebCoverStyles],
 } satisfies Meta<typeof WhoWereTheQuakersBlock>;
 
 type Story = StoryObj<typeof meta>;
