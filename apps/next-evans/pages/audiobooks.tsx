@@ -22,7 +22,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     .sort(newestFirst);
   return {
     props: {
-      numAudioBooks: 7,
+      numAudioBooks: sortedBooks.length,
       sortedBooks,
     },
   };
@@ -84,7 +84,7 @@ const AudioBooks: React.FC<Props> = ({ numAudioBooks, sortedBooks }) => (
           </>
         </Dual.P>
       </div>
-      <div className="flex gap-x-8 gap-y-36 flex-wrap justify-center py-24 px-4 sm:px-20">
+      <div className="flex gap-x-8 gap-y-36 flex-wrap justify-center py-24 px-4 sm:px-8">
         {sortedBooks.map((book, index) => {
           const audiobook = book.mostModernEdition.audiobook;
           invariant(audiobook);

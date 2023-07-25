@@ -19,7 +19,7 @@ const Testimonial: React.FC<Props> = ({
   <blockquote
     className={cx(
       className,
-      `flex justify-center text-white text-lg font-serif antialiased p-12`,
+      `flex justify-center text-white text-lg font-serif antialiased p-8 md:p-12`,
       {
         'bg-flgreen': color === `green`,
         'bg-flblue': color === `blue`,

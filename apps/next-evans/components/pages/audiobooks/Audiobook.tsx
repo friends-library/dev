@@ -21,7 +21,7 @@ const Audiobook: React.FC<Props> = (props) => (
   <div
     className={cx(
       props.className,
-      `Audiobook flex flex-col items-center max-w-md px-6 sm:px-8 py-8 rounded-lg`,
+      `Audiobook flex flex-col items-center max-w-[380px] px-6 sm:px-8 py-8 rounded-lg`,
       // purgeCSS: bg-flblue bg-flmaroon bg-flgold bg-flgreen
       `bg-fl${props.bgColor} text-white`,
     )}
@@ -61,7 +61,7 @@ const Audiobook: React.FC<Props> = (props) => (
         key="button"
         to={`${getDocumentUrl(props)}#audiobook`}
         bg={null}
-        className="text-black bg-flgray-200 hover:bg-white mx-auto mt-auto"
+        className="!text-black bg-flgray-200 hover:bg-white mx-auto mt-auto"
       >
         {t`Listen`}
       </Button>

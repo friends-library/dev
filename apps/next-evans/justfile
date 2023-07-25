@@ -22,6 +22,9 @@ prisma-generate: pre-prisma && post-prisma
 prisma-db-pull: pre-prisma && post-prisma
   @pnpm prisma db pull --force
 
+test:
+  @pnpm vitest
+
 # helpers
 
 [private]

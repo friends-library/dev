@@ -53,9 +53,14 @@ export function formatDuration(durationSeconds: number): string {
   const hours = Math.floor(durationSeconds / 3600);
   const minutes = Math.floor((durationSeconds - hours * 3600) / 60);
   const seconds = Math.floor(durationSeconds - hours * 3600 - minutes * 60);
-  return `${hours}:${minutes < 10 ? `0${minutes}` : minutes}:${
-    seconds < 10 ? `0${seconds}` : seconds
-  }`;
+  const hoursPart = hours > 0 ? `${hours}:` : ``;
+  let minutesPart =
+    minutes > 0 ? `${minutes < 10 && hours > 0 ? `0${minutes}` : minutes}:` : ``;
+  let secondsPart =
+    seconds > 0 ? `${seconds < 10 && minutes > 0 ? `0${seconds}` : seconds}` : ``;
+  if (minutes === 0 && hours > 0) minutesPart = `00:`;
+  if (seconds === 0 && minutes > 0) secondsPart = `00`;
+  return `${hoursPart}${minutesPart}${secondsPart}`;
 }
 
 export function formatMonthDay(date: Date | ISODateString, language: Lang): string {

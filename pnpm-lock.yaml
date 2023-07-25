@@ -775,6 +775,7 @@ importers:
       tiny-invariant: 1.3.1
       typescript: 5.0.2
       use-interval: ^1.3.0
+      vitest: 0.28.3
     dependencies:
       '@headlessui/react': 1.7.8_biqbaboplfbrettd7655fr4n2y
       '@heroicons/react': 2.0.17_react@18.2.0
@@ -802,6 +803,7 @@ importers:
       i: 0.3.7
       prisma: 4.13.0
       use-interval: 1.4.0_react@18.2.0
+      vitest: 0.28.3
 
   apps/poster:
     specifiers:
@@ -33211,7 +33213,7 @@ packages:
       vfile-message: 3.1.4
     dev: true
 
-  /vite-node/0.28.3_@types+node@18.11.18:
+  /vite-node/0.28.3_@types+node@18.15.11:
     resolution: {integrity: sha512-uJJAOkgVwdfCX8PUQhqLyDOpkBS5+j+FdbsXoPVPDlvVjRkb/W/mLYQPSL6J+t8R0UV8tJSe8c9VyxVQNsDSyg==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
@@ -33223,7 +33225,7 @@ packages:
       picocolors: 1.0.0
       source-map: 0.6.1
       source-map-support: 0.5.21
-      vite: 4.2.1_@types+node@18.11.18
+      vite: 4.2.1_@types+node@18.15.11
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -33316,40 +33318,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
 
-  /vite/4.2.1_@types+node@18.11.18:
-    resolution: {integrity: sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': '>= 14'
-      less: '*'
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-    dependencies:
-      '@types/node': 18.11.18
-      esbuild: 0.17.12
-      postcss: 8.4.21
-      resolve: 1.22.1
-      rollup: 3.20.0
-    optionalDependencies:
-      fsevents: 2.3.2
-    dev: true
-
   /vite/4.2.1_@types+node@18.15.11:
     resolution: {integrity: sha512-7MKhqdy0ISo4wnvwtqZkjke6XN4taqQ2TBaTccLIpOKv7Vp2h4Y+NpmWCnGDeSvvn45KxvWgGyb0MkHvY1vgbg==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -33408,7 +33376,7 @@ packages:
     dependencies:
       '@types/chai': 4.3.4
       '@types/chai-subset': 1.3.3
-      '@types/node': 18.11.18
+      '@types/node': 18.15.11
       '@vitest/expect': 0.28.3
       '@vitest/runner': 0.28.3
       '@vitest/spy': 0.28.3
@@ -33427,8 +33395,8 @@ packages:
       tinybench: 2.3.1
       tinypool: 0.3.1
       tinyspy: 1.0.2
-      vite: 4.2.1_@types+node@18.11.18
-      vite-node: 0.28.3_@types+node@18.11.18
+      vite: 4.2.1_@types+node@18.15.11
+      vite-node: 0.28.3_@types+node@18.15.11
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less

@@ -21,7 +21,7 @@ const TestimonialsBlock: React.FC<Props> = ({ testimonials }) => {
     <div className="flex flex-col md:flex-row md:flex-wrap">
       {testimonials.map((t, idx) => (
         <Testimonial
-          className={cx(`flex-grow md:py-20`, {
+          className={cx(`flex-grow lg:py-20`, {
             'md:w-full': idx === 0 && num === 3,
             'md:w-1/2': num !== 3 || idx !== 0,
           })}
