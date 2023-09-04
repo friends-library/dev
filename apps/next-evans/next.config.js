@@ -29,6 +29,22 @@ const nextConfig = {
           source: `/compilations`,
           destination: `/friend/compilations`,
         },
+        {
+          source: `/comenzar`,
+          destination: `/getting-started`,
+        },
+        {
+          source: `/explorar`,
+          destination: `/explore`,
+        },
+        {
+          source: `/audiolibros`,
+          destination: `/audiobooks`,
+        },
+        {
+          source: `/amigos`,
+          destination: `/friends`,
+        },
       ],
     };
   },
@@ -68,7 +84,7 @@ function staticFiles() {
     [`audio-help`, `audio-ayuda`],
     [`ebook-help`, `ebook-ayuda`],
     [`plain-text-format`, `descargar-texto-sin-formato`],
-    [`quakers`, `cuaqeros`],
+    [`quakers`, `cuaqueros`],
     [`spanish-translations`, `nuestras-traducciones`],
   ].map(([en, es]) => ({
     source: `/${es}`,

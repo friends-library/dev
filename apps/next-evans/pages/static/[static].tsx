@@ -12,6 +12,7 @@ import * as mdx from '@/lib/mdx';
 import { LANG } from '@/lib/env';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import { getAllDocuments } from '@/lib/db/documents';
+import Seo from '@/components/core/Seo';
 
 export const getStaticPaths: GetStaticPaths = async () => ({
   paths: mdx
@@ -123,20 +124,23 @@ interface Props {
 }
 
 const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (
-  <div>
-    <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
-      <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
-        <WhiteOverlay>
-          <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
-            {frontmatter.title}
-          </h1>
-        </WhiteOverlay>
+  <>
+    <Seo title={frontmatter.title} description={frontmatter.description} />
+    <div>
+      <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
+        <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
+          <WhiteOverlay>
+            <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
+              {frontmatter.title}
+            </h1>
+          </WhiteOverlay>
+        </div>
+      </BackgroundImage>
+      <div className="MDX p-10 md:px-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
+        <MDXRemote {...source} components={components} />
       </div>
-    </BackgroundImage>
-    <div className="MDX p-10 md:px-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
-      <MDXRemote {...source} components={components} />
     </div>
-  </div>
+  </>
 );
 
 export default StaticPage;

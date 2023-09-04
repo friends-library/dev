@@ -117,6 +117,7 @@ function toEdition(dbEdition: DBEdition): Edition {
         id: part.id,
         lqExternalTrackId: part.external_id_lq,
         hqExternalTrackId: part.external_id_hq,
+        duration: part.duration,
       })),
     },
   };
@@ -234,6 +235,7 @@ function queryFriends(lang: Lang) {
                       id: true,
                       external_id_hq: true,
                       external_id_lq: true,
+                      duration: true,
                     },
                   },
                 },

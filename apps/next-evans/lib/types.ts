@@ -82,6 +82,7 @@ export interface Audiobook {
     id: UUID;
     lqExternalTrackId: number | null;
     hqExternalTrackId: number | null;
+    duration: number;
   }>;
 }
 

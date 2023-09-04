@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
 import type { Doc, Period } from '@/lib/types';
 import BackgroundImage from '@/components/core/BackgroundImage';
@@ -18,6 +19,7 @@ import SearchBlock from '@/components/pages/explore/SearchBlock';
 import { getAllDocuments, getNumDocuments } from '@/lib/db/documents';
 import { editionTypes } from '@/lib/document';
 import { newestFirst } from '@/lib/dates';
+import Seo from '@/components/core/Seo';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const documents = Object.values(await getAllDocuments());
@@ -51,82 +53,103 @@ interface Props {
   >;
 }
 
-const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) => (
-  <div>
-    <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
-      <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
-        <WhiteOverlay>
-          <Dual.H1 className="sans-wider text-3xl mb-6">
-            <>Explore Books</>
-            <>Explorar Libros</>
-          </Dual.H1>
-          <Dual.P className="body-text">
-            <>
-              We currently have {numBooks} books freely available on this site.
-              Overwhelmed? On this page you can browse all the titles by edition, region,
-              time period, tags, and more&mdash;or search the full library to find exactly
-              what you’re looking for.
-            </>
-            <>
-              Actualmente tenemos {numBooks} libros disponibles de forma gratuita en este
-              sitio, y más están siendo traducidos y añadidos regularmente. En nuestra
-              página de “Explorar” puedes navegar por todos nuestros libros y audiolibros,
-              o buscar libros en la categoría particular que más te interese.
-            </>
-          </Dual.P>
-        </WhiteOverlay>
+const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) => {
+  const numAudiobooks = books.filter((book) => book.hasAudio).length;
+  const numUpdatedEditions = books.filter(
+    (book) => book.mostModernEdition.type === `updated`,
+  ).length;
+  return (
+    <>
+      <Seo
+        title={t`Explore Books`}
+        description={
+          LANG === `en`
+            ? `Explore ${numBooks} books written by early members of the Religious Society of Friends (Quakers) – available for free download as EPUB, MOBI, PDF, and audiobooks. Browse ${numUpdatedEditions} updated editions, ${numAudiobooks} audiobooks, and recently added titles, or view books by geographic region or time period.`
+            : `Explora nuestros ${numBooks} libros escritos por los primeros miembros de la Sociedad de Amigos (Cuáqueros), disponibles de forma gratuita en formatos digitales EPUB, MOBI, PDF, y audiolibros. Puedes navegar por todos nuestros libros y audiolibros, o buscar libros en la categoría particular que más te interese.`
+        }
+      />
+      <div>
+        <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
+          <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
+            <WhiteOverlay>
+              <Dual.H1 className="sans-wider text-3xl mb-6">
+                <>Explore Books</>
+                <>Explorar Libros</>
+              </Dual.H1>
+              <Dual.P className="body-text">
+                <>
+                  We currently have {numBooks} books freely available on this site.
+                  Overwhelmed? On this page you can browse all the titles by edition,
+                  region, time period, tags, and more&mdash;or search the full library to
+                  find exactly what you’re looking for.
+                </>
+                <>
+                  Actualmente tenemos {numBooks} libros disponibles de forma gratuita en
+                  este sitio, y más están siendo traducidos y añadidos regularmente. En
+                  nuestra página de “Explorar” puedes navegar por todos nuestros libros y
+                  audiolibros, o buscar libros en la categoría particular que más te
+                  interese.
+                </>
+              </Dual.P>
+            </WhiteOverlay>
+          </div>
+        </BackgroundImage>
+        <NavBlock />
+        <UpdatedEditionsBlock
+          books={books.filter(
+            (book) => mostModernEditionType(book.editions) === `updated`,
+          )}
+        />
+        <GettingStartedLinkBlock />
+        <AudioBooksBlock books={books.filter((book) => book.hasAudio)} />
+        <NewBooksBlock
+          books={books
+            .sort(newestFirst)
+            .slice(0, 4)
+            .map((book) => ({ ...book, audioDuration: undefined }))}
+        />
+        {LANG === `en` && (
+          <ExploreRegionsBlock
+            books={books.map((book) => ({
+              ...book,
+              region: book.publishedRegion,
+            }))}
+          />
+        )}
+        {LANG === `en` && (
+          <TimelineBlock
+            books={books
+              .filter((book) => book.publishedYear)
+              .map((book) => ({ ...book, date: book.publishedYear ?? 1650 }))}
+          />
+        )}
+        <AltSiteBlock
+          numBooks={numBooksInAltLang}
+          url={
+            LANG === `en`
+              ? `https://bibliotecadelosamigos.org`
+              : `https://friendslibrary.com`
+          }
+        />
+        <SearchBlock
+          books={books
+            .flatMap((book) =>
+              editionTypes(book.editions).map((editionType) => ({
+                ...book,
+                edition: editionType,
+              })),
+            )
+            .map((book) => ({
+              ...book,
+              edition: book.edition,
+              region: book.publishedRegion,
+              period: book.publishedYear ? getPeriod(book.publishedYear) : `early`,
+            }))}
+        />
       </div>
-    </BackgroundImage>
-    <NavBlock />
-    <UpdatedEditionsBlock
-      books={books.filter((book) => mostModernEditionType(book.editions) === `updated`)}
-    />
-    <GettingStartedLinkBlock />
-    <AudioBooksBlock books={books.filter((book) => book.hasAudio)} />
-    <NewBooksBlock
-      books={books
-        .sort(newestFirst)
-        .slice(0, 4)
-        .map((book) => ({ ...book, audioDuration: undefined }))}
-    />
-    {LANG === `en` && (
-      <ExploreRegionsBlock
-        books={books.map((book) => ({
-          ...book,
-          region: book.publishedRegion,
-        }))}
-      />
-    )}
-    {LANG === `en` && (
-      <TimelineBlock
-        books={books
-          .filter((book) => book.publishedYear)
-          .map((book) => ({ ...book, date: book.publishedYear ?? 1650 }))}
-      />
-    )}
-    <AltSiteBlock
-      numBooks={numBooksInAltLang}
-      url={
-        LANG === `en` ? `https://bibliotecadelosamigos.org` : `https://friendslibrary.com`
-      }
-    />
-    <SearchBlock
-      books={books
-        .flatMap((book) =>
-          editionTypes(book.editions).map((editionType) => ({
-            ...book,
-            edition: editionType,
-          })),
-        )
-        .map((book) => ({
-          ...book,
-          edition: book.edition,
-          region: book.publishedRegion,
-          period: book.publishedYear ? getPeriod(book.publishedYear) : `early`,
-        }))}
-    />
-  </div>
-);
+    </>
+  );
+};
 
 export default ExploreBooks;
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
 import type { FeedItem } from '@/components/pages/home/news-feed/news-feed';
 import FeaturedBooksBlock from '@/components/pages/home/FeaturedBooksBlock';
@@ -13,6 +14,7 @@ import NewsFeedBlock from '@/components/pages/home/news-feed/NewsFeedBlock';
 import { getNewsFeedItems } from '@/components/pages/home/news-feed/news-feed';
 import { LANG } from '@/lib/env';
 import { isNotNullish } from '@/lib/utils';
+import Seo from '@/components/core/Seo';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const documents = { en: await getAllDocuments(`en`), es: await getAllDocuments(`es`) };
@@ -52,16 +54,27 @@ interface Props {
 }
 
 const Home: React.FC<Props> = ({ featuredBooks, newsFeedItems, numTotalBooks }) => (
-  <main className="overflow-hidden">
-    <HeroBlock />
-    <SubHeroBlock numTotalBooks={0} />
-    <NewsFeedBlock items={newsFeedItems} />
-    <FeaturedBooksBlock books={featuredBooks} />
-    <GettingStartedBlock />
-    <WhoWereTheQuakersBlock />
-    <FormatsBlock />
-    <ExploreBooksBlock numTotalBooks={numTotalBooks} />
-  </main>
+  <>
+    <Seo
+      title={t`Friends Library`}
+      withoutEnding
+      description={
+        LANG === `en`
+          ? `Friends Library exists to freely share the writings of early members of the Religious Society of Friends (Quakers), believing that no other collection of Christian writings more accurately communicates or powerfully illustrates the soul-transforming power of the gospel of Jesus Christ. We have ${numTotalBooks} books available for free download in multiple editions and digital formats (including PDF, MOBI, and EPUB), and a growing number of them are also recorded as audiobooks. Paperback copies are also available at very low cost.`
+          : `La Biblioteca de los Amigos ha sido creada para compartir gratuitamente los escritos de los primeros miembros de la Sociedad de Amigos (Cuáqueros), ya que creemos que no existe ninguna otra colección de escritos cristianos que comunique con mayor precisión, o que ilustre con más pureza, el poder del evangelio de Jesucristo que transforma el alma. Actualmente tenemos ${numTotalBooks} libros disponibles para descargarse gratuitamente en múltiples ediciones y formatos digitales, y un número creciente de estos libros están siendo grabados como audiolibros. Libros impresos también están disponibles por un precio muy económico.`
+      }
+    />
+    <main className="overflow-hidden">
+      <HeroBlock />
+      <SubHeroBlock numTotalBooks={0} />
+      <NewsFeedBlock items={newsFeedItems} />
+      <FeaturedBooksBlock books={featuredBooks} />
+      <GettingStartedBlock />
+      <WhoWereTheQuakersBlock />
+      <FormatsBlock />
+      <ExploreBooksBlock numTotalBooks={numTotalBooks} />
+    </main>
+  </>
 );
 
 export default Home;

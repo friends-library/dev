@@ -11,6 +11,8 @@ import { getFriendUrl, isCompilations } from '@/lib/friend';
 import { getAllFriends } from '@/lib/db/friends';
 import { primaryResidence } from '@/lib/residences';
 import { newestFirst } from '@/lib/dates';
+import Seo from '@/components/core/Seo';
+import { LANG } from '@/lib/env';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const friends = Object.values(await getAllFriends()).filter(
@@ -46,74 +48,84 @@ const Friends: React.FC<Props> = ({ friends }) => {
     .filter(makeFilter(searchQuery, sortOption));
 
   return (
-    <div>
-      <FriendsPageHero numFriends={friends.length} />
-      <section className="sm:px-16 py-16">
-        <h2 className="text-center pb-8 sans-wider text-2xl px-8">{t`Recently Added Authors`}</h2>
-        <div className="flex flex-col xl:flex-row justify-center xl:items-center space-y-16 xl:space-y-0 xl:space-x-12">
-          {mostRecentFriends.map((friend, i) => {
+    <>
+      <Seo
+        title={t`All Friends`}
+        description={
+          LANG === `en`
+            ? `Friends Library currently contains books written by ${friends.length} early members of the Religious Society of Friends (Quakers), and more authors are being added regularly. View all authors here, including William Penn, Isaac Penington, Robert Barclay, and George Fox. All books are available in their entirety for free download as EPUB, MOBI, PDF, and a growing number are available as audiobooks. Paperback copies are also available at very low cost.`
+            : `Actualmente la Biblioteca de Amigos contiene libros escritos por ${friends.length} antiguos Amigos, y constantemente estamos añadiendo nuevos autores. Aquí puedes ver todos nuestros autores, incluyendo William Penn, Isaac Penington, Robert Barclay, y George Fox. Los libros completos están disponibles para ser descargados gratuitamente en formatos digitales como EPUB, MOBI, PDF, y algunos han sido grabados como audiolibros. Libros impresos también están disponibles por un precio muy económico.`
+        }
+      />
+      <div>
+        <FriendsPageHero numFriends={friends.length} />
+        <section className="sm:px-16 py-16">
+          <h2 className="text-center pb-8 sans-wider text-2xl px-8">{t`Recently Added Authors`}</h2>
+          <div className="flex flex-col xl:flex-row justify-center xl:items-center space-y-16 xl:space-y-0 xl:space-x-12">
+            {mostRecentFriends.map((friend, i) => {
+              const residence = primaryResidence(friend.residences);
+              return (
+                <FriendCard
+                  gender={friend.gender === `mixed` ? `male` : friend.gender}
+                  name={friend.name}
+                  region={
+                    residence
+                      ? `${residence.city}, ${residence.region}`
+                      : `Unknown residence`
+                  }
+                  numBooks={friend.numBooks}
+                  featured
+                  born={friend.born || undefined}
+                  died={friend.died || undefined}
+                  url={getFriendUrl(friend.slug, friend.gender)}
+                  color={i === 0 ? `blue` : `green`}
+                  className="xl:w-1/2 xl:max-w-screen-sm"
+                  key={friend.slug}
+                />
+              );
+            })}
+          </div>
+        </section>
+        <ControlsBlock
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
+        <ul className="bg-flgray-200 flex justify-center flex-row flex-wrap pb-16">
+          {filteredFriends.map((friend, i) => {
             const residence = primaryResidence(friend.residences);
+            invariant(residence);
             return (
               <FriendCard
+                key={friend.slug}
+                className="m-8 xl:m-12"
                 gender={friend.gender === `mixed` ? `male` : friend.gender}
                 name={friend.name}
-                region={
-                  residence
-                    ? `${residence.city}, ${residence.region}`
-                    : `Unknown residence`
-                }
+                region={`${residence.city}, ${residence.region}`}
                 numBooks={friend.numBooks}
-                featured
+                url={getFriendUrl(friend.slug, friend.gender)}
                 born={friend.born || undefined}
                 died={friend.died || undefined}
-                url={getFriendUrl(friend.slug, friend.gender)}
-                color={i === 0 ? `blue` : `green`}
-                className="xl:w-1/2 xl:max-w-screen-sm"
-                key={friend.slug}
+                color={(() => {
+                  switch (i % 4) {
+                    case 0:
+                      return `blue`;
+                    case 1:
+                      return `green`;
+                    case 2:
+                      return `maroon`;
+                    default:
+                      return `gold`;
+                  }
+                })()}
               />
             );
           })}
-        </div>
-      </section>
-      <ControlsBlock
-        sortOption={sortOption}
-        setSortOption={setSortOption}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
-      <ul className="bg-flgray-200 flex justify-center flex-row flex-wrap pb-16">
-        {filteredFriends.map((friend, i) => {
-          const residence = primaryResidence(friend.residences);
-          invariant(residence);
-          return (
-            <FriendCard
-              key={friend.slug}
-              className="m-8 xl:m-12"
-              gender={friend.gender === `mixed` ? `male` : friend.gender}
-              name={friend.name}
-              region={`${residence.city}, ${residence.region}`}
-              numBooks={friend.numBooks}
-              url={getFriendUrl(friend.slug, friend.gender)}
-              born={friend.born || undefined}
-              died={friend.died || undefined}
-              color={(() => {
-                switch (i % 4) {
-                  case 0:
-                    return `blue`;
-                  case 1:
-                    return `green`;
-                  case 2:
-                    return `maroon`;
-                  default:
-                    return `gold`;
-                }
-              })()}
-            />
-          );
-        })}
-      </ul>
-      <CompilationsBlock />
-    </div>
+        </ul>
+        <CompilationsBlock />
+      </div>
+    </>
   );
 };
 
