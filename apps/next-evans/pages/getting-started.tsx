@@ -58,6 +58,7 @@ const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
   <>
     <Seo
       title={t`Getting Started`}
+      documentPage={false}
       description={
         LANG === `en`
           ? `View hand-picked reading recommendations to help you get started with our 183 books written by early members of the Religious Society of Friends (Quakers). Recommendations come in four categories: History, Doctrine, Spiritual Life, and Journals. All books are available in their entirety for free download as EPUB, MOBI, PDF, and a growing number are available as audiobooks. Paperback copies are also available at very low cost.`

@@ -62,6 +62,7 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     <>
       <Seo
         title={t`Explore Books`}
+        documentPage={false}
         description={
           LANG === `en`
             ? `Explore ${numBooks} books written by early members of the Religious Society of Friends (Quakers) – available for free download as EPUB, MOBI, PDF, and audiobooks. Browse ${numUpdatedEditions} updated editions, ${numAudiobooks} audiobooks, and recently added titles, or view books by geographic region or time period.`

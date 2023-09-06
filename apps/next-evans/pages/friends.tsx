@@ -51,6 +51,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
     <>
       <Seo
         title={t`All Friends`}
+        documentPage={false}
         description={
           LANG === `en`
             ? `Friends Library currently contains books written by ${friends.length} early members of the Religious Society of Friends (Quakers), and more authors are being added regularly. View all authors here, including William Penn, Isaac Penington, Robert Barclay, and George Fox. All books are available in their entirety for free download as EPUB, MOBI, PDF, and a growing number are available as audiobooks. Paperback copies are also available at very low cost.`

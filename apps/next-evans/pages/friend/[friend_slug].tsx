@@ -16,6 +16,9 @@ import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import getFriend, { getAllFriends } from '@/lib/db/friends';
 import { editionTypes } from '@/lib/document';
 import { bookSize } from '@/lib/book-sizes';
+import Seo from '@/components/core/Seo';
+import { inflect } from '@/lib/utils';
+import { friendPageDescription } from '@/lib/seo';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const friends = await getAllFriends();
@@ -93,59 +96,69 @@ const Friend: React.FC<Props> = ({
   }
 
   return (
-    <div>
-      <FriendBlock name={name} gender={gender} blurb={description} />
-      {quotes[0] && <FeaturedQuoteBlock cite={quotes[0].cite} quote={quotes[0].quote} />}
-      <div className="bg-flgray-100 px-8 pt-12 pb-4 lg:px-8">
-        <h2 className="text-xl font-sans text-center tracking-wider font-bold mb-8">
-          {name === `Compilations`
-            ? t`All Compilations (${documents.length})`
-            : t`Books by ${name}`}
-        </h2>
-        <div
-          className={cx(`flex flex-col items-center `, `xl:justify-center`, {
-            'lg:flex-row lg:justify-between lg:flex-wrap lg:items-stretch': !onlyOneBook,
-          })}
-        >
-          {documents
-            .sort((doc) => {
-              if (editionTypes(doc.editions).includes(`updated`)) {
-                return -1;
-              }
-              if (editionTypes(doc.editions).includes(`modernized`)) {
-                return 0;
-              }
-              return 1;
-            })
-            .map((doc) => (
-              <BookByFriend
-                key={doc.id}
-                htmlShortTitle={htmlShortTitle(doc.title)}
-                isAlone={onlyOneBook}
-                className="mb-8 lg:mb-12"
-                tags={doc.tags}
-                hasAudio={doc.hasAudio}
-                bookUrl={getDocumentUrl(slug, doc.slug)}
-                numDownloads={doc.numDownloads}
-                pages={doc.mostModernEdition.numPages}
-                description={doc.shortDescription}
-                lang={LANG}
-                title={doc.title}
-                blurb={``} // never see the back of a book in this component
-                isCompilation={isCompilations(name)}
-                author={name}
-                size={bookSize(doc.mostModernEdition.size)}
-                edition={doc.mostModernEdition.type}
-                isbn={doc.isbn}
-                customCss={doc.customCSS || ``}
-                customHtml={doc.customHTML || ``}
-              />
-            ))}
+    <>
+      <Seo
+        title={name}
+        description={friendPageDescription(name, documents, description)}
+        documentPage={false}
+      />
+      <div>
+        <FriendBlock name={name} gender={gender} blurb={description} />
+        {quotes[0] && (
+          <FeaturedQuoteBlock cite={quotes[0].cite} quote={quotes[0].quote} />
+        )}
+        <div className="bg-flgray-100 px-8 pt-12 pb-4 lg:px-8">
+          <h2 className="text-xl font-sans text-center tracking-wider font-bold mb-8">
+            {name === `Compilations`
+              ? t`All Compilations (${documents.length})`
+              : t`Books by ${name}`}
+          </h2>
+          <div
+            className={cx(`flex flex-col items-center `, `xl:justify-center`, {
+              'lg:flex-row lg:justify-between lg:flex-wrap lg:items-stretch':
+                !onlyOneBook,
+            })}
+          >
+            {documents
+              .sort((doc) => {
+                if (editionTypes(doc.editions).includes(`updated`)) {
+                  return -1;
+                }
+                if (editionTypes(doc.editions).includes(`modernized`)) {
+                  return 0;
+                }
+                return 1;
+              })
+              .map((doc) => (
+                <BookByFriend
+                  key={doc.id}
+                  htmlShortTitle={htmlShortTitle(doc.title)}
+                  isAlone={onlyOneBook}
+                  className="mb-8 lg:mb-12"
+                  tags={doc.tags}
+                  hasAudio={doc.hasAudio}
+                  bookUrl={getDocumentUrl(slug, doc.slug)}
+                  numDownloads={doc.numDownloads}
+                  pages={doc.mostModernEdition.numPages}
+                  description={doc.shortDescription}
+                  lang={LANG}
+                  title={doc.title}
+                  blurb={``} // never see the back of a book in this component
+                  isCompilation={isCompilations(name)}
+                  author={name}
+                  size={bookSize(doc.mostModernEdition.size)}
+                  edition={doc.mostModernEdition.type}
+                  isbn={doc.isbn}
+                  customCss={doc.customCSS || ``}
+                  customHtml={doc.customHTML || ``}
+                />
+              ))}
+          </div>
         </div>
+        {mapBlock}
+        <TestimonialsBlock testimonials={quotes.slice(1, quotes.length)} />
       </div>
-      {mapBlock}
-      <TestimonialsBlock testimonials={quotes.slice(1, quotes.length)} />
-    </div>
+    </>
   );
 };
 

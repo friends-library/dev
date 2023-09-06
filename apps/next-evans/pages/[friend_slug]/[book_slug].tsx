@@ -13,6 +13,8 @@ import { isCompilations } from '@/lib/friend';
 import { formatFilesize } from '@/lib/filesize';
 import { bookSize } from '@/lib/book-sizes';
 import { LANG } from '@/lib/env';
+import Seo from '@/components/core/Seo';
+import { documentPageDescription } from '@/lib/seo';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const documents = Object.keys(await getAllDocuments()).map((path) => ({
@@ -88,44 +90,59 @@ const DocumentPage: React.FC<Props> = ({
   const audiobook = primaryDocument.mostModernEdition.audiobook;
   const baseDownloadUrl = `https://api.friendslibrary.com/download/${primaryDocument.mostModernEdition.id}/audio`;
   return (
-    <div>
-      <DocBlock {...primaryDocument} />
-      {audiobook && (
-        <ListenBlock
-          complete={!audiobook.isIncomplete}
-          m4bFilesizeLq={formatFilesize(audiobook.lq.m4bFilesize)}
-          m4bFilesizeHq={formatFilesize(audiobook.hq.m4bFilesize)}
-          mp3ZipFilesizeLq={formatFilesize(audiobook.lq.mp3ZipFilesize)}
-          mp3ZipFilesizeHq={formatFilesize(audiobook.hq.mp3ZipFilesize)}
-          m4bUrlLq={`${baseDownloadUrl}/m4b/lq`}
-          m4bUrlHq={`${baseDownloadUrl}/m4b/hq`}
-          mp3ZipUrlLq={`${baseDownloadUrl}/mp3s/lq`}
-          mp3ZipUrlHq={`${baseDownloadUrl}/mp3s/hq`}
-          podcastUrlLq={`${baseDownloadUrl}/podcast/lq/podcast.rss`}
-          podcastUrlHq={`${baseDownloadUrl}/podcast/hq/podcast.rss`}
-          title={primaryDocument.title}
-          trackIdLq={audiobook.parts[0]?.lqExternalTrackId ?? 0}
-          trackIdHq={audiobook.parts[0]?.hqExternalTrackId ?? 0}
-          playlistIdHq={audiobook.hq.externalPlaylistId}
-          playlistIdLq={audiobook.lq.externalPlaylistId}
-          numAudioParts={audiobook.parts.length}
-        />
-      )}
-      <BookTeaserCards
-        title={
-          isCompilations(primaryDocument.authorName)
-            ? t`Other Compilations`
-            : t`Other Books by this Author`
-        }
-        titleEl={`h2`}
-        bgColor={`flgray-100`}
-        titleTextColor={`flblack`}
-        books={otherBooksByAuthor}
+    <>
+      <Seo
+        title={primaryDocument.title}
+        description={documentPageDescription(
+          primaryDocument.title,
+          primaryDocument.authorName,
+          primaryDocument.hasAudio,
+          primaryDocument.blurb,
+        )}
+        documentPage={true}
+        documentSlug={primaryDocument.slug}
+        authorSlug={primaryDocument.authorSlug}
+        edition={primaryDocument.mostModernEdition.type}
       />
-      {(!primaryDocument.hasAudio || otherBooksByAuthor.length === 0) && (
-        <ExploreBooksBlock numTotalBooks={numTotalBooks} />
-      )}
-    </div>
+      <div>
+        <DocBlock {...primaryDocument} />
+        {audiobook && (
+          <ListenBlock
+            complete={!audiobook.isIncomplete}
+            m4bFilesizeLq={formatFilesize(audiobook.lq.m4bFilesize)}
+            m4bFilesizeHq={formatFilesize(audiobook.hq.m4bFilesize)}
+            mp3ZipFilesizeLq={formatFilesize(audiobook.lq.mp3ZipFilesize)}
+            mp3ZipFilesizeHq={formatFilesize(audiobook.hq.mp3ZipFilesize)}
+            m4bUrlLq={`${baseDownloadUrl}/m4b/lq`}
+            m4bUrlHq={`${baseDownloadUrl}/m4b/hq`}
+            mp3ZipUrlLq={`${baseDownloadUrl}/mp3s/lq`}
+            mp3ZipUrlHq={`${baseDownloadUrl}/mp3s/hq`}
+            podcastUrlLq={`${baseDownloadUrl}/podcast/lq/podcast.rss`}
+            podcastUrlHq={`${baseDownloadUrl}/podcast/hq/podcast.rss`}
+            title={primaryDocument.title}
+            trackIdLq={audiobook.parts[0]?.lqExternalTrackId ?? 0}
+            trackIdHq={audiobook.parts[0]?.hqExternalTrackId ?? 0}
+            playlistIdHq={audiobook.hq.externalPlaylistId}
+            playlistIdLq={audiobook.lq.externalPlaylistId}
+            numAudioParts={audiobook.parts.length}
+          />
+        )}
+        <BookTeaserCards
+          title={
+            isCompilations(primaryDocument.authorName)
+              ? t`Other Compilations`
+              : t`Other Books by this Author`
+          }
+          titleEl={`h2`}
+          bgColor={`flgray-100`}
+          titleTextColor={`flblack`}
+          books={otherBooksByAuthor}
+        />
+        {(!primaryDocument.hasAudio || otherBooksByAuthor.length === 0) && (
+          <ExploreBooksBlock numTotalBooks={numTotalBooks} />
+        )}
+      </div>
+    </>
   );
 };
 

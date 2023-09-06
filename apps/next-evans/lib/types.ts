@@ -29,7 +29,7 @@ export interface Edition {
   impressionCreatedAt: ISODateString;
 }
 
-interface FriendDocument {
+export interface FriendDocument {
   id: UUID;
   altLanguageId: UUID | null;
   title: string;
