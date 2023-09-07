@@ -34,7 +34,6 @@ export interface FriendDocument {
   altLanguageId: UUID | null;
   title: string;
   slug: string;
-  altLanguageSlug: string | null;
   editions: Array<Edition>;
   mostModernEdition: Edition;
   shortDescription: string;

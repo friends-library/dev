@@ -1,5 +1,5 @@
-import { documentPageDescription, friendPageDescription } from '../lib/seo';
 import { describe, it, expect } from 'vitest';
+import { documentPageDescription, friendPageDescription } from '../lib/seo';
 
 describe(`friendPageDescription()`, () => {
   it(`works for single book without audiobook`, () => {

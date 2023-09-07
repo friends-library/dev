@@ -67,6 +67,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
                 lang={LANG}
                 isCompilation={isCompilations(props.authorName)}
                 isbn={props.isbn}
+                className="md:-ml-12"
               />
             </Link>
           )}
@@ -116,7 +117,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
         {isAudio && (
           <Button
             to={`${props.documentUrl}#audiobook`}
-            className="mx-auto md:mx-0 mt-6 max-w-full"
+            className="mx-auto md:mx-0 mt-6 md:mb-10 max-w-full"
           >
             {t`Listen`}
           </Button>

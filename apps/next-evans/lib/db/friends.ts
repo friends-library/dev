@@ -56,7 +56,6 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, Friend>> {
           return {
             ...doc,
             altLanguageId: doc.alt_language_id,
-            altLanguageSlug: null, // <-- TODO(@kiahjh)
             created_at: null,
             isComplete: !doc.incomplete,
             originalTitle: doc.original_title,

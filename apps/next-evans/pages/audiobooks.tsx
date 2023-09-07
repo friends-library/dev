@@ -11,7 +11,7 @@ import BookTeaserCard from '@/components/core/BookTeaserCard';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import { getAllDocuments } from '@/lib/db/documents';
 import { isNotNullish } from '@/lib/utils';
-import { formatDuration, formatMonthDay, newestFirst } from '@/lib/dates';
+import { formatDuration, formatMonthDay } from '@/lib/dates';
 import { LANG } from '@/lib/env';
 import Audiobook from '@/components/audiobooks/Audiobook';
 import Seo from '@/components/core/Seo';
@@ -20,7 +20,11 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const sortedBooks = Object.values(await getAllDocuments())
     .filter((book) => book.hasAudio)
     .filter(isNotNullish)
-    .sort(newestFirst);
+    .sort((a, b) => {
+      const aDate = a.mostModernEdition.audiobook?.createdAt ?? ``;
+      const bDate = b.mostModernEdition.audiobook?.createdAt ?? ``;
+      return aDate < bDate ? 1 : -1;
+    });
   return {
     props: {
       numAudioBooks: sortedBooks.length,
@@ -114,6 +118,7 @@ const AudioBooks: React.FC<Props> = ({ numAudioBooks, sortedBooks }) => (
             })();
             return (
               <Audiobook
+                key={book.mostModernEdition.id}
                 isbn={book.isbn}
                 title={htmlShortTitle(book.title)}
                 slug={book.slug}

@@ -17,7 +17,6 @@ import getFriend, { getAllFriends } from '@/lib/db/friends';
 import { editionTypes } from '@/lib/document';
 import { bookSize } from '@/lib/book-sizes';
 import Seo from '@/components/core/Seo';
-import { inflect } from '@/lib/utils';
 import { friendPageDescription } from '@/lib/seo';
 
 export const getStaticPaths: GetStaticPaths = async () => {
