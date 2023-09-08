@@ -14,7 +14,7 @@ import { formatFilesize } from '@/lib/filesize';
 import { bookSize } from '@/lib/book-sizes';
 import { LANG } from '@/lib/env';
 import Seo from '@/components/core/Seo';
-import { documentPageDescription } from '@/lib/seo';
+import { bookPageMetaDesc } from '@/lib/seo';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const documents = Object.keys(await getAllDocuments()).map((path) => ({
@@ -93,16 +93,15 @@ const DocumentPage: React.FC<Props> = ({
     <>
       <Seo
         title={primaryDocument.title}
-        description={documentPageDescription(
-          primaryDocument.title,
+        description={bookPageMetaDesc(
           primaryDocument.authorName,
-          primaryDocument.hasAudio,
           primaryDocument.blurb,
+          primaryDocument.title,
+          primaryDocument.hasAudio,
+          isCompilations(primaryDocument.authorSlug),
+          LANG,
         )}
-        documentPage={true}
-        documentSlug={primaryDocument.slug}
-        authorSlug={primaryDocument.authorSlug}
-        edition={primaryDocument.mostModernEdition.type}
+        ogImage={`https://flp-assets.nyc3.digitaloceanspaces.com/${LANG}/${primaryDocument.authorSlug}/${primaryDocument.slug}/${primaryDocument.mostModernEdition.type}/images/cover-3d--w700.png`}
       />
       <div>
         <DocBlock {...primaryDocument} />

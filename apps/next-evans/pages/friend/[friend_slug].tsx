@@ -17,7 +17,7 @@ import getFriend, { getAllFriends } from '@/lib/db/friends';
 import { editionTypes } from '@/lib/document';
 import { bookSize } from '@/lib/book-sizes';
 import Seo from '@/components/core/Seo';
-import { friendPageDescription } from '@/lib/seo';
+import { friendPageMetaDesc } from '@/lib/seo';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const friends = await getAllFriends();
@@ -98,8 +98,14 @@ const Friend: React.FC<Props> = ({
     <>
       <Seo
         title={name}
-        description={friendPageDescription(name, documents, description)}
-        documentPage={false}
+        description={friendPageMetaDesc(
+          name,
+          description,
+          documents.map((doc) => doc.title),
+          documents.filter((doc) => doc.hasAudio).length,
+          isCompilations(slug),
+          LANG,
+        )}
       />
       <div>
         <FriendBlock name={name} gender={gender} blurb={description} />

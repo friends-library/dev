@@ -44,7 +44,6 @@ const AudioBooks: React.FC<Props> = ({ numAudioBooks, sortedBooks }) => (
   <>
     <Seo
       title={t`Audio Books`}
-      documentPage={false}
       description={
         LANG === `en`
           ? `Browse ${numAudioBooks} free audiobooks from early members of the Religious Society of Friends (Quakers). Download as a podcast, MP3s, or an M4B file – or listen online in your browser. All books are available in e-Book format as well for free download as EPUB, MOBI, or PDF, and paperback copies are also available at very low cost.`

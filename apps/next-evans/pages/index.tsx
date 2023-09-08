@@ -56,7 +56,6 @@ interface Props {
 const Home: React.FC<Props> = ({ featuredBooks, newsFeedItems, numTotalBooks }) => (
   <>
     <Seo
-      documentPage={false}
       title={t`Friends Library`}
       withoutEnding
       description={
