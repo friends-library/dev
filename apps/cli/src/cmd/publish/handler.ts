@@ -453,7 +453,7 @@ async function replaceEditionChapters(dpc: FsDocPrecursor): Promise<void> {
   }
   const inputs = paperback.editionChapters(dpc);
   const createRes = await api.createEditionChaptersResult(inputs);
-  if (!createRes.isError) {
+  if (createRes.isError) {
     throw new Error(
       `Error creating EditionChapter entities for ${dpc.path}, (${createRes.error})`,
     );
