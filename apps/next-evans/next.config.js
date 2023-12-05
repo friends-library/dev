@@ -45,6 +45,10 @@ const nextConfig = {
           source: `/amigos`,
           destination: `/friends`,
         },
+        {
+          source: `/contactanos`,
+          destination: `/contact`,
+        },
       ],
     };
   },
