@@ -5,6 +5,7 @@ import Seo from '@/components/core/Seo';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import BooksBgImage from '@/public/images/explore-books.jpg';
 import TruthDefendedNotes from '@/components/truth-defended/TruthDefendedNotes';
+import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
 
 const TruthDefended: React.FC = () => (
   <div>
@@ -57,10 +58,7 @@ const TruthDefended: React.FC = () => (
           The Original and Present State of Man
         </a>
         , by Joseph Phipps, and{` `}
-        <a
-          className="subtle-link text-flprimary *fl-underline"
-          href="/isaac-penington/writings-volume-1"
-        >
+        <a className="subtle-link" href="/isaac-penington/writings-volume-1">
           The Writings of Isaac Penington
         </a>
         ). But perhaps no publication of the Society of Friends has so clearly and
@@ -1553,7 +1551,7 @@ const Footnote: React.FC<{ number: number }> = ({ number }) => (
     <span
       id={`src-${number}`}
       className="absolute"
-      style={{ height: `70px`, bottom: `1em` }}
+      style={{ height: `${FIXED_TOPNAV_HEIGHT}px`, bottom: `1em` }}
     />
     <a
       className="text-flprimary font-bold"

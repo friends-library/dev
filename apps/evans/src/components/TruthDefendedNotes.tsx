@@ -1,5 +1,5 @@
 import React from 'react';
-import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
+import { FIXED_TOPNAV_HEIGHT } from '../components/lib/scroll';
 
 const TruthDefendedNotes: React.FC = () => (
   <div id="footnotes" className="space-y-4">

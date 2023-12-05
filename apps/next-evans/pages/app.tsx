@@ -6,7 +6,7 @@ import type { GetStaticProps } from 'next';
 import { WhiteOverlay } from './explore';
 import api from '@/lib/ssg/api-client';
 import * as AppBadges from '@/components/pages/app/AppBadges';
-import Seo from '@/components/core/Seo';
+import Seo, { pageMetaDesc } from '@/components/core/Seo';
 import Dual from '@/components/core/Dual';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import { LANG } from '@/lib/env';
@@ -41,8 +41,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 const AppPage: React.FC<Props> = ({ numAudioBooks, numBooks }) => (
-  <div>
-    <Seo title={`Friends Library App`} description={``} />
+  <div className="overflow-hidden">
+    <Seo title={`Friends Library App`} description={pageMetaDesc(`app`, {})} />
     <BackgroundImage src={BooksBgImage} position="center" fit="cover">
       <div className="p-12 sm:p-16 lg:p-28 bg-black/50 backdrop-blur-sm">
         <WhiteOverlay>
@@ -147,7 +147,7 @@ const AppPage: React.FC<Props> = ({ numAudioBooks, numBooks }) => (
           escucharlos luego a tu conveniencia, sin conexión de internet.
         </>
       </Dual.P>
-      <Dual.Div className="flex space-x-4 mb-10">
+      <Dual.Div className="flex space-x-4 mb-10 justify-center">
         <>
           <Image
             className="w-48"
@@ -216,7 +216,7 @@ const AppPage: React.FC<Props> = ({ numAudioBooks, numBooks }) => (
           automáticamente en tu aplicación, así que siempre estarás al día.
         </>
       </Dual.P>
-      <Dual.Div className="flex space-x-4 mb-10">
+      <Dual.Div className="flex space-x-4 mb-10 justify-center">
         <>
           <Image
             className="w-48"
@@ -288,7 +288,7 @@ const AppPage: React.FC<Props> = ({ numAudioBooks, numBooks }) => (
           Or, just let us know if you find the app useful, or what other features you
           think we should be working on. Thanks for trying it out! For details on our app
           privacy policy,{` `}
-          <Link href={`/app-privacy`} className="text-flprimary fl-underline">
+          <Link href={t`/app-privacy`} className="text-flprimary fl-underline">
             see here.
           </Link>
         </>
@@ -302,7 +302,7 @@ const AppPage: React.FC<Props> = ({ numAudioBooks, numBooks }) => (
           O, simplemente coméntanos si la aplicación te ha sido útil, o qué otra función
           te parece que deberíamos añadir. ¡Gracias por probarla! Para conocer los
           detalles de la política de privacidad de nuestra aplicación,{` `}
-          <Link href={`/app-privacy`} className="text-flprimary fl-underline">
+          <Link href={t`/app-privacy`} className="text-flprimary fl-underline">
             ingresa aquí.
           </Link>
         </>

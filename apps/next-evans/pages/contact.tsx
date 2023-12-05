@@ -12,7 +12,7 @@ const ContactPage: React.FC = () => (
       onSubmit={async (name, email, message, subject) => {
         const client = EvansClient.web(window.location.href, () => undefined);
         const result = await client.submitContactForm({
-          lang: LANG === `es` ? `es` : `en`,
+          lang: LANG,
           name,
           email,
           message,
