@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
 import type { Period } from '@/lib/types';
@@ -190,8 +191,16 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
 
 export default ExploreBooks;
 
-export const WhiteOverlay: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="bg-white text-center py-12 md:py-16 lg:py-20 px-10 sm:px-16 my-6 max-w-screen-md mx-auto">
+export const WhiteOverlay: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => (
+  <div
+    className={cx(
+      `bg-white text-center py-12 md:py-16 lg:py-20 px-10 sm:px-16 my-6 max-w-screen-md mx-auto`,
+      className,
+    )}
+  >
     {children}
   </div>
 );

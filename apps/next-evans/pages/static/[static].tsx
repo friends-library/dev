@@ -4,6 +4,7 @@ import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import invariant from 'tiny-invariant';
 import { type MDXRemoteSerializeResult } from 'next-mdx-remote';
+import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { MdxPageFrontmatter } from '@/lib/types';
 import { WhiteOverlay } from '../explore';
@@ -45,66 +46,88 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   };
 };
 
-const components: React.ComponentProps<typeof MDXRemote>['components'] = {
-  h2: ({ children }) => (
-    <h2
-      className={cx(
-        `bg-flprimary text-white font-sans text-2xl bracketed tracking-widest`,
-        `my-12 -mx-10 py-4 px-10`,
-        `sm:text-3xl`,
-        `md:-mx-16 md:px-16 `,
-        `lg:-mx-24 lg:px-24`,
-      )}
-    >
-      {children}
-    </h2>
-  ),
+type MdxComponent<T = undefined> = T extends HTMLElement
+  ? React.FC<DetailedHTMLProps<HTMLAttributes<T>, T>>
+  : React.FC<{ children: React.ReactNode }>;
 
-  p: ({ children }) => (
-    <p className="mb-6 pb-1 last:mb-0 last:pb-0 text-base sm:text-lg leading-loose">
-      {children}
-    </p>
-  ),
+export const MdxH2: MdxComponent<HTMLHeadingElement> = (props) => (
+  <h2
+    className={cx(
+      `bg-flprimary text-white font-sans text-2xl bracketed tracking-widest`,
+      `my-12 -mx-10 py-4 px-10`,
+      `sm:text-3xl`,
+      `md:-mx-16 md:px-16 `,
+      `lg:-mx-24 lg:px-24`,
+    )}
+    {...props}
+  >
+    {props.children}
+  </h2>
+);
 
-  li: ({ children }) => <li className="py-2">{children}</li>,
+export const MdxP: MdxComponent<HTMLParagraphElement> = (props) => (
+  <p
+    className="mb-6 pb-1 last:mb-0 last:pb-0 text-base sm:text-lg leading-loose"
+    {...props}
+  >
+    {props.children}
+  </p>
+);
 
-  h3: ({ children }) => (
-    <h3 className="font-sans text-flprimary mb-2 text-2xl">{children}</h3>
-  ),
+export const MdxLi: MdxComponent<HTMLLIElement> = (props) => (
+  <li className="py-2" {...props}>
+    {props.children}
+  </li>
+);
 
-  a: (props) => (
-    <a className="text-flprimary fl-underline" {...props}>
-      {props.children}
-    </a>
-  ),
+export const MdxH3: MdxComponent<HTMLHeadingElement> = (props) => (
+  <h3 className="font-sans text-flprimary mb-2 text-2xl" {...props}>
+    {props.children}
+  </h3>
+);
 
-  blockquote: ({ children }) => (
-    <blockquote
-      className={cx(
-        `italic tracking-wider bg-flgray-100 leading-loose`,
-        `py-4 px-8 my-8`,
-      )}
-    >
-      {children}
-    </blockquote>
-  ),
+export const MdxA: MdxComponent<HTMLAnchorElement> = (props) => (
+  <a className="text-flprimary fl-underline" {...props}>
+    {props.children}
+  </a>
+);
 
-  ul: ({ children }) => (
-    <ul
-      className={cx(
-        `diamonds leading-normal bg-flgray-100 text-base sm:text-lg`,
-        `py-4 px-16 mb-8`,
-      )}
-    >
-      {children}
-    </ul>
-  ),
+export const MdxBlockquote: MdxComponent<HTMLQuoteElement> = (props) => (
+  <blockquote
+    className={cx(`italic tracking-wider bg-flgray-100 leading-loose`, `py-4 px-8 my-8`)}
+    {...props}
+  >
+    {props.children}
+  </blockquote>
+);
 
-  Lead: ({ children }) => (
-    <div className="text-xl pb-4 pt-2 leading-loose sm:!text-2xl [&>p]:text-xl [&>p]:pb-4 [&>p]:pt-2 [&>p]:leading-loose [&>p]:sm:!text-2xl [&_a]:text-flprimary [&_a]:border-b-2 [&_a]:border-flprimary [&_a]:pb-0.5 [&_a:hover]:pb-0 [&_a]:transition-[padding-bottom] duration-200">
-      {children}
-    </div>
-  ),
+export const MdxUl: MdxComponent<HTMLUListElement> = (props) => (
+  <ul
+    className={cx(
+      `diamonds leading-normal bg-flgray-100 text-base sm:text-lg`,
+      `py-4 px-16 mb-8`,
+    )}
+    {...props}
+  >
+    {props.children}
+  </ul>
+);
+
+export const MdxLead: MdxComponent = ({ children }) => (
+  <div className="text-xl pb-4 pt-2 leading-loose sm:!text-2xl [&>p]:text-xl [&>p]:pb-4 [&>p]:pt-2 [&>p]:leading-loose [&>p]:sm:!text-2xl [&_a]:text-flprimary [&_a]:border-b-2 [&_a]:border-flprimary [&_a]:pb-0.5 [&_a:hover]:pb-0 [&_a]:transition-[padding-bottom] duration-200">
+    {children}
+  </div>
+);
+
+export const components: React.ComponentProps<typeof MDXRemote>['components'] = {
+  h2: MdxH2,
+  p: MdxP,
+  li: MdxLi,
+  h3: MdxH3,
+  a: MdxA,
+  blockquote: MdxBlockquote,
+  ul: MdxUl,
+  Lead: MdxLead,
 };
 
 const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (

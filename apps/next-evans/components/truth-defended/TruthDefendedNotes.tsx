@@ -1,5 +1,4 @@
 import React from 'react';
-import { FIXED_TOPNAV_HEIGHT } from '../components/lib/scroll';
 
 const TruthDefendedNotes: React.FC = () => (
   <div id="footnotes" className="space-y-4">
@@ -290,8 +289,8 @@ const Footnote: React.FC<{ number: number; children: React.ReactNode }> = ({
       id={`note-${number}`}
       className="absolute"
       style={{
-        height: `${FIXED_TOPNAV_HEIGHT}px`,
-        top: `calc(0px - ${FIXED_TOPNAV_HEIGHT}px - 0.5em)`,
+        height: `70px`,
+        top: `calc(0px - 70px - 0.5em)`,
       }}
     />
     <a
