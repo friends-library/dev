@@ -55,21 +55,41 @@ module.exports = async function () {
     },
   );
 
-  // previously i did this logic in a `setInterval` callback,
-  // but found that on android, when screen was locked, the
-  // callback wouldn't fire, causing the stored resume playback
-  // position to be incorrect (thanks jakub!)
+  // listening to the event instead of the interval seems
+  // to work when app is backgrounded on android, so this keeps
+  // the player state updated. but switching to ONLY this method
+  // caused the player state to not update when foregrounded...
+  if (Platform.OS === `android`) {
+    let eventCounter = 0;
+    Player.addEventListener(
+      Event.PlaybackProgressUpdated,
+      ({ position }: { position: number }) => {
+        eventCounter++;
+        Player.dispatch(setCurrentTrackPosition(position));
+        if (eventCounter % 10 === 0) {
+          Player.dispatch(maybeDownloadNextQueuedTrack(position));
+        }
+      },
+    );
+  }
+
+  // ...and this is the original way, which seems to work on ios
+  // and seems necessary for android when app is foregrounded
   let counter = 0;
-  Player.addEventListener(
-    Event.PlaybackProgressUpdated,
-    ({ position }: { position: number }) => {
-      counter++;
-      Player.dispatch(setCurrentTrackPosition(position));
-      if (counter % 10 === 0) {
-        Player.dispatch(maybeDownloadNextQueuedTrack(position));
-      }
-    },
-  );
+  setInterval(async () => {
+    counter++;
+    const [position, state] = await Promise.all([
+      Player.getPosition(),
+      Player.getState(),
+    ]);
+    if (state !== `PLAYING` || position < 0) {
+      return;
+    }
+    Player.dispatch(setCurrentTrackPosition(position));
+    if (counter % 10 === 0) {
+      Player.dispatch(maybeDownloadNextQueuedTrack(position));
+    }
+  }, 1000);
 
   const events = [
     `playback-state`,
