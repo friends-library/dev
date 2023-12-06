@@ -17,20 +17,20 @@ const meta = {
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = props({
-  gender: 'male',
-  name: 'John Doe',
+  gender: `male`,
+  name: `John Doe`,
   born: 1652,
   died: 1723,
-  region: 'Traverse City, Michigan',
+  region: `Traverse City, Michigan`,
   numBooks: 3,
-  url: '#',
-  color: 'maroon',
+  url: `#`,
+  color: `maroon`,
 });
 
 export const Featured: Story = props({
   ...Default.args,
   featured: true,
-  className: 'px-12',
+  className: `px-12`,
 });
 
 export default meta;

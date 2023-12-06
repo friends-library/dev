@@ -42,25 +42,24 @@ const BookTeaserCards: React.FC<Props> = ({
         className,
         `bg-${bgColor}`,
         `pb-16`,
-        `md:pt-16 md:pb-1`,
+        `md:pt-16 md:pb-28`,
         `xl:flex xl:flex-wrap xl:justify-center`,
       )}
     >
       <TitleEl
         className={cx(
           `text-${titleTextColor}`,
-          `sans-wider px-6 text-2xl text-center pt-10 md:pt-0 md:-mt-2 md:mb-12 xl:w-full`,
+          `sans-wider px-6 text-2xl text-center pt-10 md:pt-0 md:-mt-2 mb-52 md:mb-12 xl:w-full`,
         )}
       >
         {title}
       </TitleEl>
-      <div className="flex justify-center flex-wrap">
+      <div className="flex flex-wrap justify-center gap-x-12 2xl:gap-x-16 gap-y-52 md:gap-y-28 px-0 sm:px-16 lg:px-12">
         {books.sort(sortBooks).map((book) => (
           <BookTeaserCard
             key={book.documentUrl}
-            className="pt-16 md:pt-0 md:mb-16 xl:mx-6"
-            {...book}
             badgeText={withDateBadges ? shortDate(book.createdAt) : undefined}
+            {...book}
           />
         ))}
       </div>
@@ -71,8 +70,8 @@ const BookTeaserCards: React.FC<Props> = ({
 export default BookTeaserCards;
 
 function sortBooks(
-  a: { editionType: EditionType; title: string },
-  b: { editionType: EditionType; title: string },
+  a: { editionType: EditionType; title: string; createdAt: ISODateString },
+  b: { editionType: EditionType; title: string; createdAt: ISODateString },
 ): number {
   if (a.editionType !== b.editionType) {
     if (a.editionType === `updated`) {

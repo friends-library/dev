@@ -32,59 +32,56 @@ const BookTeaserCard: React.FC<Props> = ({
   return (
     <div
       className={cx(
+        `bg-white flex flex-col items-center p-8 relative max-w-2xl`,
+        isAudio ? `md:pl-36 md:ml-24` : `md:pl-64`,
         className,
-        `text-white items-start [background-image:linear-gradient(to_bottom,transparent_0,transparent_210px,white_210px,white_100%)]`,
-        isAudio &&
-          `[background-image:linear-gradient(to_bottom,transparent_0,transparent_100px,white_100px,white_100%)] md:[background-image:linear-gradient(to_right,transparent_0,transparent_85px,white_85px,white_100%)]`,
-        `sm:mx-24`,
-        `md:flex md:mx-auto md:max-w-[700px] md:[background-image:linear-gradient(to_top,transparent_0,transparent_45px,white_45px,white_100%)]`,
-        `xl:min-w-[550px]`,
       )}
     >
-      <div
-        className={cx(`flex justify-center md:pt-12 md:pl-10`, isAudio && `md:-ml-10`)}
-      >
-        <div className="relative">
-          {badgeText && <Badge>{badgeText}</Badge>}
-          {isAudio && (
-            <Link href={`${documentUrl}#audiobook`}>
-              <Album className="md:-ml-12" {...props} />
-            </Link>
+      {badgeText && (
+        <Badge
+          className={cx(
+            `absolute`,
+            isAudio
+              ? `md:-left-28 md:top-2 -top-28 left-[calc(50%-7rem)]`
+              : `md:left-4 md:top-4 -top-44 left-[calc(50%-7rem)]`,
           )}
-          {!isAudio && (
-            <Link href={documentUrl}>
-              <Front {...coverProps} scaler={1 / 3} scope="1-3" shadow />
-            </Link>
-          )}
-        </div>
-      </div>
-      <div
-        className={cx(
-          `font-sans px-10 pb-10 pt-8 bg-white tracking-wider text-center`,
-          `md:text-left md:bg-transparent md:pt-10`,
-        )}
-      >
-        <h3 className="mb-4 text-base text-flgray-900 md:mb-2 md:pb-1">
-          <Link
-            href={documentUrl}
-            className="hover:underline"
-            dangerouslySetInnerHTML={{ __html: htmlShortTitle }}
-          />
-        </h3>
-        <Link href={friendUrl} className="fl-underline text-sm text-flprimary">
-          {props.friendName}
+        >
+          {badgeText}
+        </Badge>
+      )}
+      {isAudio ? (
+        <Link
+          href={documentUrl}
+          className="md:absolute md:-left-24 mb-8 md:mb-0 -mt-32 md:mt-0"
+        >
+          <Album {...props} />
         </Link>
+      ) : (
+        <Link
+          href={documentUrl}
+          className={cx(
+            `md:absolute md:left-8 mb-8 md:mb-0 -mt-44 md:mt-0`,
+            badgeText && `top-12`,
+          )}
+        >
+          <Front {...coverProps} size="m" scaler={1 / 3} scope="1-3" shadow />
+        </Link>
+      )}
+      <div className="flex flex-col items-center md:items-start">
+        <Link
+          href={documentUrl}
+          dangerouslySetInnerHTML={{ __html: htmlShortTitle }}
+          className="hover:underline text-lg"
+        />
+        <Link
+          href={friendUrl}
+          dangerouslySetInnerHTML={{ __html: props.friendName }}
+          className="fl-underline w-fit text-flprimary pb-0.5 text-sm mt-2"
+        />
+        {isAudio && <AudioDuration className="mt-8">{audioDuration}</AudioDuration>}
+        <p className="body-text mt-6">{props.description}</p>
         {isAudio && (
-          <AudioDuration className="mt-8 md:justify-start">{audioDuration}</AudioDuration>
-        )}
-        <p className={cx(`body-text text-left mt-6`, !isAudio && `md:pb-10`)}>
-          {props.description}
-        </p>
-        {isAudio && (
-          <Button
-            to={`${documentUrl}#audiobook`}
-            className="mx-auto md:mx-0 md:mb-10 mt-6 max-w-full"
-          >
+          <Button to={`${documentUrl}#audiobook`} className="mt-6">
             {t`Listen`}
           </Button>
         )}
@@ -95,11 +92,17 @@ const BookTeaserCard: React.FC<Props> = ({
 
 export default BookTeaserCard;
 
-const Badge: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+const Badge: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className,
+}) => (
   <div
-    className={`absolute antialiased top-0 left-0 bg-fl${
-      LANG === `en` ? `gold` : `maroon`
-    } flex flex-col items-center justify-center tracking-wide font-sans text-white rounded-full w-16 h-16 z-10 transform -translate-y-6 -translate-x-4`}
+    className={cx(
+      `antialiased bg-fl${
+        LANG === `en` ? `gold` : `maroon`
+      } flex flex-col items-center justify-center tracking-wide font-sans text-white rounded-full w-16 h-16 z-10 transform`,
+      className,
+    )}
   >
     <span>{children}</span>
   </div>
