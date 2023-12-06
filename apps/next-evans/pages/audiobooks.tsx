@@ -68,7 +68,7 @@ const AudioBooks: React.FC<Props> = ({ audiobooks }) => (
         <>Recently Added Audio Books</>
         <>Audiolibros añadidos recientemente</>
       </Dual.H2>
-      <div className="flex flex-col xl:flex-row items-center justify-center xl:gap-44 gap-36 md:gap-12 xl:gap-28 sm:px-12 xl:px-28 xl:pl-48">
+      <div className="flex flex-col xl:flex-row items-center justify-center xl:gap-44 gap-36 md:gap-12 xl:gap-28 sm:px-12 xl:px-28 xl:pl-48 xl:pb-8">
         {audiobooks.slice(0, 2).map((audiobook) => (
           <BookTeaserCard
             {...audiobook}

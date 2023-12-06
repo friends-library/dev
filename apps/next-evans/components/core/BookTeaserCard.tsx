@@ -43,7 +43,7 @@ const BookTeaserCard: React.FC<Props> = ({
             `absolute`,
             isAudio
               ? `md:-left-28 md:top-2 -top-28 left-[calc(50%-7rem)]`
-              : `md:left-4 md:top-2 -top-44 left-[calc(50%-7rem)]`,
+              : `md:left-4 md:top-4 -top-44 left-[calc(50%-7rem)]`,
           )}
         >
           {badgeText}
@@ -59,7 +59,10 @@ const BookTeaserCard: React.FC<Props> = ({
       ) : (
         <Link
           href={documentUrl}
-          className="md:absolute md:left-8 mb-8 md:mb-0 -mt-44 md:mt-0"
+          className={cx(
+            `md:absolute md:left-8 mb-8 md:mb-0 -mt-44 md:mt-0`,
+            badgeText && `top-12`,
+          )}
         >
           <Front {...coverProps} size="m" scaler={1 / 3} scope="1-3" shadow />
         </Link>

@@ -42,7 +42,7 @@ const BookTeaserCards: React.FC<Props> = ({
         className,
         `bg-${bgColor}`,
         `pb-16`,
-        `md:pt-16 md:pb-16`,
+        `md:pt-16 md:pb-28`,
         `xl:flex xl:flex-wrap xl:justify-center`,
       )}
     >
@@ -54,7 +54,7 @@ const BookTeaserCards: React.FC<Props> = ({
       >
         {title}
       </TitleEl>
-      <div className="flex flex-wrap justify-center gap-x-28 gap-y-52 md:gap-y-28 px-0 sm:px-16">
+      <div className="flex flex-wrap justify-center gap-x-12 2xl:gap-x-16 gap-y-52 md:gap-y-28 px-0 sm:px-16 lg:px-12">
         {books.sort(sortBooks).map((book) => (
           <BookTeaserCard
             key={book.documentUrl}
@@ -70,8 +70,8 @@ const BookTeaserCards: React.FC<Props> = ({
 export default BookTeaserCards;
 
 function sortBooks(
-  a: { editionType: EditionType; title: string },
-  b: { editionType: EditionType; title: string },
+  a: { editionType: EditionType; title: string; createdAt: ISODateString },
+  b: { editionType: EditionType; title: string; createdAt: ISODateString },
 ): number {
   if (a.editionType !== b.editionType) {
     if (a.editionType === `updated`) {
