@@ -69,7 +69,8 @@ enum PrintJobs {
 
   static func getExploratoryMetadata(
     for items: [ExploratoryItem],
-    shippedTo address: ShippingAddress
+    shippedTo address: ShippingAddress,
+    email: EmailAddress
   ) async throws -> ExploratoryMetadata {
     try await withThrowingTaskGroup(of: (
       Lulu.Api.PrintJobCostCalculationsResponse?,
@@ -111,6 +112,7 @@ enum PrintJobs {
                 Address:
 
                 ```
+                email: \(email)
                 "\(JSON.encode(address, .pretty) ?? String(describing: address))"
                 ```
               """)
@@ -138,7 +140,7 @@ enum PrintJobs {
       }
 
       guard let (cheapest, level) = results.first else {
-        Task { await slackError("shipping not possible: \(address)") }
+        Task { await slackError("shipping not possible: \(email), \(address)") }
         throw Error.noExploratoryMetadataRetrieved
       }
 

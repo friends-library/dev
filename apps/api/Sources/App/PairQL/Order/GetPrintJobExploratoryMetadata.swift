@@ -28,7 +28,8 @@ extension GetPrintJobExploratoryMetadata: Resolver {
           state: input.address.state,
           zip: input.address.zip,
           country: input.address.country
-        )
+        ),
+        email: input.email
       )
     } catch PrintJobs.Error.noExploratoryMetadataRetrieved {
       throw context.error(
