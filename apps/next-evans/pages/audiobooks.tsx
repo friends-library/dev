@@ -64,11 +64,11 @@ const AudioBooks: React.FC<Props> = ({ audiobooks }) => (
     />
     <AudiobooksHero numBooks={audiobooks.length} />
     <div className="bg-flgray-200 py-12 xl:pb-6">
-      <Dual.H2 className="sans-wider text-center text-2xl md:text-3xl mb-12 px-10">
+      <Dual.H2 className="sans-wider text-center text-2xl md:text-3xl mb-36 md:mb-12 px-10">
         <>Recently Added Audio Books</>
         <>Audiolibros añadidos recientemente</>
       </Dual.H2>
-      <div className="flex flex-col xl:flex-row items-center justify-center gap-12 xl:gap-28 px-12 xl:px-28 xl:pl-36">
+      <div className="flex flex-col xl:flex-row items-center justify-center xl:gap-44 gap-36 md:gap-12 xl:gap-28 sm:px-12 xl:px-28 xl:pl-48">
         {audiobooks.slice(0, 2).map((audiobook) => (
           <BookTeaserCard
             {...audiobook}

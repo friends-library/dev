@@ -11,22 +11,22 @@ const meta = {
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = props({
-  friendName: 'John Doe',
-  residences: ['Traverse City, Michigan', 'Chicago, Illinois', 'Hamilton, Bermuda'],
-  map: 'US',
+  friendName: `John Doe`,
+  residences: [`Traverse City, Michigan`, `Chicago, Illinois`, `Hamilton, Bermuda`],
+  map: `US`,
   markers: [
     {
-      label: 'Traverse City, Michigan',
+      label: `Traverse City, Michigan`,
       top: 15,
       left: 16,
     },
     {
-      label: 'Chicago, Illinois',
+      label: `Chicago, Illinois`,
       top: 38,
       left: 9,
     },
     {
-      label: 'Hamilton, Bermuda',
+      label: `Hamilton, Bermuda`,
       top: 90,
       left: 95,
     },

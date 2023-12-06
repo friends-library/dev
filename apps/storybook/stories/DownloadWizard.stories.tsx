@@ -17,7 +17,7 @@ const meta = {
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = props({
-  editions: ['modernized', 'updated', 'original'],
+  editions: [`modernized`, `updated`, `original`],
   onSelect: () => {},
   top: 200,
   left: 600,

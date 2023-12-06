@@ -1,6 +1,6 @@
 import Button from '@evans/core/Button';
+import type { ComponentProps } from 'react';
 import type { Meta, StoryFn } from '@storybook/react';
-import { ComponentProps } from 'react';
 
 const meta = {
   title: 'Core/Button', // eslint-disable-line
@@ -10,39 +10,31 @@ const meta = {
 
 export default meta;
 
-const DefaultTemplate: StoryFn<typeof Button> = () => {
-  return <ColorsTemplate />;
-};
+const DefaultTemplate: StoryFn<typeof Button> = () => <ColorsTemplate />;
 export const Default = DefaultTemplate.bind({});
 
-const ShadowTemplate: StoryFn<typeof Button> = () => {
-  return <ColorsTemplate shadow />;
-};
+const ShadowTemplate: StoryFn<typeof Button> = () => <ColorsTemplate shadow />;
 export const Shadow = ShadowTemplate.bind({});
 
-const DisabledTemplate: StoryFn<typeof Button> = () => {
-  return <ColorsTemplate disabled />;
-};
+const DisabledTemplate: StoryFn<typeof Button> = () => <ColorsTemplate disabled />;
 export const Disabled = DisabledTemplate.bind({});
 
-const ColorsTemplate: React.FC<ComponentProps<typeof Button>> = (props) => {
-  return (
-    <div className="flex items-center justify-center flex-wrap gap-4">
-      <Button {...props} bg="gold">
-        Gold
-      </Button>
-      <Button {...props} bg="blue">
-        Blue
-      </Button>
-      <Button {...props} bg="green">
-        Green
-      </Button>
-      <Button {...props} bg="maroon">
-        Maroon
-      </Button>
-      <Button {...props} bg="primary">
-        Primary
-      </Button>
-    </div>
-  );
-};
+const ColorsTemplate: React.FC<ComponentProps<typeof Button>> = (props) => (
+  <div className="flex items-center justify-center flex-wrap gap-4">
+    <Button {...props} bg="gold">
+      Gold
+    </Button>
+    <Button {...props} bg="blue">
+      Blue
+    </Button>
+    <Button {...props} bg="green">
+      Green
+    </Button>
+    <Button {...props} bg="maroon">
+      Maroon
+    </Button>
+    <Button {...props} bg="primary">
+      Primary
+    </Button>
+  </div>
+);
