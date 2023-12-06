@@ -25,7 +25,9 @@ const PopUnder: React.FC<Props> = ({
       `bg-${bgColor}`,
       `text-${bgColor}`,
       `rounded-lg shadow-direct relative flex flex-col`,
-      alignRight ? `after:right-[18px]` : `after:left-[calc(50%-10px)]`,
+      alignRight
+        ? `after:right-[19px] sm:after:right-[23px]`
+        : `after:left-[calc(50%-10px)]`,
       `after:w-6 after:h-6 after:bg-${bgColor} after:absolute after:-top-2 after:rotate-45 z-10`,
     )}
   >
