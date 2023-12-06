@@ -23,9 +23,10 @@ const recommendedBooks = {
     es: [
       book(`robert-barclay`, `esta-grande-salvacion`),
       book(`joseph-phipps`, `estado-original-y-presente-del-hombre`),
-      book(`isaac-penington`, `escritos-volumen-1`),
-      book(`isaac-penington`, `escritos-volumen-2`),
+      book(`william-penn`, `no-cruz-no-corona`),
+      book(`john-spalding`, `salgan-de-babilonia`),
       book(`robert-barclay`, `esperando-en-el-senor`),
+      book(`charles-marshall`, `camino-de-vida-revelado`),
     ],
   },
   spiritualLife: {
@@ -40,12 +41,13 @@ const recommendedBooks = {
       book(`compilations`, `piety-promoted-v1`),
     ],
     es: [
+      book(`hugh-turford`, `andar-en-el-espiritu`),
       book(`isaac-penington`, `escritos-volumen-1`),
       book(`isaac-penington`, `escritos-volumen-2`),
-      book(`william-penn`, `no-cruz-no-corona`),
-      book(`francis-howgill`, `algunos-de-los-misterios-del-reino`),
+      book(`william-shewen`, `meditaciones-experiencias`),
       book(`stephen-crisp`, `camino-simple`),
       book(`stephen-crisp`, `babilonia-hasta-bet-el`),
+      book(`francis-howgill`, `algunos-de-los-misterios-del-reino`),
     ],
   },
   journals: {
@@ -63,8 +65,12 @@ const recommendedBooks = {
       book(`isaac-martin`, `journal`),
     ],
     es: [
+      book(`compilaciones`, `verdad-en-lo-intimo-v1`),
+      book(`compilaciones`, `verdad-en-lo-intimo-v2`),
       book(`james-parnell`, `vida`),
-      book(`william-sewel`, `sufrimientos-de-catharine-evans-sarah-cheevers`),
+      book(`alice-hayes`, `vida`),
+      book(`francis-howgill`, `seleccion-de-la-vida`),
+      book(`david-ferris`, `seleccion-del-diario`),
     ],
   },
 };

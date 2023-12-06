@@ -37,7 +37,7 @@ const DropdownSearchResults: React.FC<Props> = ({
         `min-[490px]:max-w-[560px] min-[490px]:min-w-[450px] transform-none`,
         `absolute right-0 top-0 mt-16`,
         `before:block before:absolute before:w-[14px] before:h-[14px] before:bg-white before:z-50 before:-top-2 before:right-10 before:border-t before:border-r before:border-flgray-400 before:-rotate-45 before:rounded-[2px]`,
-        `[&_.ais-Hits-item]:hover:bg-flgray-200 [&_.ais-Hits-item_a]:focus:bg-flgray-200 [&_.ais-Hits-item:last-child_a]:border-0 md:min-w-[560px]`,
+        `[&_.ais-Hits-item:hover]:bg-flgray-200 [&_.ais-Hits-item_a:focus]:bg-flgray-200 [&_.ais-Hits-item:last-child_a]:border-0 md:min-w-[560px]`,
       )}
     >
       <div className="p-3 max-h-[calc(100vh-75px)] overflow-auto">
