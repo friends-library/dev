@@ -5,7 +5,11 @@
   "scripts": {
     "storybook": "storybook dev -p 7007 --ci",
     "build-storybook": "storybook build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "just prettier",
+    "format:check": "just prettier-check"
   },
   "dependencies": {
     "@types/node": "18.15.11",

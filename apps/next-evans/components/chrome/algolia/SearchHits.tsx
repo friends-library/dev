@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Highlight, Snippet } from 'react-instantsearch-dom';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
+import { DismissSearch } from './TopNavSearch';
 
 export interface HitProps {
   hit: {
@@ -25,6 +26,7 @@ const GenericHit: React.FC<GenericHitProps> = ({
   titleAttr,
   subtitleAttr,
 }) => {
+  const dismiss = useContext(DismissSearch);
   const attr = bestHighlightAttr(hit, attrFallback, attrReject);
   const Summary = attr.match(/(^text$|escription$)/) ? Snippet : Highlight;
   return (
@@ -32,6 +34,7 @@ const GenericHit: React.FC<GenericHitProps> = ({
       key={hit.objectID}
       className="block p-3 border-b border-flgray-200 subtle-focus"
       href={hit.url}
+      onClick={dismiss}
     >
       <h5 className="font-sans text-md tracking-wider leading-tight">
         <Highlight hit={hit} attribute={titleAttr} tagName="mark" />
