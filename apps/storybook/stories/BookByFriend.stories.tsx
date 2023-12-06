@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import BookByFriend from '@evans/pages/friend/BookByFriend';
-import { SHORT_LOREM, props } from './helpers';
+import type { Meta, StoryObj } from '@storybook/react';
 import WebCoverStyles from '../decorators/CoverStyles';
+import { SHORT_LOREM, props } from './helpers';
 
 const meta = {
   title: 'Friend/BookByFriend', // eslint-disable-line
@@ -19,17 +19,17 @@ const meta = {
 type Story = StoryObj<typeof meta>;
 
 export const ExtraLarge: Story = props({
-  key: '',
-  htmlShortTitle: 'The Journal of Joe Bob',
+  key: ``,
+  htmlShortTitle: `The Journal of Joe Bob`,
   isAlone: false,
-  className: '',
-  tags: ['Journal'],
+  className: ``,
+  tags: [`Journal`],
   hasAudio: true,
   bookUrl: ``,
   numDownloads: 1247,
   pages: [700, 600],
   description: SHORT_LOREM,
-  lang: 'en',
+  lang: `en`,
   title: `The Journal of Joe Bob`,
   blurb: ``, // never see the back of a book in this component
   isCompilation: false,
@@ -43,17 +43,17 @@ export const ExtraLarge: Story = props({
 
 export const Medium: Story = props({
   ...ExtraLarge.args,
-  tags: ['Journal', 'Poetry'],
+  tags: [`Journal`, `Poetry`],
   pages: [350],
   size: `m`,
-  edition: 'original',
+  edition: `original`,
 });
 
 export const Small: Story = props({
   ...Medium.args,
   pages: [160],
   size: `s`,
-  edition: 'updated',
+  edition: `updated`,
 });
 
 export default meta;
