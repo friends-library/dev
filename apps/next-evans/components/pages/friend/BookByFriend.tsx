@@ -33,8 +33,8 @@ const BookByFriend: React.FC<Props> = (props) => {
       className={cx(
         className,
         `BookByFriend`,
-        `bg-white mt-20 flex flex-col items-center p-8 pt-0 max-w-2xl`,
-        `md:flex-row md:mt-0 md:ml-32 md:pb-4`,
+        `bg-white mt-6 flex flex-col items-center p-8 pt-0 max-w-2xl`,
+        `md:flex-row md:mt-4 md:ml-32 md:pb-4`,
         `lg:ml-12`,
         `xl:ml-24`,
         {
@@ -68,7 +68,8 @@ const BookByFriend: React.FC<Props> = (props) => {
         <div className="mt-4 sm:mt-6">
           <ul
             className={cx(
-              `grid grid-cols-1 sm:grid-cols-2 gap-2 w-fit font-sans text-sm antialiased text-flgray-900 leading-tight`,
+              `grid grid-cols-1 min-[450px]:grid-cols-2 gap-2 w-fit font-sans text-sm antialiased text-flgray-900 leading-tight`,
+              `sm:text-base`,
               `md:text-lg`,
               `pl-6 md:pl-0`,
               !isAlone && `lg:text-sm xl:text-lg`,
