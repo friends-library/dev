@@ -18,9 +18,11 @@ export function useNumCartItems(): [number, (numItems: number) => void, CartStor
 }
 
 export function useCartTotalQuantity(): [number, (qty: number) => void, CartStore] {
-  const [quantity, setQuantity] = useState<number>(store.cart.totalQuantity());
+  const [quantity, setQuantity] = useState<number>(0);
   const onChange = (): void => setQuantity(store.cart.totalQuantity());
   useEffect(() => {
+    // prevent client hydration mismatch from reading cookie on first render
+    setQuantity(store.cart.totalQuantity());
     store.on(`cart:changed`, onChange);
     return () => {
       store.off(`cart:changed`, onChange);

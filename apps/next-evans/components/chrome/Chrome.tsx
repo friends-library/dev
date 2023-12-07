@@ -9,6 +9,7 @@ import Nav from './Nav';
 import Slideover from './Slideover';
 import Footer from './Footer';
 import { appReducer, appInitialState, AppDispatch } from '@/lib/app-state';
+import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
 
 interface Props {
   children: React.ReactNode;
@@ -51,7 +52,12 @@ const Chrome: React.FC<Props> = ({ children }) => {
       {itemJustAdded && (
         <PopUnder
           alignRight
-          style={{ position: `fixed`, right: 7, top: 73, zIndex: 1000 }}
+          style={{
+            position: `fixed`,
+            right: 6,
+            top: FIXED_TOPNAV_HEIGHT + 3,
+            zIndex: 1000,
+          }}
           bgColor="flprimary"
         >
           <Dual.P className="text-white px-8 py-4 font-sans antialiased">

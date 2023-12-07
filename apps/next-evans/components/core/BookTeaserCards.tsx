@@ -5,6 +5,14 @@ import type { EditionType } from '@/lib/types';
 import BookTeaserCard from './BookTeaserCard';
 import { shortDate } from '@/lib/dates';
 
+type Book = Omit<CoverData, 'printSize'> & {
+  audioDuration?: string;
+  htmlShortTitle: string;
+  documentUrl: string;
+  friendUrl: string;
+  createdAt: ISODateString;
+};
+
 export interface Props {
   className?: string;
   id?: string;
@@ -12,15 +20,8 @@ export interface Props {
   titleEl: 'h2' | 'h3' | 'h4';
   bgColor: string;
   titleTextColor: string;
-  books: Array<
-    Omit<CoverData, 'printSize'> & {
-      audioDuration?: string;
-      htmlShortTitle: string;
-      documentUrl: string;
-      friendUrl: string;
-      createdAt: ISODateString;
-    }
-  >;
+  books: Book[];
+  sortBy?: 'edition,title' | 'createdAt';
   withDateBadges?: boolean;
 }
 
@@ -32,6 +33,7 @@ const BookTeaserCards: React.FC<Props> = ({
   titleTextColor,
   books,
   titleEl: TitleEl,
+  sortBy = `edition,title`,
   withDateBadges = false,
 }) => {
   if (books.length === 0) return null;
@@ -55,7 +57,7 @@ const BookTeaserCards: React.FC<Props> = ({
         {title}
       </TitleEl>
       <div className="flex flex-wrap justify-center gap-x-12 2xl:gap-x-16 gap-y-52 md:gap-y-28 px-0 sm:px-16 lg:px-12">
-        {books.sort(sortBooks).map((book) => (
+        {books.sort(makeSorter(sortBy)).map((book) => (
           <BookTeaserCard
             key={book.documentUrl}
             badgeText={withDateBadges ? shortDate(book.createdAt) : undefined}
@@ -69,18 +71,30 @@ const BookTeaserCards: React.FC<Props> = ({
 
 export default BookTeaserCards;
 
-function sortBooks(
-  a: { editionType: EditionType; title: string; createdAt: ISODateString },
-  b: { editionType: EditionType; title: string; createdAt: ISODateString },
-): number {
-  if (a.editionType !== b.editionType) {
-    if (a.editionType === `updated`) {
-      return -1;
+// helpers
+
+type SortableBook = {
+  editionType: EditionType;
+  title: string;
+  createdAt: ISODateString;
+};
+
+function makeSorter(
+  strategy: 'edition,title' | 'createdAt',
+): (a: SortableBook, b: SortableBook) => -1 | 0 | 1 {
+  return (a, b) => {
+    if (strategy === `createdAt`) {
+      return a.createdAt < b.createdAt ? 1 : -1;
     }
-    if (a.editionType === `modernized`) {
-      return b.editionType === `updated` ? 1 : -1;
+    if (a.editionType !== b.editionType) {
+      if (a.editionType === `updated`) {
+        return -1;
+      }
+      if (a.editionType === `modernized`) {
+        return b.editionType === `updated` ? 1 : -1;
+      }
+      return 1;
     }
-    return 1;
-  }
-  return a.title < b.title ? -1 : 1;
+    return a.title < b.title ? -1 : 1;
+  };
 }

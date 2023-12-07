@@ -144,7 +144,7 @@ final class PrintJobsTests: AppTestCase {
 
     let meta = try await PrintJobs.getExploratoryMetadata(
       for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
-      shippedTo: .mock
+      shippedTo: .mock, email: "bob@email.com"
     )
     XCTAssertEqual(meta.creditCardFeeOffset, 88)
     XCTAssertEqual(meta.shipping, 999)
@@ -169,7 +169,7 @@ final class PrintJobsTests: AppTestCase {
 
     let meta = try await PrintJobs.getExploratoryMetadata(
       for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
-      shippedTo: .mock
+      shippedTo: .mock, email: ""
     )
 
     XCTAssertEqual(meta.shipping, 1094)

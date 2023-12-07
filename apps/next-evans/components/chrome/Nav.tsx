@@ -42,8 +42,8 @@ const Nav: React.FC<Props> = ({
   return (
     <nav
       className={cx(
-        `h-[70px] pr-[20px] flex bg-white border-gray-300 border-b`,
-        `fixed top-0 z-[49] w-screen`,
+        `h-[70px] pr-[16px] sm:pr-[20px] flex bg-white border-gray-300 border-b`,
+        `fixed top-0 z-[49] w-full`,
         searching &&
           (LANG === `en`
             ? `[&_input]:bg-[rgb(108,49,66,0.05)]`
@@ -58,11 +58,12 @@ const Nav: React.FC<Props> = ({
         })}
       />
       <Link
+        href="/"
+        prefetch={false}
         className={cx(`m-0 sm:inline mr-4 sm:mr-0`, {
           'hidden flex-grow-0': searching,
           'flex-grow': !searching,
         })}
-        href="/"
       >
         <Logo
           className={cx(
