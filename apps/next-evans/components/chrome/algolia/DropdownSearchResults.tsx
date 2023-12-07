@@ -2,10 +2,12 @@ import React from 'react';
 import cx from 'classnames';
 import { connectStateResults, Index, Configure } from 'react-instantsearch-dom';
 import { t } from '@friends-library/locale';
+import Image from 'next/image';
 import IndexResults from './IndexResults';
 import { BookHit, FriendHit, PageHit } from './SearchHits';
 import Pagination from './Pagination';
 import { LANG } from '@/lib/env';
+import AlgoliaLogo from '/public/images/algolia-logo.png';
 
 interface Props {
   className?: string;
@@ -60,6 +62,12 @@ const DropdownSearchResults: React.FC<Props> = ({
           <IndexResults title={t`Pages`} icon="fa-file-text" HitComponent={PageHit} />
           <Pagination />
         </Index>
+      </div>
+      <div className="flex px-2 pb-2 justify-end items-center gap-1">
+        <span className="text-sm text-gray-400">
+          {LANG === `en` ? `Search by Algolia` : `Buscar por Algolia`}
+        </span>
+        <Image src={AlgoliaLogo} alt="Algolia logo" className="w-8 h-8" />
       </div>
     </div>
   );
