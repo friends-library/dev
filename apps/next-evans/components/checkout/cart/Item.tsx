@@ -36,7 +36,7 @@ const Item: React.FC<Props> = ({
   remove,
 }) => (
   <div className="Cart__Item flex py-2 md:py-6 border-b border-gray-300">
-    <div className="w-2/3 md:w-3/5 flex">
+    <div className="w-1/2 md:w-3/5 flex">
       <div className="hidden sm:flex mr-1 flex-col justify-center">
         <FrontCover
           lang={LANG}
@@ -62,17 +62,14 @@ const Item: React.FC<Props> = ({
         </dd>
       </dl>
     </div>
-    <div className="w-1/3 md:w-2/5 flex text-center">
+    <div className="w-1/2 md:w-2/5 flex text-center">
       <ItemQuantity quantity={quantity} changeQuantity={changeQty} />
       <div className="w-1/2 md:w-1/3 flex flex-col justify-center price">
         <code className="px-1 font-sans text-gray-700 text-md md:text-lg antialiased md:tracking-wider">
           ${(price / 100).toFixed(2)}
         </code>
       </div>
-      <div
-        className="hidden md:flex md:w-1/3 remove flex-col order-2 justify-center cursor-pointer"
-        onClick={remove}
-      >
+      <div className="flex w-1/3 flex-col justify-center cursor-pointer" onClick={remove}>
         <span>&#x2715;</span>
       </div>
     </div>

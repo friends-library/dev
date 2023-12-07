@@ -29,14 +29,14 @@ const CartComponent: React.FC<Props> = ({
     <NoProfit />
     <Progress step="Order" />
     <div className="ColumnHeadings flex text-gray-900 text-center antialiased mt-6 border-b border-gray-300 pb-2">
-      <div className="w-2/3 md:w-3/5 text-left">{t`Item`}</div>
-      <div className="w-1/3 md:w-2/5 flex">
-        <div className="w-1/2 md:w-1/3 order-2 md:order-1">{t`Price`}</div>
-        <div className="w-1/2 md:w-1/3 order-1">
+      <div className="w-1/2 md:w-3/5 text-left">{t`Item`}</div>
+      <div className="w-1/2 md:w-2/5 flex">
+        <div className="w-1/2 md:w-1/3">
           <span className="md:hidden">{t`Qty.`}</span>
           <span className="hidden md:inline">{t`Quantity`}</span>
         </div>
-        <div className="hidden md:block md:w-1/3 order-2">{t`Remove`}</div>
+        <div className="w-1/2 md:w-1/3">{t`Price`}</div>
+        <div className="block w-1/3">{t`Remove`}</div>
       </div>
     </div>
     {items.map((item, index) => (

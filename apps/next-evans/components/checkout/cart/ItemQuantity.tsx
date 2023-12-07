@@ -9,7 +9,7 @@ interface Props {
 const ItemQuantity: React.FC<Props> = ({ quantity, changeQuantity }) => {
   const [strQty, setStrQty] = useState<string>(String(quantity));
   return (
-    <div className="w-1/2 md:w-1/3 flex flex-col justify-center md:order-1">
+    <div className="w-1/2 md:w-1/3 flex flex-col justify-center">
       <div>
         <span
           className={cx(`hidden md:inline pr-2 select-none`, {

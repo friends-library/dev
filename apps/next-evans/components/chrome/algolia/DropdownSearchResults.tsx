@@ -63,11 +63,15 @@ const DropdownSearchResults: React.FC<Props> = ({
           <Pagination />
         </Index>
       </div>
-      <div className="flex px-2 pb-2 justify-end items-center gap-1">
+      <div className="flex px-2 pb-2 justify-end items-center gap-0.5">
         <span className="text-sm text-gray-400">
           {LANG === `en` ? `Search by Algolia` : `Buscar por Algolia`}
         </span>
-        <Image src={AlgoliaLogo} alt="Algolia logo" className="w-8 h-8" />
+        <Image
+          src={AlgoliaLogo}
+          alt="Algolia logo"
+          className="w-8 h-8 grayscale opacity-70"
+        />
       </div>
     </div>
   );
