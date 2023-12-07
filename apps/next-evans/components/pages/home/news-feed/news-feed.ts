@@ -1,5 +1,5 @@
 import { t } from '@friends-library/locale';
-import { type T as Api } from '@friends-library/pairql/next-evans-build';
+import { type T as Api } from '@friends-library/pairql/evans-build';
 import type { Lang } from '@friends-library/types';
 import type { NewsFeedType } from '@/lib/types';
 import { newestFirst, spanishShortMonth } from '@/lib/dates';
