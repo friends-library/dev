@@ -1,11 +1,11 @@
 import React from 'react';
 import { t, setLocale } from '@friends-library/locale';
-import LogoFriends from 'evans/components/LogoFriends';
-import LogoAmigos from 'evans/components/LogoAmigos';
 import { ThreeD } from '@friends-library/cover-component';
 import coverPropsMap from './cover-props';
 import CoverCss from './CoverCss';
 import { htmlTitle } from './helpers';
+import LogoAmigos from '@/components/core/LogoAmigos';
+import LogoFriends from '@/components/core/LogoFriends';
 import './CoverGeneral.css';
 
 interface Props {

@@ -1,6 +1,6 @@
 import PairQL
 
-extension CodegenRoute.NextEvansBuild: CodegenRouteHandler {
+extension CodegenRoute.EvansBuild: CodegenRouteHandler {
   static var sharedTypes: [(String, Any.Type)] {
     [("DocumentTag", DocumentTag.TagType.self)]
   }

@@ -20,9 +20,8 @@ export default abstract class Client {
   ): T {
     let env: Env = `dev`;
     if (
-      href.includes(`https://deploy-preview-`) ||
-      (href.startsWith(`https://`) && href.includes(`--staging`)) ||
-      (!href.includes(`localhost:`) && process.env.GATSBY_NETLIFY_CONTEXT === `preview`)
+      href.includes(`vercel.app`) ||
+      (href.startsWith(`https://`) && href.includes(`--staging`))
     ) {
       env = `staging`;
     } else if (href.startsWith(`http://`)) {
@@ -48,8 +47,7 @@ export default abstract class Client {
     if (
       process.argv.includes(`--api-staging`) ||
       process.env.API_STAGING ||
-      process.env.VERCEL_ENV === `preview` ||
-      process.env.GATSBY_NETLIFY_CONTEXT === `preview`
+      process.env.VERCEL_ENV === `preview`
     ) {
       env = `staging`;
     } else if (process.argv.includes(`--api-dev`) || process.env.API_DEV) {

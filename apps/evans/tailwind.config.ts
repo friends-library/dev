@@ -1,9 +1,8 @@
 import { tailwindPreset } from '@friends-library/theme';
-
-const lang = process.env.GATSBY_LANG === `es` ? `es` : `en`;
+import { LANG } from './lib/env';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  presets: [tailwindPreset(lang)],
-  content: [`./src/**/*.tsx`],
+  presets: [tailwindPreset(LANG)],
+  content: [`./pages/**/*.{ts,tsx}`, `./components/**/*.{ts,tsx}`, `./app/**/*.{ts,tsx}`],
 };

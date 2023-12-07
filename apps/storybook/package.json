@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "storybook": "storybook dev -p 7007 --ci",
-    "build-storybook": "storybook build",
+    "build": "storybook build",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

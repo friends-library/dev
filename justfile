@@ -3,6 +3,9 @@ _default:
 
 # app dev
 
+evans:
+  @cd apps/evans && just
+
 admin:
   @pnpm --filter admin start
 
@@ -12,9 +15,6 @@ jones:
 native:
   @cd apps/native && just
 
-evans:
-  @cd apps/evans && just
-
 storybook:
   @pnpm --filter storybook-web start
 
@@ -23,9 +23,6 @@ poster:
 
 covers:
   @pnpm --filter cover-web-app start
-
-next:
-  @cd apps/next-evans && just
 
 bundle-actions:
   @cd actions/ts-pack && pnpm bundle all

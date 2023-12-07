@@ -1,8 +1,0 @@
-@screen sm {
-  #CompilationsBlock,
-  #CompilationsBlock::before,
-  #CompilationsBlock::after {
-    background-size: 1500px;
-    background-position: center 92%;
-  }
-}

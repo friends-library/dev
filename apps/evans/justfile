@@ -1,43 +1,26 @@
 _default:
   @just --choose
 
-start-en: write-cover-css
-  #!/usr/bin/env bash
-  export GATSBY_LANG=en GATSBY_PORT=9222 GATSBY_ALT_PORT=9333
-  pnpm gatsby develop --port $GATSBY_PORT
+dev-en: write-cover-css
+  @NEXT_PUBLIC_LANG=en pnpm next dev --port 7222
 
-start-es: write-cover-css
-  #!/usr/bin/env bash
-  export GATSBY_LANG=es GATSBY_PORT=9333 GATSBY_ALT_PORT=9222
-  pnpm gatsby develop --port $GATSBY_PORT
+dev-es: write-cover-css
+  @NEXT_PUBLIC_LANG=es pnpm next dev --port 7333
 
-build-en: write-cover-css && post-build
-  @GATSBY_LANG=en pnpm gatsby build
+build-en: write-cover-css
+  @NEXT_PUBLIC_LANG=en pnpm next build
 
-build-es: write-cover-css && post-build
-  @GATSBY_LANG=es pnpm gatsby build
+build-es: write-cover-css
+  @NEXT_PUBLIC_LANG=es pnpm next build
 
-build-en-analyze: write-cover-css && post-build
-  @ANALYZE_BUNDLE_SIZE=true GATSBY_LANG=en pnpm gatsby build
+storybook:
+  @cd ../../ && pnpm --filter storybook storybook
 
-clean:
-  @rm ./src/ssg/.dpc-cache.json
-  @rm ./src/css/cover.css
-  @pnpm gatsby clean
-
-# used to create dist/ssg/query.js - for github republish action
-publish-query:
-  @pnpm tsc src/ssg/query.ts --skipLibCheck --target esnext --moduleResolution node --outDir dist/ --declaration
+test:
+  @pnpm vitest . --watch
 
 # helpers
 
 [private]
-post-build:
-  @cp ./_redirects ./public
-  @cp ./_headers ./public
-
-[private]
 write-cover-css:
-  @pnpm ts-node ./src/ssg/cover-static-css.ts
-
-set dotenv-load
+  @pnpm ts-node ./lib/ssg/cover-static-css.ts

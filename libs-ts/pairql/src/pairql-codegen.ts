@@ -8,7 +8,6 @@ async function main(): Promise<void> {
     new CodegenDomain(`admin`, `AdminClient`, false),
     new CodegenDomain(`order`, `OrderClient`, false),
     new CodegenDomain(`evans-build`, `EvansBuildClient`, true),
-    new CodegenDomain(`next-evans-build`, `NextEvansBuildClient`, true),
     new CodegenDomain(`evans`, `EvansClient`, false),
   ];
 

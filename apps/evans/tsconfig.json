@@ -1,16 +1,29 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "jsx": "preserve",
-    "esModuleInterop": true,
-    "strict": true,
-    "noUncheckedIndexedAccess": false,
-    "noImplicitOverride": false,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "module": "CommonJS",
+    "esModuleInterop": true,
+    "module": "esnext",
     "moduleResolution": "node",
-    "target": "ES2019",
-    "lib": ["ES2019", "DOM"]
-  }
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

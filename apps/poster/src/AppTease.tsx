@@ -1,15 +1,15 @@
 import React from 'react';
 import cx from 'classnames';
-import Album from 'evans/components/Album';
-import EsSplash from 'evans/images/app-screens/app-splash.es.jpg';
-import EsAudio from 'evans/images/app-screens/app-audio.es.jpg';
-import EsList from 'evans/images/app-screens/app-audio-list.es.jpg';
-import EnSplash from 'evans/images/app-screens/app-splash.en.jpg';
-import EnAudio from 'evans/images/app-screens/app-audio.en.jpg';
-import EnList from 'evans/images/app-screens/app-audio-list.en.jpg';
 import type { Lang } from '@friends-library/types';
 import coverPropsMap from './cover-props';
 import CoverCss from './CoverCss';
+import Album from '@/components/core/Album';
+import EsSplash from '@/public/images/app/app-splash.es.jpg';
+import EsAudio from '@/public/images/app/app-audio.es.jpg';
+import EsList from '@/public/images/app/app-audio-list.es.jpg';
+import EnSplash from '@/public/images/app/app-splash.en.jpg';
+import EnAudio from '@/public/images/app/app-audio.en.jpg';
+import EnList from '@/public/images/app/app-audio-list.en.jpg';
 import './AppTease.css';
 
 interface Props {
@@ -23,7 +23,17 @@ const AppTease: React.FC<Props> = ({ lang, editionPath }) => {
   return (
     <div className="AppTease youtube-poster bg-white flex flex-col items-center overflow-hidden justify-between">
       <div className="AlbumWrap absolute z-10">
-        <Album scaler={1} scope="custom-1" {...coverProps} />
+        <Album
+          scaler={1}
+          scope="custom-1"
+          title={coverProps.title}
+          editionType={coverProps.edition}
+          isbn={coverProps.isbn}
+          isCompilation={coverProps.isCompilation}
+          friendName={coverProps.author}
+          customCss={coverProps.customCss}
+          customHtml={coverProps.customHtml}
+        />
       </div>
       <CoverCss scaler={1} scope="custom-1" />
       <div

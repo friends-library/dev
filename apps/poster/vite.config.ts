@@ -17,11 +17,13 @@ export default defineConfig({
   },
   plugins: [react()],
   define: {
-    'process.env': {},
+    'process.env': {
+      NEXT_PUBLIC_LANG: `en`,
+    },
   },
   resolve: {
     alias: {
-      evans: `${__dirname}/../evans/src`,
+      '@': `${__dirname}/../evans`,
     },
   },
 });

@@ -13,9 +13,7 @@ module.exports = {
   ignorePatterns: [
     `**/dist/*`,
     `**/bundled/*`,
-    `apps/evans/public/*`,
-    `apps/evans/.cache/*`,
-    `apps/storybook-web/storybook-static/*`,
+    `apps/storybook/storybook-static/*`,
     `**/friends.js`,
   ],
   rules: {
@@ -228,13 +226,6 @@ module.exports = {
         '@typescript-eslint/no-non-null-assertion': `off`,
         'require-atomic-updates': `off`,
         'no-console': `off`,
-      },
-    },
-    {
-      files: [`apps/evans/**`],
-      rules: {
-        'require-atomic-updates': `off`,
-        '@typescript-eslint/no-non-null-assertion': `off`,
       },
     },
     {

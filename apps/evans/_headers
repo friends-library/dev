@@ -1,3 +1,0 @@
-# full urls in referer header for ALL paths (/*)
-/*
-  Referrer-Policy: unsafe-url
