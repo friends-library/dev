@@ -142,7 +142,7 @@ const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (
         </WhiteOverlay>
       </div>
     </BackgroundImage>
-    <div className="MDX p-10 md:px-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
+    <div className="MDX p-10 md:px-16 md:pb-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
       <MDXRemote {...source} components={components} />
     </div>
   </div>
