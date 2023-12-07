@@ -48,7 +48,7 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
     }
     Route(.case(PairQLRoute.evansBuild)) {
       Method.post
-      Path { "next-evans-build" }
+      Path { "evans-build" }
       EvansBuildRoute.router
     }
   }

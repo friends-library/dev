@@ -19,12 +19,10 @@ apps/poster/src/cover-props.ts
 apps/cli/src/cmd/audio/derived/
 apps/cli/src/cmd/audio/.soundcloud-token
 apps/api/duplicate-podcast-downloads.json
+apps/evans/.next/
+apps/evans/styles/cover.css
 **/.parcel-cache
 **/.netlify/
-
-# new next-evans
-apps/next-evans/.next/
-apps/next-evans/styles/cover.css
 
 # bundled actions
 actions/ts-pack/actions/*/bundled/*

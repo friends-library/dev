@@ -23,7 +23,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': `${__dirname}/../next-evans`,
+      '@': `${__dirname}/../evans`,
     },
   },
 });
