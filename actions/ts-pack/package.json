@@ -19,17 +19,12 @@
     "@friends-library/doc-artifacts": "workspace:*",
     "@friends-library/doc-manifests": "workspace:*",
     "@friends-library/evaluator": "workspace:*",
-    "@friends-library/evans": "workspace:*",
     "@friends-library/parser": "workspace:*",
     "@friends-library/slack": "workspace:*",
-    "@octokit/action": "3.6.0",
-    "cross-fetch": "3.1.4",
-    "lodash.isequal": "^4.5.0",
-    "netlify": "4.9.0"
+    "@octokit/action": "3.6.0"
   },
   "devDependencies": {
     "@friends-library/types": "workspace:*",
-    "@types/lodash.isequal": "^4.5.5",
     "@vercel/ncc": "0.36.1",
     "x-chalk": "^1.0.1",
     "x-exec": "^1.2.0"

@@ -8,8 +8,8 @@ export default {
   presets: [tailwindPreset(lang)],
   content: [
     `./src/**/*.tsx`,
-    `../evans/src/components/LogoAmigos.tsx`,
-    `../evans/src/components/LogoFriends.tsx`,
-    `../evans/src/components/Album.tsx`,
+    `../evans/components/core/LogoAmigos.tsx`,
+    `../evans/components/core/LogoFriends.tsx`,
+    `../evans/components/core/Album.tsx`,
   ],
 };

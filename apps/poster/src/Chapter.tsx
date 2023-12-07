@@ -1,13 +1,13 @@
 import React from 'react';
 import cx from 'classnames';
 import { setLocale } from '@friends-library/locale';
-import Album from 'evans/components/Album';
 import type { Lang } from '@friends-library/types';
 import coverPropsMap from './cover-props';
 import partTitlesMap from './part-titles';
 import BooksBg from './BooksBg';
 import CoverCss from './CoverCss';
 import { htmlTitle } from './helpers';
+import Album from '@/components/core/Album';
 import './Chapter.css';
 
 interface Props {
@@ -58,7 +58,17 @@ const Chapter: React.FC<Props> = ({ lang, editionPath, partIdx }) => {
             }}
           />
         </div>
-        <Album scaler={1} scope="custom-1" {...coverProps} />
+        <Album
+          scaler={1}
+          scope="custom-1"
+          title={coverProps.title}
+          editionType={coverProps.edition}
+          isbn={coverProps.isbn}
+          isCompilation={coverProps.isCompilation}
+          friendName={coverProps.author}
+          customCss={coverProps.customCss}
+          customHtml={coverProps.customHtml}
+        />
       </div>
     </div>
   );

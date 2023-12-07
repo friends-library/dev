@@ -1,4 +1,3 @@
-import fetch from 'cross-fetch';
 import log from '@friends-library/slack';
 
 async function main(): Promise<void> {

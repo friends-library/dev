@@ -12,9 +12,6 @@ jones:
 native:
   @cd apps/native && just
 
-evans:
-  @cd apps/evans && just
-
 storybook:
   @pnpm --filter storybook-web start
 

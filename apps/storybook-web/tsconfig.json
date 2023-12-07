@@ -1,8 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "paths": {
-      "@evans/*": ["../evans/src/components/*"]
-    }
-  }
-}

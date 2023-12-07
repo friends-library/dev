@@ -50,7 +50,6 @@ jobs:
         run: |
           pnpm --filter poster ensure-data
           pnpm --filter native ensure-env
-          just ./apps/evans/publish-query
       - name: typecheck
         run: just typecheck
 

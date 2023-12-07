@@ -13,11 +13,6 @@ apps/cover-web-app/src/friends.js
 apps/styleguide/src/built-frags.json
 apps/styleguide/src/paperback-interior.css
 apps/jones/src/preview.css
-apps/evans/.cache/
-apps/evans/public/
-apps/evans/src/css/cover.css
-apps/evans/src/ssg/.dpc-cache.json
-apps/next-evans/styles/cover.css
 apps/storybook-web/storybook-static/
 apps/poster/src/part-titles.ts
 apps/poster/src/cover-props.ts
@@ -29,11 +24,11 @@ apps/api/duplicate-podcast-downloads.json
 
 # new next-evans
 apps/next-evans/.next/
+apps/next-evans/styles/cover.css
 
 # bundled actions
 actions/ts-pack/actions/*/bundled/*
 !actions/ts-pack/actions/*/bundled/*.js
-!actions/ts-pack/actions/deploy/bundled/*.wasm
 !actions/ts-pack/actions/pdf/bundled/css1/
 !actions/ts-pack/actions/pdf/bundled/css1/common.css
 actions/ts-pack/actions/pdf/bundled/css1/ebook/*

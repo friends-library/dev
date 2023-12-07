@@ -1,7 +1,0 @@
-@screen xl {
-  #WhoWereTheQuakersBlock,
-  #WhoWereTheQuakersBlock::before,
-  #WhoWereTheQuakersBlock::after {
-    background-position: center 20%;
-  }
-}
