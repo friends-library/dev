@@ -82,7 +82,7 @@ const FlexLink: React.FC<{
     );
   }
   return (
-    <Link href={to} className={className}>
+    <Link prefetch={false} href={to} className={className}>
       {children}
     </Link>
   );

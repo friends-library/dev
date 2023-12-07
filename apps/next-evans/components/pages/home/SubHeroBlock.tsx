@@ -48,6 +48,7 @@ const SubHeroBlock: React.FC<Props> = ({ numTotalBooks }) => (
         <Link
           className="hover:underline cursor-pointer"
           href={t`/audiobooks`}
+          prefetch={false}
         >{t`Audiobooks`}</Link>
       </li>
       <li

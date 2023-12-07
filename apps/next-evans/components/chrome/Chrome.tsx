@@ -88,8 +88,10 @@ const Chrome: React.FC<Props> = ({ children }) => {
             onCartBadgeClick={() => store.open()}
             onHamburgerClick={() => setSlideoverOpen(true)}
           />
-          <main className="pt-[70px]">{children}</main>
-          <Footer />
+          <div className="pt-[70px] min-h-screen flex flex-col">
+            <main>{children}</main>
+            <Footer />
+          </div>
         </div>
       )}
     </AppDispatch.Provider>
