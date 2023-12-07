@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Modal: React.FC<Props> = ({ children, onClose }) => (
-  <div className="px-8 py-10 sm:px-12 sm:py-12 sm:pb-16">
+  <div className="px-4 xs:px-8 py-10 sm:px-12 sm:py-12 sm:pb-16">
     <div className="lg:max-w-4xl lg:mx-auto">
       <CloseButton onClick={onClose} />
       {children}
