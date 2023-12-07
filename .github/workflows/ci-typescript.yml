@@ -84,7 +84,7 @@ jobs:
       - name: setup ts
         uses: ./.github/actions/setup-ts
       - name: build-storybook
-        run: cd apps/storybook-web && pnpm build
+        run: cd apps/storybook && pnpm build
 
 env:
   DOCS_REPOS_ROOT: /

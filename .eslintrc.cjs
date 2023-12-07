@@ -13,7 +13,7 @@ module.exports = {
   ignorePatterns: [
     `**/dist/*`,
     `**/bundled/*`,
-    `apps/storybook-web/storybook-static/*`,
+    `apps/storybook/storybook-static/*`,
     `**/friends.js`,
   ],
   rules: {

@@ -15,4 +15,4 @@ apps/native/ios/Pods/
 apps/native/vendor/
 apps/native/android/app/build/
 apps/jones/src/preview.css
-apps/storybook-web/storybook-static/
+apps/storybook/storybook-static/

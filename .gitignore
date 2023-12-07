@@ -13,7 +13,7 @@ apps/cover-web-app/src/friends.js
 apps/styleguide/src/built-frags.json
 apps/styleguide/src/paperback-interior.css
 apps/jones/src/preview.css
-apps/storybook-web/storybook-static/
+apps/storybook/storybook-static/
 apps/poster/src/part-titles.ts
 apps/poster/src/cover-props.ts
 apps/cli/src/cmd/audio/derived/
