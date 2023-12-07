@@ -58,11 +58,12 @@ const Nav: React.FC<Props> = ({
         })}
       />
       <Link
+        href="/"
+        prefetch={false}
         className={cx(`m-0 sm:inline mr-4 sm:mr-0`, {
           'hidden flex-grow-0': searching,
           'flex-grow': !searching,
         })}
-        href="/"
       >
         <Logo
           className={cx(

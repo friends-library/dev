@@ -112,7 +112,9 @@ const LinkGroup: React.FC<{ links: LinkItem[] }> = ({ links }) => (
             {href.startsWith(`https`) ? (
               <a href={href}>{text}</a>
             ) : (
-              <Link href={href}>{text}</Link>
+              <Link prefetch={false} href={href}>
+                {text}
+              </Link>
             )}
           </li>
         );
