@@ -5,6 +5,7 @@
   command = "pnpm run build"
   publish = "dist/"
   functions = "src/functions"
+  ignore = "pnpm dlx nx-ignore @friends-library/jones"
 
 [build.environment]
   NODE_VERSION = "18.13.0"
