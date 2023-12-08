@@ -5,7 +5,7 @@
   command = "pnpm run build"
   publish = "dist/"
   functions = "src/functions"
-  ignore = "pwd; npx nx-ignore@15.8.8 @friends-library/jones"
+  ignore = "npx nx-ignore --verbose @friends-library/jones"
 
 [build.environment]
   NODE_VERSION = "18.13.0"
