@@ -1,7 +1,7 @@
 [build]
   publish = "dist/"
   command = "pnpm build"
-  ignore = "pnpm dlx nx-ignore @friends-library/admin"
+  ignore = "true"
 
 [[redirects]]
   from = "/*"

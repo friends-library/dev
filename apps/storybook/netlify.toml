@@ -1,7 +1,8 @@
 [build]
   command = "pnpm build"
   publish = "storybook-static"
-  ignore = "pnpm dlx nx-ignore @friends-library/storybook"
+  # ignore = "pnpm dlx nx-ignore @friends-library/storybook"
+  ignore = "true"
 
 [build.environment]
   NODE_VERSION = "18.13.0"

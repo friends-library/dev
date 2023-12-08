@@ -1,6 +1,7 @@
 [build]
   command = "pnpm build"
   publish = "dist/"
-  ignore = "pnpm dlx nx-ignore @friends-library/styleguide"
+  # ignore = "pnpm dlx nx-ignore @friends-library/styleguide"
+  ignore = "true"
 
 
