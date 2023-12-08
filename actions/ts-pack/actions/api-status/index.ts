@@ -3,15 +3,17 @@ import log from '@friends-library/slack';
 async function main(): Promise<void> {
   try {
     const endpoint = process.env.INPUT_FLP_API_ENDPOINT ?? ``;
-    const res = await fetch(`${endpoint}/pairql/evans-build/GetDocumentDownloadCounts`, {
+    const res = await fetch(`${endpoint}/pairql/evans-build/PublishedFriendSlugs`, {
       method: `POST`,
       headers: {
         Authorization: `Bearer ${process.env.INPUT_FLP_API_STATUS_QUERY_TOKEN}`,
+        'Content-Type': `application/json`,
       },
+      body: JSON.stringify(`en`),
     });
     const json = await res.json();
-    const count = validateOutput(json);
-    await log.debug(`:white_check_mark: _FLP_ *Api Status Check* success \`${count}\``);
+    const slug = validateOutput(json);
+    await log.debug(`:white_check_mark: _FLP_ *Api Status Check* success \`${slug}\``);
   } catch (error: unknown) {
     await log.error(`_FLP_ *Api Status Check* failed`, { error: String(error) });
   }
@@ -31,7 +33,7 @@ async function main(): Promise<void> {
 
 main();
 
-function validateOutput(output: unknown): number {
+function validateOutput(output: unknown): string {
   try {
     var json = JSON.stringify(output);
   } catch (error) {
@@ -44,18 +46,8 @@ function validateOutput(output: unknown): number {
     throw new Error(`Expected non-empty array output, got=${json}`);
   }
   const first = output[0];
-  if (typeof first !== `object` || first === null) {
-    throw new Error(`Expected array of objects, got=${json}`);
+  if (typeof first !== `string`) {
+    throw new Error(`Expected array of strings, got=${json}`);
   }
-  const obj = first as Record<string, unknown>;
-  if (!Object.hasOwn(obj, `downloadCount`)) {
-    throw new Error(`Expected array of objects with \`downloadCount\` prop, got=${json}`);
-  }
-  const count = obj.downloadCount;
-  if (typeof count !== `number`) {
-    throw new Error(
-      `Expected array of objects with \`downloadCount\` prop of type number, got=${json}`,
-    );
-  }
-  return count;
+  return first;
 }
