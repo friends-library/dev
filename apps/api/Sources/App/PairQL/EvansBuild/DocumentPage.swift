@@ -2,6 +2,7 @@ import DuetSQL
 import Foundation
 import NonEmpty
 import PairQL
+import TaggedTime
 import Vapor
 
 struct AudioQualities<T: PairNestable>: PairNestable {
@@ -55,12 +56,24 @@ struct DocumentPage: Pair {
     struct Audiobook: PairNestable {
       var isIncomplete: Bool
       var numAudioParts: Int
+      var reader: String
+      var sourcePath: AudioQualities<String>
       var m4bFilesize: AudioQualities<Bytes>
       var mp3ZipFilesize: AudioQualities<Bytes>
       var m4bLoggedDownloadUrl: AudioQualities<String>
       var mp3ZipLoggedDownloadUrl: AudioQualities<String>
       var podcastLoggedDownloadUrl: AudioQualities<String>
+      var podcastImageUrl: String
       var embedId: AudioQualities<Int64>
+      var parts: [Part]
+
+      struct Part: PairNestable {
+        var title: String
+        var loggedDownloadUrl: AudioQualities<String>
+        var sizeInBytes: AudioQualities<Bytes>
+        var durationInSeconds: Seconds<Double>
+        var createdAt: Date
+      }
     }
   }
 
@@ -168,6 +181,11 @@ extension DocumentPage.Output {
       audiobook = .init(
         isIncomplete: audio.isIncomplete,
         numAudioParts: audioParts.count,
+        reader: audio.reader,
+        sourcePath: .init(
+          lq: audio.files.podcast.lq.sourcePath,
+          hq: audio.files.podcast.hq.sourcePath
+        ),
         m4bFilesize: .init(lq: audio.m4bSizeLq, hq: audio.m4bSizeHq),
         mp3ZipFilesize: .init(lq: audio.mp3ZipSizeLq, hq: audio.mp3ZipSizeHq),
         m4bLoggedDownloadUrl: .init(
@@ -182,7 +200,20 @@ extension DocumentPage.Output {
           lq: audio.files.podcast.lq.logUrl.absoluteString,
           hq: audio.files.podcast.hq.logUrl.absoluteString
         ),
-        embedId: embedId
+        podcastImageUrl: primaryEdition.images.square.w1400.url.absoluteString,
+        embedId: embedId,
+        parts: audio.parts.require().map { part in
+          .init(
+            title: part.title,
+            loggedDownloadUrl: .init(
+              lq: part.mp3File.lq.logUrl.absoluteString,
+              hq: part.mp3File.hq.logUrl.absoluteString
+            ),
+            sizeInBytes: .init(lq: part.mp3SizeLq, hq: part.mp3SizeHq),
+            durationInSeconds: part.duration,
+            createdAt: part.createdAt
+          )
+        }
       )
     }
 

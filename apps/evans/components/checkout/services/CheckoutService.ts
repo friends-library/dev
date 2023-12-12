@@ -2,7 +2,7 @@ import { type T } from '@friends-library/pairql/order';
 import type Cart from '../models/Cart';
 import type { Lang } from '@friends-library/types';
 import type CheckoutApi from './CheckoutApi';
-import { LANG } from '@/lib/env';
+import { LANG } from '../../../lib/env';
 
 /**
  * CheckoutService exists to orchestrate the series of API invocations

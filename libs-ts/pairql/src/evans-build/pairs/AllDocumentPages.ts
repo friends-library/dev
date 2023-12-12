@@ -45,6 +45,11 @@ export namespace AllDocumentPages {
           audiobook?: {
             isIncomplete: boolean;
             numAudioParts: number;
+            reader: string;
+            sourcePath: {
+              lq: string;
+              hq: string;
+            };
             m4bFilesize: {
               lq: number;
               hq: number;
@@ -65,10 +70,24 @@ export namespace AllDocumentPages {
               lq: string;
               hq: string;
             };
+            podcastImageUrl: string;
             embedId: {
               lq: number;
               hq: number;
             };
+            parts: Array<{
+              title: string;
+              loggedDownloadUrl: {
+                lq: string;
+                hq: string;
+              };
+              sizeInBytes: {
+                lq: number;
+                hq: number;
+              };
+              durationInSeconds: number;
+              createdAt: ISODateString;
+            }>;
           };
         };
         customCss?: string;
