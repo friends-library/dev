@@ -9,11 +9,10 @@ import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { MdxPageFrontmatter } from '@/lib/types';
 import { WhiteOverlay } from '../explore';
 import api, { type Api } from '@/lib/ssg/api-client';
-import HeroImg from '@/public/images/explore-books.jpg';
 import * as mdx from '@/lib/mdx';
 import { LANG } from '@/lib/env';
-import BackgroundImage from '@/components/core/BackgroundImage';
 import Seo from '@/components/core/Seo';
+import BooksBgBlock from '@/components/core/BooksBgBlock';
 
 interface Props {
   source: MDXRemoteSerializeResult;
@@ -133,15 +132,13 @@ export const components: React.ComponentProps<typeof MDXRemote>['components'] = 
 const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (
   <div>
     <Seo title={frontmatter.title} description={frontmatter.description} />
-    <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
-      <div className="px-10 py-20 sm:px-16 sm:py-32 lg:px-24 lg:py-[7.3rem] bg-black/60 xl:backdrop-blur-sm">
-        <WhiteOverlay>
-          <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
-            {frontmatter.title}
-          </h1>
-        </WhiteOverlay>
-      </div>
-    </BackgroundImage>
+    <BooksBgBlock>
+      <WhiteOverlay>
+        <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
+          {frontmatter.title}
+        </h1>
+      </WhiteOverlay>
+    </BooksBgBlock>
     <div className="MDX p-10 md:px-16 md:pb-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
       <MDXRemote {...source} components={components} />
     </div>

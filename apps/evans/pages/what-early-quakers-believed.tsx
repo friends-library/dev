@@ -2,8 +2,7 @@ import React from 'react';
 import { MdxH2, MdxH3, MdxLead, MdxP } from './static/[static]';
 import { WhiteOverlay } from './explore';
 import Seo from '@/components/core/Seo';
-import BackgroundImage from '@/components/core/BackgroundImage';
-import BooksBgImage from '@/public/images/explore-books.jpg';
+import BooksBgBlock from '@/components/core/BooksBgBlock';
 import TruthDefendedNotes from '@/components/truth-defended/TruthDefendedNotes';
 import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
 
@@ -13,15 +12,13 @@ const TruthDefended: React.FC = () => (
       title="Early Quaker Beliefs"
       description="What did early Quakers believe? A succinct but thorough explanation of the principles and practices of Friends in the 1600’s on a wide variety of doctrinal subjects, in response to calumnies and accusations that were commonly leveled against the society by other professing of Christians."
     />
-    <BackgroundImage src={BooksBgImage} position="center" fit="cover">
-      <div className="p-12 sm:p-16 lg:p-28 bg-black/50 backdrop-blur-sm">
-        <WhiteOverlay>
-          <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
-            <>What Early Quakers Believed</>
-          </h1>
-        </WhiteOverlay>
-      </div>
-    </BackgroundImage>
+    <BooksBgBlock>
+      <WhiteOverlay>
+        <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
+          <>What Early Quakers Believed</>
+        </h1>
+      </WhiteOverlay>
+    </BooksBgBlock>
     <div className="MDX p-10 md:px-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
       <MdxLead>
         For nearly 200 years, the early Society of Friends (Quakers) held precisely the

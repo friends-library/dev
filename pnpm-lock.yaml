@@ -462,6 +462,9 @@ importers:
 
   apps/evans:
     dependencies:
+      '@friends-library/next-bg-image':
+        specifier: file:../../../jaredh159/next-bg-image/next-bg-image
+        version: file:../jaredh159/next-bg-image/next-bg-image(next@13.4.12)(react-dom@18.2.0)(react@18.2.0)
       '@friends-library/pairql':
         specifier: workspace:*
         version: link:../../libs-ts/pairql
@@ -30020,6 +30023,20 @@ packages:
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
+
+  file:../jaredh159/next-bg-image/next-bg-image(next@13.4.12)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {directory: ../jaredh159/next-bg-image/next-bg-image, type: directory}
+    id: file:../jaredh159/next-bg-image/next-bg-image
+    name: '@friends-library/next-bg-image'
+    peerDependencies:
+      next: ^13.0.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      next: 13.4.12(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   github.com/jaredh159/pdf-parse/9d6214af13ce95e70b003c74cf3009214489eb68:
     resolution: {tarball: https://codeload.github.com/jaredh159/pdf-parse/tar.gz/9d6214af13ce95e70b003c74cf3009214489eb68}

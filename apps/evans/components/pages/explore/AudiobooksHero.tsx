@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
-import BackgroundImage from '@/components/core/BackgroundImage';
+import NextBgImage from '@friends-library/next-bg-image';
 import Dual from '@/components/core/Dual';
 import HeadphonesImage from '@/public/images/headphones.jpg';
 import WaveformSVG from '@/public/images/waveform.svg';
@@ -12,10 +12,14 @@ interface Props {
 }
 
 const AudiobooksHero: React.FC<Props> = ({ className, numBooks }) => (
-  <BackgroundImage
-    className={cx(className, `text-center p-16 pb-48 md:pb-56`)}
+  <NextBgImage
+    className={cx(
+      className,
+      `text-center p-16 pb-48 md:pb-56 lg:pb-[18rem] overflow-hidden`,
+    )}
     src={HeadphonesImage}
-    fit="cover"
+    position="60% 60%"
+    size={{ default: `1000px`, lg: `cover` }}
   >
     <h2 className="font-sans text-4xl tracking-wider text-white mb-6">{t`Audio Books`}</h2>
     <Dual.P className="body-text text-white text-lg">
@@ -23,10 +27,10 @@ const AudiobooksHero: React.FC<Props> = ({ className, numBooks }) => (
       <>Actualmente tenemos {numBooks} títulos grabados como audiolibros.</>
     </Dual.P>
     <div
-      className="h-48 absolute w-screen -mx-16 left-0 -bottom-[164px] bg-no-repeat bg-center"
-      style={{ backgroundImage: `url(${WaveformSVG.src})`, backgroundSize: `1500px` }}
+      className="h-48 absolute w-screen left-0 bg-no-repeat bg-center bg-[55%_70%] bg-[1400px_auto] lg:bg-[55%_65%] lg:bg-[1800px_auto]"
+      style={{ backgroundImage: `url(${WaveformSVG.src})` }}
     />
-  </BackgroundImage>
+  </NextBgImage>
 );
 
 export default AudiobooksHero;

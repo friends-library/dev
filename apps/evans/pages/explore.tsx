@@ -4,9 +4,7 @@ import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
 import type { Period } from '@/lib/types';
 import { APP_ALT_URL, LANG } from '@/lib/env';
-import BackgroundImage from '@/components/core/BackgroundImage';
 import Dual from '@/components/core/Dual';
-import HeroImg from '@/public/images/explore-books.jpg';
 import NavBlock from '@/components/pages/explore/NavBlock';
 import UpdatedEditionsBlock from '@/components/pages/explore/UpdatedEditionsBlock';
 import GettingStartedLinkBlock from '@/components/pages/explore/GettingStartedLinkBlock';
@@ -22,6 +20,7 @@ import { documentDate, documentRegion } from '@/lib/document';
 import * as custom from '@/lib/ssg/custom-code';
 import Seo, { pageMetaDesc } from '@/components/core/Seo';
 import api, { type Api } from '@/lib/ssg/api-client';
+import BooksBgBlock from '@/components/core/BooksBgBlock';
 
 type Props = {
   books: Api.ExplorePageBooks.Output;
@@ -52,31 +51,28 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
           .filter((type) => type === `updated`).length,
       })}
     />
-    <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
-      <div className="px-10 py-20 sm:px-16 sm:py-32 lg:px-24 lg:py-[7.3rem] bg-black/60 xl:backdrop-blur-sm">
-        <WhiteOverlay>
-          <Dual.H1 className="sans-wider text-3xl mb-6">
-            <>Explore Books</>
-            <>Explorar Libros</>
-          </Dual.H1>
-          <Dual.P className="body-text">
-            <>
-              We currently have {totalPublished.books[LANG]} books freely available on
-              this site. Overwhelmed? On this page you can browse all the titles by
-              edition, region, time period, tags, and more&mdash;or search the full
-              library to find exactly what you’re looking for.
-            </>
-            <>
-              Actualmente tenemos {totalPublished.books[LANG]} libros disponibles de forma
-              gratuita en este sitio, y más están siendo traducidos y añadidos
-              regularmente. En nuestra página de “Explorar” puedes navegar por todos
-              nuestros libros y audiolibros, o buscar libros en la categoría particular
-              que más te interese.
-            </>
-          </Dual.P>
-        </WhiteOverlay>
-      </div>
-    </BackgroundImage>
+    <BooksBgBlock>
+      <WhiteOverlay>
+        <Dual.H1 className="sans-wider text-3xl mb-6">
+          <>Explore Books</>
+          <>Explorar Libros</>
+        </Dual.H1>
+        <Dual.P className="body-text">
+          <>
+            We currently have {totalPublished.books[LANG]} books freely available on this
+            site. Overwhelmed? On this page you can browse all the titles by edition,
+            region, time period, tags, and more&mdash;or search the full library to find
+            exactly what you’re looking for.
+          </>
+          <>
+            Actualmente tenemos {totalPublished.books[LANG]} libros disponibles de forma
+            gratuita en este sitio, y más están siendo traducidos y añadidos regularmente.
+            En nuestra página de “Explorar” puedes navegar por todos nuestros libros y
+            audiolibros, o buscar libros en la categoría particular que más te interese.
+          </>
+        </Dual.P>
+      </WhiteOverlay>
+    </BooksBgBlock>
     <NavBlock />
     <UpdatedEditionsBlock
       books={books

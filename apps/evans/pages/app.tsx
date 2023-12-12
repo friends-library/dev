@@ -8,9 +8,8 @@ import api from '@/lib/ssg/api-client';
 import * as AppBadges from '@/components/pages/app/AppBadges';
 import Seo, { pageMetaDesc } from '@/components/core/Seo';
 import Dual from '@/components/core/Dual';
-import BackgroundImage from '@/components/core/BackgroundImage';
+import BooksBgBlock from '@/components/core/BooksBgBlock';
 import { LANG } from '@/lib/env';
-import BooksBgImage from '@/public/images/explore-books.jpg';
 
 import AppAudioList_en from '@/public/images/app/app-audio-list.en.jpg';
 import AppAudioList_es from '@/public/images/app/app-audio-list.es.jpg';
@@ -43,16 +42,14 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 const AppPage: React.FC<Props> = ({ numAudioBooks, numBooks }) => (
   <div className="overflow-hidden">
     <Seo title={`Friends Library App`} description={pageMetaDesc(`app`, {})} />
-    <BackgroundImage src={BooksBgImage} position="center" fit="cover">
-      <div className="p-12 sm:p-16 lg:p-28 bg-black/50 backdrop-blur-sm">
-        <WhiteOverlay>
-          <Dual.H1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
-            <>Friends Library App</>
-            <>Aplicación de Bibliotecas de Los Amigos</>
-          </Dual.H1>
-        </WhiteOverlay>
-      </div>
-    </BackgroundImage>
+    <BooksBgBlock>
+      <WhiteOverlay>
+        <Dual.H1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
+          <>Friends Library App</>
+          <>Aplicación de Bibliotecas de Los Amigos</>
+        </Dual.H1>
+      </WhiteOverlay>
+    </BooksBgBlock>
     <div className="p-10 flex flex-col items-center md:py-16">
       <Dual.H2 className="text-flgray-900 text-3xl tracking-widest mb-6">
         <>Available for iOS and Android</>

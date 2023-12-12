@@ -10,6 +10,7 @@
     "format:check": "just ../../prettier-check"
   },
   "dependencies": {
+    "@friends-library/next-bg-image": "file:../../../jaredh159/next-bg-image/next-bg-image",
     "@friends-library/pairql": "workspace:*",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "2.0.17",

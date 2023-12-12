@@ -1,12 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
+import NextBgImage from '@friends-library/next-bg-image';
 import { t } from '@friends-library/locale';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';
 import { type Props as PathBlockProps } from '@/components/pages/getting-started/PathBlock';
 import Dual from '@/components/core/Dual';
 import Heading from '@/components/core/Heading';
-import BackgroundImage from '@/components/core/BackgroundImage';
 import BooksGrid from '@/public/images/explore-books.jpg';
 import DuoToneWaveBlock from '@/components/pages/getting-started/DuoToneWaveBlock';
 import EmbeddedAudio from '@/components/core/EmbeddedAudio';
@@ -61,31 +61,32 @@ const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
       title={t`Getting Started`}
       description={pageMetaDesc(`getting-started`, { numBooks })}
     />
-    <BackgroundImage src={BooksGrid} className="" fit={`cover`} position={`center`}>
-      <div className="flex flex-col items-center justify-center py-20 sm:py-32 px-10 sm:px-16 [background:radial-gradient(rgb(0_0_0/0.65),rgb(0_0_0/0.85),rgb(0_0_0/0.95))]">
-        <Heading darkBg className="text-white">
-          <Dual.Frag>
-            <>Not sure where to get started?</>
-            <>¿No estás seguro de dónde empezar?</>
-          </Dual.Frag>
-        </Heading>
-        <Dual.P className="text-center body-text text-white text-lg leading-loose max-w-4xl md:text-left">
-          <>
-            Interested in reading something from the early Quakers, but picking from{` `}
-            {numBooks} books seems daunting? No worries&mdash;on this page we’ve selected
-            some of our favorite books and arranged them into four categories. Plus we’ve
-            got an introductory audio to help introduce you to the early Friends.
-          </>
-          <>
-            ¿Estás interesado en leer algo de los primeros Cuáqueros, pero no estás seguro
-            de dónde empezar? ¡No hay problema! En esta página hemos seleccionado algunos
-            de nuestros libros favoritos y los hemos organizado en categorías para
-            ayudarte a decidir. Además, hemos puesto un audio introductorio para ayudarte
-            a conocer quienes fueron los primeros Amigos.
-          </>
-        </Dual.P>
-      </div>
-    </BackgroundImage>
+    <NextBgImage
+      src={[`radial-gradient(rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.925) 75%)`, BooksGrid]}
+      className="flex flex-col items-center justify-center py-20 sm:py-32 px-10 sm:px-16"
+    >
+      <Heading darkBg className="text-white">
+        <Dual.Frag>
+          <>Not sure where to get started?</>
+          <>¿No estás seguro de dónde empezar?</>
+        </Dual.Frag>
+      </Heading>
+      <Dual.P className="text-center body-text text-white text-lg leading-loose max-w-4xl md:text-left">
+        <>
+          Interested in reading something from the early Quakers, but picking from{` `}
+          {numBooks} books seems daunting? No worries&mdash;on this page we’ve selected
+          some of our favorite books and arranged them into four categories. Plus we’ve
+          got an introductory audio to help introduce you to the early Friends.
+        </>
+        <>
+          ¿Estás interesado en leer algo de los primeros Cuáqueros, pero no estás seguro
+          de dónde empezar? ¡No hay problema! En esta página hemos seleccionado algunos de
+          nuestros libros favoritos y los hemos organizado en categorías para ayudarte a
+          decidir. Además, hemos puesto un audio introductorio para ayudarte a conocer
+          quienes fueron los primeros Amigos.
+        </>
+      </Dual.P>
+    </NextBgImage>
     <DuoToneWaveBlock className="pt-12 px-6 pb-32">
       <div className="flex flex-col sm:items-center">
         <Dual.H2 className="font-sans text-3xl px-6 text-center mb-6 tracking-wide md:text-left">

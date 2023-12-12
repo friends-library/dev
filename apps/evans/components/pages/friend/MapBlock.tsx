@@ -1,9 +1,9 @@
 import React from 'react';
+import NextBgImage from '@friends-library/next-bg-image';
 import { t } from '@friends-library/locale';
 import Image from 'next/image';
 import FriendMeta from './FriendMeta';
 import LocationMarker from './LocationMarker';
-import BackgroundImage from '@/components/core/BackgroundImage';
 import { LANG } from '@/lib/env';
 import Uk from '@/public/images/maps/UK--2x.png';
 import Us from '@/public/images/maps/US.png';
@@ -22,13 +22,12 @@ interface Props {
 }
 
 const MapBlock: React.FC<Props> = ({ friendName, markers, residences, map }) => (
-  <BackgroundImage
+  <NextBgImage
+    lazyLoad
     src={BgImage}
-    className="relative bg-cover pb-20 md:pb-32 xl:pb-64 xl:[&>.Content>*]:w-[85vw] xl:[&>.Content>*]:max-w-[1400px] xl:pt-12 "
-    fit={`cover`}
-    position={`center`}
+    className="relative bg-cover pb-20 md:pb-32 xl:pb-64 xl:pt-12 "
   >
-    <div className="relative items-start justify-center xl:flex xl:bg-flgray-100 xl:mx-auto xl:py-10 xl:pt-16 md:pt-8">
+    <div className="relative items-start justify-center xl:flex xl:bg-flgray-100 xl:mx-auto xl:py-10 xl:pt-16 md:pt-8 xl:mx-auto xl:max-w-[1400px] xl:w-[85vw]">
       <FriendMeta
         className="mx-6 z-10 max-w-xs xl:py-24 translate-y-5 min-h-[15rem] md:translate-y-8 xl:w-[72rem] xl:translate-y-[-125px]"
         title={t`Where did ${friendName} live?`}
@@ -71,7 +70,7 @@ const MapBlock: React.FC<Props> = ({ friendName, markers, residences, map }) => 
         </div>
       </div>
     </div>
-  </BackgroundImage>
+  </NextBgImage>
 );
 
 export default MapBlock;
