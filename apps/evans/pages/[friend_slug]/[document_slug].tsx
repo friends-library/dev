@@ -2,7 +2,7 @@ import React from 'react';
 import invariant from 'tiny-invariant';
 import { t } from '@friends-library/locale';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import { LANG } from '@/lib/env';
+import { LANG, NODE_ENV } from '@/lib/env';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
 import BookTeaserCards from '@/components/core/BookTeaserCards';
@@ -12,6 +12,7 @@ import * as code from '@/lib/ssg/custom-code';
 import Seo from '@/components/core/Seo';
 import { bookPageMetaDesc } from '@/lib/seo';
 import api, { type Api } from '@/lib/ssg/api-client';
+import { generatePodcastFeeds } from '@/lib/ssg/podcast';
 
 type Props = Api.DocumentPage.Output;
 
@@ -41,6 +42,9 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
       documentSlug: document.slug,
     })),
   );
+  if (NODE_ENV === `production`) {
+    generatePodcastFeeds(props.document);
+  }
   return {
     props: {
       otherBooksByFriend: props.otherBooksByFriend.map(

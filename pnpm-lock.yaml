@@ -547,6 +547,9 @@ importers:
       '@friends-library/types':
         specifier: workspace:*
         version: link:../../libs-ts/types
+      '@types/he':
+        specifier: 1.2.3
+        version: 1.2.3
       '@types/js-cookie':
         specifier: ^2.2.6
         version: 2.2.7
@@ -571,6 +574,9 @@ importers:
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
+      he:
+        specifier: 1.2.0
+        version: 1.2.0
       js-yaml:
         specifier: ^3.14.0
         version: 3.14.1
@@ -12325,6 +12331,10 @@ packages:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
     dependencies:
       '@types/unist': 2.0.6
+    dev: true
+
+  /@types/he@1.2.3:
+    resolution: {integrity: sha512-q67/qwlxblDzEDvzHhVkwc1gzVWxaNxeyHUBF4xElrvjL11O+Ytze+1fGpBHlr/H9myiBUaUXNnNPmBHxxfAcA==}
     dev: true
 
   /@types/history@4.7.11:
