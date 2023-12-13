@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
-import NextBgImage from '@friends-library/next-bg-image';
+import NextBgImage from 'next-bg-image';
 import Dual from '@/components/core/Dual';
 import HeadphonesImage from '@/public/images/headphones.jpg';
 import WaveformSVG from '@/public/images/waveform.svg';

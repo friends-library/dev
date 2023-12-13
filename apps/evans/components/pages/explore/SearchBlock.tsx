@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import NextBgImage from '@friends-library/next-bg-image';
+import NextBgImage from 'next-bg-image';
 import { t } from '@friends-library/locale';
 import type { EditionType, Period, Region } from '@/lib/types';
 import SearchControls from './SearchControls';

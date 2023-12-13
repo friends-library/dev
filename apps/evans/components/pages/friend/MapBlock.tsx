@@ -1,5 +1,5 @@
 import React from 'react';
-import NextBgImage from '@friends-library/next-bg-image';
+import NextBgImage from 'next-bg-image';
 import { t } from '@friends-library/locale';
 import Image from 'next/image';
 import FriendMeta from './FriendMeta';

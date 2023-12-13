@@ -1,5 +1,5 @@
 import React from 'react';
-import NextBgImage, { bgColor } from '@friends-library/next-bg-image';
+import NextBgImage, { bgColor } from 'next-bg-image';
 import { t } from '@friends-library/locale';
 import Dual from '../core/Dual';
 import Form from './Form';

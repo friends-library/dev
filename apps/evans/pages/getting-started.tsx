@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import NextBgImage from '@friends-library/next-bg-image';
+import NextBgImage from 'next-bg-image';
 import { t } from '@friends-library/locale';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';

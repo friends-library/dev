@@ -1,6 +1,6 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import NextBgImage, { bgColor } from '@friends-library/next-bg-image';
+import NextBgImage, { bgColor } from 'next-bg-image';
 import Dual from '@/components/core/Dual';
 import { makeScroller } from '@/lib/scroll';
 import HeroBg from '@/public/images/street.jpg';

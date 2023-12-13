@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { t } from '@friends-library/locale';
-import NextBgImage from '@friends-library/next-bg-image';
+import NextBgImage from 'next-bg-image';
 import Dual from '@/components/core/Dual';
 import BgImg from '@/public/images/books-straight.jpg';
 import { bgLayer } from '@/lib/color';

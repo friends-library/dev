@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import NextBgImage, { bgColor } from '@friends-library/next-bg-image';
+import NextBgImage, { bgColor } from 'next-bg-image';
 import type { Lang } from '@friends-library/types';
 import FriendsLogo from '../core/LogoFriends';
 import AmigosLogo from '../core/LogoAmigos';

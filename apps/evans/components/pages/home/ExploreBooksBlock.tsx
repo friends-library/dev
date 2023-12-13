@@ -1,6 +1,6 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import NextBgImage from '@friends-library/next-bg-image';
+import NextBgImage from 'next-bg-image';
 import Heading from '@/components/core/Heading';
 import Dual from '@/components/core/Dual';
 import Button from '@/components/core/Button';

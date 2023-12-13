@@ -1,5 +1,5 @@
 import React from 'react';
-import NextBgImage from '@friends-library/next-bg-image';
+import NextBgImage from 'next-bg-image';
 import NewsFeed from './NewsFeed';
 import Dual from '@/components/core/Dual';
 import BgImage from '@/public/images/books-diagonal-2.jpg';

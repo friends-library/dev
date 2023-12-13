@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
-import NextBgImage from '@friends-library/next-bg-image';
+import NextBgImage from 'next-bg-image';
 import type { EditionType } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';

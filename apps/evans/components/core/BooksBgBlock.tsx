@@ -1,5 +1,5 @@
 import React from 'react';
-import NextBgImage from '@friends-library/next-bg-image';
+import NextBgImage from 'next-bg-image';
 import Books from '@/public/images/explore-books.jpg';
 
 const BooksBgBlock: React.FC<{ children: React.ReactNode }> = ({ children }) => (
