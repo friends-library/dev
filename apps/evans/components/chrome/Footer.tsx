@@ -1,20 +1,21 @@
 import React from 'react';
 import cx from 'classnames';
-import { t } from '@friends-library/locale';
+import NextBgImage from 'next-bg-image';
 import Link from 'next/link';
-import NextBgImage, { bgColor } from 'next-bg-image';
+import { t } from '@friends-library/locale';
 import type { Lang } from '@friends-library/types';
 import FriendsLogo from '../core/LogoFriends';
 import AmigosLogo from '../core/LogoAmigos';
 import GetAppLink from '../core/GetAppLink';
 import { LANG } from '@/lib/env';
 import Mountains from '@/public/images/mountains.jpg';
+import { bgLayer } from '@/lib/color';
 
 const Footer: React.FC = () => {
   const Logo = LANG === `en` ? FriendsLogo : AmigosLogo;
   return (
     <NextBgImage
-      src={[bgColor(`rgba(108,49,66,0.8)`), Mountains]}
+      src={[bgLayer(`flprimary`, 0.8), Mountains]}
       className="text-gray-300 font-hairline mt-auto min-[930px]:pl-12 lg:pl-0"
       position="0 40%"
       lazyLoad
