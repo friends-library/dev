@@ -1,6 +1,6 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import BackgroundImage from '@/components/core/BackgroundImage';
+import NextBgImage, { bgColor } from 'next-bg-image';
 import Dual from '@/components/core/Dual';
 import { makeScroller } from '@/lib/scroll';
 import HeroBg from '@/public/images/street.jpg';
@@ -10,13 +10,12 @@ interface Props {
 }
 
 const FriendsPageHero: React.FC<Props> = ({ numFriends }) => (
-  <BackgroundImage
-    src={HeroBg}
-    fit="cover"
-    position="[object-position:center_88%]"
+  <NextBgImage
     className="text-center text-white"
+    src={[bgColor(`rgba(0, 0, 0, 0.52)`), HeroBg]}
+    position="center 88%"
   >
-    <div className="bg-gradient-to-b from-black/40 to-black/60 px-16 py-16 md:py-24 xl:py-32">
+    <div className="px-16 py-16 md:py-24 xl:py-32">
       <h1 className="sans-wider text-4xl font-bold">{t`Authors`}</h1>
       <Dual.P className="body-text text-white py-8 text-lg leading-loose max-w-screen-sm mx-auto">
         <>
@@ -81,7 +80,7 @@ const FriendsPageHero: React.FC<Props> = ({ numFriends }) => (
         </>
       </Dual.P>
     </div>
-  </BackgroundImage>
+  </NextBgImage>
 );
 
 export default FriendsPageHero;

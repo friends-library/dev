@@ -46,7 +46,7 @@ const BookByFriend: React.FC<Props> = (props) => {
         {...props}
         scaler={isAlone ? 1 / 2 : 1 / 3}
         scope={isAlone ? `1-2` : `1-3`}
-        className={isAlone ? `-mt-20 md:mt-4 md:-ml-32` : `mt-4 md:-ml-24`}
+        className={cx(`mt-4`, isAlone ? `md:mt-4 md:-ml-32` : `md:-ml-24`)}
         pages={pages[0]}
         blurb=""
         onlyFront

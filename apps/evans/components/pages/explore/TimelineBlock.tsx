@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
+import NextBgImage from 'next-bg-image';
 import type { EditionType } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import TimePicker from './TimePicker';
 import { useWindowWidth } from '@/lib/hooks/window-width';
 import { SCREEN_MD } from '@/lib/constants';
-import BackgroundImage from '@/components/core/BackgroundImage';
 import PillDropdown from '@/components/core/PillDropdown';
 import PillDropdownDropdown from '@/components/core/PillDropdownDropdown';
 import PillDropdownItem from '@/components/core/PillDropdownItem';
 import CastleBgImage from '@/public/images/castle.jpg';
+import { bgLayer } from '@/lib/color';
 
 interface Props {
   books: Array<{
@@ -34,65 +35,61 @@ const TimelineBlock: React.FC<Props> = ({ books }) => {
   const nextDate = date + (windowWidth < SCREEN_MD ? 50 : 25);
   return (
     <div id="TimelineBlock">
-      <BackgroundImage
-        src={CastleBgImage}
-        className=""
-        fit="cover"
-        fineTuneImageStyles={{
-          objectPosition: `center 0`,
-        }}
+      <NextBgImage
+        lazyLoad
+        src={[bgLayer([0, 0, 0], 0.35), CastleBgImage]}
+        size={{ default: `1200px auto`, sm: `cover` }}
+        position="center 0%"
       >
-        <div className="bg-gradient-to-b from-black/40 to-black/40">
-          <BgWordBlock
-            word="Timeline"
-            className={cx(
-              `px-12 pt-40 pb-24 sm:pb-32`,
-              `[&_.BackgroundWord]:pt-[75px] [&_.BackgroundWord]:text-white [&_.BackgroundWord]:z-30 [&_.BackgroundWord]:text-[90px]`,
-              `sm:[&_.BackgroundWord]:pt-[38px] sm:[&_.BackgroundWord]:text-[130px]`,
-            )}
-          >
-            <div className="bg-white px-10 py-12 text-center max-w-screen-md mx-auto">
-              <h2 className="font-sans text-flblack tracking-wide text-3xl mb-6">
-                Timeline
-              </h2>
-              <p className="body-text leading-loose">
-                The books in our library were written over the course of approximately 200
-                years. Use the timeline picker below to view books from the time period of
-                your choice.
-              </p>
-            </div>
-          </BgWordBlock>
-          <div className="sm:hidden flex flex-col pb-24 -mt-12">
-            <label className="font-sans text-center text-white uppercase antialiased mt-0 mb-2 block tracking-widest">
-              Pick a Date
-            </label>
-            <PillDropdown pillText={String(date)} className="mx-auto">
-              <PillDropdownDropdown>
-                <PillDropdownItem onClick={() => setDate(1650)} selected={date === 1650}>
-                  1650
-                </PillDropdownItem>
-                <PillDropdownItem onClick={() => setDate(1700)} selected={date === 1700}>
-                  1700
-                </PillDropdownItem>
-                <PillDropdownItem onClick={() => setDate(1750)} selected={date === 1750}>
-                  1750
-                </PillDropdownItem>
-                <PillDropdownItem onClick={() => setDate(1800)} selected={date === 1800}>
-                  1800
-                </PillDropdownItem>
-                <PillDropdownItem onClick={() => setDate(1850)} selected={date === 1850}>
-                  1850
-                </PillDropdownItem>
-              </PillDropdownDropdown>
-            </PillDropdown>
+        <BgWordBlock
+          word="Timeline"
+          className={cx(
+            `px-12 pt-40 pb-24 sm:pb-32`,
+            `[&_.BackgroundWord]:pt-[75px] [&_.BackgroundWord]:text-white [&_.BackgroundWord]:z-30 [&_.BackgroundWord]:text-[90px]`,
+            `sm:[&_.BackgroundWord]:pt-[38px] sm:[&_.BackgroundWord]:text-[130px]`,
+          )}
+        >
+          <div className="bg-white px-10 py-12 text-center max-w-screen-md mx-auto">
+            <h2 className="font-sans text-flblack tracking-wide text-3xl mb-6">
+              Timeline
+            </h2>
+            <p className="body-text leading-loose">
+              The books in our library were written over the course of approximately 200
+              years. Use the timeline picker below to view books from the time period of
+              your choice.
+            </p>
           </div>
-          <TimePicker
-            className="hidden sm:flex pb-32 mx-24 -mt-6 max-w-screen-lg xl:mx-auto"
-            selected={date}
-            setSelected={setDate}
-          />
+        </BgWordBlock>
+        <div className="sm:hidden flex flex-col pb-24 -mt-12">
+          <label className="font-sans text-center text-white uppercase antialiased mt-0 mb-2 block tracking-widest">
+            Pick a Date
+          </label>
+          <PillDropdown pillText={String(date)} className="mx-auto">
+            <PillDropdownDropdown>
+              <PillDropdownItem onClick={() => setDate(1650)} selected={date === 1650}>
+                1650
+              </PillDropdownItem>
+              <PillDropdownItem onClick={() => setDate(1700)} selected={date === 1700}>
+                1700
+              </PillDropdownItem>
+              <PillDropdownItem onClick={() => setDate(1750)} selected={date === 1750}>
+                1750
+              </PillDropdownItem>
+              <PillDropdownItem onClick={() => setDate(1800)} selected={date === 1800}>
+                1800
+              </PillDropdownItem>
+              <PillDropdownItem onClick={() => setDate(1850)} selected={date === 1850}>
+                1850
+              </PillDropdownItem>
+            </PillDropdownDropdown>
+          </PillDropdown>
         </div>
-      </BackgroundImage>
+        <TimePicker
+          className="hidden sm:flex pb-32 mx-24 -mt-6 max-w-screen-lg xl:mx-auto"
+          selected={date}
+          setSelected={setDate}
+        />
+      </NextBgImage>
       <div className="bg-flgold text-center text-white text-2xl p-4 tracking-widest sm:hidden">
         {date}
       </div>

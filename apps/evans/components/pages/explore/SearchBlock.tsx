@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import NextBgImage from 'next-bg-image';
 import { t } from '@friends-library/locale';
 import type { EditionType, Period, Region } from '@/lib/types';
 import SearchControls from './SearchControls';
 import SearchResult from './SearchResult';
-import BackgroundImage from '@/components/core/BackgroundImage';
 import RiverPath from '@/public/images/water-path.jpg';
+import { bgLayer } from '@/lib/color';
 
 interface Props {
   initialFilters?: string[];
@@ -56,15 +57,18 @@ const SearchBlock: React.FC<Props> = ({ books, initialFilters, initialUsed }) =>
         </div>
       )}
       {matches.length === 0 && (
-        <BackgroundImage src={RiverPath} fit="cover" position="object-bottom">
-          <div className="bg-gradient-to-b from-black/30 to-black/30 px-16 sm:px-32 flex flex-col justify-center min-h-[45vh]">
-            <p className="text-white text-2xl sm:text-3xl sans-wider text-center">
-              {used
-                ? t`Your search returned no results`
-                : `^ ${t`Select a filter or search to get started!`}`}
-            </p>
-          </div>
-        </BackgroundImage>
+        <NextBgImage
+          lazyLoad
+          position="bottom"
+          className="px-16 sm:px-32 flex flex-col justify-center min-h-[45vh]"
+          src={[bgLayer([0, 0, 0], 0.3), RiverPath]}
+        >
+          <p className="text-white text-2xl sm:text-3xl sans-wider text-center">
+            {used
+              ? t`Your search returned no results`
+              : `^ ${t`Select a filter or search to get started!`}`}
+          </p>
+        </NextBgImage>
       )}
     </div>
   );

@@ -1,97 +1,97 @@
 import React from 'react';
 import cx from 'classnames';
-import { t } from '@friends-library/locale';
+import NextBgImage from 'next-bg-image';
 import Link from 'next/link';
+import { t } from '@friends-library/locale';
 import type { Lang } from '@friends-library/types';
-import BackgroundImage from '../core/BackgroundImage';
 import FriendsLogo from '../core/LogoFriends';
 import AmigosLogo from '../core/LogoAmigos';
 import GetAppLink from '../core/GetAppLink';
 import { LANG } from '@/lib/env';
 import Mountains from '@/public/images/mountains.jpg';
+import { bgLayer } from '@/lib/color';
 
 const Footer: React.FC = () => {
   const Logo = LANG === `en` ? FriendsLogo : AmigosLogo;
   return (
-    <BackgroundImage
-      className="after:[background-position:0_40%] before:[background-position:0_40%] text-gray-300 font-hairline mt-auto"
-      fit="cover"
-      src={Mountains}
+    <NextBgImage
+      src={[bgLayer(`flprimary`, 0.8), Mountains]}
+      className="text-gray-300 font-hairline mt-auto min-[930px]:pl-12 lg:pl-0"
+      position="0 40%"
+      lazyLoad
     >
-      <div className="bg-flprimary/80 min-[930px]:pl-12 lg:pl-0">
+      <div
+        className={cx(
+          `text-center flex flex-col items-center px-8 py-12`,
+          `md:text-left md:flex-row md:items-start md:justify-between`,
+          LANG === `es` && `md:pr-0`,
+          `lg:p-20`,
+          `xl:px-40 xl:py-24`,
+        )}
+      >
+        <Logo
+          iconColor="white"
+          friendsColor="white"
+          libraryColor="white"
+          className={cx(`fill-current`, `mb-10 py-2`, `md:mr-4`, {
+            'w-48': LANG === `es`,
+            'w-40': LANG === `en`,
+          })}
+        />
         <div
           className={cx(
-            `text-center flex flex-col items-center px-8 py-12`,
-            `md:text-left md:flex-row md:items-start md:justify-between`,
-            LANG === `es` && `md:pr-0`,
-            `lg:p-20`,
-            `xl:px-40 xl:py-24`,
+            `flex-grow md:flex md:ml-8 lg:ml-20 max-w-screen-lg`,
+            LANG === `en`
+              ? `min-[930px]:max-w-[620px] lg:max-w-none`
+              : `min-[930px]:max-w-[680px] lg:max-w-none`,
           )}
         >
-          <Logo
-            iconColor="white"
-            friendsColor="white"
-            libraryColor="white"
-            className={cx(`fill-current`, `mb-10 py-2`, `md:mr-4`, {
-              'w-48': LANG === `es`,
-              'w-40': LANG === `en`,
-            })}
+          <LinkList
+            title={t`Books`}
+            links={[
+              [t`/getting-started`, t`Getting Started`],
+              [t`/explore`, t`Explore Books`],
+              [t`/audiobooks`, t`Audiobooks`],
+              [t`/friends`, t`All Friends`],
+              () => (
+                <GetAppLink
+                  inFooter
+                  className={cx(
+                    `inline-block md:transform-none`,
+                    LANG === `en` ? `translate-x-[3em]` : `translate-x-[3.6em]`,
+                  )}
+                />
+              ),
+            ]}
           />
-          <div
-            className={cx(
-              `flex-grow md:flex md:ml-8 lg:ml-20 max-w-screen-lg`,
-              LANG === `en`
-                ? `min-[930px]:max-w-[620px] lg:max-w-none`
-                : `min-[930px]:max-w-[680px] lg:max-w-none`,
-            )}
-          >
-            <LinkList
-              title={t`Books`}
-              links={[
-                [t`/getting-started`, t`Getting Started`],
-                [t`/explore`, t`Explore Books`],
-                [t`/audiobooks`, t`Audiobooks`],
-                [t`/friends`, t`All Friends`],
-                () => (
-                  <GetAppLink
-                    inFooter
-                    className={cx(
-                      `inline-block md:transform-none`,
-                      LANG === `en` ? `translate-x-[3em]` : `translate-x-[3.6em]`,
-                    )}
-                  />
-                ),
-              ]}
-            />
-            <LinkList
-              title={t`About`}
-              links={[
-                [t`/quakers`, t`About the Quakers`],
-                [`/what-early-quakers-believed`, `Early Quaker Beliefs`, `en`],
-                [`/modernization`, `About modernization`, `en`],
-                [`/editions`, `About book editions`, `en`],
-                [`/spanish-translations`, `About Spanish translations`, `en`],
-                [`/nuestras-traducciones`, `Nuestras Traducciones`, `es`],
-                [t`/about`, t`About this Site`],
-              ]}
-            />
-            <LinkList
-              last
-              title={t`Help`}
-              links={[
-                [t`/audio-help`, t`Audio Help`],
-                [t`/ebook-help`, t`E-Book Help`],
-                [t`/contact`, t`Contact Us`],
-              ]}
-            />
-          </div>
+          <LinkList
+            title={t`About`}
+            links={[
+              [t`/quakers`, t`About the Quakers`],
+              [`/what-early-quakers-believed`, `Early Quaker Beliefs`, `en`],
+              [`/modernization`, `About modernization`, `en`],
+              [`/editions`, `About book editions`, `en`],
+              [`/spanish-translations`, `About Spanish translations`, `en`],
+              [`/nuestras-traducciones`, `Nuestras Traducciones`, `es`],
+              [t`/about`, t`About this Site`],
+            ]}
+          />
+          <LinkList
+            last
+            title={t`Help`}
+            links={[
+              [t`/audio-help`, t`Audio Help`],
+              [t`/ebook-help`, t`E-Book Help`],
+              [t`/contact`, t`Contact Us`],
+            ]}
+          />
         </div>
       </div>
 
       <p className="bg-gray-900 text-gray-500 p-6 text-center text-xs font-hairline font-serif">
         &copy; {new Date().getFullYear()} {t`Friends Library Publishing`} <b>[,]</b>
       </p>
-    </BackgroundImage>
+    </NextBgImage>
   );
 };
 

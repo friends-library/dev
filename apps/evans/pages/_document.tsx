@@ -1,9 +1,12 @@
 import React from 'react';
 import { Html, Head, Main, NextScript } from 'next/document';
+import { NextBgStaticCss } from 'next-bg-image';
 
 const Document: React.FC = () => (
   <Html lang="en">
-    <Head></Head>
+    <Head>
+      <NextBgStaticCss />
+    </Head>
     <body>
       <Main />
       <NextScript />
