@@ -91,6 +91,28 @@ final class OrderResolverTests: AppTestCase {
     expect(retrieved.addressState).toEqual("CA")
   }
 
+  func testCreateOrderWithUncapitalizedUsStateCapitalizes() async throws {
+    var (input, _) = try await orderSetup()
+    input.addressState = "Tx" // <-- lulu rejects this, needs "TX"
+    input.addressCountry = "US"
+
+    let token = try await Token(description: "one-time", uses: 1).create()
+    try await TokenScope(tokenId: token.id, scope: .mutateOrders).create()
+
+    var request = URLRequest(url: URL(string: "order/CreateOrder")!)
+    request.httpMethod = "POST"
+    request.httpBody = try JSONEncoder().encode(input)
+    request.setValue("Bearer \(token.value.lowercased)", forHTTPHeaderField: "Authorization")
+
+    let matched = try PairQLRoute.router.match(request: request)
+
+    let response = try await PairQLRoute.respond(to: matched, in: .mock)
+    expect("\(response.body)").toEqual("\"\(input.id!.lowercased)\"")
+
+    let retrieved = try await Order.find(input.id!)
+    expect(retrieved.addressState).toEqual("TX") // <-- capitalized
+  }
+
   func testCreateOrderWithFreeRequestId() async throws {
     let req = try await Current.db.create(FreeOrderRequest.random)
     var (input, _) = try await orderSetup()
