@@ -59,7 +59,7 @@ func abbreviate(au input: String) -> String {
     .trimmingCharacters(in: .whitespacesAndNewlines)
     .lowercased()
 
-  return states[lowercaseInput] ?? input
+  return states[lowercaseInput] ?? input.uppercased()
 }
 
 func abbreviate(ca input: String) -> String {
@@ -87,7 +87,7 @@ func abbreviate(ca input: String) -> String {
     .trimmingCharacters(in: .whitespacesAndNewlines)
     .lowercased()
 
-  return provinces[lowercaseInput] ?? input
+  return provinces[lowercaseInput] ?? input.uppercased()
 }
 
 func abbreviate(us input: String) -> String {
@@ -148,5 +148,5 @@ func abbreviate(us input: String) -> String {
     .trimmingCharacters(in: .whitespacesAndNewlines)
     .lowercased()
 
-  return states[lowercaseInput] ?? input
+  return states[lowercaseInput] ?? input.uppercased()
 }
