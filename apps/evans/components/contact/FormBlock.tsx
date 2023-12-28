@@ -15,7 +15,7 @@ interface Props {
 }
 
 const ContactFormBlock: React.FC<Props> = ({ onSubmit }) => (
-  <NextBgImage src={[bgColor(`rgba(0,0,0,0.5)`), BooksBg]}>
+  <NextBgImage minImageWidth={900} src={[bgColor(`rgba(0,0,0,0.5)`), BooksBg]}>
     <div className="flex flex-col lg:flex-row lg:py-24 lg:px-6 max-w-screen-lg mx-auto">
       <div className="bg-white p-16 text-center lg:text-left body-text flex flex-col lg:w-1/3 lg:bg-flgray-100 lg:px-12">
         <h1 className="sans-widest text-2xl pb-3 mb-10 uppercase border-flprimary border-b-4 self-center">
