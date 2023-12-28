@@ -15,6 +15,7 @@ const Footer: React.FC = () => {
   const Logo = LANG === `en` ? FriendsLogo : AmigosLogo;
   return (
     <NextBgImage
+      as="footer"
       src={[bgLayer(`flprimary`, 0.8), Mountains]}
       className="text-gray-300 font-hairline mt-auto min-[930px]:pl-12 lg:pl-0"
       position="0 40%"
