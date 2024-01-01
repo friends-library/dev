@@ -2,7 +2,7 @@ import { dirname } from 'path';
 import fs from 'fs-extra';
 import sharp from 'sharp';
 import { v4 as uuid } from 'uuid';
-import { log, c, red } from 'x-chalk';
+import { log, c as cl, red } from 'x-chalk';
 import isEqual from 'lodash.isequal';
 import * as cloud from '@friends-library/cloud';
 import slack from '@friends-library/slack';
@@ -37,7 +37,7 @@ interface PublishOptions {
 
 export default async function publish(argv: PublishOptions): Promise<void> {
   if (!argv.allowStatus && !git.cliStatusClean()) {
-    log(c`\n{red.bold Error: git status not clean} {gray --allow-status to override}\n`);
+    log(cl`\n{red.bold Error: git status not clean} {gray --allow-status to override}\n`);
     process.exit(1);
   }
 
@@ -57,7 +57,7 @@ export default async function publish(argv: PublishOptions): Promise<void> {
   for (let i = 0; i < dpcs.length; i++) {
     const dpc = dpcs[i]!;
     const assetStart = Date.now();
-    const progress = c`{gray (${String(i + 1)}/${String(dpcs.length)})}`;
+    const progress = cl`{gray (${String(i + 1)}/${String(dpcs.length)})}`;
 
     try {
       logDocStart(dpc, progress);
