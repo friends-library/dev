@@ -19,7 +19,7 @@ gray(`  • Unzipping local dump file...`);
 exec.exit(`gunzip ./sync.sql.gz`);
 gray(`  • Killing any running instances of Postico...`);
 exec(`killall Postico`);
-gray(`  • Dropping and re-creating local flp database...`);
+gray(`  • Dropping and re-creating local flp (\`flp_dev\`) database...`);
 exec.exit(`dropdb flp_dev`);
 exec.exit(`createdb flp_dev`);
 gray(`  • Importing records...`);

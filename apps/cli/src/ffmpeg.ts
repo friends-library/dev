@@ -73,8 +73,13 @@ export function createMp3(
 }
 
 export function getDuration(wavFilepath: string): [string, number] {
+  if (!fs.existsSync(wavFilepath)) {
+    throw new Error(`Can't get duration, missing src wav ${wavFilepath}`);
+  }
   const [err] = ffmpeg([`-i ${basename(wavFilepath)}`], dirname(wavFilepath), false);
-  if (!err) throw new Error(`Unexpected ouput for reading duration string.`);
+  if (!err) {
+    throw new Error(`Unexpected ouput for reading duration string.`);
+  }
   const lines = err.stdErr.split(`\n`);
   for (const line of lines) {
     if (line.trim().startsWith(`Duration: `)) {

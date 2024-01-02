@@ -30,6 +30,8 @@ extension UpsertEditionImpression: Resolver {
     )
     guard impression.isValid else { throw ModelError.invalidEntity }
     try await impression.upsert()
-    return .init(id: impression.id, cloudFiles: .init(model: impression))
+    // pull fresh from db, so that we reload entity cache to resolve cloud files
+    let loaded = try await EditionImpression.find(input.id)
+    return .init(id: loaded.id, cloudFiles: .init(model: loaded))
   }
 }

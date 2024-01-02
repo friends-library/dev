@@ -30,7 +30,6 @@ struct EditionImpressionFiles: Encodable {
 }
 
 extension EditionImpression {
-
   var files: EditionImpressionFiles {
     let edition = edition.require()
 

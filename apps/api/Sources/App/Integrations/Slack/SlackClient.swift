@@ -32,7 +32,8 @@ private func sendSync(_ slack: FlpSlack.Message) {
     await send(slack)
     semaphore.signal()
   }
-  _ = semaphore.wait(timeout: .distantFuture)
+  // this appears to deadlock if we have only one cpu/thread...
+  _ = semaphore.wait(timeout: .now() + 3)
 }
 
 // extensions
