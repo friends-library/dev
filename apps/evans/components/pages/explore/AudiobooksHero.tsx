@@ -19,7 +19,7 @@ const AudiobooksHero: React.FC<Props> = ({ className, numBooks }) => (
     )}
     src={HeadphonesImage}
     position="60% 60%"
-    size={{ default: `1000px`, lg: `cover` }}
+    size={{ base: `1000px`, lg: `cover` }}
   >
     <h2 className="font-sans text-4xl tracking-wider text-white mb-6">{t`Audio Books`}</h2>
     <Dual.P className="body-text text-white text-lg">

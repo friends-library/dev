@@ -10,8 +10,8 @@ const CompilationsBlock: React.FC = () => (
   <NextBgImage
     src={[`linear-gradient(rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.38))`, CompilationsBg]}
     className="text-center text-white px-8 py-24 md:py-24 xl:py-32"
-    position={{ default: `center`, sm: `center 92%` }}
-    size={{ default: `cover`, sm: `1500px` }}
+    position={{ base: `center`, sm: `center 93%` }}
+    size={{ base: `cover`, sm: `1500px` }}
   >
     <h1 className="sans-wider text-4xl font-bold">{t`Compilations`}</h1>
     <Dual.P className="body-text text-white py-8 text-lg leading-loose max-w-screen-sm mx-auto">

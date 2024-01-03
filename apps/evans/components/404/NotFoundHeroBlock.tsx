@@ -10,8 +10,8 @@ const NotFoundHeroBlock: React.FC = () => (
   <NextBgImage
     className="text-center text-white px-10 py-20 sm:px-16 sm:py-24 md:py-24 xl:py-32"
     src={[bgColor(`rgba(0, 0, 0, 0.38)`), SheepBg]}
-    position={{ default: `center`, 500: `center 80%` }}
-    size={{ default: `cover`, 500: `1500px` }}
+    position={{ base: `center`, 500: `center 80%` }}
+    size={{ base: `cover`, 500: `1500px` }}
   >
     <h1 className="sans-wider text-4xl font-bold">{t`Not Found`}</h1>
     <Dual.P className="body-text text-white py-8 text-lg leading-loose max-w-screen-sm mx-auto">
