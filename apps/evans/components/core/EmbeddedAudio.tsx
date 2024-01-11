@@ -18,8 +18,8 @@ const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
   const currentTrack = useRef(0);
   const audioRef = useRef<HTMLAudioElement>(null);
   const animationRef = useRef<number>();
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
-  const audio = audioRef.current;
   const currentTitle = tracks[currentTrack.current]?.title ?? ``;
 
   const whilePlaying = useCallback(() => {
@@ -38,6 +38,10 @@ const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
     }
     requestAnimationFrame(whilePlaying);
   }, [audio, currentTrack, tracks.length]);
+
+  useEffect(() => {
+    setAudio(audioRef.current);
+  }, [audioRef]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -84,7 +88,7 @@ const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
                 setCurrentTime(currentTime - 10);
                 audio.currentTime = currentTime - 10;
               }}
-              className="w-10 h-10 rounded-full hover:bg-flprimary/10 active:bg-flprimary/20 active:scale-95 transition-[background-color,transform] flex justify-center items-center md:mr-2 order-0 md:order-2"
+              className="w-10 h-10 rounded-full hover:bg-flprimary/10 active:bg-flprimary/20 active:scale-95 transition-[background-color,transform] flex justify-center items-center md:mr-2 order-0 md:order-2 shrink-0"
             >
               <BackwardIcon className="w-6 h-6 text-flprimary" />
             </button>
@@ -93,7 +97,7 @@ const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
                 setCurrentTime(currentTime + 10);
                 audio.currentTime = currentTime + 10;
               }}
-              className="w-10 h-10 rounded-full hover:bg-flprimary/10 active:bg-flprimary/20 active:scale-95 transition-[background-color,transform] flex justify-center items-center order-2 md:order-3"
+              className="w-10 h-10 rounded-full hover:bg-flprimary/10 active:bg-flprimary/20 active:scale-95 transition-[background-color,transform] flex justify-center items-center order-2 md:order-3 shrink-0"
             >
               <ForwardIcon className="w-6 h-6 text-flprimary" />
             </button>

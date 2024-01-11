@@ -13,9 +13,21 @@ const meta = {
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = props({
-  title: `Cool book`,
+  tracks: [
+    {
+      title: `Track 1`,
+      url: `https://flp-assets.nyc3.cdn.digitaloceanspaces.com/audio/track1.mp3`,
+    },
+    {
+      title: `Track 2`,
+      url: `https://flp-assets.nyc3.cdn.digitaloceanspaces.com/audio/track2.mp3`,
+    },
+    {
+      title: `Track 3`,
+      url: `https://flp-assets.nyc3.cdn.digitaloceanspaces.com/audio/track3.mp3`,
+    },
+  ],
   isIncomplete: false,
-  numAudioParts: 1,
   m4bFilesize: { hq: 109234783, lq: 40698958 },
   mp3ZipFilesize: { hq: 54304578, lq: 30735831 },
   m4bLoggedDownloadUrl: { hq: ``, lq: `` },
