@@ -75,7 +75,36 @@ const DocumentPage: React.FC<Props> = ({
     />
     <DocBlock {...document} hasAudio={!!document.primaryEdition.audiobook} />
     {document.primaryEdition.audiobook && (
-      <ListenBlock {...document.primaryEdition.audiobook} title={document.title} />
+      <ListenBlock
+        {...document.primaryEdition.audiobook}
+        tracks={[
+          // TODO: update with real tracks
+          {
+            title: `Christ Died For Us, Not Instead of Us`,
+            url: `https://cdn.cosmicjs.com/4757bfb0-c4d3-11ed-b620-593a056e791b-For-us-not-Instead-of-us.mp3`,
+          },
+          {
+            title: `Leaving Egypt`,
+            url: `https://cdn.cosmicjs.com/fbb51350-9741-11ed-93ee-cb9a2cd68754-Leaving-Egypt.mp3`,
+          },
+          {
+            title: `Grace Should Reign`,
+            url: `https://cdn.cosmicjs.com/479d5c30-765b-11ed-8951-b39aeeb44ac4-Grace-Should-Reign.mp3`,
+          },
+          {
+            title: `The Appearings of Christ`,
+            url: `https://cdn.cosmicjs.com/cb250490-4357-11ed-8c64-7d07ad237bd8-The-Appearings-of-Christ.mp3`,
+          },
+          {
+            title: `Really long title that should wrap to multiple lines and stuff and hopefully never should happen`,
+            url: `https://cdn.cosmicjs.com/cb250490-4357-11ed-8c64-7d07ad237bd8-The-Appearings-of-Christ.mp3`,
+          },
+          {
+            title: `Two Births in Man`,
+            url: `https://cdn.cosmicjs.com/a0b5b0d0-2eba-11ed-9dcf-4f97d8f41281-Two-Births-in-Man.mp3`,
+          },
+        ]}
+      />
     )}
     <BookTeaserCards
       title={

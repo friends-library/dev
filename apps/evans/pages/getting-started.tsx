@@ -106,13 +106,12 @@ const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
         </Dual.P>
         <div className="max-w-3xl sm:w-3/4">
           <EmbeddedAudio
-            trackId={LANG === `es` ? 783137959 : 242345955}
-            title={
-              LANG === `es`
-                ? `¿Quienes Eran Los Primeros Cuáqueros?`
-                : `Introduction to the Early Quakers`
-            }
-            showArtwork={false}
+            tracks={[
+              {
+                title: `TODO`,
+                url: `TODO`,
+              },
+            ]}
           />
         </div>
       </div>

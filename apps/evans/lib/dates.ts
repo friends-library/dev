@@ -40,3 +40,16 @@ export function spanishShortMonth(short: string): string {
   }
   return short;
 }
+
+export function formatDuration(seconds: number): string {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor(seconds / 60) % 60;
+  const secs = Math.floor(seconds % 60);
+  const parts = [];
+  if (hours > 0) {
+    parts.push(hours);
+  }
+  parts.push(minutes);
+  parts.push(secs);
+  return parts.map((part) => part.toString().padStart(2, `0`)).join(`:`);
+}

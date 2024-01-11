@@ -7,19 +7,22 @@ import DownloadAudiobook from './DownloadAudiobook';
 import { LANG } from '@/lib/env';
 import EmbeddedAudio from '@/components/core/EmbeddedAudio';
 
-export interface Props {
+export type AudioPart = {
   title: string;
+  url: string;
+};
+
+export interface Props {
   isIncomplete: boolean;
-  numAudioParts: number;
+  tracks: AudioPart[];
   m4bFilesize: AudioQualities<number>;
   mp3ZipFilesize: AudioQualities<number>;
   m4bLoggedDownloadUrl: AudioQualities<string>;
   mp3ZipLoggedDownloadUrl: AudioQualities<string>;
   podcastLoggedDownloadUrl: AudioQualities<string>;
-  embedId: AudioQualities<number>;
 }
 
-const ListenBlock: React.FC<Props> = ({ title, numAudioParts, embedId, ...props }) => {
+const ListenBlock: React.FC<Props> = ({ tracks, ...props }) => {
   const [quality, setQuality] = useState<AudioQuality>(`hq`);
 
   useEffect(() => {
@@ -38,18 +41,18 @@ const ListenBlock: React.FC<Props> = ({ title, numAudioParts, embedId, ...props 
       )}
     >
       <DownloadAudiobook
-        className="mb-8 sm:mb-16 lg:border lg:border-l-0 lg:-mt-12 lg:pt-12 lg:px-12 border-flgray-200 xl:mr-6"
+        className="mb-8 sm:mb-16 lg:border lg:border-l-0 lg:-mt-12 lg:pt-12 lg:px-12 border-flgray-200 xl:mr-6 shrink-0"
         {...props}
         quality={quality}
         setQuality={setQuality}
       />
-      <div className="flex-grow lg:ml-8 xl:max-w-screen-md xl:mx-auto">
+      <div className="flex-grow lg:max-w-[480px] min-[1140px]:max-w-xl min-[1340px]:max-w-3xl lg:mx-auto flex flex-col">
         <h3
           className={cx(
             `text-2xl tracking-wide text-center my-6`,
-            `sm:mb-16 sm:text-black`,
-            `lg:mb-0 lg:text-left xl:pt-6`,
-            numAudioParts > 1 ? `text-black` : `text-white`,
+            `sm:text-black`,
+            `lg:text-left xl:pt-6`,
+            tracks.length > 1 ? `text-black` : `text-white`,
           )}
         >
           {LANG === `en` && (
@@ -57,19 +60,8 @@ const ListenBlock: React.FC<Props> = ({ title, numAudioParts, embedId, ...props 
           )}
           {t`Listen online`}
         </h3>
-        <div className="flex flex-col items-center shadow-xl mt-8 mx-6 sm:mb-8 lg:ml-0">
-          <EmbeddedAudio
-            trackId={embedId[quality]}
-            playlistId={numAudioParts > 1 ? embedId[quality] : undefined}
-            height={
-              numAudioParts > 1
-                ? SC_MAIN_SECTION_HEIGHT +
-                  SC_FOOTER_HEIGHT +
-                  SC_TRACK_HEIGHT * numAudioParts
-                : SC_MAIN_SECTION_HEIGHT
-            }
-            title={title}
-          />
+        <div className="mt-4 mx-4 xs:mx-6 sm:mb-8 lg:ml-0">
+          <EmbeddedAudio tracks={tracks} />
         </div>
       </div>
     </WaveBottomBlock>
@@ -77,7 +69,3 @@ const ListenBlock: React.FC<Props> = ({ title, numAudioParts, embedId, ...props 
 };
 
 export default ListenBlock;
-
-const SC_MAIN_SECTION_HEIGHT = 165;
-const SC_FOOTER_HEIGHT = 55;
-const SC_TRACK_HEIGHT = 31;
