@@ -45,11 +45,11 @@ export function formatDuration(seconds: number): string {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor(seconds / 60) % 60;
   const secs = Math.floor(seconds % 60);
-  const parts = [];
+  const parts: string[] = [];
   if (hours > 0) {
-    parts.push(hours);
+    parts.push(hours.toString());
   }
-  parts.push(minutes);
-  parts.push(secs);
-  return parts.map((part) => part.toString().padStart(2, `0`)).join(`:`);
+  parts.push(minutes.toString().padStart(2, `0`));
+  parts.push(secs.toString().padStart(2, `0`));
+  return parts.join(`:`);
 }

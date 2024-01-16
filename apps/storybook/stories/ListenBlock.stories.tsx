@@ -36,4 +36,14 @@ export const Default: Story = props({
   embedId: { hq: 3, lq: 4 },
 });
 
+export const SingleTrack: Story = props({
+  ...Default.args,
+  tracks: [
+    {
+      title: `Track 1`,
+      url: `https://flp-assets.nyc3.cdn.digitaloceanspaces.com/audio/track1.mp3`,
+    },
+  ],
+});
+
 export default meta;

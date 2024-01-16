@@ -5,7 +5,7 @@ import type { AudioQuality, AudioQualities } from '@friends-library/types';
 import WaveBottomBlock from '../getting-started/WaveBottomBlock';
 import DownloadAudiobook from './DownloadAudiobook';
 import { LANG } from '@/lib/env';
-import EmbeddedAudio from '@/components/core/EmbeddedAudio';
+import AudioPlayer from '@/components/core/AudioPlayer';
 
 export type AudioPart = {
   title: string;
@@ -46,7 +46,7 @@ const ListenBlock: React.FC<Props> = ({ tracks, ...props }) => {
         quality={quality}
         setQuality={setQuality}
       />
-      <div className="flex-grow lg:max-w-[480px] min-[1140px]:max-w-xl min-[1340px]:max-w-3xl lg:mx-auto flex flex-col">
+      <div className="flex-grow lg:max-w-[480px] min-[1160px]:max-w-xl min-[1340px]:max-w-3xl lg:mx-auto flex flex-col">
         <h3
           className={cx(
             `text-2xl tracking-wide text-center my-6`,
@@ -60,8 +60,8 @@ const ListenBlock: React.FC<Props> = ({ tracks, ...props }) => {
           )}
           {t`Listen online`}
         </h3>
-        <div className="mt-4 mx-4 xs:mx-6 sm:mb-8 lg:ml-0">
-          <EmbeddedAudio tracks={tracks} />
+        <div className="mx-4 xs:mx-6 sm:mb-8 lg:ml-0">
+          <AudioPlayer tracks={tracks} />
         </div>
       </div>
     </WaveBottomBlock>

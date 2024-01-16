@@ -76,6 +76,7 @@ const DocumentPage: React.FC<Props> = ({
     <DocBlock {...document} hasAudio={!!document.primaryEdition.audiobook} />
     {document.primaryEdition.audiobook && (
       <ListenBlock
+        // TODO: after changes in pair type, url will have to be changed based on the quality, and a duration should also be passed through for each part
         {...document.primaryEdition.audiobook}
         tracks={[
           // TODO: update with real tracks

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 import { BackwardIcon, ForwardIcon } from '@heroicons/react/24/solid';
 import styles from '../../styles/AudioPlayer.module.css';
@@ -11,33 +11,30 @@ interface Props {
   }>;
 }
 
-const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
+const AudioPlayer: React.FC<Props> = ({ tracks }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
 
-  const currentTrack = useRef(0);
+  const currentTrackIndex = useRef(0);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const animationRef = useRef<number>();
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
-  const currentTitle = tracks[currentTrack.current]?.title ?? ``;
+  const currentTitle = tracks[currentTrackIndex.current]?.title ?? ``;
 
-  const whilePlaying = useCallback(() => {
-    if (!audio) return;
+  if (audio) {
     if (audio.currentTime === audio.duration) {
-      if (currentTrack.current === tracks.length - 1) {
+      if (currentTrackIndex.current === tracks.length - 1) {
         setIsPlaying(false);
         setCurrentTime(0);
-        return;
+        audio.currentTime = 0;
       } else {
-        currentTrack.current++;
+        currentTrackIndex.current++;
+        setCurrentTime(0);
+        setIsPlaying(true);
+        audio.currentTime = 0;
       }
-      setCurrentTime(0);
-      setIsPlaying(true);
-      audio.currentTime = 0;
     }
-    requestAnimationFrame(whilePlaying);
-  }, [audio, currentTrack, tracks.length]);
+  }
 
   useEffect(() => {
     setAudio(audioRef.current);
@@ -46,12 +43,10 @@ const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
   useEffect(() => {
     if (isPlaying) {
       audioRef.current?.play();
-      animationRef.current = requestAnimationFrame(whilePlaying);
     } else {
       audioRef.current?.pause();
-      cancelAnimationFrame(animationRef.current ?? 0);
     }
-  }, [isPlaying, whilePlaying, currentTrack.current]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isPlaying, currentTrackIndex.current]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!audio) return;
@@ -61,9 +56,9 @@ const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
   }, [audio]);
 
   return (
-    <div className="shadow rounded-xl bg-white p-4 min-[400px]:p-6 xs:p-8 flex flex-col">
-      <audio ref={audioRef} src={tracks[currentTrack.current]?.url ?? ``} />
-      {audio ? (
+    <div className="border border-flgray-200 bg-white p-4 min-[400px]:p-6 xs:p-8 flex flex-col">
+      <audio ref={audioRef} src={tracks[currentTrackIndex.current]?.url ?? ``} />
+      {audio && (
         <div className={cx(`flex flex-col gap-4`, tracks.length > 1 && `mb-8`)}>
           <div className="flex items-center justify-center md:justify-between">
             <button
@@ -125,12 +120,14 @@ const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
               />
             </div>
             <span className="text-flgray-500 w-14 flex justify-end">
-              {formatDuration(audio.duration)}
+              {
+                audio.duration
+                  ? formatDuration(audio.duration)
+                  : `00:00` /* TODO: after the parql types are changed, this placeholder will become the duration that comes down from the api */
+              }
             </span>
           </div>
         </div>
-      ) : (
-        <div>loading</div>
       )}
       {tracks.length > 1 &&
         tracks.map((track, i) => (
@@ -140,20 +137,20 @@ const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
               setIsPlaying(false);
               audio.currentTime = 0;
               setCurrentTime(0);
-              currentTrack.current = i;
+              currentTrackIndex.current = i;
               setIsPlaying(true);
             }}
             key={i}
             className={cx(
-              `odd:bg-flgray-100 px-4 py-2 rounded-xl flex items-center justify-between hover:bg-flgray-200 transition-[background-color,transform] duration-100 cursor-pointer active:bg-flgray-300 text-left`,
-              i === currentTrack.current && `!bg-flprimary`,
+              `odd:bg-flgray-100 px-4 py-2 flex items-center justify-between hover:bg-flgray-200 transition-[background-color,transform] duration-100 cursor-pointer active:bg-flgray-300 text-left`,
+              i === currentTrackIndex.current && `!bg-flprimary`,
             )}
           >
             <div className="flex items-center">
               <span
                 className={cx(
                   `font-bold opacity-50`,
-                  i === currentTrack.current ? `text-white` : `text-black`,
+                  i === currentTrackIndex.current ? `text-white` : `text-black`,
                 )}
               >
                 {i + 1}
@@ -161,7 +158,7 @@ const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
               <span
                 className={cx(
                   `ml-4 sm:text-lg leading-[1.4em]`,
-                  i === currentTrack.current ? `text-white` : `text-black`,
+                  i === currentTrackIndex.current ? `text-white` : `text-black`,
                 )}
               >
                 {track.title}
@@ -173,4 +170,4 @@ const EmbeddedAudio: React.FC<Props> = ({ tracks }) => {
   );
 };
 
-export default EmbeddedAudio;
+export default AudioPlayer;
