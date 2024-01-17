@@ -38,7 +38,7 @@ const TimelineBlock: React.FC<Props> = ({ books }) => {
       <NextBgImage
         lazyLoad
         src={[bgLayer([0, 0, 0], 0.35), CastleBgImage]}
-        size={{ default: `1200px auto`, sm: `cover` }}
+        size={{ base: `1200px auto`, sm: `cover` }}
         position="center 0%"
       >
         <BgWordBlock
