@@ -9,7 +9,8 @@ import AudioPlayer from '@/components/core/AudioPlayer';
 
 export type AudioPart = {
   title: string;
-  url: string;
+  mp3Url: AudioQualities<string>;
+  duration: number;
 };
 
 export interface Props {
@@ -41,7 +42,7 @@ const ListenBlock: React.FC<Props> = ({ tracks, ...props }) => {
       )}
     >
       <DownloadAudiobook
-        className="mb-8 sm:mb-16 lg:border lg:border-l-0 lg:-mt-12 lg:pt-12 lg:px-12 border-flgray-200 xl:mr-6 shrink-0"
+        className="mb-8 sm:mb-16 lg:border lg:border-l-0 lg:-mt-12 lg:pt-12 lg:px-12 border-flgray-200 lg:mr-6 shrink-0"
         {...props}
         quality={quality}
         setQuality={setQuality}
@@ -49,10 +50,10 @@ const ListenBlock: React.FC<Props> = ({ tracks, ...props }) => {
       <div className="flex-grow lg:max-w-[480px] min-[1160px]:max-w-xl min-[1340px]:max-w-3xl lg:mx-auto flex flex-col">
         <h3
           className={cx(
-            `text-2xl tracking-wide text-center my-6`,
-            `sm:text-black`,
+            `text-2xl tracking-wide text-center mt-10 mb-6`,
             `lg:text-left xl:pt-6`,
             tracks.length > 1 ? `text-black` : `text-white`,
+            tracks.length > 4 ? `sm:text-black` : `lg:text-black`,
           )}
         >
           {LANG === `en` && (
@@ -61,7 +62,13 @@ const ListenBlock: React.FC<Props> = ({ tracks, ...props }) => {
           {t`Listen online`}
         </h3>
         <div className="mx-4 xs:mx-6 sm:mb-8 lg:ml-0">
-          <AudioPlayer tracks={tracks} />
+          <AudioPlayer
+            tracks={tracks.map((track) => ({
+              title: track.title,
+              duration: track.duration,
+              mp3Url: track.mp3Url[quality],
+            }))}
+          />
         </div>
       </div>
     </WaveBottomBlock>

@@ -45,10 +45,8 @@ export namespace DocumentPage {
         paperbackVolumes: [number, ...number[]];
         isbn: string;
         numChapters: number;
-        // TODO: change this:
         audiobook?: {
           isIncomplete: boolean;
-          numAudioParts: number; // don't need this
           reader: string;
           sourcePath: {
             lq: string;
@@ -75,27 +73,22 @@ export namespace DocumentPage {
             hq: string;
           };
           podcastImageUrl: string;
-          embedId: {
-            lq: number;
-            hq: number;
-          }; // don't need this
           parts: Array<{
             title: string;
-            // add this:
-            // url: {
-            //   lq: string;
-            //   hq: string;
-            // };
+            playbackUrl: {
+              lq: string;
+              hq: string;
+            };
             loggedDownloadUrl: {
               lq: string;
               hq: string;
-            }; // don't need this
+            };
             sizeInBytes: {
               lq: number;
               hq: number;
-            }; // don't need this
+            };
             durationInSeconds: number;
-            createdAt: ISODateString; // don't need this
+            createdAt: ISODateString;
           }>;
         };
       };
