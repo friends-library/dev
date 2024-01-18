@@ -44,7 +44,6 @@ export namespace AllDocumentPages {
           numChapters: number;
           audiobook?: {
             isIncomplete: boolean;
-            numAudioParts: number;
             reader: string;
             sourcePath: {
               lq: string;
@@ -71,12 +70,12 @@ export namespace AllDocumentPages {
               hq: string;
             };
             podcastImageUrl: string;
-            embedId: {
-              lq: number;
-              hq: number;
-            };
             parts: Array<{
               title: string;
+              playbackUrl: {
+                lq: string;
+                hq: string;
+              };
               loggedDownloadUrl: {
                 lq: string;
                 hq: string;

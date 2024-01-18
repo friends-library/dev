@@ -55,7 +55,6 @@ struct DocumentPage: Pair {
 
     struct Audiobook: PairNestable {
       var isIncomplete: Bool
-      var numAudioParts: Int
       var reader: String
       var sourcePath: AudioQualities<String>
       var m4bFilesize: AudioQualities<Bytes>
@@ -64,11 +63,11 @@ struct DocumentPage: Pair {
       var mp3ZipLoggedDownloadUrl: AudioQualities<String>
       var podcastLoggedDownloadUrl: AudioQualities<String>
       var podcastImageUrl: String
-      var embedId: AudioQualities<Int64>
       var parts: [Part]
 
       struct Part: PairNestable {
         var title: String
+        var playbackUrl: AudioQualities<String>
         var loggedDownloadUrl: AudioQualities<String>
         var sizeInBytes: AudioQualities<Bytes>
         var durationInSeconds: Seconds<Double>
@@ -159,28 +158,8 @@ extension DocumentPage.Output {
 
     var audiobook: DocumentPage.PrimaryEdition.Audiobook?
     if let audio = primaryEdition.audio.require() {
-      let audioParts = audio.parts.require()
-      guard let firstAudioPart = audioParts.first else {
-        throw context.error(id: "08cfb2ed", type: .serverError)
-      }
-      let embedId: AudioQualities<Int64>
-      if audioParts.count == 1 {
-        embedId = .init(
-          lq: firstAudioPart.externalIdLq.rawValue,
-          hq: firstAudioPart.externalIdHq.rawValue
-        )
-      } else if let playlistIdHq = audio.externalPlaylistIdHq,
-                let playlistIdLq = audio.externalPlaylistIdLq {
-        embedId = .init(
-          lq: playlistIdLq.rawValue,
-          hq: playlistIdHq.rawValue
-        )
-      } else {
-        throw context.error(id: "0516b86f", type: .serverError)
-      }
       audiobook = .init(
         isIncomplete: audio.isIncomplete,
-        numAudioParts: audioParts.count,
         reader: audio.reader,
         sourcePath: .init(
           lq: audio.files.podcast.lq.sourcePath,
@@ -201,19 +180,24 @@ extension DocumentPage.Output {
           hq: audio.files.podcast.hq.logUrl.absoluteString
         ),
         podcastImageUrl: primaryEdition.images.square.w1400.url.absoluteString,
-        embedId: embedId,
-        parts: audio.parts.require().map { part in
-          .init(
-            title: part.title,
-            loggedDownloadUrl: .init(
-              lq: part.mp3File.lq.logUrl.absoluteString,
-              hq: part.mp3File.hq.logUrl.absoluteString
-            ),
-            sizeInBytes: .init(lq: part.mp3SizeLq, hq: part.mp3SizeHq),
-            durationInSeconds: part.duration,
-            createdAt: part.createdAt
-          )
-        }
+        parts: audio.parts.require()
+          .sorted(by: { $0.order < $1.order })
+          .map { part in
+            .init(
+              title: part.title,
+              playbackUrl: .init(
+                lq: part.mp3File.lq.sourceUrl.absoluteString,
+                hq: part.mp3File.hq.sourceUrl.absoluteString
+              ),
+              loggedDownloadUrl: .init(
+                lq: part.mp3File.lq.logUrl.absoluteString,
+                hq: part.mp3File.hq.logUrl.absoluteString
+              ),
+              sizeInBytes: .init(lq: part.mp3SizeLq, hq: part.mp3SizeHq),
+              durationInSeconds: part.duration,
+              createdAt: part.createdAt
+            )
+          }
       )
     }
 

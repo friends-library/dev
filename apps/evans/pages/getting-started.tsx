@@ -106,14 +106,14 @@ const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
         </Dual.P>
         <div className="max-w-3xl sm:w-3/4">
           <AudioPlayer
-            // TODO: get real tracks and add durations for them
             tracks={[
               {
                 title:
                   LANG === `en`
                     ? `Introduction to the Early Quakers`
                     : `¿Quienes Eran Los Primeros Cuáqueros?`,
-                url: `TODO`,
+                mp3Url: `http://flp-assets.nyc3.digitaloceanspaces.com/static/intro-to-early-quakers.${LANG}.mp3`,
+                duration: LANG === `en` ? 1215 : 1593,
               },
             ]}
           />

@@ -16,15 +16,18 @@ export const Default: Story = props({
   tracks: [
     {
       title: `Track 1`,
-      url: `https://flp-assets.nyc3.cdn.digitaloceanspaces.com/audio/track1.mp3`,
+      mp3Url: { lq: `/track1.mp3`, hq: `/track1.mp3` },
+      duration: 1234,
     },
     {
       title: `Track 2`,
-      url: `https://flp-assets.nyc3.cdn.digitaloceanspaces.com/audio/track2.mp3`,
+      mp3Url: { lq: `/track2.mp3`, hq: `/track2.mp3` },
+      duration: 1234,
     },
     {
       title: `Track 3`,
-      url: `https://flp-assets.nyc3.cdn.digitaloceanspaces.com/audio/track3.mp3`,
+      mp3Url: { lq: `/track3.mp3`, hq: `/track3.mp3` },
+      duration: 2345,
     },
   ],
   isIncomplete: false,
@@ -33,7 +36,6 @@ export const Default: Story = props({
   m4bLoggedDownloadUrl: { hq: ``, lq: `` },
   mp3ZipLoggedDownloadUrl: { hq: ``, lq: `` },
   podcastLoggedDownloadUrl: { hq: ``, lq: `` },
-  embedId: { hq: 3, lq: 4 },
 });
 
 export const SingleTrack: Story = props({
@@ -41,7 +43,8 @@ export const SingleTrack: Story = props({
   tracks: [
     {
       title: `Track 1`,
-      url: `https://flp-assets.nyc3.cdn.digitaloceanspaces.com/audio/track1.mp3`,
+      mp3Url: { lq: `/track1.mp3`, hq: `/track1.mp3` },
+      duration: 1234,
     },
   ],
 });
