@@ -9,7 +9,7 @@ import Dual from '@/components/core/Dual';
 import Heading from '@/components/core/Heading';
 import BooksGrid from '@/public/images/explore-books.jpg';
 import DuoToneWaveBlock from '@/components/pages/getting-started/DuoToneWaveBlock';
-import EmbeddedAudio from '@/components/core/EmbeddedAudio';
+import AudioPlayer from '@/components/core/AudioPlayer';
 import { LANG } from '@/lib/env';
 import { makeScroller } from '@/lib/scroll';
 import GettingStartedPaths from '@/components/pages/getting-started/GettingStartedPaths';
@@ -105,14 +105,17 @@ const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
           </>
         </Dual.P>
         <div className="max-w-3xl sm:w-3/4">
-          <EmbeddedAudio
-            trackId={LANG === `es` ? 783137959 : 242345955}
-            title={
-              LANG === `es`
-                ? `¿Quienes Eran Los Primeros Cuáqueros?`
-                : `Introduction to the Early Quakers`
-            }
-            showArtwork={false}
+          <AudioPlayer
+            // TODO: get real tracks and add durations for them
+            tracks={[
+              {
+                title:
+                  LANG === `en`
+                    ? `Introduction to the Early Quakers`
+                    : `¿Quienes Eran Los Primeros Cuáqueros?`,
+                url: `TODO`,
+              },
+            ]}
           />
         </div>
       </div>
