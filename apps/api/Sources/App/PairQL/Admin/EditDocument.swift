@@ -27,8 +27,6 @@ struct EditDocument: Pair {
     let mp3ZipSizeLq: Bytes
     let m4bSizeHq: Bytes
     let m4bSizeLq: Bytes
-    let externalPlaylistIdHq: Audio.ExternalPlaylistId?
-    let externalPlaylistIdLq: Audio.ExternalPlaylistId?
     let parts: [EditAudioPart]
   }
 
@@ -41,8 +39,6 @@ struct EditDocument: Pair {
     let chapters: [Int]
     let mp3SizeHq: Bytes
     let mp3SizeLq: Bytes
-    let externalIdHq: AudioPart.ExternalId
-    let externalIdLq: AudioPart.ExternalId
   }
 
   struct EditDocumentOutput: PairNestable {
@@ -144,8 +140,6 @@ extension EditDocument.EditDocumentOutput {
           mp3ZipSizeLq: audio.mp3ZipSizeLq,
           m4bSizeHq: audio.m4bSizeHq,
           m4bSizeLq: audio.m4bSizeLq,
-          externalPlaylistIdHq: audio.externalPlaylistIdHq,
-          externalPlaylistIdLq: audio.externalPlaylistIdLq,
           parts: parts.map { part in
             .init(
               id: part.id,
@@ -155,9 +149,7 @@ extension EditDocument.EditDocumentOutput {
               duration: part.duration,
               chapters: Array(part.chapters),
               mp3SizeHq: part.mp3SizeHq,
-              mp3SizeLq: part.mp3SizeLq,
-              externalIdHq: part.externalIdHq,
-              externalIdLq: part.externalIdLq
+              mp3SizeLq: part.mp3SizeLq
             )
           }
         )

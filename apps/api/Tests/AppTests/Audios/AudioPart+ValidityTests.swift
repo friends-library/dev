@@ -68,28 +68,10 @@ final class AudioPartValidityTests: XCTestCase {
     XCTAssertFalse(part.isValid)
   }
 
-  func testSameNonZeroExternalIdsInvalid() {
-    let part = AudioPart.valid
-    part.externalIdHq = 7_777_777
-    part.externalIdLq = 7_777_777
-    XCTAssertFalse(part.isValid)
-  }
-
-  func testFunnyLookingExternalIdsInvalid() {
-    var part = AudioPart.valid
-    part.externalIdHq = 500
-    XCTAssertFalse(part.isValid)
-    part = AudioPart.valid
-    part.externalIdLq = 600
-    XCTAssertFalse(part.isValid)
-  }
-
   func testZeroDraftStateItemsValid() {
     let part = AudioPart.valid
     part.mp3SizeHq = 0
     part.mp3SizeLq = 0
-    part.externalIdHq = 0
-    part.externalIdLq = 0
     XCTAssertTrue(part.isValid)
   }
 

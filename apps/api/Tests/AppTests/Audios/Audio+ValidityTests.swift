@@ -13,33 +13,6 @@ final class AudioValidityTests: XCTestCase {
     XCTAssertFalse(audio.isValid)
   }
 
-  func testTooSmallExternalPlaylistIdInvalid() {
-    var audio = Audio.valid
-    audio.externalPlaylistIdLq = 9_999_999_999
-    audio.externalPlaylistIdHq = 500
-    XCTAssertFalse(audio.isValid)
-    audio = Audio.valid
-    audio.externalPlaylistIdLq = 500
-    audio.externalPlaylistIdHq = 9_999_999_999
-    XCTAssertFalse(audio.isValid)
-
-    // but is valid if not published yet
-    audio.m4bSizeLq = 0
-    audio.m4bSizeHq = 0
-    XCTAssertTrue(audio.isValid)
-  }
-
-  func testOnlyOneNilPlaylistIdInvalid() {
-    var audio = Audio.valid
-    audio.externalPlaylistIdHq = nil
-    audio.externalPlaylistIdLq = 888_888_888
-    XCTAssertFalse(audio.isValid)
-    audio = Audio.valid
-    audio.externalPlaylistIdHq = 888_888_888
-    audio.externalPlaylistIdLq = nil
-    XCTAssertFalse(audio.isValid)
-  }
-
   func testM4bLqNotSmallerThanHqInvalid() {
     let audio = Audio.valid
     audio.m4bSizeHq = 9_000_000

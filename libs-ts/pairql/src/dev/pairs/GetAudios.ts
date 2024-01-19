@@ -11,16 +11,12 @@ export namespace GetAudios {
     mp3ZipSizeHq: number;
     mp3ZipSizeLq: number;
     reader: string;
-    externalPlaylistIdHq?: number;
-    externalPlaylistIdLq?: number;
     parts: Array<{
       id: UUID;
       chapters: number[];
       durationInSeconds: number;
       title: string;
       order: number;
-      externalIdHq: number;
-      externalIdLq: number;
       mp3SizeHq: number;
       mp3SizeLq: number;
     }>;

@@ -10,8 +10,6 @@ final class Audio: Codable {
   var mp3ZipSizeLq: Bytes
   var m4bSizeHq: Bytes
   var m4bSizeLq: Bytes
-  var externalPlaylistIdHq: ExternalPlaylistId?
-  var externalPlaylistIdLq: ExternalPlaylistId?
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
@@ -44,8 +42,6 @@ final class Audio: Codable {
     mp3ZipSizeLq: Bytes,
     m4bSizeHq: Bytes,
     m4bSizeLq: Bytes,
-    externalPlaylistIdHq: ExternalPlaylistId? = nil,
-    externalPlaylistIdLq: ExternalPlaylistId? = nil,
     isIncomplete: Bool = false
   ) {
     self.id = id
@@ -55,17 +51,11 @@ final class Audio: Codable {
     self.mp3ZipSizeLq = mp3ZipSizeLq
     self.m4bSizeHq = m4bSizeHq
     self.m4bSizeLq = m4bSizeLq
-    self.externalPlaylistIdHq = externalPlaylistIdHq
-    self.externalPlaylistIdLq = externalPlaylistIdLq
     self.isIncomplete = isIncomplete
   }
 }
 
 // extensions
-
-extension Audio {
-  typealias ExternalPlaylistId = Tagged<Audio, Int64>
-}
 
 extension Audio {
   func parts() async throws -> [AudioPart] {

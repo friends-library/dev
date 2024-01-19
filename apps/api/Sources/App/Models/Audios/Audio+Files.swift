@@ -20,7 +20,6 @@ struct AudioFiles: Encodable {
 }
 
 extension Audio {
-
   var files: AudioFiles {
     let edition = edition.require()
     return AudioFiles(

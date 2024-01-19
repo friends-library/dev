@@ -12,12 +12,11 @@ export function playlistAttrs(
   const document = audio.document;
   const friend = audio.friend;
   const lang = friend.lang;
-  const trackIdProp = quality === `hq` ? `externalIdHq` : `externalIdLq`;
   return {
     ...COMMON_ATTRS,
     permalink: permalink(audio, quality),
     label_name: lang === `en` ? `Friends Library Publishing` : `Biblioteca de los Amigos`,
-    trackIds: audio.parts.map((part) => part[trackIdProp]),
+    trackIds: [],
     title: utf8ShortTitle(document.title),
     description: document.description,
     tags: soundcloudTags(document.tags, quality, lang),

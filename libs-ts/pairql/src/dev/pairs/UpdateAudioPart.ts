@@ -10,8 +10,6 @@ export namespace UpdateAudioPart {
     order: number;
     mp3SizeHq: number;
     mp3SizeLq: number;
-    externalIdHq: number;
-    externalIdLq: number;
   }
 
   export type Output = void;

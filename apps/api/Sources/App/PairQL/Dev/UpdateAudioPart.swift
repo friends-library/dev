@@ -13,8 +13,6 @@ struct UpdateAudioPart: Pair {
     let order: Int
     let mp3SizeHq: Int
     let mp3SizeLq: Int
-    let externalIdHq: Int64
-    let externalIdLq: Int64
   }
 }
 
@@ -29,8 +27,6 @@ extension UpdateAudioPart: Resolver {
     audioPart.order = input.order
     audioPart.mp3SizeHq = .init(input.mp3SizeHq)
     audioPart.mp3SizeLq = .init(input.mp3SizeLq)
-    audioPart.externalIdHq = .init(input.externalIdHq)
-    audioPart.externalIdLq = .init(input.externalIdLq)
     guard audioPart.isValid else { throw ModelError.invalidEntity }
     try await audioPart.save()
     return .success

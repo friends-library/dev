@@ -27,10 +27,6 @@ extension AudioPart: Model {
       return .int(mp3SizeHq.rawValue)
     case .mp3SizeLq:
       return .int(mp3SizeLq.rawValue)
-    case .externalIdHq:
-      return .int64(externalIdHq.rawValue)
-    case .externalIdLq:
-      return .int64(externalIdLq.rawValue)
     case .createdAt:
       return .date(createdAt)
     case .updatedAt:
@@ -51,8 +47,6 @@ extension AudioPart {
     case order
     case mp3SizeHq
     case mp3SizeLq
-    case externalIdHq
-    case externalIdLq
     case createdAt
     case updatedAt
   }
@@ -69,8 +63,6 @@ extension AudioPart {
       .order: .int(order),
       .mp3SizeHq: .int(mp3SizeHq.rawValue),
       .mp3SizeLq: .int(mp3SizeLq.rawValue),
-      .externalIdHq: .int64(externalIdHq.rawValue),
-      .externalIdLq: .int64(externalIdLq.rawValue),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
     ]

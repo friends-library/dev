@@ -10,8 +10,6 @@ export namespace UpdateAudio {
     mp3ZipSizeLq: number;
     m4bSizeHq: number;
     m4bSizeLq: number;
-    externalPlaylistIdHq?: number;
-    externalPlaylistIdLq?: number;
   }
 
   export type Output = void;

@@ -24,8 +24,6 @@ extension CreateEntity: Resolver {
         mp3ZipSizeLq: input.mp3ZipSizeLq,
         m4bSizeHq: input.m4bSizeHq,
         m4bSizeLq: input.m4bSizeLq,
-        externalPlaylistIdHq: input.externalPlaylistIdHq,
-        externalPlaylistIdLq: input.externalPlaylistIdLq,
         isIncomplete: input.isIncomplete
       )
 
@@ -38,9 +36,7 @@ extension CreateEntity: Resolver {
         chapters: try .fromArray(input.chapters),
         order: input.order,
         mp3SizeHq: input.mp3SizeHq,
-        mp3SizeLq: input.mp3SizeLq,
-        externalIdHq: input.externalIdHq,
-        externalIdLq: input.externalIdLq
+        mp3SizeLq: input.mp3SizeLq
       )
 
     case .document(let input):

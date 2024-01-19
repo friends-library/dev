@@ -50,8 +50,6 @@ extension AdminRoute {
     struct AudioInput: PairNestable {
       let id: Audio.Id
       let editionId: Edition.Id
-      let externalPlaylistIdHq: Audio.ExternalPlaylistId?
-      let externalPlaylistIdLq: Audio.ExternalPlaylistId?
       let isIncomplete: Bool
       let m4bSizeHq: Bytes
       let m4bSizeLq: Bytes
@@ -65,8 +63,6 @@ extension AdminRoute {
       let audioId: Audio.Id
       let chapters: [Int]
       let duration: Seconds<Double>
-      let externalIdHq: AudioPart.ExternalId
-      let externalIdLq: AudioPart.ExternalId
       let mp3SizeHq: Bytes
       let mp3SizeLq: Bytes
       let order: Int

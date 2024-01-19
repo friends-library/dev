@@ -23,8 +23,6 @@ extension UpdateEntity: Resolver {
       audio.mp3ZipSizeLq = input.mp3ZipSizeLq
       audio.m4bSizeHq = input.m4bSizeHq
       audio.m4bSizeLq = input.m4bSizeLq
-      audio.externalPlaylistIdHq = input.externalPlaylistIdHq
-      audio.externalPlaylistIdLq = input.externalPlaylistIdLq
       audio.isIncomplete = input.isIncomplete
       model = audio
 
@@ -37,8 +35,6 @@ extension UpdateEntity: Resolver {
       audioPart.order = input.order
       audioPart.mp3SizeHq = input.mp3SizeHq
       audioPart.mp3SizeLq = input.mp3SizeLq
-      audioPart.externalIdHq = input.externalIdHq
-      audioPart.externalIdLq = input.externalIdLq
       model = audioPart
 
     case .document(let input):
