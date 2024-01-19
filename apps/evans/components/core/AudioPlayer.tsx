@@ -71,13 +71,13 @@ const AudioPlayer: React.FC<Props> = ({ tracks }) => {
             <i
               aria-hidden
               className={cx(
-                `fa-solid text-xl text-white pt-px`,
+                `fa-solid text-white pt-px !text-xl`, // ! for mdx
                 isPlaying ? `fa-pause` : `fa-play pl-[3px]`,
               )}
             />
           </button>
           <div className="flex-grow bg-flprimary/5 py-2 px-5 rounded-full flex justify-start overflow-hidden relative mx-6 hidden md:block md:order-1">
-            <span className="text-xl font-bold text-flprimary whitespace-nowrap">
+            <span className="text-xl font-bold font-sans text-flprimary whitespace-nowrap">
               {track.title}
             </span>
             <div className="absolute h-full w-24 right-0 top-0 bg-gradient-to-l from-[#F7F5F5] to-transparent" />
@@ -89,7 +89,10 @@ const AudioPlayer: React.FC<Props> = ({ tracks }) => {
             }}
             className="w-10 h-10 rounded-full hover:bg-flprimary/10 active:bg-flprimary/20 active:scale-95 transition-[background-color,transform] flex justify-center items-center md:mr-2 order-0 md:order-2 shrink-0"
           >
-            <i aria-hidden className="w-6 h-6 text-lg text-flprimary fa fa-rotate-left" />
+            <i
+              aria-hidden
+              className="w-6 h-6 text-flprimary fa fa-rotate-left !text-lg" // ! for mdx
+            />
           </button>
           <button
             onClick={() => {
@@ -100,7 +103,7 @@ const AudioPlayer: React.FC<Props> = ({ tracks }) => {
           >
             <i
               aria-hidden
-              className="w-6 h-6 text-lg text-flprimary fa fa-rotate-right"
+              className="w-6 h-6 text-flprimary fa fa-rotate-right !text-lg" // ! for mdx
             />
           </button>
         </div>

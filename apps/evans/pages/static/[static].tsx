@@ -13,6 +13,7 @@ import * as mdx from '@/lib/mdx';
 import { LANG } from '@/lib/env';
 import Seo from '@/components/core/Seo';
 import BooksBgBlock from '@/components/core/BooksBgBlock';
+import AudioPlayer from '@/components/core/AudioPlayer';
 
 interface Props {
   source: MDXRemoteSerializeResult;
@@ -127,6 +128,7 @@ export const components: React.ComponentProps<typeof MDXRemote>['components'] = 
   blockquote: MdxBlockquote,
   ul: MdxUl,
   Lead: MdxLead,
+  AudioPlayer,
 };
 
 const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (
