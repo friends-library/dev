@@ -39,38 +39,3 @@ export interface AudioFsData {
     };
   }>;
 }
-
-interface SoundCloudSharedAttrs {
-  sharing: `public`;
-  embeddable_by: `all`;
-  genre: `Audiobooks`;
-  downloadable: true;
-  label_name: `Friends Library Publishing` | `Biblioteca de los Amigos`;
-  permalink: string;
-  title: string;
-  description: string;
-  tags: string[];
-  /* we use this unimportant (to us) field to store artwork/mp3 file hashes */
-  release?: null | string;
-}
-
-// @see https://developers.soundcloud.com/docs/api/explorer/open-api#/tracks/get_tracks__track_id_
-// click "Schema"
-export type SoundCloudTrack = {
-  id: number;
-  release: string;
-  permalink_url: string;
-  tag_list: string;
-  user: {
-    permalink: string;
-  };
-};
-
-export type SoundCloudTrackAttrs = SoundCloudSharedAttrs & {
-  track_type: `spoken`;
-  commentable: false;
-};
-
-export type SoundCloudPlaylistAttrs = SoundCloudSharedAttrs & {
-  trackIds: number[];
-};
