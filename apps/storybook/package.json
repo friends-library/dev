@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "pnpm storybook",
     "storybook": "storybook dev -p 7007 --ci",
     "build": "storybook build",
     "typecheck": "tsc --noEmit",
