@@ -27,7 +27,7 @@ const AudiobooksHero: React.FC<Props> = ({ className, numBooks }) => (
       <>Actualmente tenemos {numBooks} títulos grabados como audiolibros.</>
     </Dual.P>
     <div
-      className="h-48 absolute w-screen left-0 bg-no-repeat bg-center bg-[55%_70%] bg-[1400px_auto] lg:bg-[55%_65%] lg:bg-[1800px_auto]"
+      className="h-48 absolute w-full left-0 bg-no-repeat bg-center bg-[55%_70%] bg-[1400px_auto] lg:bg-[55%_65%] lg:bg-[1800px_auto]"
       style={{ backgroundImage: `url(${WaveformSVG.src})` }}
     />
   </NextBgImage>
