@@ -94,7 +94,7 @@ const DownloadLinks: React.FC<Props> = ({
           <a href={mp3ZipLoggedDownloadUrl[quality]} className="hover:underline">
             {t`Download mp3 Files as Zip`} -{` `}
             <span className="text-flprimary">
-              {formatFilesize(mp3ZipFilesize[quality])})
+              ({formatFilesize(mp3ZipFilesize[quality])})
             </span>
           </a>
         </dt>
@@ -117,7 +117,7 @@ const DownloadLinks: React.FC<Props> = ({
               </>
             </Dual.Frag>
             <span className="text-flprimary">
-              {formatFilesize(m4bFilesize[quality])})
+              ({formatFilesize(m4bFilesize[quality])})
             </span>
           </a>
         </dt>
