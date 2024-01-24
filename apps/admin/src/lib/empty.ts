@@ -1,5 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { type T } from '../api-client';
+import { removeClientGeneratedIdPrefix } from './api/entities/helpers';
 
 export function friend(): T.EditableFriend {
   return {
@@ -34,8 +35,8 @@ export function relatedDocument(
 ): T.EditableRelatedDocument {
   return {
     id: clientGeneratedId(),
-    documentId,
-    parentDocumentId,
+    documentId: removeClientGeneratedIdPrefix(documentId),
+    parentDocumentId: removeClientGeneratedIdPrefix(parentDocumentId),
     description: ``,
   };
 }
@@ -43,7 +44,7 @@ export function relatedDocument(
 export function edition(documentId: UUID): T.EditableEdition {
   return {
     id: clientGeneratedId(),
-    documentId,
+    documentId: removeClientGeneratedIdPrefix(documentId),
     isDraft: true,
     type: `updated`,
     paperbackOverrideSize: undefined,
@@ -57,7 +58,7 @@ export function edition(documentId: UUID): T.EditableEdition {
 export function audio(editionId: UUID): T.EditableAudio {
   return {
     id: clientGeneratedId(),
-    editionId,
+    editionId: removeClientGeneratedIdPrefix(editionId),
     reader: `Jessie Henderson`,
     isIncomplete: false,
     m4bSizeHq: 0,
@@ -71,7 +72,7 @@ export function audio(editionId: UUID): T.EditableAudio {
 export function audioPart(audio: T.EditableAudio): T.EditableAudioPart {
   return {
     id: clientGeneratedId(),
-    audioId: audio.id,
+    audioId: removeClientGeneratedIdPrefix(audio.id),
     order: Math.max(0, ...audio.parts.map((part) => part.order)) + 1,
     title: ``,
     duration: 0,
@@ -84,7 +85,7 @@ export function audioPart(audio: T.EditableAudio): T.EditableAudioPart {
 export function friendResidence(friendId: UUID): T.EditableFriendResidence {
   return {
     id: clientGeneratedId(),
-    friendId,
+    friendId: removeClientGeneratedIdPrefix(friendId),
     city: ``,
     region: `England`,
     durations: [],
@@ -96,7 +97,7 @@ export function friendResidenceDuration(
 ): T.EditableFriendResidence['durations'][number] {
   return {
     id: clientGeneratedId(),
-    friendResidenceId,
+    friendResidenceId: removeClientGeneratedIdPrefix(friendResidenceId),
     start: 1600,
     end: 1700,
   };
@@ -105,7 +106,7 @@ export function friendResidenceDuration(
 export function document(friend: T.EditableFriend): T.EditableDocument {
   return {
     id: clientGeneratedId(),
-    friendId: friend.id,
+    friendId: removeClientGeneratedIdPrefix(friend.id),
     slug: ``,
     description: ``,
     title: ``,
@@ -133,7 +134,7 @@ export function documentTag(
 ): T.EditableDocumentTag {
   return {
     id: clientGeneratedId(),
-    documentId,
+    documentId: removeClientGeneratedIdPrefix(documentId),
     type,
   };
 }
