@@ -8,6 +8,7 @@ import SheepBg from '@/public/images/sheep.jpg';
 
 const NotFoundHeroBlock: React.FC = () => (
   <NextBgImage
+    eager
     className="text-center text-white px-10 py-20 sm:px-16 sm:py-24 md:py-24 xl:py-32"
     src={[bgColor(`rgba(0, 0, 0, 0.38)`), SheepBg]}
     position={{ base: `center`, 500: `center 80%` }}

@@ -51,7 +51,7 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
           .filter((type) => type === `updated`).length,
       })}
     />
-    <BooksBgBlock>
+    <BooksBgBlock eager>
       <WhiteOverlay>
         <Dual.H1 className="sans-wider text-3xl mb-6">
           <>Explore Books</>
