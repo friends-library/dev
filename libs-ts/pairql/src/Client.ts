@@ -21,6 +21,7 @@ export default abstract class Client {
     let env: Env = `dev`;
     if (
       href.includes(`vercel.app`) ||
+      href.startsWith(`https://deploy-preview-`) ||
       (href.startsWith(`https://`) && href.includes(`--staging`))
     ) {
       env = `staging`;
