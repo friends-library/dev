@@ -12,8 +12,6 @@ final class AudioPart: Codable {
   var order: Int
   var mp3SizeHq: Bytes
   var mp3SizeLq: Bytes
-  var externalIdHq: ExternalId
-  var externalIdLq: ExternalId
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
@@ -34,9 +32,7 @@ final class AudioPart: Codable {
     chapters: NonEmpty<[Int]>,
     order: Int,
     mp3SizeHq: Bytes,
-    mp3SizeLq: Bytes,
-    externalIdHq: ExternalId,
-    externalIdLq: ExternalId
+    mp3SizeLq: Bytes
   ) {
     self.id = id
     self.audioId = audioId
@@ -46,13 +42,5 @@ final class AudioPart: Codable {
     self.order = order
     self.mp3SizeHq = mp3SizeHq
     self.mp3SizeLq = mp3SizeLq
-    self.externalIdHq = externalIdHq
-    self.externalIdLq = externalIdLq
   }
-}
-
-// extensions
-
-extension AudioPart {
-  typealias ExternalId = Tagged<AudioPart, Int64>
 }

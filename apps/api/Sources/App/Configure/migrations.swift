@@ -35,5 +35,6 @@ extension Configure {
     app.migrations.add(RemoveDuplicatePodcastDownloads())
     app.migrations.add(BigIntToInt())
     app.migrations.add(SeedTokens())
+    app.migrations.add(RemoveSoundcloud())
   }
 }

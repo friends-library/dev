@@ -24,16 +24,6 @@ extension AudioPart {
       return false
     }
 
-    if externalIdHq < 200_000_000, externalIdHq != 0 {
-      logInvalid("unexpected external id hq \(externalIdHq))")
-      return false
-    }
-
-    if externalIdLq < 200_000_000, externalIdLq != 0 {
-      logInvalid("unexpected external id lq \(externalIdHq))")
-      return false
-    }
-
     if isPublished, duration < 200, !isTempNoteToListener {
       logInvalid("short duration \(duration))")
       return false

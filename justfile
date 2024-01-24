@@ -16,7 +16,7 @@ native:
   @cd apps/native && just
 
 storybook:
-  @pnpm --filter storybook-web start
+  @pnpm --filter storybook start
 
 poster:
   @pnpm --filter poster start

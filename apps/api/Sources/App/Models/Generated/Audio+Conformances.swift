@@ -27,10 +27,6 @@ extension Audio: Model {
       return .int(m4bSizeHq.rawValue)
     case .m4bSizeLq:
       return .int(m4bSizeLq.rawValue)
-    case .externalPlaylistIdHq:
-      return .int64(externalPlaylistIdHq?.rawValue)
-    case .externalPlaylistIdLq:
-      return .int64(externalPlaylistIdLq?.rawValue)
     case .createdAt:
       return .date(createdAt)
     case .updatedAt:
@@ -51,8 +47,6 @@ extension Audio {
     case mp3ZipSizeLq
     case m4bSizeHq
     case m4bSizeLq
-    case externalPlaylistIdHq
-    case externalPlaylistIdLq
     case createdAt
     case updatedAt
   }
@@ -69,8 +63,6 @@ extension Audio {
       .mp3ZipSizeLq: .int(mp3ZipSizeLq.rawValue),
       .m4bSizeHq: .int(m4bSizeHq.rawValue),
       .m4bSizeLq: .int(m4bSizeLq.rawValue),
-      .externalPlaylistIdHq: .int64(externalPlaylistIdHq?.rawValue),
-      .externalPlaylistIdLq: .int64(externalPlaylistIdLq?.rawValue),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
     ]

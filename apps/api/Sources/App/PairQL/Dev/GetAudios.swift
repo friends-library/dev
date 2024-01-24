@@ -9,8 +9,6 @@ struct GetAudios: Pair {
     var durationInSeconds: Double
     var title: String
     var order: Int
-    var externalIdHq: Int64
-    var externalIdLq: Int64
     var mp3SizeHq: Int
     var mp3SizeLq: Int
   }
@@ -47,8 +45,6 @@ struct GetAudios: Pair {
     var mp3ZipSizeHq: Int
     var mp3ZipSizeLq: Int
     var reader: String
-    var externalPlaylistIdHq: Int64?
-    var externalPlaylistIdLq: Int64?
     var parts: [AudioPart]
     var edition: Edition
     var document: Document
@@ -75,8 +71,6 @@ extension GetAudios: NoInputResolver {
         mp3ZipSizeHq: audio.mp3ZipSizeHq.rawValue,
         mp3ZipSizeLq: audio.mp3ZipSizeLq.rawValue,
         reader: audio.reader,
-        externalPlaylistIdHq: audio.externalPlaylistIdHq?.rawValue,
-        externalPlaylistIdLq: audio.externalPlaylistIdLq?.rawValue,
         parts: try await parts.map { part in
           .init(
             id: part.id,
@@ -84,8 +78,6 @@ extension GetAudios: NoInputResolver {
             durationInSeconds: part.duration.rawValue,
             title: part.title,
             order: part.order,
-            externalIdHq: part.externalIdHq.rawValue,
-            externalIdLq: part.externalIdLq.rawValue,
             mp3SizeHq: part.mp3SizeHq.rawValue,
             mp3SizeLq: part.mp3SizeLq.rawValue
           )

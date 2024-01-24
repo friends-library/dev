@@ -64,8 +64,6 @@ export function audio(editionId: UUID): T.EditableAudio {
     m4bSizeLq: 0,
     mp3ZipSizeHq: 0,
     mp3ZipSizeLq: 0,
-    externalPlaylistIdHq: undefined,
-    externalPlaylistIdLq: undefined,
     parts: [],
   };
 }
@@ -80,8 +78,6 @@ export function audioPart(audio: T.EditableAudio): T.EditableAudioPart {
     chapters: [0],
     mp3SizeHq: 0,
     mp3SizeLq: 0,
-    externalIdHq: 0,
-    externalIdLq: 0,
   };
 }
 

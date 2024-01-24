@@ -9,8 +9,6 @@ export interface EditableAudio {
   mp3ZipSizeLq: number;
   m4bSizeHq: number;
   m4bSizeLq: number;
-  externalPlaylistIdHq?: number;
-  externalPlaylistIdLq?: number;
   parts: EditableAudioPart[];
 }
 
@@ -23,8 +21,6 @@ export interface EditableAudioPart {
   chapters: number[];
   mp3SizeHq: number;
   mp3SizeLq: number;
-  externalIdHq: number;
-  externalIdLq: number;
 }
 
 export interface EditableDocument {
@@ -184,8 +180,6 @@ export interface SelectableDocument {
 export interface UpsertAudio {
   id: UUID;
   editionId: UUID;
-  externalPlaylistIdHq?: number;
-  externalPlaylistIdLq?: number;
   isIncomplete: boolean;
   m4bSizeHq: number;
   m4bSizeLq: number;
@@ -199,8 +193,6 @@ export interface UpsertAudioPart {
   audioId: UUID;
   chapters: number[];
   duration: number;
-  externalIdHq: number;
-  externalIdLq: number;
   mp3SizeHq: number;
   mp3SizeLq: number;
   order: number;

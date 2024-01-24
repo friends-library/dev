@@ -17,7 +17,6 @@ apps/storybook/storybook-static/
 apps/poster/src/part-titles.ts
 apps/poster/src/cover-props.ts
 apps/cli/src/cmd/audio/derived/
-apps/cli/src/cmd/audio/.soundcloud-token
 apps/api/duplicate-podcast-downloads.json
 apps/evans/.next/
 apps/evans/styles/cover.css

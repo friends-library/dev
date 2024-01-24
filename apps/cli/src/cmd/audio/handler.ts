@@ -210,8 +210,6 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
     id: audio.id,
     editionId: audio.edition.id,
     isIncomplete: audio.isIncomplete,
-    externalPlaylistIdHq: audio.externalPlaylistIdHq,
-    externalPlaylistIdLq: audio.externalPlaylistIdLq,
     m4bSizeHq: audio.m4bSizeHq,
     m4bSizeLq: audio.m4bSizeLq,
     mp3ZipSizeHq: audio.mp3ZipSizeHq,
@@ -243,8 +241,6 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
       order: part.order,
       chapters: part.chapters,
       duration: part.durationInSeconds,
-      externalIdHq: part.externalIdHq,
-      externalIdLq: part.externalIdLq,
       mp3SizeHq: part.mp3SizeHq,
       mp3SizeLq: part.mp3SizeLq,
     };

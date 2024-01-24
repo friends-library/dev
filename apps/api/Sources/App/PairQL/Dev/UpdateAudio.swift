@@ -12,8 +12,6 @@ struct UpdateAudio: Pair {
     let mp3ZipSizeLq: Bytes
     let m4bSizeHq: Bytes
     let m4bSizeLq: Bytes
-    let externalPlaylistIdHq: Audio.ExternalPlaylistId?
-    let externalPlaylistIdLq: Audio.ExternalPlaylistId?
   }
 }
 
@@ -28,8 +26,6 @@ extension UpdateAudio: Resolver {
     audio.mp3ZipSizeLq = input.mp3ZipSizeLq
     audio.m4bSizeHq = input.m4bSizeHq
     audio.m4bSizeLq = input.m4bSizeLq
-    audio.externalPlaylistIdHq = input.externalPlaylistIdHq
-    audio.externalPlaylistIdLq = input.externalPlaylistIdLq
     guard audio.isValid else { throw ModelError.invalidEntity }
     try await audio.save()
     return .success

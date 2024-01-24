@@ -89,8 +89,6 @@ extension AudioPart {
     part.chapters = .init(4, 5)
     part.mp3SizeHq = 2_000_001
     part.mp3SizeLq = 1_000_001
-    part.externalIdHq = 200_000_001
-    part.externalIdLq = 200_000_002
     precondition(part.isValid)
     return part
   }
@@ -104,8 +102,6 @@ extension Audio {
     audio.m4bSizeHq = 8_000_000
     audio.mp3ZipSizeLq = 2_000_000
     audio.mp3ZipSizeHq = 5_000_000
-    audio.externalPlaylistIdHq = nil
-    audio.externalPlaylistIdLq = nil
     precondition(audio.isValid)
     return audio
   }

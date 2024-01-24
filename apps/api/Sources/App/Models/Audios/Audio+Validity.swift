@@ -35,28 +35,6 @@ extension Audio {
       return false
     }
 
-    if externalPlaylistIdLq == nil, externalPlaylistIdHq != nil {
-      logInvalid("externalPlaylistIdLq is nil, but externalPlaylistIdHq is not nil")
-      return false
-    }
-
-    if externalPlaylistIdHq == nil, externalPlaylistIdLq != nil {
-      logInvalid("externalPlaylistIdHq is nil, but externalPlaylistIdLq is not nil")
-      return false
-    }
-
-    let isPublished = m4bSizeHq != 0
-
-    if isPublished, let extLq = externalPlaylistIdLq, extLq < 900_000_000 {
-      logInvalid("isPublished and externalPlaylistIdLq is too small: \(extLq)")
-      return false
-    }
-
-    if isPublished, let extHq = externalPlaylistIdHq, extHq < 900_000_000 {
-      logInvalid("isPublished and externalPlaylistIdHq is too small: \(extHq)")
-      return false
-    }
-
     // test for sequential parts, when loaded
     if case .loaded(let parts) = parts {
       let sorted = parts.sorted { $0.order < $1.order }
