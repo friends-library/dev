@@ -11,6 +11,7 @@ interface Props {
 
 const FriendsPageHero: React.FC<Props> = ({ numFriends }) => (
   <NextBgImage
+    eager
     className="text-center text-white"
     src={[bgColor(`rgba(0, 0, 0, 0.52)`), HeroBg]}
     position="center 88%"

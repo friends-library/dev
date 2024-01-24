@@ -62,6 +62,7 @@ const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
       description={pageMetaDesc(`getting-started`, { numBooks })}
     />
     <NextBgImage
+      eager
       src={[`radial-gradient(rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.925) 75%)`, BooksGrid]}
       className="flex flex-col items-center justify-center py-20 sm:py-32 px-10 sm:px-16"
     >
