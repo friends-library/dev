@@ -114,7 +114,7 @@ export const MdxUl: MdxComponent<HTMLUListElement> = (props) => (
 );
 
 export const MdxLead: MdxComponent = ({ children }) => (
-  <div className="text-xl pb-4 pt-2 leading-loose sm:!text-2xl [&>p]:text-xl [&>p]:pb-4 [&>p]:pt-2 [&>p]:leading-loose [&>p]:sm:!text-2xl [&_a]:text-flprimary [&_a]:border-b-2 [&_a]:border-flprimary [&_a]:pb-0.5 [&_a:hover]:pb-0 [&_a]:transition-[padding-bottom] duration-200">
+  <div className="text-xl pb-4 pt-2 leading-relaxed sm:!text-2xl sm:!leading-relaxed [&>p]:text-xl [&>p]:pb-4 [&>p]:pt-2 [&>p]:leading-relaxed [&>p]:sm:!text-2xl [&_a]:text-flprimary [&_a]:border-b-2 [&_a]:border-flprimary [&_a]:pb-0.5 [&_a:hover]:pb-0 [&_a]:transition-[padding-bottom] duration-200">
     {children}
   </div>
 );

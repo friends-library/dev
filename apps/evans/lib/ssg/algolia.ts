@@ -9,6 +9,7 @@ import { getFriendUrl } from '../../lib/friend';
 import * as mdx from '../mdx';
 import { pageMetaDesc } from '../seo';
 import { replacePlaceholders } from '../../pages/static/[static]';
+import beliefs from './beliefs-search';
 import api, { type Api } from './api-client';
 
 export default async function sendSearchDataToAlgolia(): Promise<void> {
@@ -45,7 +46,11 @@ export default async function sendSearchDataToAlgolia(): Promise<void> {
 
   const pagesIndex = client.initIndex(`${LANG}_pages`);
   await pagesIndex.replaceAllObjects(
-    [...mdxRecords(totalPublished), ...customPageRecords(totalPublished, friends)],
+    [
+      ...mdxRecords(totalPublished),
+      ...customPageRecords(totalPublished, friends),
+      ...whatQuakersBelievedRecords(),
+    ],
     { autoGenerateObjectIDIfNotExist: true },
   );
   await pagesIndex.setSettings({
@@ -204,4 +209,16 @@ function sanitizeMdParagraph(paragraph: string): string {
     .replace(/ {2,}/g, ` `)
     .replace(/^- /, ``)
     .trim();
+}
+
+function whatQuakersBelievedRecords(): Record<string, string | null>[] {
+  if (LANG !== `en`) {
+    return [];
+  }
+  return beliefs.map((chunk) => ({
+    title: `What Early Quakers Believed`,
+    subtitle: chunk.sectionTitle,
+    url: `/what-early-quakers-believed#${chunk.id}`,
+    text: chunk.text,
+  }));
 }
