@@ -11,6 +11,7 @@ import { pageMetaDesc } from '../seo';
 import { replacePlaceholders } from '../../pages/static/[static]';
 import beliefs from './beliefs-search';
 import api, { type Api } from './api-client';
+import { SEO_META_DESC as BELIEFS_SEO_DESC } from '@/pages/what-early-quakers-believed';
 
 export default async function sendSearchDataToAlgolia(): Promise<void> {
   process.stdout.write(`Sending search data to Algolia...\n`);
@@ -178,6 +179,11 @@ function customPageRecords(
       url: t`/getting-started`,
       text: pageMetaDesc(`getting-started`, replacements),
     },
+    {
+      title: t`Friends Library App`,
+      url: t`/app`,
+      text: pageMetaDesc(`app`, replacements),
+    },
   ];
 }
 
@@ -215,10 +221,17 @@ function whatQuakersBelievedRecords(): Record<string, string | null>[] {
   if (LANG !== `en`) {
     return [];
   }
-  return beliefs.map((chunk) => ({
-    title: `What Early Quakers Believed`,
-    subtitle: chunk.sectionTitle,
-    url: `/what-early-quakers-believed#${chunk.id}`,
-    text: chunk.text,
-  }));
+  return [
+    {
+      title: `What Early Quakers Believed`,
+      url: `/what-early-quakers-believed`,
+      text: BELIEFS_SEO_DESC,
+    },
+    ...beliefs.map((chunk) => ({
+      title: `What Early Quakers Believed`,
+      subtitle: chunk.sectionTitle,
+      url: `/what-early-quakers-believed#${chunk.id}`,
+      text: chunk.text,
+    })),
+  ];
 }

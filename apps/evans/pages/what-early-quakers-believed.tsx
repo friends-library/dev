@@ -6,12 +6,9 @@ import BooksBgBlock from '@/components/core/BooksBgBlock';
 import TruthDefendedNotes from '@/components/truth-defended/TruthDefendedNotes';
 import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
 
-const TruthDefended: React.FC = () => (
+const WhatEarlyQuakersBelieved: React.FC = () => (
   <div>
-    <Seo
-      title="Early Quaker Beliefs"
-      description="What did early Quakers believe? A succinct but thorough explanation of the principles and practices of Friends in the 1600’s on a wide variety of doctrinal subjects, in response to calumnies and accusations that were commonly leveled against the society by other professing of Christians."
-    />
+    <Seo title="Early Quaker Beliefs" description={SEO_META_DESC} />
     <BooksBgBlock>
       <WhiteOverlay>
         <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
@@ -790,7 +787,7 @@ const TruthDefended: React.FC = () => (
         their essences, or even the lowest things with which nature everywhere presents
         us, which are obvious to our senses; should these, I say, yet aspire to know
         things far more inscrutable, and undertake to explain that which is beyond the
-        reach of the most gifted wits to penetrate
+        reach of the most gifted wits to penetrate.
       </MdxP>
       <MdxH2 id="set-free-from-sin">
         Christ Able to Set Free from the Power of Sin in this Life
@@ -1557,7 +1554,9 @@ const TruthDefended: React.FC = () => (
   </div>
 );
 
-export default TruthDefended;
+export default WhatEarlyQuakersBelieved;
+
+export const SEO_META_DESC = `What did early Quakers believe? A succinct but thorough explanation of the principles and practices of Friends in the 1600’s on a wide variety of doctrinal subjects, in response to calumnies and accusations that were commonly leveled against the society by other professing of Christians.`;
 
 const Footnote: React.FC<{ number: number }> = ({ number }) => (
   <sup className="pr-1 relative inline-block">
