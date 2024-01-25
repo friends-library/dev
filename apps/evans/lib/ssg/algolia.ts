@@ -200,7 +200,7 @@ function sanitizeMdParagraph(paragraph: string): string {
     .split(`\n`)
     .filter((l) => !l.match(/^<\/?Lead>/))
     .join(` `)
-    .replace(/<\/?iframe(.*?)>/g, ``)
+    .replace(/<AudioPlayer(.*)\n\/>$/gms, ``)
     .replace(/ {2,}/g, ` `)
     .replace(/^- /, ``)
     .trim();
