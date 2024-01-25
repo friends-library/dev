@@ -13,6 +13,9 @@ build-en: write-cover-css
 build-es: write-cover-css
   @NEXT_PUBLIC_LANG=es pnpm next build
 
+build-analyze:
+  @ANALYZE=true just build-en
+
 storybook:
   @cd ../../ && pnpm --filter storybook storybook
 
