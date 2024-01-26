@@ -4,7 +4,7 @@ import { NextBgStaticCss } from 'next-bg-image';
 import { LANG } from '@/lib/env';
 
 const Document: React.FC = () => (
-  <Html lang="en">
+  <Html lang={LANG} className="scroll-pt-[70px]">
     <Head>
       <NextBgStaticCss />
       <link

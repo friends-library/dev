@@ -6,12 +6,9 @@ import BooksBgBlock from '@/components/core/BooksBgBlock';
 import TruthDefendedNotes from '@/components/truth-defended/TruthDefendedNotes';
 import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
 
-const TruthDefended: React.FC = () => (
+const WhatEarlyQuakersBelieved: React.FC = () => (
   <div>
-    <Seo
-      title="Early Quaker Beliefs"
-      description="What did early Quakers believe? A succinct but thorough explanation of the principles and practices of Friends in the 1600’s on a wide variety of doctrinal subjects, in response to calumnies and accusations that were commonly leveled against the society by other professing of Christians."
-    />
+    <Seo title="Early Quaker Beliefs" description={SEO_META_DESC} />
     <BooksBgBlock>
       <WhiteOverlay>
         <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
@@ -63,7 +60,7 @@ const TruthDefended: React.FC = () => (
         defended them them with such clarity and candor, using a multitude of Scripture
         citations.
       </MdxLead>
-      <MdxH2>Introduction</MdxH2>
+      <MdxH2 id="introduction">Introduction</MdxH2>
       <MdxP>
         It is not that we love contention, or desire controversy, or are impatient in
         bearing reproaches, that we now print this short treatise; but such have been the
@@ -75,7 +72,7 @@ const TruthDefended: React.FC = () => (
         truths; for certainly we know our own beliefs better than those who perhaps have
         never examined them for any other purpose than to find fault.
       </MdxP>
-      <MdxH2>Concerning the Holy Scriptures</MdxH2>
+      <MdxH2 id="scriptures">Concerning the Holy Scriptures</MdxH2>
       <MdxP>
         We hope that you will not think it strange that we do not express our belief in
         some particulars in the scholastic terms of other professors of Christianity, but
@@ -102,7 +99,7 @@ const TruthDefended: React.FC = () => (
         for them, who through His good Providence has preserved them to our time, to our
         great benefit and comfort.
       </MdxP>
-      <MdxH2>Concerning God — Father, Son and Spirit</MdxH2>
+      <MdxH2 id="three">Concerning God — Father, Son and Spirit</MdxH2>
       <MdxP>
         We believe in the great omnipotent God that made and created all things and gave
         us our being, whom in sincerity of heart we fear, reverence and worship, being
@@ -150,7 +147,9 @@ const TruthDefended: React.FC = () => (
         commands, thereby continuing in His love.
         <Footnote number={14} />
       </MdxP>
-      <MdxH2>Departing from Iniquity, and the Doctrine of Perfection</MdxH2>
+      <MdxH2 id="perfection">
+        Departing from Iniquity, and the Doctrine of Perfection
+      </MdxH2>
       <MdxP>
         This holy life was so much celebrated and strictly kept to in the primitive ages
         of Christianity, that “whosoever named the name,” or took the name of Christ upon
@@ -174,7 +173,9 @@ const TruthDefended: React.FC = () => (
         what God desires and requires of us; and it is for this reason that we frequently
         press its necessity, and fervently exhort people to its performance.
       </MdxP>
-      <MdxH2>Salvation by Grace, but Works a Constant Companion</MdxH2>
+      <MdxH2 id="grace-and-works">
+        Salvation by Grace, but Works a Constant Companion
+      </MdxH2>
       <MdxP>
         And notwithstanding we have from here been falsely accused that we expect to be
         saved by our <em>own</em> works as being meritorious, yet we do not acknowledge a
@@ -188,7 +189,9 @@ const TruthDefended: React.FC = () => (
         only pleases God, and is but our reasonable duty.
         <Footnote number={21} />
       </MdxP>
-      <MdxH2>Historical or Traditional Belief Not Sufficient</MdxH2>
+      <MdxH2 id="historical-belief">
+        Historical or Traditional Belief Not Sufficient
+      </MdxH2>
       <MdxP>
         And while we believe that although Christ thus offered up Himself once for all,
         for the sins of all men to the end of the world,
@@ -210,7 +213,7 @@ const TruthDefended: React.FC = () => (
         people zealous of good works.”
         <Footnote number={25} />
       </MdxP>
-      <MdxH2>Man’s Fallen Condition, and Need of New Life</MdxH2>
+      <MdxH2 id="fallen-condition">Man’s Fallen Condition, and Need of New Life</MdxH2>
       <MdxP>
         For we believe such to be the natural state of man in the fall, that by nature we
         are dead to God,
@@ -244,7 +247,7 @@ const TruthDefended: React.FC = () => (
         the same.
         <Footnote number={34} />
       </MdxP>
-      <MdxH2>Salvation by Christ</MdxH2>
+      <MdxH2 id="salvation-by-christ">Salvation by Christ</MdxH2>
       <MdxP>
         It is not our being sprinkled when infants that will make us true Christians, or
         convert us from being children of wrath to become children of grace, sons of God,
@@ -305,7 +308,7 @@ const TruthDefended: React.FC = () => (
         was prepared of old for the ransomed and redeemed to walk in.
         <Footnote number={48} />
       </MdxP>
-      <MdxH2>Man’s Condemnation is of Himself</MdxH2>
+      <MdxH2 id="condemnation">Man’s Condemnation is of Himself</MdxH2>
       <MdxP>
         And we believe that God graciously waits with exceeding great kindness and
         long-suffering, that men may repent, knocking at the door of every man’s heart,
@@ -322,7 +325,7 @@ const TruthDefended: React.FC = () => (
         and lead him in the way of life and peace.
         <Footnote number={51} />
       </MdxP>
-      <MdxH2>Experiential Regeneration or New Birth</MdxH2>
+      <MdxH2 id="regeneration">Experiential Regeneration or New Birth</MdxH2>
       <MdxP>
         We believe, that though the depravity of man’s nature in the fall is such that the
         natural or carnal man (who is enmity against God in the state of mere nature)
@@ -389,7 +392,9 @@ const TruthDefended: React.FC = () => (
         He walked.”
         <Footnote number={66} />
       </MdxP>
-      <MdxH2>All is by Grace, but Grace offers no Liberty to the Flesh</MdxH2>
+      <MdxH2 id="grace-and-flesh">
+        All is by Grace, but Grace offers no Liberty to the Flesh
+      </MdxH2>
       <MdxP>
         We ascribe nothing to man, as having any power or ability in or of himself to
         please God, but rather attribute all power to do what is good to Christ alone,
@@ -446,7 +451,9 @@ const TruthDefended: React.FC = () => (
         God did abide in them, and that they had overcome the evil one.
         <Footnote number={77} />
       </MdxP>
-      <MdxH2>Profession vs. Possession of Christianity</MdxH2>
+      <MdxH2 id="profession-vs-possession">
+        Profession vs. Possession of Christianity
+      </MdxH2>
       <MdxP>
         These things may easily be spoken and comprehended in the understanding, but to
         experience them fulfilled in ourselves is our highest concern, and only this can
@@ -492,7 +499,7 @@ const TruthDefended: React.FC = () => (
         and experienced.
         <Footnote number={80} />
       </MdxP>
-      <MdxH2>The Gift of Christ’s Light and Spirit in the Heart</MdxH2>
+      <MdxH2 id="gift-of-light">The Gift of Christ’s Light and Spirit in the Heart</MdxH2>
       <MdxP>
         Now, where among all these sound gospel and scriptural truths is to be found that
         “latent venom” so much feared and talked of by our adversaries? Or is it in that
@@ -634,7 +641,7 @@ const TruthDefended: React.FC = () => (
         break his power and cast him out, if they would but join their will thereto, and
         accept deliverance by it.
       </MdxP>
-      <MdxH2>A Day of Visitation Granted to All Men</MdxH2>
+      <MdxH2 id="day-of-visitation">A Day of Visitation Granted to All Men</MdxH2>
       <MdxP>
         Nor does this gift being extended to all men, through all ages from their youth
         upwards, suggest it to be therefore natural or contemptible; but on the contrary,
@@ -684,7 +691,7 @@ const TruthDefended: React.FC = () => (
         leaven the whole lump into its own nature.
         <Footnote number={105} />
       </MdxP>
-      <MdxH2>Christ’s Dwelling in Man</MdxH2>
+      <MdxH2 id="christ-in-man">Christ’s Dwelling in Man</MdxH2>
       <MdxP>
         Please consider whether we have justly merited the insults of our adversaries by
         believing that the Lord searches the heart of man, and shows him his thoughts, and
@@ -734,7 +741,7 @@ const TruthDefended: React.FC = () => (
         those who are lovesick, and who thirst ardently after the enjoyment of Him, and
         not merely after the hearing of Him.
       </MdxP>
-      <MdxH2>Only One Christ</MdxH2>
+      <MdxH2 id="only-one-christ">Only One Christ</MdxH2>
       <MdxP>
         Consider seriously these things (which are agreeable to Scripture), and with what
         reason people have derided us for our belief herein, calling it “the Quakers’
@@ -780,9 +787,11 @@ const TruthDefended: React.FC = () => (
         their essences, or even the lowest things with which nature everywhere presents
         us, which are obvious to our senses; should these, I say, yet aspire to know
         things far more inscrutable, and undertake to explain that which is beyond the
-        reach of the most gifted wits to penetrate
+        reach of the most gifted wits to penetrate.
       </MdxP>
-      <MdxH2>Christ Able to Set Free from the Power of Sin in this Life</MdxH2>
+      <MdxH2 id="set-free-from-sin">
+        Christ Able to Set Free from the Power of Sin in this Life
+      </MdxH2>
       <MdxP>
         We hope it is no error to affirm the power of Christ to be stronger than that of
         the devil, that He is able really to bind him, to bruise his head,
@@ -847,7 +856,7 @@ const TruthDefended: React.FC = () => (
         <Footnote number={128} />
         which alone can work the will of God.
       </MdxP>
-      <MdxH2>The Necessity of Diligence and Watchfulness</MdxH2>
+      <MdxH2 id="watchfulness">The Necessity of Diligence and Watchfulness</MdxH2>
       <MdxP>
         We request our piously-inclined neighbors to seriously weigh and consider the
         absolute necessity there is for every true Christian thus to experience their
@@ -878,7 +887,9 @@ const TruthDefended: React.FC = () => (
         as our minds are seasoned by it, so that where there is any failure or fault, it
         is through our own insincerity, negligence, or omission.
       </MdxP>
-      <MdxH2>God’s Universal Love; and Man’s Ability to Reject it.</MdxH2>
+      <MdxH2 id="universal-love">
+        God’s Universal Love; and Man’s Ability to Reject it.
+      </MdxH2>
       <MdxP>
         Nor is it a “dangerous heresy” that we (with very many other professors of
         Christianity) believe in the universality of the love of God extended all mankind.
@@ -928,7 +939,7 @@ const TruthDefended: React.FC = () => (
         no longer finding in themselves that which would prepare, tenderize, and soften
         it, so that they at last are unable to repent, believe, and be converted.
       </MdxP>
-      <MdxH2>The Error of Personal Election and Reprobation</MdxH2>
+      <MdxH2 id="election">The Error of Personal Election and Reprobation</MdxH2>
       <MdxP>
         If to believe this is a “dangerous and pernicious error,” we confess we are
         guilty; for we cannot persuade ourselves to embrace that anti-evangelical opinion
@@ -1055,7 +1066,7 @@ const TruthDefended: React.FC = () => (
         wherein it is possible for them to increase it. So that, though the grace may work
         more powerfully in some than in others, yet are all left without excuse.
       </MdxP>
-      <MdxH2>Once in Grace, Always in Grace?</MdxH2>
+      <MdxH2 id="once-in-grace">Once in Grace, Always in Grace?</MdxH2>
       <MdxP>
         There is yet another opinion which is dependent upon the above-mentioned doctrine,
         that we can neither receive (as they state it), for which our opposers think very
@@ -1138,13 +1149,13 @@ const TruthDefended: React.FC = () => (
         attainable, as that there is no more going forth from it.
         <Footnote number={173} />
       </MdxP>
-      <MdxH2>The Sacraments (so-called)</MdxH2>
+      <MdxH2 id="sacrements">The Sacraments (so-called)</MdxH2>
       <MdxP>
         But that which seems to be our “capital error,” and the highest of all their
         charges, and that which must silence all other pleas on our behalf, is our
         omitting the use of the sacraments (so called) of baptism, and the bread and wine.
       </MdxP>
-      <h4 className="centered">Baptism</h4>
+      <MdxH3 id="baptism">Baptism</MdxH3>
       <MdxP>
         John indeed, as the immediate forerunner of Christ to prepare His way, gave an
         alarm to the Jews who felt themselves secure under the law of Moses, proclaiming
@@ -1285,7 +1296,7 @@ const TruthDefended: React.FC = () => (
         without any scripture-authority either by precept or practice; though the
         practitioners of it often reproach us for the neglect of it.
       </MdxP>
-      <h4 className="centered">Bread and Wine</h4>
+      <MdxH3 id="bread-and-wine">Bread and Wine</MdxH3>
       <MdxP>
         But that which makes the loudest outcry of all is our disuse of the sacrament (so
         called) of bread and wine. This is that “pestilent mortal error” that, in our
@@ -1409,7 +1420,9 @@ const TruthDefended: React.FC = () => (
         load us with calumnies and accusations on this account, often using it as an
         instance to blacken us and condemn our whole Christian profession?
       </MdxP>
-      <MdxH2>Not Notions in the Head, but a Spirit that Governs the Heart</MdxH2>
+      <MdxH2 id="notions">
+        Not Notions in the Head, but a Spirit that Governs the Heart
+      </MdxH2>
       <MdxP>
         For though adherence to certain forms and ceremonies may bind together and
         distinguish particular societies and communions, it is certain that no
@@ -1474,7 +1487,7 @@ const TruthDefended: React.FC = () => (
         that His offering up of Himself for them may be of benefit to them, and they
         experience the great salvation of God.
       </MdxP>
-      <MdxH2>The Purpose of His Coming</MdxH2>
+      <MdxH2 id="purpose-of-his-coming">The Purpose of His Coming</MdxH2>
       <MdxP>
         Impress this upon your minds and take it along with you: that notwithstanding our
         Savior has indeed paid a ransom for us, and made an atonement through the precious
@@ -1495,7 +1508,7 @@ const TruthDefended: React.FC = () => (
         which begets in the mind a detestation of all sin and evil, and a love to purity,
         goodness and virtue.
       </MdxP>
-      <MdxH2>Judgment to Come</MdxH2>
+      <MdxH2 id="judgment-to-come">Judgment to Come</MdxH2>
       <MdxP>
         Therefore, laying aside all strife and animosities, all envying and evil-speaking,
         let us abhor that which is evil, and cleave to that which is good,
@@ -1541,7 +1554,9 @@ const TruthDefended: React.FC = () => (
   </div>
 );
 
-export default TruthDefended;
+export default WhatEarlyQuakersBelieved;
+
+export const SEO_META_DESC = `What did early Quakers believe? A succinct but thorough explanation of the principles and practices of Friends in the 1600’s on a wide variety of doctrinal subjects, in response to calumnies and accusations that were commonly leveled against the society by other professing of Christians.`;
 
 const Footnote: React.FC<{ number: number }> = ({ number }) => (
   <sup className="pr-1 relative inline-block">

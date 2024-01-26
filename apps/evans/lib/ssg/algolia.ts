@@ -9,7 +9,9 @@ import { getFriendUrl } from '../../lib/friend';
 import * as mdx from '../mdx';
 import { pageMetaDesc } from '../seo';
 import { replacePlaceholders } from '../../pages/static/[static]';
+import beliefs from './beliefs-search';
 import api, { type Api } from './api-client';
+import { SEO_META_DESC as BELIEFS_SEO_DESC } from '@/pages/what-early-quakers-believed';
 
 export default async function sendSearchDataToAlgolia(): Promise<void> {
   process.stdout.write(`Sending search data to Algolia...\n`);
@@ -45,7 +47,11 @@ export default async function sendSearchDataToAlgolia(): Promise<void> {
 
   const pagesIndex = client.initIndex(`${LANG}_pages`);
   await pagesIndex.replaceAllObjects(
-    [...mdxRecords(totalPublished), ...customPageRecords(totalPublished, friends)],
+    [
+      ...mdxRecords(totalPublished),
+      ...customPageRecords(totalPublished, friends),
+      ...whatQuakersBelievedRecords(),
+    ],
     { autoGenerateObjectIDIfNotExist: true },
   );
   await pagesIndex.setSettings({
@@ -173,6 +179,11 @@ function customPageRecords(
       url: t`/getting-started`,
       text: pageMetaDesc(`getting-started`, replacements),
     },
+    {
+      title: t`Friends Library App`,
+      url: t`/app`,
+      text: pageMetaDesc(`app`, replacements),
+    },
   ];
 }
 
@@ -200,8 +211,27 @@ function sanitizeMdParagraph(paragraph: string): string {
     .split(`\n`)
     .filter((l) => !l.match(/^<\/?Lead>/))
     .join(` `)
-    .replace(/<\/?iframe(.*?)>/g, ``)
+    .replace(/<AudioPlayer(.*)\n\/>$/gms, ``)
     .replace(/ {2,}/g, ` `)
     .replace(/^- /, ``)
     .trim();
+}
+
+function whatQuakersBelievedRecords(): Record<string, string | null>[] {
+  if (LANG !== `en`) {
+    return [];
+  }
+  return [
+    {
+      title: `What Early Quakers Believed`,
+      url: `/what-early-quakers-believed`,
+      text: BELIEFS_SEO_DESC,
+    },
+    ...beliefs.map((chunk) => ({
+      title: `What Early Quakers Believed`,
+      subtitle: chunk.sectionTitle,
+      url: `/what-early-quakers-believed#${chunk.id}`,
+      text: chunk.text,
+    })),
+  ];
 }

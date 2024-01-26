@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     newsFeedItems: getNewsFeedItems(newsFeedItems),
     numTotalBooks: totalPublished.books[LANG],
   }));
-  if (process.env.VERCEc_ENV === `production`) {
+  if (process.env.VERCEL_ENV === `production`) {
     await sendSearchDataToAlgolia();
   }
   return { props };
