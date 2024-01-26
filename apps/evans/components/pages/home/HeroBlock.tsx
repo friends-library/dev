@@ -1,8 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
+import Head from 'next/head';
 import Dual from '@/components/core/Dual';
-import BackgroundImage from '@/components/core/BackgroundImage';
-import TreeRootsImage from '@/public/images/tree-roots.webp';
+import TreeRootsLg from '@/public/images/tree-roots.webp';
+import TreeRootsSm from '@/public/images/tree-roots.small.webp';
 import { LANG } from '@/lib/env';
 
 const HeroBlock: React.FC = () => {
@@ -13,12 +14,16 @@ const HeroBlock: React.FC = () => {
       : `[background:linear-gradient(rgba(195,142,97,0.5),rgba(195,142,97,0.5))]`;
   return (
     <section className="HeroBlock flex w-full">
-      <BackgroundImage
-        priority
-        src={TreeRootsImage}
-        className="md:w-2/3 xl:w-3/5"
-        fit="cover"
-      >
+      <Head>
+        <link
+          rel="preload"
+          as="image"
+          imageSrcSet={`${TreeRootsSm.src} 700w, ${TreeRootsLg.src} 1200w`}
+          // @ts-ignore
+          fetchPriority="high"
+        />
+      </Head>
+      <TreeRootsBg className="md:w-2/3 xl:w-3/5">
         <div
           className={cx(
             `md:[background-image:none] md:bg-white px-12 sm:px-16 py-12 sm:py-20 md:px-20 lg:p-24 text-white md:text-gray-900`,
@@ -50,17 +55,39 @@ const HeroBlock: React.FC = () => {
             </>
           </Dual.P>
         </div>
-      </BackgroundImage>
-      <BackgroundImage
-        src={TreeRootsImage}
-        priority
-        className="md:w-1/3 xl:w-2/5 hidden md:block"
-        fit="cover"
-      >
+      </TreeRootsBg>
+      <TreeRootsBg className="md:w-1/3 xl:w-2/5 hidden md:block">
         <div className={cx(`w-full h-full`, largeBg)} />
-      </BackgroundImage>
+      </TreeRootsBg>
     </section>
   );
 };
 
 export default HeroBlock;
+
+const TreeRootsBg: React.FC<{ children: React.ReactNode; className: string }> = ({
+  className,
+  children,
+}) => (
+  <div className={cx(`relative`, className)}>
+    <img
+      srcSet={`${TreeRootsSm.src} 700w, ${TreeRootsLg.src} 1200w`}
+      alt=""
+      decoding="async"
+      fetchPriority="high"
+      // @ts-ignore
+      fetchpriority="high"
+      role="presentation"
+      style={{
+        objectFit: `cover`,
+        position: `absolute`,
+        top: `0`,
+        left: `0`,
+        width: `100%`,
+        height: `100%`,
+        color: `transparent`,
+      }}
+    />
+    <div className="relative Content h-full">{children}</div>
+  </div>
+);
