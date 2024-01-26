@@ -71,7 +71,7 @@ const AudioPlayer: React.FC<Props> = ({ tracks }) => {
             <i
               aria-hidden
               className={cx(
-                `fa-solid text-white pt-px !text-xl`, // ! for mdx
+                `fa text-white pt-px !text-xl`, // ! for mdx
                 isPlaying ? `fa-pause` : `fa-play pl-[3px]`,
               )}
             />

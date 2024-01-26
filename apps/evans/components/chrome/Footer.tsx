@@ -89,7 +89,7 @@ const Footer: React.FC = () => {
         </div>
       </div>
 
-      <p className="bg-gray-900 text-gray-500 p-6 text-center text-xs font-hairline font-serif">
+      <p className="bg-gray-900 text-gray-500 p-6 text-center text-xs font-hairline font-serif min-[930px]:-ml-12 lg:ml-0">
         &copy; {new Date().getFullYear()} {t`Friends Library Publishing`} <b>[,]</b>
       </p>
     </NextBgImage>
