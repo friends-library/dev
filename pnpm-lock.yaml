@@ -1421,9 +1421,6 @@ importers:
 
   libs-ts/cover-component:
     dependencies:
-      '@friends-library/adoc-utils':
-        specifier: workspace:*
-        version: link:../adoc-utils
       '@friends-library/lulu':
         specifier: workspace:*
         version: link:../lulu

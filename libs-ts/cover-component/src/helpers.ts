@@ -1,6 +1,5 @@
 import React from 'react';
 import { toRoman } from 'roman-numerals';
-import { quotify } from '@friends-library/adoc-utils';
 import type { Lang } from '@friends-library/types';
 
 export function overridable(
@@ -76,15 +75,6 @@ export function prepareAuthor(
 
 function ensureRoman(str: string): string {
   return str.match(/^\d+$/) ? toRoman(Number(str)) : str;
-}
-
-export function formatBlurb(blurb: string): string {
-  return quotify(blurb)
-    .replace(/"`/g, `“`)
-    .replace(/`"/g, `”`)
-    .replace(/'`/g, `‘`)
-    .replace(/`'/g, `’`)
-    .replace(/--/g, `–`);
 }
 
 export function getHtmlFragments(html: string): Record<string, string> {
