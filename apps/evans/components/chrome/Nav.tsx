@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import Link from 'next/link';
+import { t } from '@friends-library/locale';
 import FriendsLogo from '../core/LogoFriends';
 import AmigosLogo from '../core/LogoAmigos';
 import Hamburger from './Hamburger';
@@ -60,6 +61,7 @@ const Nav: React.FC<Props> = ({
       <Link
         href="/"
         prefetch={false}
+        aria-label={t`Friends Library`}
         className={cx(`m-0 sm:inline mr-4 sm:mr-0`, {
           'hidden flex-grow-0': searching,
           'flex-grow': !searching,

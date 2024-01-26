@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { t } from '@friends-library/locale';
 
 interface Props {
   query: string;
@@ -32,6 +33,7 @@ const SearchInput: React.FC<Props> = ({
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        aria-label={t`Search`}
         className={cx(
           `SearchInput__input`,
           // purgeCSS: border-flgray-400 border-flprimary
