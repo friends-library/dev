@@ -7,7 +7,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just ../../prettier",
-    "format:check": "just ../../prettier-check"
+    "format:check": "just ../../prettier-check",
+    "postinstall": "cd ./components/core/ && cp LogoFriends.tsx Logo.tsx && cp LogoAmigos.tsx LogoAlt.tsx"
   },
   "dependencies": {
     "@friends-library/pairql": "workspace:*",

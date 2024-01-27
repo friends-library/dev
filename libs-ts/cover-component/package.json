@@ -11,9 +11,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just prettier",
-    "format:check": "just prettier-check",
-    "prepack": "bash ./prepack.sh",
-    "postpack": "bash ./postpack.sh"
+    "format:check": "just prettier-check"
   },
   "dependencies": {
     "@friends-library/lulu": "workspace:*",

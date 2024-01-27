@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import Link from 'next/link';
 import { t } from '@friends-library/locale';
-import FriendsLogo from '../core/LogoFriends';
-import AmigosLogo from '../core/LogoAmigos';
+import Logo from '../core/Logo';
 import Hamburger from './Hamburger';
 import TopNavSearch from './algolia/TopNavSearch';
 import CartBadge from './algolia/CartBadge';
@@ -25,7 +24,6 @@ const Nav: React.FC<Props> = ({
 }) => {
   const [searching, setSearching] = useState<boolean>(initialSearching || false);
   useEscapeable(`.TopNavSearch`, searching, setSearching);
-  const Logo = LANG === `es` ? AmigosLogo : FriendsLogo;
 
   useEffect(() => {
     const vimActivate: (e: KeyboardEvent) => any = (e) => {

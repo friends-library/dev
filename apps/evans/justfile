@@ -1,16 +1,16 @@
 _default:
   @just --choose
 
-dev-en: write-cover-css
+dev-en: lang-en write-cover-css
   @NEXT_PUBLIC_LANG=en pnpm next dev --port 7222
 
-dev-es: write-cover-css
+dev-es: lang-es write-cover-css
   @NEXT_PUBLIC_LANG=es pnpm next dev --port 7333
 
-build-en: write-cover-css
+build-en: lang-en write-cover-css web-covers && unweb-covers
   @NEXT_PUBLIC_LANG=en pnpm next build
 
-build-es: write-cover-css
+build-es: lang-es write-cover-css web-covers && unweb-covers
   @NEXT_PUBLIC_LANG=es pnpm next build
 
 build-analyze:
@@ -23,6 +23,27 @@ test:
   @pnpm vitest . --watch
 
 # helpers
+
+[private]
+lang-en:
+  @cp ./components/core/Logo{Friends,}.tsx
+  @cp ./components/core/Logo{Amigos,Alt}.tsx
+
+[private]
+lang-es:
+  @cp ./components/core/Logo{Amigos,}.tsx
+  @cp ./components/core/Logo{Friends,Alt}.tsx
+
+[private]
+web-covers:
+  @mv ../../libs-ts/cover-component/src/Logo{Spanish,Icon,}.tsx .
+  @cp ../../libs-ts/cover-component/src/Logo{.web,}.tsx
+  @cp ../../libs-ts/cover-component/src/LogoSpanish{.web,}.tsx
+  @cp ../../libs-ts/cover-component/src/LogoIcon{.web,}.tsx
+
+[private]
+unweb-covers:
+  @mv ./Logo{,Icon,Spanish}.tsx ../../libs-ts/cover-component/src/
 
 [private]
 write-cover-css:
