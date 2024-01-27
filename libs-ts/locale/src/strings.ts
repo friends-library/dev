@@ -36,6 +36,7 @@ const strings: { [k: string]: string } = {
   'The Friends Library': `La Biblioteca de los Amigos`,
   'Friends Library Publishing': `La Biblioteca de los Amigos`,
   'Friends Library': `Biblioteca de los Amigos`,
+  'Friends Library App': `Aplicación de Bibliotecas de Los Amigos`,
   'View %s More': `Ver %s más`,
   'View More': `Ver más`,
   'Your search returned no results': `Tu búsqueda no obtuvo resultados`,
