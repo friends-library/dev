@@ -70,7 +70,7 @@ const threeD: CoverCssModule = (scaler, scope) => {
       }
 
       .Cover.trim--__SIZE__.Cover--3d .spine {
-        transform: rotateY(-90deg) translateZ(${width / 2}in);
+        transform: rotateY(${safari17Fix(`-90`)}deg) translateZ(${width / 2}in);
       }
 
       .Cover.trim--__SIZE__.Cover--3d .top {
@@ -94,7 +94,7 @@ const threeD: CoverCssModule = (scaler, scope) => {
       }
 
       .Cover.trim--__SIZE__.Cover--3d.perspective--spine .box {
-        transform: translateZ(-${width / 2}in) rotateY(90deg);
+        transform: translateZ(-${width / 2}in) rotateY(${safari17Fix(`90`)}deg);
       }
     `,
   );
@@ -103,3 +103,10 @@ const threeD: CoverCssModule = (scaler, scope) => {
 };
 
 export default threeD;
+
+// bug in safari 17.3 turns things invisible at +-90deg exactly ¯\_(ツ)_/¯
+// @see https://bugs.webkit.org/show_bug.cgi?id=265309k
+// try to remove at some point in the future
+function safari17Fix(input: string): string {
+  return `${input}.0000001`;
+}
