@@ -15,8 +15,10 @@ const GetAppLink: React.FC<Props> = ({ className, inFooter }) => (
     <i
       aria-hidden
       className={cx(
-        `fa fa-mobile text-md opacity-70 ml-2`,
-        inFooter ? `scale-125 -translate-y-px` : `translate-y-px`,
+        `fa fa-mobile opacity-70 ml-2`,
+        inFooter
+          ? `!text-[1.2rem] scale-[1.4] -translate-y-px`
+          : `!text-[1.7rem] translate-y-px`,
       )}
     />
   </Link>

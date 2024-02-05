@@ -2,7 +2,7 @@ import React from 'react';
 import invariant from 'tiny-invariant';
 import { t } from '@friends-library/locale';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import { LANG, NODE_ENV } from '@/lib/env';
+import { LANG } from '@/lib/env';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
 import BookTeaserCards from '@/components/core/BookTeaserCards';
@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
       documentSlug: document.slug,
     })),
   );
-  if (NODE_ENV === `production`) {
+  if (process.env.VERCEL) {
     generatePodcastFeeds(props.document);
   }
   return {

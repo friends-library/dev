@@ -7,7 +7,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just ../../prettier",
-    "format:check": "just ../../prettier-check"
+    "format:check": "just ../../prettier-check",
+    "postinstall": "cd ./components/core/ && cp LogoFriends.tsx Logo.tsx && cp LogoAmigos.tsx LogoAlt.tsx"
   },
   "dependencies": {
     "@friends-library/pairql": "workspace:*",
@@ -41,6 +42,7 @@
     "@friends-library/lulu": "workspace:*",
     "@friends-library/theme": "workspace:*",
     "@friends-library/types": "workspace:*",
+    "@next/bundle-analyzer": "14.1.0",
     "@types/he": "1.2.3",
     "@types/js-cookie": "^2.2.6",
     "@types/js-yaml": "3.12.7",

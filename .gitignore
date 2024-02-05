@@ -19,7 +19,10 @@ apps/poster/src/cover-props.ts
 apps/cli/src/cmd/audio/derived/
 apps/api/duplicate-podcast-downloads.json
 apps/evans/.next/
+apps/evans/Logo*.tsx
 apps/evans/styles/cover.css
+apps/evans/components/core/Logo.tsx
+apps/evans/components/core/LogoAlt.tsx
 **/.parcel-cache
 **/.netlify/
 

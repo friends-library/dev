@@ -1,7 +1,7 @@
 import React from 'react';
 import type { CoverProps } from '@friends-library/types';
 import Diamonds from './Diamonds';
-import { overridable, formatBlurb, getHtmlFragments } from './helpers';
+import { overridable, getHtmlFragments } from './helpers';
 import Brackets from './Brackets';
 import LogoSpanish from './LogoSpanish';
 import Logo from './Logo';
@@ -33,7 +33,7 @@ const Back: React.FC<Props> = ({
               fragments,
               <div className="blurb">
                 <Brackets />
-                {formatBlurb(blurb)}
+                {blurb}
               </div>,
             )}
             {isbn && (

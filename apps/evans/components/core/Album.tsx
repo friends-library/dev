@@ -1,18 +1,14 @@
 import React from 'react';
 import cx from 'classnames';
 import { Front } from '@friends-library/cover-component';
-import LogoFriends from './LogoFriends';
-import LogoAmigos from './LogoAmigos';
+import Logo from './Logo';
 import { toCoverProps, type CoverData } from '@/lib/cover';
-import { LANG } from '@/lib/env';
 
 type Props = Omit<CoverData, 'description' | 'paperbackVolumes' | 'printSize'> & {
   className?: string;
   scaler?: number;
   scope?: string;
 };
-
-const Logo = LANG === `en` ? LogoFriends : LogoAmigos;
 
 const Album: React.FC<Props> = ({ className, scaler, scope, ...coverData }) => (
   <div

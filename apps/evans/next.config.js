@@ -1,5 +1,8 @@
 // @ts-check
 const { readFileSync } = require(`node:fs`);
+const withBundleAnalyzer = require(`@next/bundle-analyzer`)({
+  enabled: process.env.ANALYZE === `true`,
+});
 // load env from monorepo root
 require(`dotenv`).config({ path: `../../.env` });
 const LANG = process.env.NEXT_PUBLIC_LANG || `en`;
@@ -78,7 +81,7 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);
 
 function staticFiles() {
   /** @type {Array<[string, string | null]>} */

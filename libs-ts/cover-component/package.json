@@ -11,12 +11,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just prettier",
-    "format:check": "just prettier-check",
-    "prepack": "bash ./prepack.sh",
-    "postpack": "bash ./postpack.sh"
+    "format:check": "just prettier-check"
   },
   "dependencies": {
-    "@friends-library/adoc-utils": "workspace:*",
     "@friends-library/lulu": "workspace:*",
     "@friends-library/types": "workspace:*",
     "classnames": "^2.3.1",
