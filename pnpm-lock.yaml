@@ -496,8 +496,8 @@ importers:
         specifier: 13.4.12
         version: 13.4.12(react-dom@18.2.0)(react@18.2.0)
       next-bg-image:
-        specifier: 0.2.0
-        version: 0.2.0(next@13.4.12)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 0.3.0-beta1
+        version: 0.3.0-beta1(next@13.4.12)(react-dom@18.2.0)(react@18.2.0)
       postcss:
         specifier: 8.4.21
         version: 8.4.21
@@ -23835,8 +23835,8 @@ packages:
       qs: 6.11.0
     dev: true
 
-  /next-bg-image@0.2.0(next@13.4.12)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-PpcBOmVf+i64UmYT28YM+AeOo+egNwrBxQQpv1fW/OHAHmikOqD0tbLMuiZpENwXAeXd5sxJqY6rPMGYjgAh+g==}
+  /next-bg-image@0.3.0-beta1(next@13.4.12)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-TwYtgsFTWEEKJJbLdSiLKr4W8uNdAKJ+BSjBGCtCHXBZ+qO3Ra1rDBlJa+GC74hwh+FbOQq5Bk/Vb9f8vVwG9w==}
     peerDependencies:
       next: '>=13.0.0'
       react: '>=18.0.0'
