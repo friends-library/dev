@@ -88,7 +88,7 @@ const ShippingAddress: React.FC<Props> = ({
             ? t`Street address is required`
             : t`Must be less than 30 characters`
         }
-        valid={!streetBlurred || (!!street && street.length < 30)}
+        valid={!streetBlurred || (street.trim().length > 0 && street.length < 30)}
         autoComplete="address-line1"
         name="address"
       />
@@ -104,7 +104,7 @@ const ShippingAddress: React.FC<Props> = ({
       <Input
         wrapClassName="md:order-2"
         invalidMsg={t`City is required`}
-        valid={!cityBlurred || !!city}
+        valid={!cityBlurred || city.trim().length > 0}
         onChange={(val) => setCity(val)}
         onFocus={() => setCityBlurred(false)}
         onBlur={() => setCityBlurred(true)}
@@ -116,7 +116,7 @@ const ShippingAddress: React.FC<Props> = ({
       <Input
         wrapClassName="md:order-4"
         invalidMsg={t`State / Province / Region is required`}
-        valid={!stateBlurred || !!state}
+        valid={!stateBlurred || state.trim().length > 0}
         onChange={(val) => setState(val)}
         onFocus={() => setStateBlurred(false)}
         onBlur={() => setStateBlurred(true)}
@@ -128,7 +128,7 @@ const ShippingAddress: React.FC<Props> = ({
       <Input
         wrapClassName="md:order-6"
         invalidMsg={t`ZIP / Postal Code is required`}
-        valid={!zipBlurred || !!zip}
+        valid={!zipBlurred || zip.trim().length > 0}
         onChange={(val) => setZip(val)}
         onFocus={() => setZipBlurred(false)}
         onBlur={() => setZipBlurred(true)}

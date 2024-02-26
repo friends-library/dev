@@ -47,14 +47,14 @@ export function useAddress(
       country,
     },
     !!(
-      name &&
-      street &&
+      name.trim().length > 0 &&
+      street.trim().length > 0 &&
       street.length < 30 &&
       street2.length < 30 &&
-      city &&
-      state &&
-      zip &&
-      country &&
+      city.trim().length > 0 &&
+      state.trim().length > 0 &&
+      zip.trim().length > 0 &&
+      country.trim().length > 0 &&
       email.includes(`@`)
     ),
   ];
