@@ -132,9 +132,7 @@ const DownloadLinks: React.FC<Props> = ({
                         window.location.href = mp3ZipLoggedDownloadUrl[quality];
                       }
                     }
-                  : () => {
-                      window.location.href = mp3ZipLoggedDownloadUrl[quality];
-                    }
+                  : undefined
               }
             >
               {downloading
