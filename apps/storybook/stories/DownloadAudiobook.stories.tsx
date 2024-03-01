@@ -26,6 +26,7 @@ export const Default: Story = props({
   m4bLoggedDownloadUrl: { hq: ``, lq: `` },
   mp3ZipLoggedDownloadUrl: { hq: ``, lq: `` },
   podcastLoggedDownloadUrl: { hq: ``, lq: `` },
+  mp3LoggedDownloadUrls: [{ hq: ``, lq: `` }],
   embedId: { hq: 3, lq: 4 },
   setQuality: () => {},
 });
