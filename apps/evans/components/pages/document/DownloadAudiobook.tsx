@@ -3,12 +3,14 @@ import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
 import type { AudioQuality, AudioQualities } from '@friends-library/types';
+import type { AudioPart } from './ListenBlock';
 import QualitySwitch from './QualitySwitch';
 import Dual from '@/components/core/Dual';
 import { formatFilesize } from '@/lib/filesize';
 
 interface Props {
   className?: string;
+  tracks: AudioPart[];
   quality: AudioQuality;
   setQuality(quality: AudioQuality): unknown;
   isIncomplete: boolean;
@@ -21,6 +23,7 @@ interface Props {
 
 const DownloadLinks: React.FC<Props> = ({
   className,
+  tracks,
   quality,
   setQuality,
   isIncomplete,
@@ -91,12 +94,40 @@ const DownloadLinks: React.FC<Props> = ({
           etc.)
         </dd>
         <dt className="uppercase text-md mb-1">
-          <a href={mp3ZipLoggedDownloadUrl[quality]} className="hover:underline">
-            {t`Download mp3 Files as Zip`} -{` `}
-            <span className="text-flprimary">
-              ({formatFilesize(mp3ZipFilesize[quality])})
-            </span>
-          </a>
+          {tracks.length > 1 ? (
+            <a href={mp3ZipLoggedDownloadUrl[quality]} className="hover:underline">
+              {t`Download mp3 Files as Zip`} -{` `}
+              <span className="text-flprimary">
+                ({formatFilesize(mp3ZipFilesize[quality])})
+              </span>
+            </a>
+          ) : (
+            <button
+              className="hover:underline uppercase text-md tracking-widest"
+              onClick={() => {
+                tracks[0] &&
+                  fetch(tracks[0].mp3Url[quality]).then(async (response) => {
+                    if (!tracks[0]) {
+                      throw new Error(`no track provided`);
+                    }
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement(`a`);
+                    link.href = url;
+                    link.setAttribute(`download`, tracks[0].title);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                    window.URL.revokeObjectURL(url);
+                  });
+              }}
+            >
+              {t`Download mp3 File`} -{` `}
+              <span className="text-flprimary">
+                ({formatFilesize(mp3ZipFilesize[quality])})
+              </span>
+            </button>
+          )}
         </dt>
         <dd className="text-flgray-500 text-xs mb-4 pb-1">
           <Dual.Frag>
