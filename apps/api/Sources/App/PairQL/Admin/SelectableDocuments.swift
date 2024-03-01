@@ -18,7 +18,7 @@ struct SelectableDocuments: Pair {
 extension SelectableDocuments: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    fatalError()
+    return try await .load()
   }
 }
 
