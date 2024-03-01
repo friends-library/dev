@@ -48,11 +48,11 @@ extension CreateEntity: Resolver {
         slug: input.slug,
         filename: input.filename,
         published: input.published,
-        originalTitle: input.originalTitle,
+        originalTitle: nilIfEmpty(input.originalTitle),
         incomplete: input.incomplete,
         description: input.description,
         partialDescription: input.partialDescription,
-        featuredDescription: input.featuredDescription
+        featuredDescription: nilIfEmpty(input.featuredDescription)
       )
 
     case .documentTag(let input):
@@ -67,7 +67,7 @@ extension CreateEntity: Resolver {
         id: input.id,
         documentId: input.documentId,
         type: input.type,
-        editor: input.editor,
+        editor: nilIfEmpty(input.editor),
         isDraft: input.isDraft,
         paperbackSplits: try input.paperbackSplits.map { try .fromArray($0) },
         paperbackOverrideSize: input.paperbackOverrideSize
@@ -93,7 +93,7 @@ extension CreateEntity: Resolver {
         source: input.source,
         text: input.text,
         order: input.order,
-        context: input.context
+        context: nilIfEmpty(input.context)
       )
 
     case .friendResidence(let input):
@@ -143,4 +143,8 @@ extension CreateEntity: Resolver {
     try await model.create()
     return .success
   }
+}
+
+func nilIfEmpty(_ string: String?) -> String? {
+  string?.isEmpty == true ? nil : string
 }
