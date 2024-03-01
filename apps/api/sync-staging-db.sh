@@ -36,7 +36,7 @@ psql --dbname staging --file ~/staging-preserved-tables.sql 1> /dev/null 2>> ~/s
 pm2 restart /^staging_/ > /dev/null \
   && echo "✅ Restarted pm2 staging process..."
 
-rm -f ~/staging-preserved-tables.sql ~/prod-to-staging.sql
+rm -f ~/prod-to-staging.sql
 
 if [ -s ~/staging-db-sync-err.txt ]; then
   echo "🚨 Errors from psql during sync:" > /dev/stderr
