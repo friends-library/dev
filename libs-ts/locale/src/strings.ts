@@ -96,6 +96,7 @@ const strings: { [k: string]: string } = {
   'Download Audiobook': `Descargar Audiolibro`,
   'Download as': `Descargar como`,
   'Download mp3 Files as Zip': `Descargar archivos Mp3 como Zip`,
+  'Download mp3 File': `Descargar archivo Mp3`,
   'Higher quality, larger file size': `Mayor Calidad, mayor tamaño del archivo`,
   'Lower quality, faster download': `Menor calidad, pero se descarga más rápido`,
   'Need Help?': `¿Necesitas Ayuda?`,

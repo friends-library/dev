@@ -91,6 +91,9 @@ const DocumentPage: React.FC<Props> = ({
         podcastLoggedDownloadUrl={
           document.primaryEdition.audiobook.podcastLoggedDownloadUrl
         }
+        mp3LoggedDownloadUrls={document.primaryEdition.audiobook.parts.map(
+          (part) => part.loggedDownloadUrl,
+        )}
       />
     )}
     <BookTeaserCards

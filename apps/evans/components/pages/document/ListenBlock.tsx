@@ -21,6 +21,7 @@ export interface Props {
   m4bLoggedDownloadUrl: AudioQualities<string>;
   mp3ZipLoggedDownloadUrl: AudioQualities<string>;
   podcastLoggedDownloadUrl: AudioQualities<string>;
+  mp3LoggedDownloadUrls: Array<AudioQualities<string>>;
 }
 
 const ListenBlock: React.FC<Props> = ({ tracks, ...props }) => {
@@ -43,6 +44,7 @@ const ListenBlock: React.FC<Props> = ({ tracks, ...props }) => {
     >
       <DownloadAudiobook
         className="mb-8 sm:mb-16 lg:border lg:border-l-0 lg:-mt-12 lg:pt-12 lg:px-12 border-flgray-200 lg:mr-6 shrink-0"
+        title={tracks[0]?.title ?? ``}
         {...props}
         quality={quality}
         setQuality={setQuality}
