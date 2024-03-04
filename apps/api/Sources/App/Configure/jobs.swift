@@ -11,7 +11,7 @@ public extension Configure {
     app.queues.use(.fluent(useSoftDeletes: false))
 
     app.queues.schedule(ProcessOrdersJob()).hourly().at(15)
-    app.queues.schedule(SyncStagingDbJob()).hourly().at(45)
+    app.queues.schedule(SyncStagingDbJob()).daily().at(7, 15)
     app.queues.schedule(VerifyConsistentChapterHeadingsJob()).daily().at(8, 0)
     app.queues.schedule(VerifyEntityValidityJob()).daily().at(8, 15)
     app.queues.schedule(VerifyCloudAssets()).weekly().on(.friday).at(6, 30)
