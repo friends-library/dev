@@ -22,7 +22,7 @@ export default class ErrorBoundary extends React.Component<Props, State> {
   public override componentDidCatch(error: unknown, errorInfo: unknown): void {
     if (NODE_ENV === `development`) {
       // eslint-disable-next-line no-console
-      console.error(error);
+      console.error(`ErrorBoundary`, error, JSON.stringify(errorInfo));
       return;
     }
 
