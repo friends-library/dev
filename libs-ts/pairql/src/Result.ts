@@ -62,7 +62,7 @@ export default class Result<T> {
     if (this.data.type === `success`) {
       return this.data.value;
     }
-    throw this.data.error;
+    throw new Error(`PqlError: ${JSON.stringify(this.data.error)}`);
   }
 
   public get value(): T | undefined {

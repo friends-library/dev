@@ -63,7 +63,14 @@ extension CreateEntity: Resolver {
       )
 
     case .edition(let input):
-      model = Edition(
+      let isbn: Isbn
+      do {
+        isbn = try await Isbn.query().where(.isNull(.editionId)).first()
+      } catch {
+        await slackError("Failed to query ISBN to assign to new edition: \(error)")
+        throw error
+      }
+      let edition = Edition(
         id: input.id,
         documentId: input.documentId,
         type: input.type,
@@ -72,6 +79,9 @@ extension CreateEntity: Resolver {
         paperbackSplits: try input.paperbackSplits.map { try .fromArray($0) },
         paperbackOverrideSize: input.paperbackOverrideSize
       )
+      isbn.editionId = edition.id
+      try await isbn.save()
+      model = edition
 
     case .friend(let input):
       model = Friend(
