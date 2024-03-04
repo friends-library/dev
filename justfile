@@ -95,8 +95,8 @@ migrate-up: build-api
 migrate-down: build-api
 	@just exec-api migrate --revert --yes
 
-test-api:
-  @cd apps/api && SWIFT_DETERMINISTIC_HASHING=1 swift test
+test-api isolate="":
+  @just swift-watch-test apps/api {{isolate}}
 
 db-sync:
   @cd apps/api && pnpm ts-node ./sync.ts
