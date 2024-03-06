@@ -7,7 +7,7 @@ on:
 jobs:
   build-libs:
     runs-on: ubuntu-latest
-    container: swift:5.8-focal
+    container: swift:5.9-focal
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -26,7 +26,7 @@ jobs:
 
   test-libs:
     runs-on: ubuntu-latest
-    container: swift:5.8-focal
+    container: swift:5.9-focal
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -41,7 +41,7 @@ jobs:
 
   build-api:
     runs-on: ubuntu-latest
-    container: swift:5.8-focal
+    container: swift:5.9-focal
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -55,7 +55,7 @@ jobs:
 
   test-api:
     runs-on: ubuntu-latest
-    container: swift:5.8-focal
+    container: swift:5.9-focal
     env:
       DATABASE_HOST: postgres
     services:
