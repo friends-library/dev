@@ -10,7 +10,7 @@ let package = Package(
     .github("vapor/fluent-postgres-driver@2.2.2"),
     .github("m-barthelemy/vapor-queues-fluent-driver@1.2.0"),
     .github("jaredh159/swift-tagged@0.8.2"),
-    .package(url: "https://github.com/pointfreeco/swift-nonempty", branch: "main"),
+    .github("pointfreeco/swift-nonempty@0.5.0"),
     .github("pointfreeco/vapor-routing@0.1.2"),
     .github("kylehughes/RomanNumeralKit@1.0.0"),
     .github("JohnSundell/ShellOut@2.0.0"),
