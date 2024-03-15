@@ -9,6 +9,7 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
   case order(OrderRoute)
   case evans(EvansRoute)
   case evansBuild(EvansBuildRoute)
+  case native(NativeRoute)
 
   static func respond(to route: Self, in context: Context) async throws -> Response {
     switch route {
@@ -22,6 +23,8 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
       return try await EvansRoute.respond(to: evansRoute, in: context)
     case .evansBuild(let evansBuildRoute):
       return try await EvansBuildRoute.respond(to: evansBuildRoute, in: context)
+    case .native(let nativeRoute):
+      return try await NativeRoute.respond(to: nativeRoute, in: context)
     }
   }
 
@@ -50,6 +53,11 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
       Method.post
       Path { "evans-build" }
       EvansBuildRoute.router
+    }
+    Route(.case(PairQLRoute.native)) {
+      Method.post
+      Path { "native" }
+      NativeRoute.router
     }
   }
 
@@ -114,5 +122,8 @@ private func logOperation(_ route: PairQLRoute, _ request: Request, _ duration: 
   case .evansBuild:
     Current.logger
       .notice("PairQL request: \("EvansBuild".green) \(operation) \(elapsed)")
+  case .native:
+    Current.logger
+      .notice("PairQL request: \("Native".lightGreen) \(operation) \(elapsed)")
   }
 }

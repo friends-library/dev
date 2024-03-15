@@ -6,6 +6,7 @@ import { API_URL, LANG } from '../env';
 import FS from './fs';
 import Player from './player';
 import { EbookCss } from './models';
+import logError from './errors';
 
 export default class Service {
   public static audioSeekTo(position: number): Promise<void> {
@@ -83,12 +84,33 @@ export default class Service {
     return FS.readFile(entity);
   }
 
-  public static async networkFetchEditions(): Promise<any> {
+  public static async networkFetchEditions(): Promise<
+    { type: 'success'; json: any } | { type: 'error' }
+  > {
     try {
       const res = await fetch(`${API_URL}/app-editions/v1/${LANG}`);
-      return await res.json();
-    } catch (err) {
-      // ¯\_(ツ)_/¯
+      const text = await res.text();
+      if (res.status >= 300) {
+        logError(
+          null,
+          `Unexpected status fetching editions: ${res.status}`,
+          `text=${text.slice(0, 500)}`,
+        );
+        return { type: `error` };
+      }
+      try {
+        return { type: `success`, json: JSON.parse(text) };
+      } catch (error) {
+        logError(
+          error,
+          `JSON.parse() error fetching editions`,
+          `text=${text.slice(0, 500)}`,
+        );
+        return { type: `error` };
+      }
+    } catch (error) {
+      logError(error, `Error fetching editions`);
+      return { type: `error` };
     }
   }
 

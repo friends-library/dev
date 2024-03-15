@@ -15,8 +15,11 @@ import { INITIAL_STATE } from './';
 export default async function getStore(): Promise<Store<any, AnyAction>> {
   Player.init();
   await FS.init();
-  const editions = await FS.readJson(FileSystem.paths.editions);
-  Editions.setResourcesIfValid(editions);
+
+  if (FS.hasFile({ fsPath: FileSystem.paths.editions })) {
+    const editions = await FS.readJson(FileSystem.paths.editions);
+    Editions.setResourcesIfValid(editions);
+  }
 
   let savedState: Partial<State> = {};
   if (FS.hasFile({ fsPath: FileSystem.paths.state })) {

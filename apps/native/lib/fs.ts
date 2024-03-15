@@ -4,6 +4,7 @@ import base64 from 'react-native-base64';
 import SparkMD5 from 'spark-md5';
 import type { ValuesOf } from 'x-ts-utils';
 import type { FsPath } from './models';
+import logError from './errors';
 
 export class FileSystem {
   private manifest: Record<string, number | undefined> = {};
@@ -59,7 +60,8 @@ export class FileSystem {
         const contents = await RNFS.readFile(this.abspath(file.fsPath));
         return { md5: SparkMD5.hash(contents), contents };
       }
-    } catch {
+    } catch (error) {
+      logError(error, `FS.md5File()`, `file=${file.fsPath}`);
       return null;
     }
   }
@@ -86,10 +88,14 @@ export class FileSystem {
           delete this.downloads[relPath];
           return bytesWritten;
         })
-        .catch(() => null);
+        .catch((error) => {
+          logError(error, `FS.download() 1`, `relPath=${relPath}`);
+          return null;
+        });
 
       return this.downloads[relPath] || Promise.resolve(null);
-    } catch {
+    } catch (error) {
+      logError(error, `FS.download() 2`, `relPath=${relPath}`);
       return Promise.resolve(null);
     }
   }
@@ -166,7 +172,10 @@ export class FileSystem {
     try {
       await RNFS.unlink(this.abspath(relPath));
       return true;
-    } catch {
+    } catch (error) {
+      if (!String(error).includes(`ENOENT`)) {
+        logError(error, `FS.delete()`, `relPath=${relPath}`);
+      }
       return false;
     }
   }
@@ -186,7 +195,10 @@ export class FileSystem {
         this.abspath(path),
         encoding === `binary` ? `base64` : encoding,
       );
-    } catch {
+    } catch (error) {
+      if (!String(error).includes(`ENOENT`)) {
+        logError(error, `FS.readFile()`, `path=${path}`, `encoding=${encoding}`);
+      }
       return Promise.resolve(null);
     }
   }
@@ -212,8 +224,14 @@ export class FileSystem {
         encoding === `binary` ? `base64` : encoding,
       );
       this.manifest[path] = contents.length;
-    } catch {
-      // ¯\_(ツ)_/¯
+    } catch (error) {
+      logError(
+        error,
+        `FS.writeFile()`,
+        `path=${path}`,
+        `encoding=${encoding}`,
+        `length=${contents.length}`,
+      );
     }
   }
 
@@ -224,7 +242,8 @@ export class FileSystem {
     }
     try {
       return JSON.parse(json);
-    } catch {
+    } catch (error) {
+      logError(error, `FS.readJson()`, `path=${path}`);
       return null;
     }
   }
@@ -236,7 +255,8 @@ export class FileSystem {
     try {
       const string = JSON.stringify(data);
       return this.writeFile({ fsPath: path }, string);
-    } catch {
+    } catch (error) {
+      logError(error, `FS.writeJson()`, `path=${path}`);
       return;
     }
   }
@@ -248,7 +268,8 @@ export class FileSystem {
     try {
       await RNFS.moveFile(this.abspath(srcPath), this.abspath(destPath), {});
       return true;
-    } catch (err) {
+    } catch (error) {
+      logError(error, `FS.moveFile()`, `srcPath=${srcPath}`, `destPath=${destPath}`);
       return false;
     }
   }

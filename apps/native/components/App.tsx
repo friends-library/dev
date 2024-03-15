@@ -20,6 +20,7 @@ import Service from '../lib/service';
 import FS, { FileSystem } from '../lib/fs';
 import Editions from '../lib/Editions';
 import tw from '../lib/tailwind';
+import logError from '../lib/errors';
 import ReadHeader from './ReadHeader';
 
 const Stack = createStackNavigator<StackParamList>();
@@ -50,12 +51,19 @@ const App: React.FC = () => {
       setFetchedResources(true);
       Service.downloadLatestEbookCss();
       Service.networkFetchEditions()
-        .then((resources) => {
-          if (Editions.setResourcesIfValid(resources)) {
-            FS.writeJson(FileSystem.paths.editions, resources);
+        .then((result) => {
+          switch (result.type) {
+            case `error`:
+              Editions.handleLoadError();
+              break;
+            case `success`:
+              if (Editions.setResourcesIfValid(result.json)) {
+                FS.writeJson(FileSystem.paths.editions, result.json);
+              }
+              break;
           }
         })
-        .catch(() => {});
+        .catch((e) => logError(e, `App.tsx->Service.networkFetchEditions()`));
     }
   }, [networkConnected, fetchedResources, setFetchedResources]);
 
