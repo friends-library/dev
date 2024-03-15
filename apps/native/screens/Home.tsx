@@ -34,70 +34,73 @@ const Home: React.FC<Props> = ({ navigation }) => {
     lastEbook: s.resume.lastEbookEditionId,
   }));
 
-  if (Editions.getEditions().length === 0) {
-    return connected ? (
-      <FullscreenLoading />
-    ) : (
-      <FullscreenError
-        errorMsg={
-          LANG === `en`
-            ? `Unable to download book data, no internet connection`
-            : `No es posible descargar el contenido del libro, no hay conexión de internet.`
-        }
-      />
-    );
+  switch (true) {
+    case connected && Editions.state() === `loading`:
+      return <FullscreenLoading />;
+    case !connected && Editions.state() !== `loaded`:
+      return (
+        <FullscreenError
+          errorMsg={
+            LANG === `en`
+              ? `Unable to download book data, no internet connection`
+              : `No es posible descargar el contenido del libro, no hay conexión de internet.`
+          }
+        />
+      );
+    case Editions.state() !== `loaded`:
+      return <FullscreenError />;
+    default:
+      return (
+        <SafeAreaView style={tw`flex-grow items-center justify-between`}>
+          <View style={tw`self-stretch h-[${lastEbook && lastAudio ? 15 : 25}%]`}>
+            <TouchableOpacity
+              style={tw`flex-row items-center justify-center pt-6 mt-1`}
+              onPress={() => navigation.navigate(`Settings`)}
+            >
+              <Icon name="gear" style={tw`pr-2 text-gray-500 mt-px text-sm`} />
+              <Sans size={16} style={tw`text-gray-500`}>
+                {t`Settings`}
+              </Sans>
+            </TouchableOpacity>
+          </View>
+          <View style={tw`self-stretch flex items-center`}>
+            <HomeButton
+              title={t`Listen`}
+              onPress={() => navigation.navigate(`AudioBookList`, { listType: `audio` })}
+              backgroundColor={LANG === `en` ? `flmaroon` : `flgold`}
+              numEditions={Editions.numAudios()}
+            />
+            <HomeButton
+              title={t`Read`}
+              onPress={() => navigation.navigate(`EBookList`, { listType: `ebook` })}
+              numEditions={Editions.numDocuments()}
+              backgroundColor={`flblue`}
+            />
+            {!connected && (
+              <Sans style={tw`text-center mt-2 text-[rgb(163,7,7)]`}>
+                {t`No internet connection`}.
+              </Sans>
+            )}
+          </View>
+          <View style={tw`self-stretch justify-end pb-6 px-6 items-center h-[25%]`}>
+            {lastEbook && (
+              <Continue
+                type="ebook"
+                editionId={lastEbook}
+                onPress={() => navigation.navigate(`Read`, { editionId: lastEbook })}
+              />
+            )}
+            {lastAudio && (
+              <Continue
+                type="audio"
+                editionId={lastAudio}
+                onPress={() => navigation.navigate(`Listen`, { editionId: lastAudio })}
+              />
+            )}
+          </View>
+        </SafeAreaView>
+      );
   }
-
-  return (
-    <SafeAreaView style={tw`flex-grow items-center justify-between`}>
-      <View style={tw`self-stretch h-[${lastEbook && lastAudio ? 15 : 25}%]`}>
-        <TouchableOpacity
-          style={tw`flex-row items-center justify-center pt-6 mt-1`}
-          onPress={() => navigation.navigate(`Settings`)}
-        >
-          <Icon name="gear" style={tw`pr-2 text-gray-500 mt-px text-sm`} />
-          <Sans size={16} style={tw`text-gray-500`}>
-            {t`Settings`}
-          </Sans>
-        </TouchableOpacity>
-      </View>
-      <View style={tw`self-stretch flex items-center`}>
-        <HomeButton
-          title={t`Listen`}
-          onPress={() => navigation.navigate(`AudioBookList`, { listType: `audio` })}
-          backgroundColor={LANG === `en` ? `flmaroon` : `flgold`}
-          numEditions={Editions.numAudios()}
-        />
-        <HomeButton
-          title={t`Read`}
-          onPress={() => navigation.navigate(`EBookList`, { listType: `ebook` })}
-          numEditions={Editions.numDocuments()}
-          backgroundColor={`flblue`}
-        />
-        {!connected && (
-          <Sans style={tw`text-center mt-2 text-[rgb(163,7,7)]`}>
-            {t`No internet connection`}.
-          </Sans>
-        )}
-      </View>
-      <View style={tw`self-stretch justify-end pb-6 px-6 items-center h-[25%]`}>
-        {lastEbook && (
-          <Continue
-            type="ebook"
-            editionId={lastEbook}
-            onPress={() => navigation.navigate(`Read`, { editionId: lastEbook })}
-          />
-        )}
-        {lastAudio && (
-          <Continue
-            type="audio"
-            editionId={lastAudio}
-            onPress={() => navigation.navigate(`Listen`, { editionId: lastAudio })}
-          />
-        )}
-      </View>
-    </SafeAreaView>
-  );
 };
 
 const HomeButton: React.FC<{

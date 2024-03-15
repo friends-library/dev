@@ -7,19 +7,31 @@ import type {
   AudioQuality,
 } from '../types';
 import type { DocumentEntityInterface } from './models';
+import logError, { safeStringify } from './errors';
 
 type EditionMap = Record<EditionId, EditionResource>;
+type Resources =
+  | { state: 'loading' }
+  | { state: 'loaded'; map: EditionMap }
+  | { state: 'error' };
 
 class Editions {
-  private resources: EditionMap = {};
+  private resources: Resources = { state: `loading` };
   private changeListeners: Array<() => unknown> = [];
 
+  public state(): 'loading' | 'loaded' | 'error' {
+    return this.resources.state;
+  }
+
   public get(editionId: EditionId): EditionResource | null {
-    return this.resources[editionId] ?? null;
+    if (this.resources.state === `loaded`) {
+      return this.resources.map[editionId] ?? null;
+    }
+    return null;
   }
 
   public getAudio(editionId: EditionId): Audio | null {
-    return this.resources[editionId]?.audio ?? null;
+    return this.get(editionId)?.audio ?? null;
   }
 
   public getDocumentEditions(document: DocumentEntityInterface): EditionResource[] {
@@ -61,31 +73,50 @@ class Editions {
   }
 
   public numDocuments(): number {
-    return Object.values(this.resources).filter((e) => e.isMostModernized).length;
+    return this.getEditions().filter((e) => e.isMostModernized).length;
   }
 
   public numAudios(): number {
-    return Object.values(this.resources).filter((e) => e.audio !== null).length;
+    return this.getEditions().filter((e) => e.audio !== null).length;
   }
 
   public getEditions(): EditionResource[] {
-    return Object.values(this.resources);
+    if (this.resources.state === `loaded`) {
+      return Object.values(this.resources.map);
+    }
+    return [];
   }
 
-  public setResources(resources: EditionResource[]): void {
-    this.resources = resources.reduce<EditionMap>((data, resource) => {
-      data[resource.id] = resource;
-      return data;
-    }, {});
-    this.changeListeners.forEach((listener) => listener());
+  public handleLoadError(): void {
+    // preserve previously loaded/cached resources on update load error
+    if (this.state() === `loading`) {
+      this.resources = { state: `error` };
+      this.changeListeners.forEach((listener) => listener());
+    }
   }
 
   public setResourcesIfValid(resources: unknown): boolean {
     if (editionResourcesValid(resources)) {
       this.setResources(resources);
+      this.changeListeners.forEach((listener) => listener());
       return true;
     }
+    logError(
+      null,
+      `invalid edition resources`,
+      `resources=${safeStringify(resources)}`.slice(0, 500),
+    );
+    this.handleLoadError();
     return false;
+  }
+
+  private setResources(resources: EditionResource[]): void {
+    const map = resources.reduce<EditionMap>((data, resource) => {
+      data[resource.id] = resource;
+      return data;
+    }, {});
+    this.resources = { state: `loaded`, map };
+    this.changeListeners.forEach((listener) => listener());
   }
 
   public addChangeListener(listener: () => unknown): void {

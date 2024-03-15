@@ -17,13 +17,11 @@ const EbookError: React.FC<{
 
 export default EbookError;
 
-function message(reason: 'no_internet' | 'unknown'): string {
-  if (LANG === `en`) {
-    return reason === `no_internet`
+function message(reason: 'no_internet' | 'unknown'): string | undefined {
+  if (reason === `no_internet`) {
+    return LANG === `en`
       ? `Unable to download, no internet connection.`
-      : `Unexpected error. Please try again.`;
+      : `No es posible descargar, no hay conexión de internet.`;
   }
-  return reason === `no_internet`
-    ? `No es posible descargar, no hay conexión de internet.`
-    : `Hubo un error inesperado. Por favor intenta nuevamente.`;
+  return undefined;
 }

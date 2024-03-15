@@ -1,12 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 import tw from '../lib/tailwind';
+import { LANG } from '../env';
 import { Serif } from './Text';
 
 const FullscreenError: React.FC<{
   bgColor?: string;
   textColor?: string;
-  errorMsg: string;
+  errorMsg?: string;
 }> = ({ bgColor = `rgba(0, 0, 0, 0)`, textColor = `rgb(3, 3, 3)`, errorMsg }) => (
   <View
     style={tw.style(`flex-grow items-center justify-center`, {
@@ -19,7 +20,9 @@ const FullscreenError: React.FC<{
       })}
       size={19}
     >
-      {errorMsg}
+      {errorMsg ?? LANG === `en`
+        ? `Unexpected error. Please try again, or contact us at info@friendslibrary.com if the problem persists.`
+        : `Ha ocurrido un error inesperado. Vuelve a intentarlo o ponte en contacto con nosotros en info@friendslibrary.com si el problema persiste.`}
     </Serif>
   </View>
 );
