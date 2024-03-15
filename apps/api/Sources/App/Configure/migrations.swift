@@ -36,5 +36,6 @@ extension Configure {
     app.migrations.add(BigIntToInt())
     app.migrations.add(SeedTokens())
     app.migrations.add(RemoveSoundcloud())
+    app.migrations.add(CreateNativeAppErrors())
   }
 }

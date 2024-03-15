@@ -12,7 +12,7 @@ struct CreateFriends: Migration {
       .case(M11.GenderEnum.caseMixed)
       .create()
 
-    let langFuture = database.enum("lang").read()
+    let langFuture = database.enum(Order.M2.LangEnum.name).read()
 
     return genderFuture.and(langFuture).flatMap { enums -> Future<Void> in
       let (genders, langs) = enums

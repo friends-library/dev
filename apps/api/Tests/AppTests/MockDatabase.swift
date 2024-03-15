@@ -45,6 +45,8 @@ final class MockDatabase: MemoryStore {
       return \MockDatabase.artifactProductionVersions as! Models<M>
     case DocumentTag.tableName:
       return \MockDatabase.documentTags as! Models<M>
+    case NativeAppError.tableName:
+      return \MockDatabase.nativeAppErrors as! Models<M>
     default:
       fatalError("\(Model.tableName) not supported in mockDb")
     }
@@ -70,6 +72,7 @@ final class MockDatabase: MemoryStore {
   var orderItems: [OrderItem.Id: OrderItem] = [:]
   var artifactProductionVersions: [ArtifactProductionVersion.Id: ArtifactProductionVersion] = [:]
   var documentTags: [DocumentTag.Id: DocumentTag] = [:]
+  var nativeAppErrors: [NativeAppError.Id: NativeAppError] = [:]
 }
 
 class MockClient: Client {
