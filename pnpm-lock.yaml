@@ -898,8 +898,8 @@ importers:
         specifier: 3.0.2
         version: 3.0.2
       twrnc:
-        specifier: 3.6.0
-        version: 3.6.0(postcss@8.4.21)(react-native@0.71.14)(ts-node@10.9.1)
+        specifier: 4.1.0
+        version: 4.1.0(postcss@8.4.21)(react-native@0.71.14)(ts-node@10.9.1)
       x-exec:
         specifier: ^1.2.0
         version: 1.2.0
@@ -28800,8 +28800,8 @@ packages:
     engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
     dev: false
 
-  /twrnc@3.6.0(postcss@8.4.21)(react-native@0.71.14)(ts-node@10.9.1):
-    resolution: {integrity: sha512-ee3etAeEfJyH7a9iiQD6JEYJN7nQiZumO6KXCaAmgj9xL5BIFgZfjWsVfQ0eV+anSqgXVit/a2ZUNX3LFlbdhA==}
+  /twrnc@4.1.0(postcss@8.4.21)(react-native@0.71.14)(ts-node@10.9.1):
+    resolution: {integrity: sha512-tyB0d+MC82pjCF62hAZ4AHfYd13A80Va3VqxB6PcPcz9Xys6Mlf/iKaAmxsNm9v3X9K/0Aqv2vgnSRCbi2Ws5A==}
     peerDependencies:
       react-native: '>=0.63.0'
     dependencies:
