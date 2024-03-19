@@ -9,6 +9,7 @@ import { WhiteOverlay } from '@/pages/explore';
 import api from '@/lib/ssg/api-client';
 import * as mdx from '@/lib/mdx';
 import { LANG } from '@/lib/env';
+import * as seo from '@/lib/seo';
 import BooksBgBlock from '@/components/core/BooksBgBlock';
 
 interface PageData {
@@ -58,8 +59,5 @@ export default Page;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { frontmatter } = await getPageData(params.static);
-  return {
-    title: frontmatter.title,
-    description: frontmatter.description,
-  };
+  return seo.nextMetadata(frontmatter.title, frontmatter.description);
 }

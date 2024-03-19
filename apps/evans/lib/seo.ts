@@ -1,4 +1,39 @@
+import { type Metadata } from 'next';
+import { t } from '@friends-library/locale';
 import { LANG } from './env';
+
+export function data(
+  title: string,
+  description: string,
+  ogImage?: string,
+  lang = LANG,
+): { title: string; description: string; ogImage: string } {
+  return {
+    title: title === t`Friends Library` ? title : `${title} | ${t`Friends Library`}`,
+    description,
+    ogImage:
+      ogImage ??
+      `https://raw.githubusercontent.com/friends-library/dev/f487c5bae17501abb91d8f18323391075577ff9b/apps/native/release-assets/android/${lang}/phone/feature.png`,
+  };
+}
+
+export function nextMetadata(
+  title: string,
+  description: string,
+  ogImage?: string,
+  lang = LANG,
+): Metadata {
+  const d = data(title, description, ogImage, lang);
+  return {
+    title: d.title,
+    description: d.description,
+    openGraph: {
+      title: d.title,
+      description: d.description,
+      images: [{ url: d.ogImage }],
+    },
+  };
+}
 
 export function bookPageMetaDesc(
   name: string,
