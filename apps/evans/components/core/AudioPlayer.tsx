@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
@@ -12,7 +14,7 @@ interface Props {
   }>;
 }
 
-const AudioPlayer: React.FC<Props> = ({ tracks }) => {
+const AudioPlayer: (props: Props) => React.JSX.Element | null = ({ tracks }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);

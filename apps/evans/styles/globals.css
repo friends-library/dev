@@ -9,7 +9,7 @@
 /* for font-awesome icons in mdx files */
 .body-text i.fa-solid,
 .body-text i.fa {
-  font-family: 'Font Awesome 6 Free';
+  font-family: 'FontAwesome';
 }
 .heading-text {
   @apply font-sans text-flgray-900 text-2xl tracking-widest font-bold antialiased text-center;

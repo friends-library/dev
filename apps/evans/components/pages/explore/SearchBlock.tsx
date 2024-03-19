@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import NextBgImage from 'next-bg-image';
 import { t } from '@friends-library/locale';

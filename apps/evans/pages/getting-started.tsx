@@ -113,7 +113,7 @@ const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
                   LANG === `en`
                     ? `Introduction to the Early Quakers`
                     : `¿Quienes Eran Los Primeros Cuáqueros?`,
-                mp3Url: `http://flp-assets.nyc3.digitaloceanspaces.com/static/intro-to-early-quakers.${LANG}.mp3`,
+                mp3Url: `https://flp-assets.nyc3.digitaloceanspaces.com/static/intro-to-early-quakers.${LANG}.mp3`,
                 duration: LANG === `en` ? 1215 : 1593,
               },
             ]}

@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@friends-library/types": "workspace:*",
+    "@types/react": "18.2.67",
     "@vercel/ncc": "0.36.1",
     "x-chalk": "^1.0.1",
     "x-exec": "^1.2.0"

@@ -14,14 +14,14 @@
     "@friends-library/pairql": "workspace:*",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "2.0.17",
-    "@reach/accordion": "^0.11.2",
+    "@reach/accordion": "^0.18.0",
     "@types/node": "18.15.11",
-    "@types/react": "18.0.33",
-    "@types/react-dom": "18.0.11",
+    "@types/react": "18.2.67",
+    "@types/react-dom": "18.2.22",
     "algoliasearch": "^4.5.1",
     "autoprefixer": "10.4.14",
     "js-cookie": "^2.2.1",
-    "next": "13.4.12",
+    "next": "14.1.3",
     "next-bg-image": "0.3.0-beta1",
     "postcss": "8.4.21",
     "react": "18.2.0",
@@ -34,7 +34,7 @@
     "really-small-events": "^1.1.0",
     "tailwindcss": "3.3.1",
     "tiny-invariant": "1.3.1",
-    "typescript": "5.0.2"
+    "typescript": "5.4.2"
   },
   "devDependencies": {
     "@friends-library/cover-component": "workspace:*",
@@ -56,7 +56,7 @@
     "js-yaml": "^3.14.0",
     "lodash.throttle": "4.1.1",
     "next-mdx-remote": "4.4.1",
-    "p-limit": "5.0.0",
+    "p-limit": "^4.0.0",
     "use-interval": "^1.3.0"
   }
 }

@@ -8,9 +8,9 @@ import { LANG } from '../env';
 import { getFriendUrl } from '../../lib/friend';
 import * as mdx from '../mdx';
 import { pageMetaDesc } from '../seo';
-import { replacePlaceholders } from '../../pages/static/[static]';
 import beliefs from './beliefs-search';
 import api, { type Api } from './api-client';
+import { replacePlaceholders } from '@/components/mdx';
 import { SEO_META_DESC as BELIEFS_SEO_DESC } from '@/pages/what-early-quakers-believed';
 
 export default async function sendSearchDataToAlgolia(): Promise<void> {
