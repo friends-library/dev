@@ -173,7 +173,10 @@ export class FileSystem {
       await RNFS.unlink(this.abspath(relPath));
       return true;
     } catch (error) {
-      if (!String(error).includes(`ENOENT`)) {
+      if (
+        !String(error).includes(`ENOENT`) && // ios
+        !String(error).includes(`File does not exist`) // android
+      ) {
         logError(error, `FS.delete()`, `relPath=${relPath}`);
       }
       return false;
@@ -196,7 +199,10 @@ export class FileSystem {
         encoding === `binary` ? `base64` : encoding,
       );
     } catch (error) {
-      if (!String(error).includes(`ENOENT`)) {
+      if (
+        !String(error).includes(`ENOENT`) && // ios
+        !String(error).includes(`File does not exist`) // android
+      ) {
         logError(error, `FS.readFile()`, `path=${path}`, `encoding=${encoding}`);
       }
       return Promise.resolve(null);
