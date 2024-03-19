@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
+import { t } from '@friends-library/locale';
 import styles from '@/styles/AudioPlayer.module.css';
 import { formatDuration } from '@/lib/dates';
 
@@ -65,6 +66,7 @@ const AudioPlayer: React.FC<Props> = ({ tracks }) => {
       >
         <div className="flex items-center justify-center md:justify-between">
           <button
+            aria-label={isPlaying ? t`Pause` : t`Play`}
             onClick={() => setIsPlaying(!isPlaying)}
             className="w-12 h-12 bg-flprimary rounded-full flex justify-center items-center *hover:opacity-90 transition-[opacity,transform] duration-200 active:scale-95 active:!opacity-100 shrink-0 order-1 md:order-0 mx-8 md:mx-0"
           >
@@ -83,6 +85,7 @@ const AudioPlayer: React.FC<Props> = ({ tracks }) => {
             <div className="absolute h-full w-24 right-0 top-0 bg-gradient-to-l from-[#F7F5F5] to-transparent" />
           </div>
           <button
+            aria-label={t`Back 15 seconds`}
             onClick={() => {
               setCurrentTime(currentTime - 15);
               audio && (audio.currentTime = currentTime - 15);
@@ -95,6 +98,7 @@ const AudioPlayer: React.FC<Props> = ({ tracks }) => {
             />
           </button>
           <button
+            aria-label={t`Forward 15 seconds`}
             onClick={() => {
               setCurrentTime(currentTime + 15);
               audio && (audio.currentTime = currentTime + 15);
@@ -138,6 +142,7 @@ const AudioPlayer: React.FC<Props> = ({ tracks }) => {
       {tracks.length > 1 &&
         tracks.map((track, i) => (
           <button
+            aria-label={t`Play part ${i + 1}`}
             onClick={() => {
               if (!audio) return;
               setIsPlaying(false);
