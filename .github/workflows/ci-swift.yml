@@ -7,10 +7,13 @@ on:
 jobs:
   build-libs:
     runs-on: ubuntu-latest
-    container: swift:5.9-focal
+    strategy:
+      matrix:
+        version: ['5.9', '5.10']
+    container: swift:${{ matrix.version }}-focal
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: build duet
         run: cd libs-swift/duet && swift build
       - name: build x-http
@@ -26,10 +29,13 @@ jobs:
 
   test-libs:
     runs-on: ubuntu-latest
-    container: swift:5.9-focal
+    strategy:
+      matrix:
+        version: ['5.9', '5.10']
+    container: swift:${{ matrix.version }}-focal
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: test duet
         run: cd libs-swift/duet && swift test
       - name: test x-http
@@ -41,21 +47,27 @@ jobs:
 
   build-api:
     runs-on: ubuntu-latest
-    container: swift:5.9-focal
+    strategy:
+      matrix:
+        version: ['5.9', '5.10']
+    container: swift:${{ matrix.version }}-focal
     steps:
       - name: checkout
-        uses: actions/checkout@v3
-      - uses: actions/cache@v3
+        uses: actions/checkout@v4
+      - uses: actions/cache@v4
         with:
           path: apps/api/.build
-          key: api-v1-${{ hashFiles('api/Package.resolved') }}
-          restore-keys: api-v1-
+          key: api-v2-${{ hashFiles('api/Package.resolved') }}-${{ matrix.version }}
+          restore-keys: api-v2-
       - name: build api
         run: cd apps/api && swift build
 
   test-api:
     runs-on: ubuntu-latest
-    container: swift:5.9-focal
+    strategy:
+      matrix:
+        version: ['5.9', '5.10']
+    container: swift:${{ matrix.version }}-focal
     env:
       DATABASE_HOST: postgres
     services:
@@ -67,17 +79,18 @@ jobs:
           POSTGRES_DB: vapor_database
     steps:
       - name: checkout
-        uses: actions/checkout@v3
-      - uses: actions/cache@v3
+        uses: actions/checkout@v4
+      - uses: actions/cache@v4
         with:
           path: apps/api/.build
-          key: api-v1-${{ hashFiles('api/Package.resolved') }}
-          restore-keys: api-v1-
+          key: api-v2-${{ hashFiles('api/Package.resolved') }}-${{ matrix.version }}
+          restore-keys: api-v2-
       - name: test api
         run: cd apps/api && swift test
 
 env:
   SWIFT_DETERMINISTIC_HASHING: 1
+  SWIFT_STRICT_CONCURRENCY: minimal
   DATABASE_HOST: postgres
   DATABASE_NAME: vapor_database
   DATABASE_USERNAME: vapor_username
