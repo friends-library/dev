@@ -23,6 +23,23 @@ const AudioPlayer: (props: Props) => React.JSX.Element | null = ({ tracks }) => 
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const track = tracks[currentTrackIndex];
 
+  useEffect(() => {
+    const storedTrack = getStoredTrack(window.location.pathname);
+    if (!storedTrack) return;
+    let { storedTime, storedTrackIndex } = storedTrack;
+    if (storedTrackIndex >= tracks.length) {
+      storedTrackIndex = 0;
+      storedTime = 0;
+    } else if (storedTime > (tracks[storedTrackIndex]?.duration ?? 0)) {
+      storedTime = 0;
+    }
+    setCurrentTime(storedTime);
+    if (audio) {
+      audio.currentTime = storedTime;
+    }
+    setCurrentTrackIndex(storedTrackIndex);
+  }, [audio, tracks]);
+
   if (audio && audio.currentTime === audio.duration) {
     if (currentTrackIndex === tracks.length - 1) {
       setIsPlaying(false);
@@ -49,10 +66,11 @@ const AudioPlayer: (props: Props) => React.JSX.Element | null = ({ tracks }) => 
   useEffect(() => {
     if (audio) {
       audio.addEventListener(`timeupdate`, () => {
+        setStoredTrack(window.location.pathname, currentTime, currentTrackIndex);
         setCurrentTime(audio.currentTime);
       });
     }
-  }, [audio]);
+  }, [audio, currentTime, currentTrackIndex]);
 
   if (!track) return null;
 
@@ -190,4 +208,30 @@ function duration(element: HTMLAudioElement | null, serverDuration: number): num
     return element.duration;
   }
   return serverDuration;
+}
+
+function getStoredTrack(
+  path: string,
+): { storedTime: number; storedTrackIndex: number } | null {
+  try {
+    const trackInfoValue = localStorage.getItem(`audio_position--${path}`);
+    if (!trackInfoValue) return null;
+    const parsed = JSON.parse(trackInfoValue);
+    if (
+      typeof parsed.storedTime !== `number` ||
+      typeof parsed.storedTrackIndex !== `number`
+    ) {
+      return null;
+    }
+    return parsed;
+  } catch (error) {
+    return null;
+  }
+}
+
+function setStoredTrack(path: string, time: number, trackIndex: number): void {
+  localStorage.setItem(
+    `audio_position--${path}`,
+    JSON.stringify({ storedTime: time, storedTrackIndex: trackIndex }),
+  );
 }
