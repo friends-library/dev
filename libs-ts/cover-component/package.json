@@ -17,12 +17,12 @@
     "@friends-library/lulu": "workspace:*",
     "@friends-library/types": "workspace:*",
     "classnames": "^2.3.1",
-    "react": "^18.0.0",
+    "react": "18.2.0",
     "roman-numerals": "^0.3.2",
     "x-syntax": "^2.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.0.0",
+    "@types/react": "18.2.67",
     "@types/roman-numerals": "^0.3.0"
   }
 }

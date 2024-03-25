@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import type { EditionType, Region } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';

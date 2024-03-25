@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useReducer, useEffect } from 'react';
 import cx from 'classnames';
 import dynamic from 'next/dynamic';
@@ -7,7 +9,6 @@ import Dual from '../core/Dual';
 import { useNumCartItems } from '../checkout/hooks';
 import Nav from './Nav';
 import Slideover from './Slideover';
-import Footer from './Footer';
 import { appReducer, appInitialState, AppDispatch } from '@/lib/app-state';
 import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
 
@@ -88,10 +89,7 @@ const Chrome: React.FC<Props> = ({ children }) => {
             onCartBadgeClick={() => store.open()}
             onHamburgerClick={() => setSlideoverOpen(true)}
           />
-          <div className="pt-[70px] min-h-screen flex flex-col">
-            <main>{children}</main>
-            <Footer />
-          </div>
+          {children}
         </div>
       )}
     </AppDispatch.Provider>

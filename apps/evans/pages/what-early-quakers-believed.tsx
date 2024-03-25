@@ -1,6 +1,6 @@
 import React from 'react';
-import { MdxH2, MdxH3, MdxLead, MdxP } from './static/[static]';
 import { WhiteOverlay } from './explore';
+import { MdxH2, MdxH3, MdxLead, MdxP } from '@/components/mdx';
 import Seo from '@/components/core/Seo';
 import BooksBgBlock from '@/components/core/BooksBgBlock';
 import TruthDefendedNotes from '@/components/truth-defended/TruthDefendedNotes';
