@@ -65,6 +65,8 @@ const ListenBlock: React.FC<Props> = ({ tracks, ...props }) => {
         </h3>
         <div className="mx-4 xs:mx-6 sm:mb-8 lg:ml-0">
           <AudioPlayer
+            // key important to reset player when switching between books
+            key={tracks.map((t) => t.mp3Url[quality]).join(`|`)}
             tracks={tracks.map((track) => ({
               title: track.title,
               duration: track.duration,
