@@ -4,9 +4,9 @@ description: install pnpm, cache, install deps, setup just
 runs:
   using: composite
   steps:
-    - uses: extractions/setup-just@v1
+    - uses: extractions/setup-just@v2
     - name: install pnpm
-      uses: pnpm/action-setup@v2
+      uses: pnpm/action-setup@v3
       with:
         run_install: false
     - name: get pnpm store path
@@ -14,10 +14,10 @@ runs:
       id: pnpm-cache
       run: |
         echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-    - uses: actions/cache@v3
+    - uses: actions/cache@v4
       with:
         path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-        key: setup-ts-v1-${{ hashFiles('**/pnpm-lock.yaml') }}
+        key: setup-ts-v2-${{ hashFiles('**/pnpm-lock.yaml') }}
         restore-keys: setup-ts-
     - name: install deps
       shell: bash
