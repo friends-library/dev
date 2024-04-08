@@ -2,11 +2,11 @@ import React from 'react';
 import Image from 'next/image';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import type { Metadata, NextPage } from 'next';
+import type { NextPage } from 'next';
 import { WhiteOverlay } from '@/pages/explore';
 import api from '@/lib/ssg/api-client';
 import * as AppBadges from '@/components/pages/app/AppBadges';
-import { pageMetaDesc } from '@/components/core/Seo';
+import * as seo from '@/lib/seo';
 import Dual from '@/components/core/Dual';
 import BooksBgBlock from '@/components/core/BooksBgBlock';
 import { LANG } from '@/lib/env';
@@ -36,11 +36,6 @@ async function getPageData(): Promise<PageData> {
     numBooks: data.books[LANG],
   };
 }
-
-export const metadata: Metadata = {
-  title: `Friends Library App`,
-  description: pageMetaDesc(`app`, {}),
-};
 
 const AppPage: NextPage = async () => {
   const { numAudioBooks, numBooks } = await getPageData();
@@ -317,4 +312,9 @@ const AppPage: NextPage = async () => {
 
 export default AppPage;
 
-export const revalidate = 60 * 60 * 24 * 3; // 3 days
+export const metadata = seo.nextMetadata(
+  t`Friends Library App`,
+  seo.pageMetaDesc(`app`, {}),
+);
+
+export const revalidate = 259200; // 3 days
