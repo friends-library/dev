@@ -1,8 +1,7 @@
 import Vapor
 
 extension Configure {
-  static func migrations(_ app: Application) throws {
-    app.migrations.add(CreateDownloads())
+  static func migrations(_ app: Application) throws { app.migrations.add(CreateDownloads())
     app.migrations.add(CreateOrders())
     app.migrations.add(CreateOrderItems())
     app.migrations.add(CreateTokens())
@@ -37,5 +36,6 @@ extension Configure {
     app.migrations.add(SeedTokens())
     app.migrations.add(RemoveSoundcloud())
     app.migrations.add(CreateNativeAppErrors())
+    app.migrations.add(AddNPSubscribers())
   }
 }

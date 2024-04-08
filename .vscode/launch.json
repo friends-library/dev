@@ -3,21 +3,25 @@
     {
       "type": "lldb",
       "request": "launch",
-      "sourceLanguages": ["swift"],
-      "name": "Debug Run (apps/api)",
-      "program": "${workspaceFolder:flp}/apps/api/.build/debug/Run",
+      "sourceLanguages": [
+        "swift"
+      ],
       "args": [],
-      "cwd": "${workspaceFolder:flp}/apps/api",
+      "cwd": "${workspaceFolder:friends-library}/apps/api",
+      "name": "Debug Run (apps/api)",
+      "program": "${workspaceFolder:friends-library}/apps/api/.build/debug/Run",
       "preLaunchTask": "swift: Build Debug Run (apps/api)"
     },
     {
       "type": "lldb",
       "request": "launch",
-      "sourceLanguages": ["swift"],
-      "name": "Release Run (apps/api)",
-      "program": "${workspaceFolder:flp}/apps/api/.build/release/Run",
+      "sourceLanguages": [
+        "swift"
+      ],
       "args": [],
-      "cwd": "${workspaceFolder:flp}/apps/api",
+      "cwd": "${workspaceFolder:friends-library}/apps/api",
+      "name": "Release Run (apps/api)",
+      "program": "${workspaceFolder:friends-library}/apps/api/.build/release/Run",
       "preLaunchTask": "swift: Build Release Run (apps/api)"
     }
   ]

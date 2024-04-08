@@ -1,4 +1,3 @@
-// auto-generated, do not edit
 import DuetSQL
 import Tagged
 

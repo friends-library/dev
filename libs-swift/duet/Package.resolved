@@ -111,7 +111,7 @@
     {
       "identity" : "swift-tagged",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jaredh159/swift-tagged.git",
+      "location" : "https://github.com/jaredh159/swift-tagged",
       "state" : {
         "revision" : "cb4284055f6e9cc5576ff9be13723b3a039905a5",
         "version" : "0.8.2"
