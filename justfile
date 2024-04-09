@@ -119,12 +119,13 @@ codegen: codegen-ts codegen-swift
 
 # helpers
 
+nuke-node-modules:
+  @pnpm store prune
+  @find . -name "node_modules" -type d -prune -exec rm -rf {} + && pnpm i
+
 [private]
 nx-run-many targets:
   @pnpm exec nx run-many --parallel=10 --targets={{targets}}
-
-nuke-node-modules:
-  find . -name "node_modules" -type d -prune -exec rm -rf {} + && pnpm i
 
 [private]
 exec-api cmd *args:
