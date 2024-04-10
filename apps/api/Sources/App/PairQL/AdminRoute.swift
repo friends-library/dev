@@ -94,7 +94,7 @@ extension AdminRoute: RouteResponder {
   static func respond(to route: Self, in context: Context) async throws -> Response {
     switch route {
     case .authed(let token, let authedRoute):
-      let token = try await Token.query().where(.value == token).first()
+      var token = try await Token.query().where(.value == token).first()
       let authed = AuthedContext(requestId: context.requestId, scopes: try await token.scopes())
       switch authedRoute {
       case .createEntity(let input):

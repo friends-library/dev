@@ -33,14 +33,11 @@ extension EmailBuilder {
 // helpers
 
 private func lineItems(_ order: Order) async throws -> String {
-  if !order.items.isLoaded {
-    let items = try await Current.db.query(OrderItem.self)
-      .where(.orderId == order.id)
-      .all()
-    connect(order, \.items, to: items, \.order)
-  }
+  let items = try await Current.db.query(OrderItem.self)
+    .where(.orderId == order.id)
+    .all()
 
-  for item in order.items.require() {
+  for var item in items {
     if !item.edition.isLoaded {
       let edition = try await Current.db.query(Edition.self)
         .where(.id == item.editionId)
@@ -49,7 +46,7 @@ private func lineItems(_ order: Order) async throws -> String {
     }
   }
 
-  return order.items.require().map { item in
+  return items.map { item in
     "* (\(item.quantity)) \(item.edition.require().document.require().title)"
   }.joined(separator: "\n")
 }
@@ -66,15 +63,15 @@ private func shippedBodyEs(for order: Order, trackingUrl: String?) async throws 
   \(order |> salutation)
 
   ¡Buenas noticias! Tu pedido (\(order.id
-    .lowercased)) que contiene los siguientes artículos ha sido enviado: 
+    .lowercased)) que contiene los siguientes artículos ha sido enviado:
 
   \(try await lineItems(order))
 
-  Puedes usar el enlace a continuación para rastrear tu paquete: 
+  Puedes usar el enlace a continuación para rastrear tu paquete:
 
   \(trackingUrl ?? "<em>Lo sentimos, no disponible</em>")
 
-  ¡Por favor no dudes en hacernos saber si tienes alguna pregunta! 
+  ¡Por favor no dudes en hacernos saber si tienes alguna pregunta!
 
   - Biblioteca de Amigos
   """
@@ -102,14 +99,14 @@ private func confirmationBodyEs(for order: Order) async throws -> String {
   """
   \(order |> salutation)
 
-  ¡Gracias por realizar un pedido de la Biblioteca de Amigos!  Tu pedido ha sido registrado exitosamente con los siguientes artículos: 
+  ¡Gracias por realizar un pedido de la Biblioteca de Amigos!  Tu pedido ha sido registrado exitosamente con los siguientes artículos:
 
   \(try await lineItems(order))
 
   Para tu información, el número de referencia de tu pedido es: \(order.id
     .lowercased). Dentro de unos pocos días, cuando el envío sea realizado, vamos a enviarte otro correo electrónico con tu número de rastreo. En la mayoría de los casos, el tiempo normal de entrega es de unos 7 a 14 días después de la compra.
 
-  ¡Por favor no dudes en hacernos saber si tienes alguna pregunta! 
+  ¡Por favor no dudes en hacernos saber si tienes alguna pregunta!
 
   - Biblioteca de Amigos
   """

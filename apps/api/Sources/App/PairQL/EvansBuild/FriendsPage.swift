@@ -32,6 +32,7 @@ extension FriendsPage: Resolver {
     let friends = try await Friend.query().where(.lang == lang).all()
     return try await friends.concurrentMap { friend -> FriendOutput? in
       guard !friend.isCompilations else { return nil }
+      var friend = friend
       let documents = try await friend.documents()
       let numBooks = documents.filter(\.hasNonDraftEdition).count
       guard numBooks > 0 else { return nil }

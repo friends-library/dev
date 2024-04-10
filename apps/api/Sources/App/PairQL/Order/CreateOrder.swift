@@ -40,7 +40,7 @@ struct CreateOrder: Pair {
 
 extension CreateOrder: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
-    let order = Order(input)
+    var order = Order(input)
     let items = input.items.map { OrderItem($0, orderId: order.id) }
     order.items = .loaded(items)
     try await order.create()
@@ -53,7 +53,7 @@ extension CreateOrder: Resolver {
 
 extension CreateOrder {
   static func authenticate(with value: Token.Value) async throws {
-    let token = try await Token.query().where(.value == value).first()
+    var token = try await Token.query().where(.value == value).first()
     let scopes = try await token.scopes()
     guard scopes.can(.mutateOrders) else {
       throw Abort(.unauthorized)
@@ -70,7 +70,7 @@ extension CreateOrder {
 }
 
 extension Order {
-  convenience init(_ input: CreateOrder.Input) {
+  init(_ input: CreateOrder.Input) {
     self.init(
       id: input.id ?? .init(),
       lang: input.lang,
@@ -97,7 +97,7 @@ extension Order {
 }
 
 extension OrderItem {
-  convenience init(_ input: CreateOrder.Input.Item, orderId: Order.Id) {
+  init(_ input: CreateOrder.Input.Item, orderId: Order.Id) {
     self.init(
       orderId: orderId,
       editionId: input.editionId,

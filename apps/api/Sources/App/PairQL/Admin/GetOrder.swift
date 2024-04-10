@@ -49,7 +49,7 @@ struct GetOrder: Pair {
 extension GetOrder: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let order = try await Order.find(input)
+    var order = try await Order.find(input)
     let items = try await order.items()
     return .init(
       id: order.id,
@@ -65,6 +65,7 @@ extension GetOrder: Resolver {
       lang: order.lang,
       source: order.source,
       items: try await items.concurrentMap { item in
+        var item = item
         let edition = try await item.edition()
         let document = try await edition.document()
         let friend = try await document.friend()

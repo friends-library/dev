@@ -1,6 +1,6 @@
 import Duet
 
-final class FriendQuote: Codable {
+struct FriendQuote: Codable, Sendable {
   var id: Id
   var friendId: Friend.Id
   var source: String

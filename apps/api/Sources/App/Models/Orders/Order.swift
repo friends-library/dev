@@ -2,7 +2,7 @@ import DuetSQL
 import Tagged
 import TaggedMoney
 
-final class Order: Codable {
+struct Order: Codable, Sendable {
   var id: Id
   var lang: Lang
   var source: OrderSource
@@ -106,7 +106,7 @@ final class Order: Codable {
 /// extensions
 
 extension Order {
-  convenience init(
+  init(
     id: Id = .init(),
     printJobId: PrintJobId? = nil,
     lang: Lang,
@@ -152,7 +152,7 @@ extension Order {
 // loaders
 
 extension Order {
-  func items() async throws -> [OrderItem] {
+  mutating func items() async throws -> [OrderItem] {
     try await items.useLoaded(or: {
       try await OrderItem.query()
         .where(.orderId == id)

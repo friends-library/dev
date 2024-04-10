@@ -1,6 +1,6 @@
 import DuetSQL
 
-final class FriendResidence: Codable {
+struct FriendResidence: Codable, Sendable {
   var id: Id
   var friendId: Friend.Id
   var city: String
@@ -26,7 +26,7 @@ final class FriendResidence: Codable {
 // loaders
 
 extension FriendResidence {
-  func durations() async throws -> [FriendResidenceDuration] {
+  mutating func durations() async throws -> [FriendResidenceDuration] {
     try await durations.useLoaded(or: {
       try await FriendResidenceDuration.query()
         .where(.friendResidenceId == id)

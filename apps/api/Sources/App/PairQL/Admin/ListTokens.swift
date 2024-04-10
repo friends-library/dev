@@ -13,6 +13,7 @@ extension ListTokens: NoInputResolver {
     try context.verify(Self.auth)
     let tokens = try await Token.query().all()
     return try await tokens.concurrentMap { token in
+      var token = token
       let scopes = try await token.scopes()
       return .init(
         id: token.id,

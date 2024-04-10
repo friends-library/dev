@@ -1,7 +1,7 @@
 import DuetSQL
 import Tagged
 
-final class Token: Codable {
+struct Token: Codable, Sendable {
   var id: Id
   var value: Value
   var description: String
@@ -27,7 +27,7 @@ extension Token {
 }
 
 extension Token {
-  func scopes() async throws -> [TokenScope] {
+  mutating func scopes() async throws -> [TokenScope] {
     try await scopes.useLoaded(or: {
       try await TokenScope.query()
         .where(.tokenId == id)

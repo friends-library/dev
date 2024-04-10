@@ -1,6 +1,6 @@
 import DuetSQL
 
-final class Friend: Codable, Sendable {
+struct Friend: Codable, Sendable {
   var id: Id
   var lang: Lang
   var name: String
@@ -66,7 +66,7 @@ final class Friend: Codable, Sendable {
 // loaders
 
 extension Friend {
-  func documents() async throws -> [Document] {
+  mutating func documents() async throws -> [Document] {
     try await documents.useLoaded(or: {
       try await Document.query()
         .where(.friendId == id)
@@ -74,7 +74,7 @@ extension Friend {
     })
   }
 
-  func residences() async throws -> [FriendResidence] {
+  mutating func residences() async throws -> [FriendResidence] {
     try await residences.useLoaded(or: {
       try await FriendResidence.query()
         .where(.friendId == id)
@@ -82,7 +82,7 @@ extension Friend {
     })
   }
 
-  func quotes() async throws -> [FriendQuote] {
+  mutating func quotes() async throws -> [FriendQuote] {
     try await quotes.useLoaded(or: {
       try await FriendQuote.query()
         .where(.friendId == id)

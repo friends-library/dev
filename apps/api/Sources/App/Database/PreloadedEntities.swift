@@ -47,7 +47,7 @@ final class PreloadedEntitiesStore: MemoryStore {
     self.audioParts = audioParts
     self.isbns = isbns
 
-    for friend in friends.values {
+    for var friend in friends.values {
       friend.documents = .loaded([])
       friend.residences = .loaded([])
       friend.quotes = .loaded([])
@@ -57,7 +57,7 @@ final class PreloadedEntitiesStore: MemoryStore {
       document.editions = .loaded([])
       document.tags = .loaded([])
       document.relatedDocuments = .loaded([])
-      if let friend = friends[document.friendId] {
+      if var friend = friends[document.friendId] {
         friend.documents.push(document)
         document.friend = .loaded(friend)
       }
@@ -70,37 +70,37 @@ final class PreloadedEntitiesStore: MemoryStore {
       }
     }
 
-    for (_, residence) in friendResidences {
+    for (_, var residence) in friendResidences {
       residence.durations = .loaded([])
-      if let friend = friends[residence.friendId] {
+      if var friend = friends[residence.friendId] {
         friend.residences.push(residence)
         residence.friend = .loaded(friend)
       }
     }
 
-    for (_, duration) in friendResidenceDurations {
-      if let residence = friendResidences[duration.friendResidenceId] {
+    for (_, var duration) in friendResidenceDurations {
+      if var residence = friendResidences[duration.friendResidenceId] {
         residence.durations.push(duration)
         duration.residence = .loaded(residence)
       }
     }
 
-    for (_, quote) in friendQuotes {
-      if let friend = friends[quote.friendId] {
+    for (_, var quote) in friendQuotes {
+      if var friend = friends[quote.friendId] {
         friend.quotes.push(quote)
         quote.friend = .loaded(friend)
       }
     }
 
-    for (_, tag) in documentTags {
+    for (_, var tag) in documentTags {
       if let document = documents[tag.documentId] {
         document.tags.push(tag)
         tag.document = .loaded(document)
       }
     }
 
-    for (_, relatedDocument) in relatedDocuments {
-      if let parentDocument = documents[relatedDocument.parentDocumentId] {
+    for (_, var relatedDocument) in relatedDocuments {
+      if var parentDocument = documents[relatedDocument.parentDocumentId] {
         parentDocument.relatedDocuments.push(relatedDocument)
         relatedDocument.parentDocument = .loaded(parentDocument)
       }
@@ -109,7 +109,7 @@ final class PreloadedEntitiesStore: MemoryStore {
       }
     }
 
-    for (_, edition) in editions {
+    for (_, var edition) in editions {
       // do this BEFORE setting optional children (Impression, Audio)
       edition.chapters = .loaded([])
       edition.impression = .loaded(nil)
@@ -122,15 +122,15 @@ final class PreloadedEntitiesStore: MemoryStore {
       }
     }
 
-    for (_, isbn) in isbns {
-      if let editionId = isbn.editionId, let edition = editions[editionId] {
+    for (_, var isbn) in isbns {
+      if var editionId = isbn.editionId, let edition = editions[editionId] {
         edition.isbn = .loaded(isbn)
         isbn.edition = .loaded(edition)
       }
     }
 
-    for (_, impression) in editionImpressions {
-      if let edition = editions[impression.editionId] {
+    for (_, var impression) in editionImpressions {
+      if var edition = editions[impression.editionId] {
         edition.impression = .loaded(impression)
         impression.edition = .loaded(edition)
       }
@@ -138,14 +138,14 @@ final class PreloadedEntitiesStore: MemoryStore {
 
     for (_, var audio) in audios {
       audio.parts = .loaded([])
-      if let edition = editions[audio.editionId] {
+      if var edition = editions[audio.editionId] {
         edition.audio = .loaded(audio)
         audio.edition = .loaded(edition)
       }
     }
 
-    for (_, chapter) in editionChapters {
-      if let edition = editions[chapter.editionId] {
+    for (_, var chapter) in editionChapters {
+      if var edition = editions[chapter.editionId] {
         edition.chapters.push(chapter)
         chapter.edition = .loaded(edition)
       }

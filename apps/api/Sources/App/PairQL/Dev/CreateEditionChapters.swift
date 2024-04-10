@@ -25,7 +25,7 @@ extension CreateEditionChapters: Resolver {
 }
 
 extension EditionChapter {
-  convenience init(input: CreateEditionChapters.CreateEditionChapterInput) {
+  init(input: CreateEditionChapters.CreateEditionChapterInput) {
     self.init(
       editionId: input.editionId,
       order: input.order,

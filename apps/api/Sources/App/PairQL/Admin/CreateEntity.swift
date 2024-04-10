@@ -63,7 +63,7 @@ extension CreateEntity: Resolver {
       )
 
     case .edition(let input):
-      let isbn: Isbn
+      var isbn: Isbn
       do {
         isbn = try await Isbn.query().where(.isNull(.editionId)).first()
       } catch {

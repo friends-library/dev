@@ -1,7 +1,7 @@
 import DuetSQL
 import TaggedMoney
 
-final class OrderItem: Codable {
+struct OrderItem: Codable, Sendable {
   var id: Id
   var orderId: Order.Id
   var editionId: Edition.Id
@@ -32,7 +32,7 @@ final class OrderItem: Codable {
 // loaders
 
 extension OrderItem {
-  func edition() async throws -> Edition {
+  mutating func edition() async throws -> Edition {
     try await edition.useLoaded(or: {
       try await Edition.query()
         .where(.id == editionId)

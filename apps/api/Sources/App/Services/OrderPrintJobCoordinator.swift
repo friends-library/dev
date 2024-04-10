@@ -22,7 +22,7 @@ enum OrderPrintJobCoordinator {
     }
 
     var updated: [Order] = []
-    for order in orders {
+    for var order in orders {
       do {
         let job = try await createPrintJob(order)
         if job.status.name != .created {
@@ -55,7 +55,7 @@ enum OrderPrintJobCoordinator {
     }
 
     var updated: [Order] = []
-    for order in orders {
+    for var order in orders {
       guard let printJob = printJobs.first(where: order |> belongsToPrintJob) else {
         await slackError("Failed to find print job belonging to order \(order |> slackLink)")
         continue
@@ -99,7 +99,7 @@ enum OrderPrintJobCoordinator {
     }
 
     var updated: [Order] = []
-    for order in orders {
+    for var order in orders {
       guard let printJob = printJobs.first(where: order |> belongsToPrintJob) else {
         await slackError("Failed to find print job belonging to order \(order |> slackLink)")
         continue

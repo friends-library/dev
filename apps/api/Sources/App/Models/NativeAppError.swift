@@ -1,7 +1,7 @@
 import Duet
 import Fluent
 
-final class NativeAppError: Codable {
+struct NativeAppError: Codable, Sendable {
   var id: Id
   var buildSemver: String
   var buildNumber: Int

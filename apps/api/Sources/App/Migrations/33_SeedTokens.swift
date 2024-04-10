@@ -35,7 +35,7 @@ struct SeedTokens: AsyncMigration {
     ]
 
     for (tokenValue, (description, scopes)) in tokens {
-      let token = Token(value: .init(rawValue: tokenValue), description: description)
+      var token = Token(value: .init(rawValue: tokenValue), description: description)
       token.scopes = .loaded(scopes.map { TokenScope(tokenId: token.id, scope: $0) })
       try await Current.db.create(token)
       for tokenScope in token.scopes.require() {

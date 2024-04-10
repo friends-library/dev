@@ -2,7 +2,7 @@ import Duet
 import NonEmpty
 import TaggedMoney
 
-final class EditionImpression: Codable {
+struct EditionImpression: Codable, Sendable {
   var id: Id
   var editionId: Edition.Id
   var adocLength: Int

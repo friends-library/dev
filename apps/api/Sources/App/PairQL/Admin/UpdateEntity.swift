@@ -38,7 +38,7 @@ extension UpdateEntity: Resolver {
       model = audioPart
 
     case .document(let input):
-      let document = try await Document.find(input.id)
+      var document = try await Document.find(input.id)
       document.friendId = input.friendId
       document.altLanguageId = input.altLanguageId
       document.title = input.title
@@ -53,13 +53,13 @@ extension UpdateEntity: Resolver {
       model = document
 
     case .documentTag(let input):
-      let documentTag = try await DocumentTag.find(input.id)
+      var documentTag = try await DocumentTag.find(input.id)
       documentTag.documentId = input.documentId
       documentTag.type = input.type
       model = documentTag
 
     case .edition(let input):
-      let edition = try await Edition.find(input.id)
+      var edition = try await Edition.find(input.id)
       edition.documentId = input.documentId
       edition.type = input.type
       edition.editor = input.editor
@@ -69,7 +69,7 @@ extension UpdateEntity: Resolver {
       model = edition
 
     case .friend(let input):
-      let friend = try await Friend.find(input.id)
+      var friend = try await Friend.find(input.id)
       friend.lang = input.lang
       friend.name = input.name
       friend.slug = input.slug
@@ -81,7 +81,7 @@ extension UpdateEntity: Resolver {
       model = friend
 
     case .friendQuote(let input):
-      let friendQuote = try await FriendQuote.find(input.id)
+      var friendQuote = try await FriendQuote.find(input.id)
       friendQuote.friendId = input.friendId
       friendQuote.source = input.source
       friendQuote.text = input.text
@@ -90,28 +90,28 @@ extension UpdateEntity: Resolver {
       model = friendQuote
 
     case .friendResidence(let input):
-      let friendResidence = try await FriendResidence.find(input.id)
+      var friendResidence = try await FriendResidence.find(input.id)
       friendResidence.friendId = input.friendId
       friendResidence.city = input.city
       friendResidence.region = input.region
       model = friendResidence
 
     case .friendResidenceDuration(let input):
-      let duration = try await FriendResidenceDuration.find(input.id)
+      var duration = try await FriendResidenceDuration.find(input.id)
       duration.friendResidenceId = input.friendResidenceId
       duration.start = input.start
       duration.end = input.end
       model = duration
 
     case .relatedDocument(let input):
-      let relatedDocument = try await RelatedDocument.find(input.id)
+      var relatedDocument = try await RelatedDocument.find(input.id)
       relatedDocument.description = input.description
       relatedDocument.documentId = input.documentId
       relatedDocument.parentDocumentId = input.parentDocumentId
       model = relatedDocument
 
     case .token(let input):
-      let token = try await Token.find(input.id)
+      var token = try await Token.find(input.id)
       token.value = input.value
       token.uses = input.uses
       token.description = input.description
