@@ -3,7 +3,11 @@ import XCore
 
 extension Tagged: RandomEmptyInitializing where RawValue == UUID {
   public init() {
-    self.init(rawValue: .new())
+    #if DEBUG
+      self.init(rawValue: .new())
+    #else
+      self.init(rawValue: UUID())
+    #endif
   }
 }
 

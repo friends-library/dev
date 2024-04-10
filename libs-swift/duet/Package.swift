@@ -21,6 +21,12 @@ let package = Package(
       dependencies: [
         .product(name: "XCore", package: "x-kit"),
         .product(name: "Tagged", package: "swift-tagged"),
+      ],
+      swiftSettings: [
+        .unsafeFlags([
+          "-Xfrontend", "-warn-concurrency",
+          "-Xfrontend", "-enable-actor-data-race-checks",
+        ]),
       ]
     ),
     .target(
@@ -31,6 +37,12 @@ let package = Package(
         .product(name: "FluentSQL", package: "fluent-kit"),
         .product(name: "XCore", package: "x-kit"),
         .product(name: "Tagged", package: "swift-tagged"),
+      ],
+      swiftSettings: [
+        .unsafeFlags([
+          "-Xfrontend", "-warn-concurrency",
+          "-Xfrontend", "-enable-actor-data-race-checks",
+        ]),
       ]
     ),
     .testTarget(

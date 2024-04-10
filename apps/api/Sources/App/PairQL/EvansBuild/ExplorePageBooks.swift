@@ -76,7 +76,7 @@ extension ExplorePageBooks: Resolver {
         // reduces the size of the nextjs props significantly
         shortDescription: i < 4 ? document.partialDescription : "",
         isCompilation: friend.isCompilations,
-        hasAudio: primaryEdition.audio.require() !== nil,
+        hasAudio: primaryEdition.audio.require() != nil,
         publishedYear: document.published,
         tags: document.tags.require().map(\.type),
         htmlShortTitle: document.htmlShortTitle,

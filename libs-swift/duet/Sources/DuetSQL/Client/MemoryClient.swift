@@ -1,6 +1,6 @@
 import Runtime
 
-public protocol MemoryStore {
+public protocol MemoryStore: Sendable {
   typealias Models<M: Model> = ReferenceWritableKeyPath<Self, [M.IdValue: M]>
   func keyPath<M: Model>(to: M.Type) -> Models<M>
 }
@@ -16,54 +16,6 @@ public extension MemoryStore {
 }
 
 public struct MemoryClient<Store: MemoryStore>: Client {
-  public actor ThreadSafe<Store: MemoryStore> {
-    public var store: Store
-
-    public func flush() {
-      store.flush()
-    }
-
-    @discardableResult
-    public func set<M: Model>(_ model: M) -> M {
-      let keyPath = store.keyPath(to: M.self)
-      store[keyPath: keyPath][model.id] = model
-      return model
-    }
-
-    @discardableResult
-    public func set<M: Model>(_ models: [M]) -> [M] {
-      let keyPath = store.keyPath(to: M.self)
-      for model in models {
-        store[keyPath: keyPath][model.id] = model
-      }
-      return models
-    }
-
-    @discardableResult
-    public func delete<M: Model>(_ model: M) -> M {
-      let keyPath = store.keyPath(to: M.self)
-      store[keyPath: keyPath][model.id] = nil
-      return model
-    }
-
-    @discardableResult
-    public func delete<M: Model>(_ models: [M]) -> [M] {
-      let keyPath = store.keyPath(to: M.self)
-      for model in models {
-        store[keyPath: keyPath][model.id] = nil
-      }
-      return models
-    }
-
-    func models<M: Model>(of: M.Type) throws -> [M.IdValue: M] {
-      store[keyPath: store.keyPath(to: M.self)]
-    }
-
-    public init(store: Store) {
-      self.store = store
-    }
-  }
-
   private var store: ThreadSafe<Store>
 
   public init(store: Store) {
@@ -159,5 +111,53 @@ public struct MemoryClient<Store: MemoryStore>: Client {
     withSoftDeleted: Bool = false
   ) async throws -> Int {
     try await select(M.self, where: constraint, withSoftDeleted: withSoftDeleted).count
+  }
+}
+
+actor ThreadSafe<Store: MemoryStore> {
+  public var store: Store
+
+  public func flush() {
+    store.flush()
+  }
+
+  @discardableResult
+  public func set<M: Model>(_ model: M) -> M {
+    let keyPath = store.keyPath(to: M.self)
+    store[keyPath: keyPath][model.id] = model
+    return model
+  }
+
+  @discardableResult
+  public func set<M: Model>(_ models: [M]) -> [M] {
+    let keyPath = store.keyPath(to: M.self)
+    for model in models {
+      store[keyPath: keyPath][model.id] = model
+    }
+    return models
+  }
+
+  @discardableResult
+  public func delete<M: Model>(_ model: M) -> M {
+    let keyPath = store.keyPath(to: M.self)
+    store[keyPath: keyPath][model.id] = nil
+    return model
+  }
+
+  @discardableResult
+  public func delete<M: Model>(_ models: [M]) -> [M] {
+    let keyPath = store.keyPath(to: M.self)
+    for model in models {
+      store[keyPath: keyPath][model.id] = nil
+    }
+    return models
+  }
+
+  func models<M: Model>(of: M.Type) throws -> [M.IdValue: M] {
+    store[keyPath: store.keyPath(to: M.self)]
+  }
+
+  public init(store: Store) {
+    self.store = store
   }
 }

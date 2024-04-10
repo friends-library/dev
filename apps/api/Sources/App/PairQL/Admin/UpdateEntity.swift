@@ -16,7 +16,7 @@ extension UpdateEntity: Resolver {
 
     switch input {
     case .audio(let input):
-      let audio = try await Audio.find(input.id)
+      var audio = try await Audio.find(input.id)
       audio.editionId = input.editionId
       audio.reader = input.reader
       audio.mp3ZipSizeHq = input.mp3ZipSizeHq
@@ -27,7 +27,7 @@ extension UpdateEntity: Resolver {
       model = audio
 
     case .audioPart(let input):
-      let audioPart = try await AudioPart.find(input.id)
+      var audioPart = try await AudioPart.find(input.id)
       audioPart.audioId = input.audioId
       audioPart.title = input.title
       audioPart.duration = input.duration
@@ -118,7 +118,7 @@ extension UpdateEntity: Resolver {
       model = token
 
     case .tokenScope(let input):
-      let tokenScope = try await TokenScope.find(input.id)
+      var tokenScope = try await TokenScope.find(input.id)
       tokenScope.tokenId = input.tokenId
       tokenScope.scope = input.scope
       model = tokenScope

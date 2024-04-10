@@ -1,6 +1,6 @@
 import DuetSQL
 
-final class Friend: Codable {
+final class Friend: Codable, Sendable {
   var id: Id
   var lang: Lang
   var name: String

@@ -1,4 +1,4 @@
-public struct AnyType {
+public struct AnyType: Sendable {
   public var fullyQualifiedName: String
   public var name: String
   public var type: Any.Type

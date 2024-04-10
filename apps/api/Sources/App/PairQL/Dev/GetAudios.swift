@@ -59,8 +59,9 @@ extension GetAudios: NoInputResolver {
     try context.verify(Self.auth)
     let audios = try await App.Audio.query().all()
     return try await audios.concurrentMap { audio in
-      async let parts = audio.parts()
-      async let edition = audio.edition()
+      var audio = audio
+      let parts = try await audio.parts()
+      let edition = try await audio.edition()
       let document = try await edition.document()
       let friend = try await document.friend()
       return .init(
@@ -71,7 +72,7 @@ extension GetAudios: NoInputResolver {
         mp3ZipSizeHq: audio.mp3ZipSizeHq.rawValue,
         mp3ZipSizeLq: audio.mp3ZipSizeLq.rawValue,
         reader: audio.reader,
-        parts: try await parts.map { part in
+        parts: parts.map { part in
           .init(
             id: part.id,
             chapters: Array(part.chapters),

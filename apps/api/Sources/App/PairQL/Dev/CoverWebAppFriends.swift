@@ -53,7 +53,7 @@ extension CoverWebAppFriends: NoInputResolver {
               let isbn = try await edition.isbn()
               let impression = try await edition.impression()
               var audioPartTitles: [String]?
-              if let audio = try await edition.audio() {
+              if var audio = try await edition.audio() {
                 let parts = try await audio.parts()
                 audioPartTitles = parts.map(\.title)
               }

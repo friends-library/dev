@@ -19,7 +19,7 @@ struct UpdateAudioPart: Pair {
 extension UpdateAudioPart: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let audioPart = try await AudioPart.find(input.id)
+    var audioPart = try await AudioPart.find(input.id)
     audioPart.audioId = input.audioId
     audioPart.title = input.title
     audioPart.duration = .init(input.duration)

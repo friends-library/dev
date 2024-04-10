@@ -142,6 +142,12 @@ public enum OptionalChild<C: Duet.Identifiable> {
   }
 }
 
+extension Children: Sendable where C: Sendable {}
+extension Siblings: Sendable where C: Sendable {}
+extension Parent: Sendable where P: Sendable {}
+extension OptionalParent: Sendable where P: Sendable {}
+extension OptionalChild: Sendable where C: Sendable {}
+
 public func connect<P: Duet.Identifiable, C: Duet.Identifiable>(
   _ parent: P,
   _ toChildren: ReferenceWritableKeyPath<P, Children<C>>,

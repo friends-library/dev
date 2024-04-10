@@ -1,7 +1,7 @@
 import DuetSQL
 import Tagged
 
-final class Audio: Codable {
+struct Audio: Codable {
   var id: Id
   var editionId: Edition.Id
   var reader: String
@@ -58,7 +58,7 @@ final class Audio: Codable {
 // extensions
 
 extension Audio {
-  func parts() async throws -> [AudioPart] {
+  mutating func parts() async throws -> [AudioPart] {
     try await parts.useLoaded(or: {
       try await AudioPart.query()
         .where(.audioId == id)
@@ -66,7 +66,7 @@ extension Audio {
     })
   }
 
-  func edition() async throws -> Edition {
+  mutating func edition() async throws -> Edition {
     try await edition.useLoaded(or: {
       try await Edition.query()
         .where(.id == editionId)

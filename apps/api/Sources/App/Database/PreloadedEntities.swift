@@ -136,7 +136,7 @@ final class PreloadedEntitiesStore: MemoryStore {
       }
     }
 
-    for (_, audio) in audios {
+    for (_, var audio) in audios {
       audio.parts = .loaded([])
       if let edition = editions[audio.editionId] {
         edition.audio = .loaded(audio)
@@ -151,8 +151,8 @@ final class PreloadedEntitiesStore: MemoryStore {
       }
     }
 
-    for (_, audioPart) in audioParts {
-      if let audio = audios[audioPart.audioId] {
+    for (_, var audioPart) in audioParts {
+      if var audio = audios[audioPart.audioId] {
         audio.parts.push(audioPart)
         audioPart.audio = .loaded(audio)
       }

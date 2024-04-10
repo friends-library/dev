@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol Identifiable: UUIDIdentifiable {
-  associatedtype IdValue: RandomEmptyInitializing, UUIDStringable, Hashable
+  associatedtype IdValue: RandomEmptyInitializing, UUIDStringable, Hashable, Sendable
   var id: IdValue { get set }
 }
 
