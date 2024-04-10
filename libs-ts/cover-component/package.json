@@ -22,7 +22,7 @@
     "x-syntax": "^2.0.0"
   },
   "devDependencies": {
-    "@types/react": "18.2.67",
+    "@types/react": "18.2.75",
     "@types/roman-numerals": "^0.3.0"
   }
 }
