@@ -38,8 +38,9 @@ extension DpcEditions: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     let editions = try await Edition.query().all()
     return try await editions.concurrentMap { edition in
-      async let isbn = edition.isbn()
-      async let document = edition.document()
+      var edition = edition
+      let isbn = try await edition.isbn()
+      let document = try await edition.document()
       let friend = try await document.friend()
       return .init(
         id: edition.id,

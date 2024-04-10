@@ -126,10 +126,11 @@ extension EditDocument.EditDocumentOutput {
     )
 
     self.editions = try await editions.concurrentMap { edition in
-      async let isbn = edition.isbn()
-      async let audio = edition.audio()
+      var edition = edition
+      let isbn = try await edition.isbn()
+      let audio = try await edition.audio()
       var audioOutput: EditDocument.EditAudio?
-      if var audio = try await audio {
+      if var audio {
         let parts = try await audio.parts()
         audioOutput = .init(
           id: audio.id,

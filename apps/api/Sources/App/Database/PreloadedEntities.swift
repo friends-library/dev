@@ -123,7 +123,8 @@ final class PreloadedEntitiesStore: MemoryStore {
     }
 
     for (_, var isbn) in isbns {
-      if var editionId = isbn.editionId, let edition = editions[editionId] {
+      if var editionId = isbn.editionId,
+         var edition = editions[editionId] {
         edition.isbn = .loaded(isbn)
         isbn.edition = .loaded(edition)
       }

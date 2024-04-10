@@ -61,7 +61,7 @@ extension GetAudios: NoInputResolver {
     return try await audios.concurrentMap { audio in
       var audio = audio
       let parts = try await audio.parts()
-      let edition = try await audio.edition()
+      var edition = try await audio.edition()
       let document = try await edition.document()
       let friend = try await document.friend()
       return .init(

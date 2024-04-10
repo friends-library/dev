@@ -66,8 +66,8 @@ extension GetOrder: Resolver {
       source: order.source,
       items: try await items.concurrentMap { item in
         var item = item
-        let edition = try await item.edition()
-        let document = try await edition.document()
+        var edition = try await item.edition()
+        var document = try await edition.document()
         let friend = try await document.friend()
         return .init(
           id: item.id,

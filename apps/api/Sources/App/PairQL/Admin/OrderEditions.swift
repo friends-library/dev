@@ -30,6 +30,7 @@ extension OrderEditions: NoInputResolver {
       .where(.isDraft == false)
       .all()
     return try await editions.concurrentMap { edition in
+      var edition = edition
       guard let impression = try await edition.impression() else {
         return nil
       }

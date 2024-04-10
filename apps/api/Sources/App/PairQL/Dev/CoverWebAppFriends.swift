@@ -51,6 +51,7 @@ extension CoverWebAppFriends: NoInputResolver {
             directoryPath: doc.directoryPath,
             description: doc.description,
             editions: try await (try await doc.editions()).concurrentMap { edition in
+              var edition = edition
               let isbn = try await edition.isbn()
               let impression = try await edition.impression()
               var audioPartTitles: [String]?

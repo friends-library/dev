@@ -1,7 +1,24 @@
 import DuetSQL
 import NonEmpty
 
-final class Edition: Codable {
+@propertyWrapper
+enum Indirect<T> {
+  indirect case wrapped(T)
+
+  var wrappedValue: T {
+    get { switch self { case .wrapped(let x): return x } }
+    set { self = .wrapped(newValue) }
+  }
+
+  init(wrappedValue: T) {
+    self = .wrapped(wrappedValue)
+  }
+}
+
+extension Indirect: Codable where T: Codable {}
+extension Indirect: Sendable where T: Sendable {}
+
+struct Edition: Codable, Sendable {
   var id: Id
   var documentId: Document.Id
   var type: EditionType
@@ -13,10 +30,11 @@ final class Edition: Codable {
   var updatedAt = Current.date()
   var deletedAt: Date? = nil
 
+  @Indirect var impression: OptionalChild<EditionImpression> = .notLoaded
+  @Indirect var isbn: OptionalChild<Isbn> = .notLoaded
+  @Indirect var audio: OptionalChild<Audio> = .notLoaded
+
   var document = Parent<Document>.notLoaded
-  var impression = OptionalChild<EditionImpression>.notLoaded
-  var isbn = OptionalChild<Isbn>.notLoaded
-  var audio = OptionalChild<Audio>.notLoaded
   var chapters = Children<EditionChapter>.notLoaded
 
   var lang: Lang {
@@ -53,7 +71,7 @@ final class Edition: Codable {
 // loaders
 
 extension Edition {
-  func document() async throws -> Document {
+  mutating func document() async throws -> Document {
     try await document.useLoaded(or: {
       try await Document.query()
         .where(.id == documentId)
@@ -61,31 +79,34 @@ extension Edition {
     })
   }
 
-  func impression() async throws -> EditionImpression? {
-    try await impression.useLoaded(or: {
+  mutating func impression() async throws -> EditionImpression? {
+    let id = id
+    return try await impression.useLoaded(or: {
       try await EditionImpression.query()
         .where(.editionId == id)
         .first()
     })
   }
 
-  func isbn() async throws -> Isbn? {
-    try await isbn.useLoaded(or: {
+  mutating func isbn() async throws -> Isbn? {
+    let id = id
+    return try await isbn.useLoaded(or: {
       try await Isbn.query()
         .where(.editionId == id)
         .first()
     })
   }
 
-  func audio() async throws -> Audio? {
-    try await audio.useLoaded(or: {
+  mutating func audio() async throws -> Audio? {
+    let id = id
+    return try await audio.useLoaded(or: {
       try await Audio.query()
         .where(.editionId == id)
         .first()
     })
   }
 
-  func chapters() async throws -> [EditionChapter] {
+  mutating func chapters() async throws -> [EditionChapter] {
     try await chapters.useLoaded(or: {
       try await EditionChapter.query()
         .where(.editionId == id)

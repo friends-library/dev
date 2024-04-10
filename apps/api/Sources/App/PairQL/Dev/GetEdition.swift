@@ -34,15 +34,15 @@ struct GetEdition: Pair {
 extension GetEdition: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let edition = try await Edition.find(input)
-    async let impression = edition.impression()
-    async let document = edition.document()
+    var edition = try await Edition.find(input)
+    let impression = try await edition.impression()
+    let document = try await edition.document()
     return .init(
       type: edition.type,
       isDraft: edition.isDraft,
       allSquareImages: edition.images.square.all.map(Output.Image.init),
       allThreeDImages: edition.images.threeD.all.map(Output.Image.init),
-      impression: try await impression.map { .init(
+      impression: impression.map { .init(
         id: $0.id,
         adocLength: $0.adocLength,
         paperbackSizeVariant: $0.paperbackSizeVariant,
@@ -51,7 +51,7 @@ extension GetEdition: Resolver {
         publishedRevision: $0.publishedRevision,
         productionToolchainRevision: $0.productionToolchainRevision
       ) },
-      documentFilename: try await document.filename
+      documentFilename: document.filename
     )
   }
 }
