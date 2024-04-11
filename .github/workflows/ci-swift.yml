@@ -58,7 +58,7 @@ jobs:
         with:
           path: apps/api/.build
           key: api-v2-${{ hashFiles('api/Package.resolved') }}-${{ matrix.version }}
-          restore-keys: api-v2-
+          # restore-keys: api-v2- # disable while matrix
       - name: build api
         run: cd apps/api && swift build
 
@@ -84,7 +84,7 @@ jobs:
         with:
           path: apps/api/.build
           key: api-v2-${{ hashFiles('api/Package.resolved') }}-${{ matrix.version }}
-          restore-keys: api-v2-
+          # restore-keys: api-v2- # disable while matrix
       - name: test api
         run: cd apps/api && swift test
 
