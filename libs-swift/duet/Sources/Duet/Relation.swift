@@ -149,30 +149,30 @@ extension OptionalParent: Sendable where P: Sendable {}
 extension OptionalChild: Sendable where C: Sendable {}
 
 public func connect<P: Duet.Identifiable, C: Duet.Identifiable>(
-  _ parent: P,
-  _ toChildren: ReferenceWritableKeyPath<P, Children<C>>,
-  to children: [C],
-  _ toParent: ReferenceWritableKeyPath<C, Parent<P>>
+  _ parent: inout P,
+  _ toChildren: WritableKeyPath<P, Children<C>>,
+  to child: inout C,
+  _ toParent: WritableKeyPath<C, Parent<P>>
 ) {
-  parent[keyPath: toChildren] = .loaded(children)
-  children.forEach { $0[keyPath: toParent] = .loaded(parent) }
+  child[keyPath: toParent] = .loaded(parent)
+  parent[keyPath: toChildren] = .loaded([child])
 }
 
 public func connect<P: Duet.Identifiable, C: Duet.Identifiable>(
-  _ parent: P,
-  _ toChildren: ReferenceWritableKeyPath<P, OptionalChild<C>>,
-  to child: C?,
-  _ toParent: ReferenceWritableKeyPath<C, Parent<P>>
+  _ parent: inout P,
+  _ toChildren: WritableKeyPath<P, OptionalChild<C>>,
+  to child: inout C?,
+  _ toParent: WritableKeyPath<C, Parent<P>>
 ) {
   parent[keyPath: toChildren] = .loaded(child)
   child?[keyPath: toParent] = .loaded(parent)
 }
 
 public func connect<P: Duet.Identifiable, C: Duet.Identifiable>(
-  _ parent: P,
-  _ toChildren: ReferenceWritableKeyPath<P, OptionalChild<C>>,
-  to child: C?,
-  _ toParent: ReferenceWritableKeyPath<C, OptionalParent<P>>
+  _ parent: inout P,
+  _ toChildren: WritableKeyPath<P, OptionalChild<C>>,
+  to child: inout C?,
+  _ toParent: WritableKeyPath<C, OptionalParent<P>>
 ) {
   parent[keyPath: toChildren] = .loaded(child)
   child?[keyPath: toParent] = .loaded(parent)

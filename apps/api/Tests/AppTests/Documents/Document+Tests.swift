@@ -5,30 +5,30 @@ import XCTest
 final class DocumentTests: XCTestCase {
 
   var validLoaded: Document {
-    let friend = Friend.empty
+    var friend = Friend.empty
     friend.lang = .en
-    let edition = Edition.empty
+    var edition = Edition.empty
     edition.isDraft = false
-    let document = Document.valid
+    var document = Document.valid
     document.friend = .loaded(friend)
     document.editions = .loaded([edition])
     return document
   }
 
   func testEmptyTitleInvalid() {
-    let doc = validLoaded
+    var doc = validLoaded
     doc.title = ""
     XCTAssertFalse(doc.isValid)
   }
 
   func testOriginalTitleTooShortInvalid() {
-    let doc = validLoaded
+    var doc = validLoaded
     doc.originalTitle = "Abc"
     XCTAssertFalse(doc.isValid)
   }
 
   func testOriginalTitleNotCapitalizedInvalid() {
-    let doc = validLoaded
+    var doc = validLoaded
     doc.originalTitle = "the life and labors of george dilwynn"
     XCTAssertFalse(doc.isValid)
   }
@@ -43,7 +43,7 @@ final class DocumentTests: XCTestCase {
   }
 
   func testTodosOkForDescriptionsIfEditionsNotLoaded() {
-    let doc = Document.valid
+    var doc = Document.valid
     doc.description = "TODO"
     doc.partialDescription = "TODO"
     doc.featuredDescription = "TODO"
@@ -51,7 +51,7 @@ final class DocumentTests: XCTestCase {
   }
 
   func testTodosInvalidForDescriptionsIfHasNonDraftEdition() {
-    let doc = validLoaded
+    var doc = validLoaded
     doc.description = "TODO"
     doc.partialDescription = "TODO"
     doc.featuredDescription = "TODO"
@@ -59,38 +59,38 @@ final class DocumentTests: XCTestCase {
   }
 
   func testNonCapitalizedTitleInvalid() {
-    let doc = validLoaded
+    var doc = validLoaded
     doc.title = "no Cross, No Crown"
     XCTAssertFalse(doc.isValid)
   }
 
   func testTooShortTitleInValid() {
-    let doc = validLoaded
+    var doc = validLoaded
     doc.title = "No"
     XCTAssertFalse(doc.isValid)
   }
 
   func testNonSluggySlugInvalid() {
-    let doc = validLoaded
+    var doc = validLoaded
     doc.slug = "This is not A Sluggy Slug"
     XCTAssertFalse(doc.isValid)
   }
 
   func testMalformedFilenameInvalid() {
-    let doc = validLoaded
+    var doc = validLoaded
     doc.filename = "This is not A good filename :("
     XCTAssertFalse(doc.isValid)
   }
 
   func testPrimaryEdition() {
-    let updated: Edition = .empty
+    var updated: Edition = .empty
     updated.type = .updated
-    let modernized: Edition = .empty
+    var modernized: Edition = .empty
     modernized.type = .modernized
-    let original: Edition = .empty
+    var original: Edition = .empty
     original.type = .original
 
-    let document: Document = .empty
+    var document: Document = .empty
 
     document.editions = .loaded([updated, modernized, original])
     XCTAssertEqual(updated, document.primaryEdition)

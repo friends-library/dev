@@ -4,7 +4,7 @@ import Foundation
 
 extension Friend {
   static var valid: Friend {
-    let friend = Friend.empty
+    var friend = Friend.empty
     friend.name = "George Fox"
     friend.slug = "george-fox-\(UUID().lowercased)"
     friend.born = 1620
@@ -16,7 +16,7 @@ extension Friend {
 
 extension FriendQuote {
   static var valid: FriendQuote {
-    let quote = FriendQuote.empty
+    var quote = FriendQuote.empty
     quote.source = "Bob Smith"
     quote.text = "So good"
     quote.order = Int.random
@@ -27,7 +27,7 @@ extension FriendQuote {
 
 extension FriendResidenceDuration {
   static var valid: FriendResidenceDuration {
-    let duration = FriendResidenceDuration.empty
+    var duration = FriendResidenceDuration.empty
     duration.start = 1690
     duration.end = 1700
     precondition(duration.isValid)
@@ -37,7 +37,7 @@ extension FriendResidenceDuration {
 
 extension Document {
   static var valid: Document {
-    let document = Document.empty
+    var document = Document.empty
     document.filename = "No_Cross_No_Crown_\(UUID())"
     document.title = "No Cross, No Crown \(Int.random)"
     document.slug = "no-cross-no-crown-\(UUID().lowercased)"
@@ -49,7 +49,7 @@ extension Document {
 
 extension Edition {
   static var valid: Edition {
-    let edition = Edition.empty
+    var edition = Edition.empty
     edition.type = .original
     edition.editor = nil
     precondition(edition.isValid)
@@ -59,7 +59,7 @@ extension Edition {
 
 extension EditionChapter {
   static var valid: EditionChapter {
-    let chapter = EditionChapter.empty
+    var chapter = EditionChapter.empty
     chapter.order = Int.random(in: 1 ... 300)
     chapter.shortHeading = "Chapter 1"
     chapter.sequenceNumber = 1
@@ -70,7 +70,7 @@ extension EditionChapter {
 
 extension EditionImpression {
   static var valid: EditionImpression {
-    let impression = EditionImpression.empty
+    var impression = EditionImpression.empty
     impression.paperbackVolumes = .init(100)
     impression.adocLength = 10000
     impression.publishedRevision = "e6d5b8d007f2e459d4f1ae2237c6e92625e1a3ca"
@@ -82,7 +82,7 @@ extension EditionImpression {
 
 extension AudioPart {
   static var valid: AudioPart {
-    let part = AudioPart.empty
+    var part = AudioPart.empty
     part.title = "Chapter 7"
     part.order = 7
     part.duration = 3704.5
@@ -96,7 +96,7 @@ extension AudioPart {
 
 extension Audio {
   static var valid: Audio {
-    let audio = Audio.empty
+    var audio = Audio.empty
     audio.reader = "Bob Smith"
     audio.m4bSizeLq = 3_000_000
     audio.m4bSizeHq = 8_000_000
@@ -109,7 +109,7 @@ extension Audio {
 
 extension Isbn {
   static var valid: Isbn {
-    let isbn = Isbn.empty
+    var isbn = Isbn.empty
     isbn.code = "978-1-64476-999-9"
     precondition(isbn.isValid)
     return isbn

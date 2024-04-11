@@ -7,16 +7,16 @@ import XCTest
 final class OrderEmailsTests: AppTestCase {
 
   func mockOrder(lang: Lang) async -> (Order, String) {
-    let order = Order.random
+    var order = Order.random
     order.lang = lang
     order.email = "foo@bar.com"
     order.addressName = "Bob Villa"
     let entities = await Entities.create()
-    let item = OrderItem.mock
+    var item = OrderItem.mock
     item.quantity = 1
     item.orderId = order.id
     item.editionId = entities.edition.id
-    connect(order, \.items, to: [item], \.order)
+    connect(&order, \.items, to: &item, \.order)
     return (order, entities.document.title)
   }
 
@@ -48,9 +48,9 @@ final class OrderEmailsTests: AppTestCase {
   }
 
   func testFallbacks() async throws {
-    let (enOrder, _) = await mockOrder(lang: .en)
+    var (enOrder, _) = await mockOrder(lang: .en)
     enOrder.addressName = ""
-    let (esOrder, _) = await mockOrder(lang: .es)
+    var (esOrder, _) = await mockOrder(lang: .es)
     esOrder.addressName = ""
     let enEmail = try await EmailBuilder.orderShipped(enOrder, trackingUrl: nil)
     let esEmail = try await EmailBuilder.orderShipped(esOrder, trackingUrl: nil)

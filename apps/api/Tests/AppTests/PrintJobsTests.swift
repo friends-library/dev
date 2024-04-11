@@ -45,7 +45,7 @@ final class PrintJobsTests: AppTestCase {
 
     let entities = await Entities.create()
     let order = Order.random
-    let item = OrderItem.random
+    var item = OrderItem.random
     item.orderId = order.id
     item.editionId = entities.edition.id
     try await Current.db.create(order)
@@ -89,7 +89,7 @@ final class PrintJobsTests: AppTestCase {
       $0.editionImpression.paperbackVolumes.append(234)
     }
     let order = Order.random
-    let item = OrderItem.random
+    var item = OrderItem.random
     item.orderId = order.id
     item.editionId = entities.edition.id
     try await Current.db.create(order)

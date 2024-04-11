@@ -11,7 +11,7 @@ final class CreateNewPrintJobTests: AppTestCase {
   }
 
   func testCreateNewPrintJobHappyPath() async throws {
-    let order = Order.random
+    var order = Order.random
     order.printJobStatus = .presubmit
     try await Current.db.create(order)
     var created: [Order] = []
@@ -30,7 +30,7 @@ final class CreateNewPrintJobTests: AppTestCase {
   }
 
   func testUnexpectedLuluStatusLogsErrorWithoutUpdatingOrder() async throws {
-    let order = Order.random
+    var order = Order.random
     order.printJobStatus = .presubmit
     try await Current.db.create(order)
 

@@ -4,7 +4,7 @@ import XCTest
 
 final class EditionChapterValidityTests: XCTestCase {
   func testOrderLessThan1OrSuperBigInvalid() {
-    let chapter = EditionChapter.valid
+    var chapter = EditionChapter.valid
     chapter.order = 0
     XCTAssertFalse(chapter.isValid)
     chapter.order = 400
@@ -12,7 +12,7 @@ final class EditionChapterValidityTests: XCTestCase {
   }
 
   func testWierdValueForSequenceNumberInvalid() {
-    let chapter = EditionChapter.valid
+    var chapter = EditionChapter.valid
     chapter.sequenceNumber = 0
     XCTAssertFalse(chapter.isValid)
     chapter.sequenceNumber = 201
@@ -20,7 +20,7 @@ final class EditionChapterValidityTests: XCTestCase {
   }
 
   func testEmptyOrNonCapitalizedShortHeadingInvalid() {
-    let chapter = EditionChapter.valid
+    var chapter = EditionChapter.valid
     chapter.shortHeading = ""
     XCTAssertFalse(chapter.isValid)
     chapter.shortHeading = "bad lowercased"
@@ -28,7 +28,7 @@ final class EditionChapterValidityTests: XCTestCase {
   }
 
   func testEmptyOrNonCapitalizedNonSequenceTitleInvalid() {
-    let chapter = EditionChapter.valid
+    var chapter = EditionChapter.valid
     chapter.nonSequenceTitle = ""
     XCTAssertFalse(chapter.isValid)
     chapter.nonSequenceTitle = "bad lowercased"
@@ -36,7 +36,7 @@ final class EditionChapterValidityTests: XCTestCase {
   }
 
   func testSequenceNumberAndNonSequenceTitleBothNullInvalid() {
-    let chapter = EditionChapter.valid
+    var chapter = EditionChapter.valid
     chapter.sequenceNumber = nil
     chapter.nonSequenceTitle = nil
     XCTAssertFalse(chapter.isValid)

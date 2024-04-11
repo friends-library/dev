@@ -12,7 +12,7 @@ final class OrderResolverTests: AppTestCase {
   func orderSetup() async throws -> (CreateOrder.Input, OrderItem) {
     let entities = await Entities.create()
     let order = Order.random
-    let item = OrderItem.random
+    var item = OrderItem.random
     item.orderId = order.id
     item.editionId = entities.edition.id
 
@@ -50,7 +50,7 @@ final class OrderResolverTests: AppTestCase {
     let (input, item) = try await orderSetup()
     let output = try await CreateOrder.resolve(with: input, in: .mock)
 
-    let retrieved = try await Order.find(output)
+    var retrieved = try await Order.find(output)
     let items = try await retrieved.items()
 
     expect(retrieved.id).toEqual(input.id)
@@ -125,7 +125,7 @@ final class OrderResolverTests: AppTestCase {
   }
 
   func testBrickOrder() async throws {
-    let order = Order.random
+    var order = Order.random
     order.printJobStatus = .presubmit
     order.paymentId = .init(rawValue: "stripe_pi_id")
     try await Current.db.create(order)

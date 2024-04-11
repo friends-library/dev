@@ -31,7 +31,7 @@ final class DownloadableFileTests: AppTestCase {
     ip: String,
     city: String? = nil
   ) -> Download {
-    let download = Download.random
+    var download = Download.random
     download.editionId = editionId
     download.format = .podcast
     download.ip = ip
@@ -41,10 +41,10 @@ final class DownloadableFileTests: AppTestCase {
 
   func testFindDuplicatePodcastDownloads() async throws {
     let d1 = podcastDownload(ip: "1.2.3.4")
-    let d2 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- DUPE, same ed.id and ip
+    var d2 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- DUPE, same ed.id and ip
     let d3 = podcastDownload(ip: "1.2.3.4") // <-- not dupe, new ed.id
     let d4 = podcastDownload(d1.editionId, ip: "1.2.3.5") // <-- not dupe, new ip
-    let d5 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- another DUPE
+    var d5 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- another DUPE
 
     d2.createdAt = Date(timeIntervalSince1970: 500)
     d5.createdAt = Date(timeIntervalSince1970: 100) // <-- older than other dupes
@@ -54,9 +54,9 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testBackfillLocationData() {
-    let d1 = podcastDownload(ip: "1.2.3.4", city: "San Francisco")
+    var d1 = podcastDownload(ip: "1.2.3.4", city: "San Francisco")
     let d2 = podcastDownload(ip: "1.2.3.4", city: nil)
-    let d3 = podcastDownload(ip: "1.2.3.4", city: "Atlanta")
+    var d3 = podcastDownload(ip: "1.2.3.4", city: "Atlanta")
     let d4 = podcastDownload(ip: "5.5.5.5", city: nil) // <-- still missing
 
     // we have two patterns for 1.2.3.4, d3 is newer, it should be used

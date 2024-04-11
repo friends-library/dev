@@ -54,7 +54,7 @@ final class DevDomainTests: AppTestCase {
 
 extension Token {
   static func allScopes() async -> Token {
-    let token = try! await Token.create(.init(description: "@testing"))
+    var token = try! await Token.create(.init(description: "@testing"))
     let scope = try! await TokenScope.create(.init(tokenId: token.id, scope: .all))
     token.scopes = .loaded([scope])
     return token
