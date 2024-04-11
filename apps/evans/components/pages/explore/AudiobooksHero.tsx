@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
-import NextBgImage from 'next-bg-image';
+import NextBgImage, { bgColor } from 'next-bg-image';
 import Dual from '@/components/core/Dual';
 import HeadphonesImage from '@/public/images/headphones.jpg';
 import WaveformSVG from '@/public/images/waveform.svg';
@@ -9,15 +9,17 @@ import WaveformSVG from '@/public/images/waveform.svg';
 interface Props {
   numBooks: number;
   className?: string;
+  eager?: boolean;
 }
 
-const AudiobooksHero: React.FC<Props> = ({ className, numBooks }) => (
+const AudiobooksHero: React.FC<Props> = ({ className, numBooks, eager }) => (
   <NextBgImage
     className={cx(
       className,
       `text-center p-16 pb-48 md:pb-56 lg:pb-[18rem] overflow-hidden`,
     )}
-    src={HeadphonesImage}
+    eager={eager}
+    src={[HeadphonesImage, bgColor(`rgb(148,64,88)`)]}
     position="60% 60%"
     size={{ base: `1000px`, lg: `cover` }}
   >

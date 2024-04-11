@@ -1,4 +1,5 @@
 import '@/styles/globals.css';
+import '@/styles/cover.css';
 import '@/styles/fontawesome.css';
 import { NextBgStaticCss } from 'next-bg-image';
 import Chrome from '@/components/chrome/Chrome';
