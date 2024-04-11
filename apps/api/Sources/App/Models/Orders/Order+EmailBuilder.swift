@@ -33,16 +33,16 @@ extension EmailBuilder {
 // helpers
 
 private func lineItems(_ order: Order) async throws -> String {
-  let items = try await Current.db.query(OrderItem.self)
+  var items = try await Current.db.query(OrderItem.self)
     .where(.orderId == order.id)
     .all()
 
-  for var item in items {
+  for (idx, item) in items.enumerated() {
     if !item.edition.isLoaded {
       let edition = try await Current.db.query(Edition.self)
         .where(.id == item.editionId)
         .first()
-      item.edition = .loaded(edition)
+      items[idx].edition = .loaded(edition)
     }
   }
 

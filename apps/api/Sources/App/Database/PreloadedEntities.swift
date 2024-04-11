@@ -47,115 +47,145 @@ final class PreloadedEntitiesStore: MemoryStore {
     self.audioParts = audioParts
     self.isbns = isbns
 
-    for var friend in friends.values {
-      friend.documents = .loaded([])
-      friend.residences = .loaded([])
-      friend.quotes = .loaded([])
+    for friendId in friends.keys {
+      self.friends[friendId]!.documents = .loaded([])
+      self.friends[friendId]!.residences = .loaded([])
+      self.friends[friendId]!.quotes = .loaded([])
     }
 
-    for (_, var document) in documents {
+    for (id, var document) in self.documents {
       document.editions = .loaded([])
       document.tags = .loaded([])
       document.relatedDocuments = .loaded([])
-      if var friend = friends[document.friendId] {
-        friend.documents.push(document)
-        document.friend = .loaded(friend)
-      }
 
       if let altLanguageId = document.altLanguageId,
-         let altLanguageDocument = documents[altLanguageId] {
+         let altLanguageDocument = self.documents[altLanguageId] {
         document.altLanguageDocument = .loaded(altLanguageDocument)
       } else {
         document.altLanguageDocument = .loaded(nil)
       }
+
+      if var friend = self.friends[document.friendId] {
+        document.friend = .loaded(friend)
+        friend.documents.push(document)
+        self.friends[document.friendId] = friend
+      }
+
+      self.documents[id] = document
     }
 
-    for (_, var residence) in friendResidences {
+    for (id, var residence) in self.friendResidences {
       residence.durations = .loaded([])
-      if var friend = friends[residence.friendId] {
+      if var friend = self.friends[residence.friendId] {
         friend.residences.push(residence)
         residence.friend = .loaded(friend)
+        self.friends[residence.friendId] = friend
       }
+      self.friendResidences[id] = residence
     }
 
-    for (_, var duration) in friendResidenceDurations {
-      if var residence = friendResidences[duration.friendResidenceId] {
+    for (id, var duration) in self.friendResidenceDurations {
+      if var residence = self.friendResidences[duration.friendResidenceId] {
         residence.durations.push(duration)
         duration.residence = .loaded(residence)
+        self.friendResidences[duration.friendResidenceId] = residence
+        self.friendResidenceDurations[id] = duration
       }
     }
 
-    for (_, var quote) in friendQuotes {
-      if var friend = friends[quote.friendId] {
+    for (id, var quote) in self.friendQuotes {
+      if var friend = self.friends[quote.friendId] {
         friend.quotes.push(quote)
         quote.friend = .loaded(friend)
+        self.friends[quote.friendId] = friend
+        self.friendQuotes[id] = quote
       }
     }
 
-    for (_, var tag) in documentTags {
-      if var document = documents[tag.documentId] {
+    for (id, var tag) in self.documentTags {
+      if var document = self.documents[tag.documentId] {
         document.tags.push(tag)
         tag.document = .loaded(document)
+        self.documents[tag.documentId] = document
+        self.documentTags[id] = tag
       }
     }
 
-    for (_, var relatedDocument) in relatedDocuments {
-      if var parentDocument = documents[relatedDocument.parentDocumentId] {
+    for (id, var relatedDocument) in self.relatedDocuments {
+      if var parentDocument = self.documents[relatedDocument.parentDocumentId] {
         parentDocument.relatedDocuments.push(relatedDocument)
         relatedDocument.parentDocument = .loaded(parentDocument)
+        self.documents[relatedDocument.parentDocumentId] = parentDocument
       }
-      if let document = documents[relatedDocument.documentId] {
+      if let document = self.documents[relatedDocument.documentId] {
         relatedDocument.document = .loaded(document)
       }
+      self.relatedDocuments[id] = relatedDocument
     }
 
-    for (_, var edition) in editions {
+    for (id, var edition) in self.editions {
       // do this BEFORE setting optional children (Impression, Audio)
       edition.chapters = .loaded([])
       edition.impression = .loaded(nil)
       edition.audio = .loaded(nil)
       edition.isbn = .loaded(nil)
 
-      if var document = documents[edition.documentId] {
-        document.editions.push(edition)
+      if var document = self.documents[edition.documentId] {
         edition.document = .loaded(document)
+        document.editions.push(edition)
+        self.documents[edition.documentId] = document
       }
+      self.editions[id] = edition
     }
 
-    for (_, var isbn) in isbns {
+    for (id, var isbn) in self.isbns {
       if let editionId = isbn.editionId,
-         var edition = editions[editionId] {
+         var edition = self.editions[editionId] {
         edition.isbn = .loaded(isbn)
         isbn.edition = .loaded(edition)
+        self.editions[editionId] = edition
+        self.isbns[id] = isbn
       }
     }
 
-    for (_, var impression) in editionImpressions {
-      if var edition = editions[impression.editionId] {
+    for (id, var impression) in editionImpressions {
+      if var edition = self.editions[impression.editionId] {
         edition.impression = .loaded(impression)
         impression.edition = .loaded(edition)
+        self.editions[impression.editionId] = edition
+        self.editionImpressions[id] = impression
+        assert(self.editions[impression.editionId]?.impression != .notLoaded)
+        assert(self.editionImpressions[id]?.edition != .notLoaded)
       }
     }
 
-    for (_, var audio) in audios {
-      audio.parts = .loaded([])
-      if var edition = editions[audio.editionId] {
+    for (id, var audio) in self.audios {
+      self.audios[id]?.parts = .loaded([])
+      if var edition = self.editions[audio.editionId] {
         edition.audio = .loaded(audio)
         audio.edition = .loaded(edition)
+        self.editions[audio.editionId] = edition
+        self.audios[id] = audio
+        assert(self.editions[audio.editionId]?.audio != .notLoaded)
+        assert(self.audios[id]?.edition != .notLoaded)
       }
     }
 
-    for (_, var chapter) in editionChapters {
-      if var edition = editions[chapter.editionId] {
+    for (id, var chapter) in self.editionChapters {
+      if var edition = self.editions[chapter.editionId] {
         edition.chapters.push(chapter)
         chapter.edition = .loaded(edition)
+        self.editions[chapter.editionId] = edition
+        self.editionChapters[id] = chapter
       }
     }
 
-    for (_, var audioPart) in audioParts {
-      if var audio = audios[audioPart.audioId] {
+    for (id, var audioPart) in self.audioParts {
+      if var audio = self.audios[audioPart.audioId] {
         audio.parts.push(audioPart)
         audioPart.audio = .loaded(audio)
+        self.audios[audioPart.audioId] = audio
+        self.audioParts[id] = audioPart
       }
     }
   }

@@ -84,10 +84,10 @@ final class PrintJobsTests: AppTestCase {
       return .init(id: 1, status: .init(name: .created), lineItems: [])
     }
 
-    let entities = await Entities.create {
-      $0.editionImpression.paperbackVolumes = .init(123)
-      $0.editionImpression.paperbackVolumes.append(234)
-    }
+    var entities = await Entities.create()
+    entities.editionImpression.paperbackVolumes = .init(123, 234)
+    try await entities.editionImpression.save()
+
     let order = Order.random
     var item = OrderItem.random
     item.orderId = order.id

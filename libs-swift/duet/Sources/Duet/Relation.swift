@@ -147,6 +147,11 @@ extension Siblings: Sendable where C: Sendable {}
 extension Parent: Sendable where P: Sendable {}
 extension OptionalParent: Sendable where P: Sendable {}
 extension OptionalChild: Sendable where C: Sendable {}
+extension Children: Equatable where C: Equatable {}
+extension Siblings: Equatable where C: Equatable {}
+extension Parent: Equatable where P: Equatable {}
+extension OptionalParent: Equatable where P: Equatable {}
+extension OptionalChild: Equatable where C: Equatable {}
 
 public func connect<P: Duet.Identifiable, C: Duet.Identifiable>(
   _ parent: inout P,

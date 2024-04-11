@@ -1,6 +1,7 @@
 import DuetSQL
 import Vapor
 import XCTest
+import XExpect
 
 @testable import App
 
@@ -22,6 +23,7 @@ final class DownloadableFileTests: AppTestCase {
         $0.friend.lang = .en
         $0.edition.type = .updated
         $0.document.filename = "Journal"
+        $0.edition.document = .loaded($0.document)
       }
     }
   }
@@ -286,7 +288,8 @@ final class DownloadableFileTests: AppTestCase {
 
   func testSourcePath() {
     let epub = DownloadableFile(edition: edition, format: .ebook(.epub))
-    XCTAssertEqual(epub.sourcePath, "\(edition.directoryPath)/Journal--updated.epub")
+    // XCTAssertEqual(epub.sourcePath, "\(edition.directoryPath)/Journal--updated.epub")
+    expect(epub.sourcePath).toEqual("\(edition.directoryPath)/Journal--updated.epub")
   }
 
   func testPodcastsSpecialSourcePathsUrls() {

@@ -4,7 +4,7 @@ import TaggedMoney
 
 enum PrintJobs {
   static func create(_ order: Order) async throws -> Lulu.Api.PrintJob {
-    let orderItems: [OrderItem]
+    var orderItems: [OrderItem]
     if case .loaded(let items) = order.items {
       orderItems = items
     } else {
@@ -13,11 +13,11 @@ enum PrintJobs {
         .all()
     }
 
-    for var item in orderItems {
-      item.order = .loaded(order)
+    for (idx, item) in orderItems.enumerated() {
+      orderItems[idx].order = .loaded(order)
       if case .notLoaded = item.edition {
         let edition = try await Current.db.find(item.editionId)
-        item.edition = .loaded(edition)
+        orderItems[idx].edition = .loaded(edition)
       }
     }
 
