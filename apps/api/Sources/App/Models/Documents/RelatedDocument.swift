@@ -1,6 +1,6 @@
 import Duet
 
-final class RelatedDocument: Codable {
+struct RelatedDocument: Codable, Sendable {
   var id: Id
   var description: String
   var documentId: Document.Id

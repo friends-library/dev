@@ -1,7 +1,7 @@
 import DuetSQL
 import Tagged
 
-struct Audio: Codable {
+struct Audio: Codable, Sendable {
   var id: Id
   var editionId: Edition.Id
   var reader: String

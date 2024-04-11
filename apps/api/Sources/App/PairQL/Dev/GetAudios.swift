@@ -62,7 +62,7 @@ extension GetAudios: NoInputResolver {
       var audio = audio
       let parts = try await audio.parts()
       var edition = try await audio.edition()
-      let document = try await edition.document()
+      var document = try await edition.document()
       let friend = try await document.friend()
       return .init(
         id: audio.id,
@@ -84,10 +84,10 @@ extension GetAudios: NoInputResolver {
           )
         },
         edition: .init(
-          id: try await edition.id,
-          path: try await edition.directoryPath,
-          type: try await edition.type,
-          coverImagePath: try await edition.images.square.w1400.path
+          id: edition.id,
+          path: edition.directoryPath,
+          type: edition.type,
+          coverImagePath: edition.images.square.w1400.path
         ),
         document: .init(
           filename: document.filename,

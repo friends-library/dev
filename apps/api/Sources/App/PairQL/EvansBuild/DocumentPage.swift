@@ -130,7 +130,7 @@ extension DocumentPage: Resolver {
     let document = try await matchingDocuments
       .first { $0.lang == input.lang && $0.friend.require().slug == input.friendSlug }
 
-    guard let document else {
+    guard var document else {
       throw Abort(.notFound)
     }
 

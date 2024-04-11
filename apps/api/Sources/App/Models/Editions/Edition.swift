@@ -1,23 +1,6 @@
 import DuetSQL
 import NonEmpty
 
-@propertyWrapper
-enum Indirect<T> {
-  indirect case wrapped(T)
-
-  var wrappedValue: T {
-    get { switch self { case .wrapped(let x): return x } }
-    set { self = .wrapped(newValue) }
-  }
-
-  init(wrappedValue: T) {
-    self = .wrapped(wrappedValue)
-  }
-}
-
-extension Indirect: Codable where T: Codable {}
-extension Indirect: Sendable where T: Sendable {}
-
 struct Edition: Codable, Sendable {
   var id: Id
   var documentId: Document.Id
@@ -30,12 +13,11 @@ struct Edition: Codable, Sendable {
   var updatedAt = Current.date()
   var deletedAt: Date? = nil
 
-  @Indirect var impression: OptionalChild<EditionImpression> = .notLoaded
-  @Indirect var isbn: OptionalChild<Isbn> = .notLoaded
-  @Indirect var audio: OptionalChild<Audio> = .notLoaded
-
   var document = Parent<Document>.notLoaded
   var chapters = Children<EditionChapter>.notLoaded
+  var impression: OptionalChild<EditionImpression> = .notLoaded
+  var isbn: OptionalChild<Isbn> = .notLoaded
+  var audio: OptionalChild<Audio> = .notLoaded
 
   var lang: Lang {
     document.require().lang

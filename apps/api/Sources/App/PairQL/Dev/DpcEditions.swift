@@ -40,7 +40,7 @@ extension DpcEditions: NoInputResolver {
     return try await editions.concurrentMap { edition in
       var edition = edition
       let isbn = try await edition.isbn()
-      let document = try await edition.document()
+      var document = try await edition.document()
       let friend = try await document.friend()
       return .init(
         id: edition.id,
@@ -48,13 +48,13 @@ extension DpcEditions: NoInputResolver {
         editor: edition.editor,
         directoryPath: edition.directoryPath,
         paperbackSplits: edition.paperbackSplits.map { Array($0) },
-        isbn: try await isbn?.code,
+        isbn: isbn?.code,
         document: .init(
-          title: try await document.title,
-          originalTitle: try await document.originalTitle,
-          description: try await document.description,
-          slug: try await document.slug,
-          published: try await document.published
+          title: document.title,
+          originalTitle: document.originalTitle,
+          description: document.description,
+          slug: document.slug,
+          published: document.published
         ),
         friend: .init(
           isCompilations: friend.isCompilations,

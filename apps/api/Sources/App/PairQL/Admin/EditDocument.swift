@@ -102,10 +102,11 @@ extension EditDocument: Resolver {
 
 extension EditDocument.EditDocumentOutput {
   init(model document: Document) async throws {
-    async let friend = document.friend()
-    async let editions = document.editions()
-    async let tags = document.tags()
-    async let relatedDocuments = document.relatedDocuments()
+    var document = document
+    let friend = try await document.friend()
+    let editions = try await document.editions()
+    let tags = try await document.tags()
+    let relatedDocuments = try await document.relatedDocuments()
 
     id = document.id
     altLanguageId = document.altLanguageId
@@ -119,11 +120,7 @@ extension EditDocument.EditDocumentOutput {
     partialDescription = document.partialDescription
     featuredDescription = document.featuredDescription
 
-    self.friend = .init(
-      id: try await friend.id,
-      name: try await friend.name,
-      lang: try await friend.lang
-    )
+    self.friend = .init(id: friend.id, name: friend.name, lang: friend.lang)
 
     self.editions = try await editions.concurrentMap { edition in
       var edition = edition
@@ -162,14 +159,14 @@ extension EditDocument.EditDocumentOutput {
         paperbackSplits: edition.paperbackSplits.map { Array($0) },
         paperbackOverrideSize: edition.paperbackOverrideSize,
         editor: edition.editor,
-        isbn: try await isbn?.code.rawValue,
+        isbn: isbn?.code.rawValue,
         isDraft: edition.isDraft,
         audio: audioOutput
       )
     }
 
-    self.tags = try await tags.map { .init(id: $0.id, documentId: $0.documentId, type: $0.type) }
-    self.relatedDocuments = try await relatedDocuments.map { relatedDoc in
+    self.tags = tags.map { .init(id: $0.id, documentId: $0.documentId, type: $0.type) }
+    self.relatedDocuments = relatedDocuments.map { relatedDoc in
       .init(
         id: relatedDoc.id,
         documentId: relatedDoc.documentId,
@@ -177,6 +174,6 @@ extension EditDocument.EditDocumentOutput {
         description: relatedDoc.description
       )
     }
-    friendId = try await friend.id
+    friendId = friend.id
   }
 }

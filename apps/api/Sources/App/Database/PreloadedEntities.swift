@@ -53,7 +53,7 @@ final class PreloadedEntitiesStore: MemoryStore {
       friend.quotes = .loaded([])
     }
 
-    for (_, document) in documents {
+    for (_, var document) in documents {
       document.editions = .loaded([])
       document.tags = .loaded([])
       document.relatedDocuments = .loaded([])
@@ -93,7 +93,7 @@ final class PreloadedEntitiesStore: MemoryStore {
     }
 
     for (_, var tag) in documentTags {
-      if let document = documents[tag.documentId] {
+      if var document = documents[tag.documentId] {
         document.tags.push(tag)
         tag.document = .loaded(document)
       }
@@ -116,14 +116,14 @@ final class PreloadedEntitiesStore: MemoryStore {
       edition.audio = .loaded(nil)
       edition.isbn = .loaded(nil)
 
-      if let document = documents[edition.documentId] {
+      if var document = documents[edition.documentId] {
         document.editions.push(edition)
         edition.document = .loaded(document)
       }
     }
 
     for (_, var isbn) in isbns {
-      if var editionId = isbn.editionId,
+      if let editionId = isbn.editionId,
          var edition = editions[editionId] {
         edition.isbn = .loaded(isbn)
         isbn.edition = .loaded(edition)

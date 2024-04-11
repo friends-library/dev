@@ -4,7 +4,7 @@ public enum RelationError: Error {
 
 public enum Siblings<C: Duet.Identifiable> {
   case notLoaded
-  case loaded([C])
+  indirect case loaded([C])
 
   public var isLoaded: Bool {
     guard case .loaded = self else { return false }
@@ -32,7 +32,7 @@ public enum Siblings<C: Duet.Identifiable> {
 
 public enum Children<C: Duet.Identifiable> {
   case notLoaded
-  case loaded([C])
+  indirect case loaded([C])
 
   public var isLoaded: Bool {
     guard case .loaded = self else { return false }
@@ -60,7 +60,7 @@ public enum Children<C: Duet.Identifiable> {
 
 public enum Parent<P: Duet.Identifiable> {
   case notLoaded
-  case loaded(P)
+  indirect case loaded(P)
 
   public var isLoaded: Bool {
     guard case .loaded = self else { return false }
@@ -88,7 +88,7 @@ public enum Parent<P: Duet.Identifiable> {
 
 public enum OptionalParent<P: Duet.Identifiable> {
   case notLoaded
-  case loaded(P?)
+  indirect case loaded(P?)
 
   public var isLoaded: Bool {
     guard case .loaded = self else { return false }
@@ -116,7 +116,7 @@ public enum OptionalParent<P: Duet.Identifiable> {
 
 public enum OptionalChild<C: Duet.Identifiable> {
   case notLoaded
-  case loaded(C?)
+  indirect case loaded(C?)
 
   public var isLoaded: Bool {
     guard case .loaded = self else { return false }

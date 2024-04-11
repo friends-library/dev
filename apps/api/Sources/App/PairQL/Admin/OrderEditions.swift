@@ -34,7 +34,7 @@ extension OrderEditions: NoInputResolver {
       guard let impression = try await edition.impression() else {
         return nil
       }
-      let document = try await edition.document()
+      var document = try await edition.document()
       let friend = try await document.friend()
       return .init(
         id: edition.id,

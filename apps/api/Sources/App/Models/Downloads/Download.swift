@@ -1,6 +1,6 @@
 import DuetSQL
 
-final class Download: Codable {
+struct Download: Codable, Sendable {
   var id: Id
   var editionId: Edition.Id
   var format: Format

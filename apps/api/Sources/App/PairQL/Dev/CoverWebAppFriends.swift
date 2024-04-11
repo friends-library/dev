@@ -44,7 +44,8 @@ extension CoverWebAppFriends: NoInputResolver {
         alphabeticalName: friend.alphabeticalName,
         description: friend.description,
         documents: try await (try await friend.documents()).concurrentMap { doc in
-          .init(
+          var doc = doc
+          return .init(
             lang: friend.lang,
             title: doc.title,
             isCompilation: friend.isCompilations,

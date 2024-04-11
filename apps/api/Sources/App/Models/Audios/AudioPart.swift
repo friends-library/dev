@@ -3,7 +3,7 @@ import NonEmpty
 import Tagged
 import TaggedTime
 
-struct AudioPart: Codable {
+struct AudioPart: Codable, Sendable {
   var id: Id
   var audioId: Audio.Id
   var title: String

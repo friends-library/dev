@@ -83,7 +83,7 @@ enum DownloadRoute: RouteHandler {
         }
       }
 
-      let download = Download(
+      var download = Download(
         editionId: file.edition.id,
         format: downloadFormat,
         source: source,

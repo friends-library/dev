@@ -1,6 +1,6 @@
 import DuetSQL
 
-final class Document: Codable {
+struct Document: Codable, Sendable {
   var id: Id
   var friendId: Friend.Id
   var altLanguageId: Id?
@@ -90,7 +90,7 @@ final class Document: Codable {
 // loaders
 
 extension Document {
-  func friend() async throws -> Friend {
+  mutating func friend() async throws -> Friend {
     try await friend.useLoaded(or: {
       try await Friend.query()
         .where(.id == friendId)
@@ -98,7 +98,7 @@ extension Document {
     })
   }
 
-  func editions() async throws -> [Edition] {
+  mutating func editions() async throws -> [Edition] {
     try await editions.useLoaded(or: {
       try await Edition.query()
         .where(.documentId == id)
@@ -106,7 +106,7 @@ extension Document {
     })
   }
 
-  func tags() async throws -> [DocumentTag] {
+  mutating func tags() async throws -> [DocumentTag] {
     try await tags.useLoaded(or: {
       try await DocumentTag.query()
         .where(.documentId == id)
@@ -114,7 +114,7 @@ extension Document {
     })
   }
 
-  func relatedDocuments() async throws -> [RelatedDocument] {
+  mutating func relatedDocuments() async throws -> [RelatedDocument] {
     try await relatedDocuments.useLoaded(or: {
       try await RelatedDocument.query()
         .where(.parentDocumentId == id)
@@ -122,7 +122,7 @@ extension Document {
     })
   }
 
-  func altLanguageDocument() async throws -> Document? {
+  mutating func altLanguageDocument() async throws -> Document? {
     try await altLanguageDocument.useLoaded(or: {
       guard let altLanguageId = altLanguageId else { return nil }
       return try await Document.query()
@@ -131,7 +131,7 @@ extension Document {
     })
   }
 
-  func numDownloads() async throws -> Int {
+  mutating func numDownloads() async throws -> Int {
     let editions = try await editions()
     let rows = try await Current.db.customQuery(
       DocumentDownloads.self,

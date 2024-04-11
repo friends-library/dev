@@ -19,6 +19,7 @@ extension ListDocuments: NoInputResolver {
     try context.verify(Self.auth)
     let documents = try await Document.query().all()
     return try await documents.concurrentMap { document in
+      var document = document
       let friend = try await document.friend()
       return .init(
         id: document.id,

@@ -1,6 +1,6 @@
 import Foundation
 
-final class FreeOrderRequest: Codable {
+struct FreeOrderRequest: Codable, Sendable {
   var id: Id
   var name: String
   var email: EmailAddress
@@ -62,7 +62,7 @@ final class FreeOrderRequest: Codable {
 // extensions
 
 extension FreeOrderRequest {
-  convenience init(
+  init(
     id: Id = .init(),
     email: EmailAddress,
     requestedBooks: String,
