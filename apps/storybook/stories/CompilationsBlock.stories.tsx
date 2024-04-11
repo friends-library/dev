@@ -1,4 +1,4 @@
-import CompilationsBlock from '@evans/pages/friends/CompilationsBlock';
+import CompilationsBlock from '@evans/blocks/CompilationsBlock';
 import type { Meta, StoryObj } from '@storybook/react';
 import { props } from './helpers';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { Male, Female } from '../friend/Silhouettes';
+import { Male, Female } from '@/components/pages/friend/Silhouettes';
 
 interface Props {
   className?: string;

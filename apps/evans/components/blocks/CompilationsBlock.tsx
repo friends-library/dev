@@ -1,14 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { t } from '@friends-library/locale';
-import NextBgImage from 'next-bg-image';
+import NextBgImage, { bgColor } from 'next-bg-image';
 import Dual from '@/components/core/Dual';
 import Button from '@/components/core/Button';
 import CompilationsBg from '@/public/images/village.jpg';
 
 const CompilationsBlock: React.FC = () => (
   <NextBgImage
-    src={[`linear-gradient(rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.38))`, CompilationsBg]}
+    src={[bgColor(`rgba(0,0,0,0.38)`), CompilationsBg, bgColor(`rgba(76,50,30,0.95)`)]}
     className="text-center text-white px-8 py-24 md:py-24 xl:py-32"
     position={{ base: `center`, sm: `center 93%` }}
     size={{ base: `cover`, sm: `1500px` }}
