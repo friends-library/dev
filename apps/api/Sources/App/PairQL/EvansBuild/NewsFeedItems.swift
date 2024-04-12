@@ -31,91 +31,92 @@ struct NewsFeedItems: Pair {
 extension NewsFeedItems: Resolver {
   static func resolve(with lang: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    var items: [NewsFeedItem] = []
+    fatalError("mega query")
+    // var items: [NewsFeedItem] = []
 
-    let impressions = try await EditionImpression.query()
-      .limit(24)
-      .orderBy(.createdAt, .desc)
-      .all()
+    // let impressions = try await EditionImpression.query()
+    //   .limit(24)
+    //   .orderBy(.createdAt, .desc)
+    //   .all()
 
-    for impression in impressions {
-      let edition = impression.edition.require()
-      let document = edition.document.require()
-      let friend = document.friend.require()
-      guard !edition.isDraft,
-            !document.incomplete,
-            edition.id == document.primaryEdition?.id,
-            friend.lang == lang else {
-        continue
-      }
-      items.append(.init(
-        kind: .book,
-        htmlShortTitle: document.htmlShortTitle,
-        documentSlug: document.slug,
-        friendSlug: friend.slug,
-        createdAt: impression.createdAt
-      ))
-    }
+    // for impression in impressions {
+    //   let edition = impression.edition.require()
+    //   let document = edition.document.require()
+    //   let friend = document.friend.require()
+    //   guard !edition.isDraft,
+    //         !document.incomplete,
+    //         edition.id == document.primaryEdition?.id,
+    //         friend.lang == lang else {
+    //     continue
+    //   }
+    //   items.append(.init(
+    //     kind: .book,
+    //     htmlShortTitle: document.htmlShortTitle,
+    //     documentSlug: document.slug,
+    //     friendSlug: friend.slug,
+    //     createdAt: impression.createdAt
+    //   ))
+    // }
 
-    let audiobooks = try await Audio.query()
-      .limit(24)
-      .orderBy(.createdAt, .desc)
-      .all()
+    // let audiobooks = try await Audio.query()
+    //   .limit(24)
+    //   .orderBy(.createdAt, .desc)
+    //   .all()
 
-    for audiobook in audiobooks {
-      let edition = audiobook.edition.require()
-      let document = edition.document.require()
-      let friend = document.friend.require()
-      guard !edition.isDraft,
-            !document.incomplete,
-            edition.id == document.primaryEdition?.id,
-            friend.lang == lang else {
-        continue
-      }
-      items.append(.init(
-        kind: .audiobook,
-        htmlShortTitle: document.htmlShortTitle,
-        documentSlug: document.slug,
-        friendSlug: friend.slug,
-        createdAt: audiobook.createdAt
-      ))
-    }
+    // for audiobook in audiobooks {
+    //   let edition = audiobook.edition.require()
+    //   let document = edition.document.require()
+    //   let friend = document.friend.require()
+    //   guard !edition.isDraft,
+    //         !document.incomplete,
+    //         edition.id == document.primaryEdition?.id,
+    //         friend.lang == lang else {
+    //     continue
+    //   }
+    //   items.append(.init(
+    //     kind: .audiobook,
+    //     htmlShortTitle: document.htmlShortTitle,
+    //     documentSlug: document.slug,
+    //     friendSlug: friend.slug,
+    //     createdAt: audiobook.createdAt
+    //   ))
+    // }
 
-    if lang == .en {
-      let documents = try await Document.query()
-        .where(.not(.isNull(.altLanguageId)))
-        .where(.incomplete == false)
-        .orderBy(.createdAt, .desc)
-        .all()
-        .filter { $0.friend.require().lang == .es }
-        .filter(\.hasNonDraftEdition)
-        .prefix(24)
+    // if lang == .en {
+    //   let documents = try await Document.query()
+    //     .where(.not(.isNull(.altLanguageId)))
+    //     .where(.incomplete == false)
+    //     .orderBy(.createdAt, .desc)
+    //     .all()
+    //     .filter { $0.friend.require().lang == .es }
+    //     .filter(\.hasNonDraftEdition)
+    //     .prefix(24)
 
-      for document in documents {
-        let edition = try expect(document.primaryEdition)
-        let impression = try expect(edition.impression.require())
-        let document = edition.document.require()
-        let altLangDoc = try expect(document.altLanguageDocument.require())
-        guard !edition.isDraft, !document.incomplete else { continue }
-        let friend = document.friend.require()
-        items.append(.init(
-          kind: .spanishTranslation(
-            isCompilation: friend.isCompilations,
-            friendName: friend.name,
-            englishHtmlShortTitle: altLangDoc.htmlShortTitle
-          ),
-          htmlShortTitle: document.htmlShortTitle,
-          documentSlug: document.slug,
-          friendSlug: friend.slug,
-          createdAt: impression.createdAt
-        ))
-      }
-    }
+    //   for document in documents {
+    //     let edition = try expect(document.primaryEdition)
+    //     let impression = try expect(edition.impression.require())
+    //     let document = edition.document.require()
+    //     let altLangDoc = try expect(document.altLanguageDocument.require())
+    //     guard !edition.isDraft, !document.incomplete else { continue }
+    //     let friend = document.friend.require()
+    //     items.append(.init(
+    //       kind: .spanishTranslation(
+    //         isCompilation: friend.isCompilations,
+    //         friendName: friend.name,
+    //         englishHtmlShortTitle: altLangDoc.htmlShortTitle
+    //       ),
+    //       htmlShortTitle: document.htmlShortTitle,
+    //       documentSlug: document.slug,
+    //       friendSlug: friend.slug,
+    //       createdAt: impression.createdAt
+    //     ))
+    //   }
+    // }
 
-    return Array(
-      items
-        .sorted(by: { $0.createdAt > $1.createdAt })
-        .prefix(24)
-    )
+    // return Array(
+    //   items
+    //     .sorted(by: { $0.createdAt > $1.createdAt })
+    //     .prefix(24)
+    // )
   }
 }

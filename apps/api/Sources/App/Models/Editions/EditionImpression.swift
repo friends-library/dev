@@ -1,4 +1,4 @@
-import Duet
+import DuetSQL
 import NonEmpty
 import TaggedMoney
 
@@ -11,8 +11,6 @@ struct EditionImpression: Codable, Sendable {
   var publishedRevision: GitCommitSha
   var productionToolchainRevision: GitCommitSha
   var createdAt = Current.date()
-
-  var edition = Parent<Edition>.notLoaded
 
   var paperbackSize: PrintSize {
     paperbackSizeVariant.printSize
@@ -38,5 +36,15 @@ struct EditionImpression: Codable, Sendable {
     self.paperbackVolumes = paperbackVolumes
     self.publishedRevision = publishedRevision
     self.productionToolchainRevision = productionToolchainRevision
+  }
+}
+
+// loaders
+
+extension EditionImpression {
+  func edition() async throws -> Edition {
+    try await Edition.query()
+      .where(.id == editionId)
+      .first()
   }
 }

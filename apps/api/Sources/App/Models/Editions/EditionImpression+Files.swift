@@ -30,8 +30,8 @@ struct EditionImpressionFiles: Encodable {
 }
 
 extension EditionImpression {
-  var files: EditionImpressionFiles {
-    let edition = edition.require()
+  func files() async throws -> EditionImpressionFiles {
+    let edition = try await edition()
 
     var interiors = paperbackVolumes.indices.map { index -> DownloadableFile in
       let volumeIndex = paperbackVolumes.count == 1 ? nil : index

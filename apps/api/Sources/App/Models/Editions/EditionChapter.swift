@@ -12,8 +12,6 @@ struct EditionChapter: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var edition = Parent<Edition>.notLoaded
-
   var slug: String {
     "chapter-\(order)"
   }

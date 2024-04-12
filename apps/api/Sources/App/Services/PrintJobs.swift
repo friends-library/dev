@@ -15,12 +15,13 @@ enum PrintJobs {
       guard let impression = edition.impression.require() else {
         throw Error.unexpectedMissingEditionImpression(order.id, edition.id)
       }
-      return impression.paperbackVolumes.enumerated().map { index, pages in
+      return try await impression.paperbackVolumes.enumerated().concurrentMap { index, pages in
         let titleSuffix = impression.paperbackVolumes.count > 1 ? ", vol. \(index + 1)" : ""
+        let files = try await impression.files()
         return Lulu.Api.CreatePrintJobBody.LineItem(
           title: edition.document.require().title + titleSuffix,
-          cover: impression.files.paperback.cover[index].sourceUrl.absoluteString,
-          interior: impression.files.paperback.interior[index].sourceUrl.absoluteString,
+          cover: files.paperback.cover[index].sourceUrl.absoluteString,
+          interior: files.paperback.interior[index].sourceUrl.absoluteString,
           podPackageId: Lulu.podPackageId(
             size: impression.paperbackSizeVariant.printSize,
             pages: pages

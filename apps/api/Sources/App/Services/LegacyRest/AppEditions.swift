@@ -111,76 +111,77 @@ private struct AppEdition: Codable {
 }
 
 private func toAppEdition(_ edition: Edition) -> AppEdition {
-  let document = edition.document.require()
-  let friend = document.friend.require()
-  let impression = edition.impression.require()!
-  let audio = edition.audio.require()
-  return .init(
-    id: "\(document.id.lowercased)--\(edition.type)",
-    lang: friend.lang,
-    document: .init(
-      id: document.id.lowercased,
-      title: document.title,
-      utf8ShortTitle: document.utf8ShortTitle,
-      trimmedUtf8ShortTitle: document.trimmedUtf8ShortTitle,
-      description: document.description,
-      shortDescription: document.partialDescription
-    ),
-    revision: impression.publishedRevision.rawValue,
-    type: edition.type,
-    publishedDate: impression.createdAt.isoString,
-    friend: .init(
-      name: friend.name,
-      nameSort: friend.alphabeticalName,
-      isCompilations: friend.isCompilations
-    ),
-    ebook: AppEdition.Ebook(
-      loggedDownloadUrl: impression.files.ebook.app.logUrl.absoluteString,
-      directDownloadUrl: impression.files.ebook.app.sourceUrl.absoluteString,
-      numPages: impression.paperbackVolumes.reduce(0, +)
-    ),
-    isMostModernized: document.primaryEdition! == edition,
-    audio: audio?.isPublished == true ? .init(
-      reader: audio!.reader,
-      totalDuration: audio!.parts.require().map(\.duration).reduce(0, +).rawValue,
-      publishedDate: audio!.createdAt.isoString,
-      parts: audio!.parts.require()
-        .filter(\.isPublished)
-        .sorted { $0.order < $1.order }
-        .enumerated()
-        .map { index, part in
-          .init(
-            editionId: "\(document.id.lowercased)--\(edition.type)",
-            index: index,
-            title: part.title,
-            utf8ShortTitle: Asciidoc.utf8ShortTitle(part.title),
-            duration: part.duration.rawValue,
-            size: part.mp3SizeHq.rawValue,
-            sizeLq: part.mp3SizeLq.rawValue,
-            url: part.mp3File.hq.sourceUrl.absoluteString,
-            urlLq: part.mp3File.lq.sourceUrl.absoluteString
-          )
-        }
-    ) : nil,
-    images: AppEdition.Images(
-      square: edition.images.square.all
-        .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) },
-      threeD: edition.images.threeD.all
-        .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) }
-    ),
-    chapters: edition.chapters.require().sorted { $0.order < $1.order }.enumerated()
-      .map { index, chapter in .init(
-        index: index,
-        id: chapter.htmlId,
-        slug: chapter.slug,
-        shortHeading: Asciidoc.utf8ShortTitle(chapter.shortHeading),
-        isIntermediateTitle: chapter.isIntermediateTitle,
-        isSequenced: chapter.isSequenced,
-        hasNonSequenceTitle: chapter.hasNonSequenceTitle,
-        sequenceNumber: chapter.sequenceNumber,
-        nonSequenceTitle: chapter.nonSequenceTitle
-      ) }
-  )
+  fatalError("mega query")
+  // let document = edition.document.require()
+  // let friend = document.friend.require()
+  // let impression = edition.impression.require()!
+  // let audio = edition.audio.require()
+  // return .init(
+  //   id: "\(document.id.lowercased)--\(edition.type)",
+  //   lang: friend.lang,
+  //   document: .init(
+  //     id: document.id.lowercased,
+  //     title: document.title,
+  //     utf8ShortTitle: document.utf8ShortTitle,
+  //     trimmedUtf8ShortTitle: document.trimmedUtf8ShortTitle,
+  //     description: document.description,
+  //     shortDescription: document.partialDescription
+  //   ),
+  //   revision: impression.publishedRevision.rawValue,
+  //   type: edition.type,
+  //   publishedDate: impression.createdAt.isoString,
+  //   friend: .init(
+  //     name: friend.name,
+  //     nameSort: friend.alphabeticalName,
+  //     isCompilations: friend.isCompilations
+  //   ),
+  //   ebook: AppEdition.Ebook(
+  //     loggedDownloadUrl: impression.files.ebook.app.logUrl.absoluteString,
+  //     directDownloadUrl: impression.files.ebook.app.sourceUrl.absoluteString,
+  //     numPages: impression.paperbackVolumes.reduce(0, +)
+  //   ),
+  //   isMostModernized: document.primaryEdition! == edition,
+  //   audio: audio?.isPublished == true ? .init(
+  //     reader: audio!.reader,
+  //     totalDuration: audio!.parts.require().map(\.duration).reduce(0, +).rawValue,
+  //     publishedDate: audio!.createdAt.isoString,
+  //     parts: audio!.parts.require()
+  //       .filter(\.isPublished)
+  //       .sorted { $0.order < $1.order }
+  //       .enumerated()
+  //       .map { index, part in
+  //         .init(
+  //           editionId: "\(document.id.lowercased)--\(edition.type)",
+  //           index: index,
+  //           title: part.title,
+  //           utf8ShortTitle: Asciidoc.utf8ShortTitle(part.title),
+  //           duration: part.duration.rawValue,
+  //           size: part.mp3SizeHq.rawValue,
+  //           sizeLq: part.mp3SizeLq.rawValue,
+  //           url: part.mp3File.hq.sourceUrl.absoluteString,
+  //           urlLq: part.mp3File.lq.sourceUrl.absoluteString
+  //         )
+  //       }
+  //   ) : nil,
+  //   images: AppEdition.Images(
+  //     square: edition.images.square.all
+  //       .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) },
+  //     threeD: edition.images.threeD.all
+  //       .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) }
+  //   ),
+  //   chapters: edition.chapters.require().sorted { $0.order < $1.order }.enumerated()
+  //     .map { index, chapter in .init(
+  //       index: index,
+  //       id: chapter.htmlId,
+  //       slug: chapter.slug,
+  //       shortHeading: Asciidoc.utf8ShortTitle(chapter.shortHeading),
+  //       isIntermediateTitle: chapter.isIntermediateTitle,
+  //       isSequenced: chapter.isSequenced,
+  //       hasNonSequenceTitle: chapter.hasNonSequenceTitle,
+  //       sequenceNumber: chapter.sequenceNumber,
+  //       nonSequenceTitle: chapter.nonSequenceTitle
+  //     ) }
+  // )
 }
 
 @propertyWrapper

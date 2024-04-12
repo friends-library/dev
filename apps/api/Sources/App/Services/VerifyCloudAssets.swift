@@ -7,7 +7,12 @@ public struct VerifyCloudAssets: AsyncScheduledJob {
     let audios = try await Current.db.query(Audio.self).all()
     let audioParts = try await Current.db.query(AudioPart.self).all()
 
-    let allUrls = editionImpressions.flatMap(\.files.all).map(\.sourceUrl)
+    let impressionFiles = try await editionImpressions.concurrentMap { impression in
+      let files = try await impression.files()
+      return files.all.map(\.sourceUrl)
+    }.flatMap { $0 }
+
+    let allUrls = impressionFiles
       + audios.flatMap(\.files.all).map(\.sourceUrl)
       + audioParts.flatMap(\.mp3File.all).map(\.sourceUrl)
 

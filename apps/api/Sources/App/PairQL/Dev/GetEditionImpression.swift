@@ -24,21 +24,23 @@ struct GetEditionImpression: Pair {
 extension GetEditionImpression: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
+    // TODO: this first query is unnessary
     let impression = try await EditionImpression.find(input)
-    return .init(id: impression.id, cloudFiles: .init(model: impression))
+    let files = try await impression.files()
+    return .init(id: impression.id, cloudFiles: .init(files: files))
   }
 }
 
 extension GetEditionImpression.Output.Files {
-  init(model impression: EditionImpression) {
+  init(files: EditionImpressionFiles) {
     self = .init(
-      paperbackCover: impression.files.paperback.cover.map(\.sourcePath),
-      paperbackInterior: impression.files.paperback.interior.map(\.sourcePath),
-      epub: impression.files.ebook.epub.sourcePath,
-      mobi: impression.files.ebook.mobi.sourcePath,
-      pdf: impression.files.ebook.pdf.sourcePath,
-      speech: impression.files.ebook.speech.sourcePath,
-      app: impression.files.ebook.app.sourcePath
+      paperbackCover: files.paperback.cover.map(\.sourcePath),
+      paperbackInterior: files.paperback.interior.map(\.sourcePath),
+      epub: files.ebook.epub.sourcePath,
+      mobi: files.ebook.mobi.sourcePath,
+      pdf: files.ebook.pdf.sourcePath,
+      speech: files.ebook.speech.sourcePath,
+      app: files.ebook.app.sourcePath
     )
   }
 }
