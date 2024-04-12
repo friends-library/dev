@@ -27,9 +27,6 @@ struct Order: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var items = Children<OrderItem>.notLoaded
-  var freeOrderRequest = OptionalParent<FreeOrderRequest>.notLoaded
-
   var isValid: Bool { true }
 
   var address: ShippingAddress {
@@ -152,12 +149,10 @@ extension Order {
 // loaders
 
 extension Order {
-  mutating func items() async throws -> [OrderItem] {
-    try await items.useLoaded(or: {
-      try await OrderItem.query()
-        .where(.orderId == id)
-        .all()
-    })
+  func items() async throws -> [OrderItem] {
+    try await OrderItem.query()
+      .where(.orderId == id)
+      .all()
   }
 }
 

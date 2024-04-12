@@ -4,31 +4,20 @@ import TaggedMoney
 
 enum PrintJobs {
   static func create(_ order: Order) async throws -> Lulu.Api.PrintJob {
-    var orderItems: [OrderItem]
-    if case .loaded(let items) = order.items {
-      orderItems = items
-    } else {
-      orderItems = try await Current.db.query(OrderItem.self)
-        .where(.orderId == order.id)
-        .all()
-    }
+    let orderItems = try await OrderItem.query()
+      .where(.orderId == order.id)
+      .all()
 
-    for (idx, item) in orderItems.enumerated() {
-      orderItems[idx].order = .loaded(order)
-      if case .notLoaded = item.edition {
-        let edition = try await Current.db.find(item.editionId)
-        orderItems[idx].edition = .loaded(edition)
-      }
-    }
-
-    let lineItems = try orderItems.flatMap { item -> [Lulu.Api.CreatePrintJobBody.LineItem] in
-      let edition = item.edition.require()
+    let lineItems = try await orderItems.concurrentMap { item in
+      let edition = try await Edition.query()
+        .where(.id == item.editionId)
+        .first()
       guard let impression = edition.impression.require() else {
         throw Error.unexpectedMissingEditionImpression(order.id, edition.id)
       }
       return impression.paperbackVolumes.enumerated().map { index, pages in
         let titleSuffix = impression.paperbackVolumes.count > 1 ? ", vol. \(index + 1)" : ""
-        return .init(
+        return Lulu.Api.CreatePrintJobBody.LineItem(
           title: edition.document.require().title + titleSuffix,
           cover: impression.files.paperback.cover[index].sourceUrl.absoluteString,
           interior: impression.files.paperback.interior[index].sourceUrl.absoluteString,
@@ -39,7 +28,7 @@ enum PrintJobs {
           quantity: item.quantity
         )
       }
-    }
+    }.flatMap { $0 }
 
     let payload = Lulu.Api.CreatePrintJobBody(
       shippingLevel: order.shippingLevel.lulu,

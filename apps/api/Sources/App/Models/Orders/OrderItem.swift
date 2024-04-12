@@ -9,9 +9,6 @@ struct OrderItem: Codable, Sendable {
   var unitPrice: Cents<Int>
   var createdAt = Current.date()
 
-  var order = Parent<Order>.notLoaded
-  var edition = Parent<Edition>.notLoaded
-
   var isValid: Bool { true }
 
   init(
@@ -32,11 +29,9 @@ struct OrderItem: Codable, Sendable {
 // loaders
 
 extension OrderItem {
-  mutating func edition() async throws -> Edition {
-    try await edition.useLoaded(or: {
-      try await Edition.query()
-        .where(.id == editionId)
-        .first()
-    })
+  func edition() async throws -> Edition {
+    try await Edition.query()
+      .where(.id == editionId)
+      .first()
   }
 }

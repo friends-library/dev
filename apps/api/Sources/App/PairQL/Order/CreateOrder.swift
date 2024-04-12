@@ -40,9 +40,8 @@ struct CreateOrder: Pair {
 
 extension CreateOrder: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
-    var order = Order(input)
+    let order = Order(input)
     let items = input.items.map { OrderItem($0, orderId: order.id) }
-    order.items = .loaded(items)
     try await order.create()
     try await items.create()
     return order.id

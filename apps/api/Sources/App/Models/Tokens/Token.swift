@@ -8,8 +8,6 @@ struct Token: Codable, Sendable {
   var uses: Int?
   var createdAt = Current.date()
 
-  var scopes = Children<TokenScope>.notLoaded
-
   var isValid: Bool { true }
 
   init(id: Id = .init(), value: Value = .init(), description: String, uses: Int? = nil) {
@@ -27,11 +25,9 @@ extension Token {
 }
 
 extension Token {
-  mutating func scopes() async throws -> [TokenScope] {
-    try await scopes.useLoaded(or: {
-      try await TokenScope.query()
-        .where(.tokenId == id)
-        .all()
-    })
+  func scopes() async throws -> [TokenScope] {
+    try await TokenScope.query()
+      .where(.tokenId == id)
+      .all()
   }
 }

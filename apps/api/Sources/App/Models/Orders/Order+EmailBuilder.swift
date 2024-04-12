@@ -33,22 +33,22 @@ extension EmailBuilder {
 // helpers
 
 private func lineItems(_ order: Order) async throws -> String {
-  var items = try await Current.db.query(OrderItem.self)
+  let items = try await OrderItem.query()
     .where(.orderId == order.id)
     .all()
 
-  for (idx, item) in items.enumerated() {
-    if !item.edition.isLoaded {
-      let edition = try await Current.db.query(Edition.self)
-        .where(.id == item.editionId)
-        .first()
-      items[idx].edition = .loaded(edition)
-    }
+  var lines: [String] = []
+  for item in items {
+    let edition = try await Edition.query()
+      .where(.id == item.editionId)
+      .first()
+    let document = try await Document.query()
+      .where(.id == edition.documentId)
+      .first()
+    lines.append("* (\(item.quantity)) \(document.title)")
   }
 
-  return items.map { item in
-    "* (\(item.quantity)) \(item.edition.require().document.require().title)"
-  }.joined(separator: "\n")
+  return lines.joined(separator: "\n")
 }
 
 func salutation(_ order: Order) -> String {
