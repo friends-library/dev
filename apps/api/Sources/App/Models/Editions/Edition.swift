@@ -53,6 +53,12 @@ extension Edition {
   }
 }
 
+extension Edition.DirectoryPathData: DirectoryPathable {
+  var directoryPath: String {
+    "\(document.directoryPath)/\(type)"
+  }
+}
+
 // loaders
 
 extension Edition {

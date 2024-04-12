@@ -125,9 +125,66 @@ struct DownloadableFile {
   }
 }
 
+import DuetSQL
+import NonEmpty
+
+private struct DownloadData: CustomQueryable {
+  static func query(numBindings: Int) -> String {
+    """
+      SELECT
+        d.id AS document_id,
+        d.filename AS document_filename,
+        d.slug AS document_slug,
+        e.type AS edition_type,
+        f.lang,
+        f.slug AS friend_slug,
+        i.paperback_volumes,
+        COUNT(ap.audio_id)::INTEGER AS num_audio_parts
+      FROM
+        editions e
+      JOIN
+        documents d ON e.document_id = d.id
+      JOIN
+        friends f ON d.friend_id = f.id
+      JOIN
+        edition_impressions i ON e.id = i.edition_id
+      LEFT JOIN
+        edition_audios a ON e.id = a.edition_id
+      LEFT JOIN
+        edition_audio_parts ap ON a.id = ap.audio_id
+      WHERE
+        e.id = $1
+      GROUP BY
+        d.id, d.filename, e.type, f.slug, i.paperback_volumes, f.lang;
+    """
+  }
+
+  // /en/compilations/memoirs-of-the-godly/original/Memoirs_of_the_Godly--original.html
+
+  var lang: Lang
+  var friendSlug: String
+  var documentId: Document.Id
+  var documentFilename: String
+  var documentSlug: String
+  var editionType: EditionType
+  var paperbackVolumes: NonEmpty<[Int]>
+  var numAudioParts: Int
+}
+
 // parsing init
 
 extension DownloadableFile {
+  private init(_ data: DownloadData, format: DownloadableFile.Format) {
+    let pathData = Edition.DirectoryPathData(
+      document: .init(
+        friend: .init(lang: .en, slug: data.friendSlug),
+        slug: data.documentSlug
+      ),
+      type: data.editionType
+    )
+    self.init(format: format, pathData: pathData, documentFilename: data.documentFilename)
+  }
+
   init(logPath: String) async throws {
     var segments = logPath.split(separator: "/")
 
@@ -139,90 +196,87 @@ extension DownloadableFile {
       throw ParseLogPathError.missingEditionId(logPath)
     }
 
-    // guard let editionUuid = UUID(uuidString: segments.removeFirst() |> String.init) else {
-    //   throw ParseLogPathError.invalidEditionId(logPath)
-    // }
+    guard let editionUuid = UUID(uuidString: segments.removeFirst() |> String.init) else {
+      throw ParseLogPathError.invalidEditionId(logPath)
+    }
 
-    // guard let edition = try? await Current.db.find(Edition.Id(rawValue: editionUuid)) else {
-    //   throw ParseLogPathError.editionNotFound(logPath)
-    // }
+    guard let rows = try? await Current.db.customQuery(
+      DownloadData.self,
+      withBindings: [.uuid(editionUuid)]
+    ), let data = rows.first else {
+      throw ParseLogPathError.editionNotFound(logPath)
+    }
 
-    fatalError("finish me")
-    // switch segments.joined(separator: "/") {
-    // case "ebook/epub":
-    //   self = .init(edition: edition, format: .ebook(.epub))
-    // case "ebook/mobi":
-    //   self = .init(edition: edition, format: .ebook(.mobi))
-    // case "ebook/pdf":
-    //   self = .init(edition: edition, format: .ebook(.pdf))
-    // case "ebook/speech":
-    //   self = .init(edition: edition, format: .ebook(.speech))
-    // case "ebook/app":
-    //   self = .init(edition: edition, format: .ebook(.app))
-    // case "paperback/interior":
-    //   self = .init(edition: edition, format: .paperback(type: .interior, volumeIndex: nil))
-    // case "paperback/cover":
-    //   self = .init(edition: edition, format: .paperback(type: .cover, volumeIndex: nil))
-    // case "audio/podcast/hq/podcast.rss":
-    //   self = .init(edition: edition, format: .audio(.podcast(.high)))
-    // case "audio/podcast/lq/podcast.rss":
-    //   self = .init(edition: edition, format: .audio(.podcast(.low)))
-    // case "audio/m4b/hq":
-    //   self = .init(edition: edition, format: .audio(.m4b(.high)))
-    // case "audio/m4b/lq":
-    //   self = .init(edition: edition, format: .audio(.m4b(.low)))
-    // case "audio/mp3s/hq":
-    //   self = .init(edition: edition, format: .audio(.mp3s(.high)))
-    // case "audio/mp3s/lq":
-    //   self = .init(edition: edition, format: .audio(.mp3s(.low)))
-    // case "audio/mp3/hq":
-    //   self = .init(edition: edition, format: .audio(.mp3(quality: .high, multipartIndex: nil)))
-    // case "audio/mp3/lq":
-    //   self = .init(edition: edition, format: .audio(.mp3(quality: .low, multipartIndex: nil)))
-    // default:
-    //   guard segments.count >= 3 else {
-    //     throw ParseLogPathError.invalid(logPath)
-    //   }
+    switch segments.joined(separator: "/") {
+    case "ebook/epub":
+      self = .init(data, format: .ebook(.epub))
+    case "ebook/mobi":
+      self = .init(data, format: .ebook(.mobi))
+    case "ebook/pdf":
+      self = .init(data, format: .ebook(.pdf))
+    case "ebook/speech":
+      self = .init(data, format: .ebook(.speech))
+    case "ebook/app":
+      self = .init(data, format: .ebook(.app))
+    case "paperback/interior":
+      self = .init(data, format: .paperback(type: .interior, volumeIndex: nil))
+    case "paperback/cover":
+      self = .init(data, format: .paperback(type: .cover, volumeIndex: nil))
+    case "audio/podcast/hq/podcast.rss":
+      self = .init(data, format: .audio(.podcast(.high)))
+    case "audio/podcast/lq/podcast.rss":
+      self = .init(data, format: .audio(.podcast(.low)))
+    case "audio/m4b/hq":
+      self = .init(data, format: .audio(.m4b(.high)))
+    case "audio/m4b/lq":
+      self = .init(data, format: .audio(.m4b(.low)))
+    case "audio/mp3s/hq":
+      self = .init(data, format: .audio(.mp3s(.high)))
+    case "audio/mp3s/lq":
+      self = .init(data, format: .audio(.mp3s(.low)))
+    case "audio/mp3/hq":
+      self = .init(data, format: .audio(.mp3(quality: .high, multipartIndex: nil)))
+    case "audio/mp3/lq":
+      self = .init(data, format: .audio(.mp3(quality: .low, multipartIndex: nil)))
+    default:
+      guard segments.count >= 3 else {
+        throw ParseLogPathError.invalid(logPath)
+      }
 
-    //   let first = segments.removeFirst()
-    //   let second = segments.removeFirst()
-    //   let third = segments.removeFirst()
+      let first = segments.removeFirst()
+      let second = segments.removeFirst()
+      let third = segments.removeFirst()
 
-    //   switch (first, second) {
-    //   case ("paperback", "interior"):
-    //     guard let index = third |> toIndex,
-    //           try await validatePaperbackVolume(edition, index) else {
-    //       throw ParseLogPathError.invalidPaperbackVolume(logPath)
-    //     }
-    //     self = .init(edition: edition, format: .paperback(type: .interior, volumeIndex: index))
-    //   case ("paperback", "cover"):
-    //     guard let index = third |> toIndex else {
-    //       throw ParseLogPathError.invalidPaperbackVolume(logPath)
-    //     }
-    //     self = .init(edition: edition, format: .paperback(type: .cover, volumeIndex: index))
-    //   case ("audio", "mp3"):
-    //     guard let index = third |> toIndex,
-    //           try await validateMp3Part(edition, index) else {
-    //       throw ParseLogPathError.invalidMp3Part(logPath)
-    //     }
-    //     switch segments.first {
-    //     case "hq":
-    //       self = .init(
-    //         edition: edition,
-    //         format: .audio(.mp3(quality: .high, multipartIndex: index))
-    //       )
-    //     case "lq":
-    //       self = .init(
-    //         edition: edition,
-    //         format: .audio(.mp3(quality: .low, multipartIndex: index))
-    //       )
-    //     default:
-    //       throw ParseLogPathError.invalidMp3Part(logPath)
-    //     }
-    //   default:
-    //     throw ParseLogPathError.invalid(logPath)
-    //   }
-    // }
+      switch (first, second) {
+      case ("paperback", "interior"):
+        guard let index = third |> toIndex,
+              validatePaperbackVolume(data.paperbackVolumes, index) else {
+          throw ParseLogPathError.invalidPaperbackVolume(logPath)
+        }
+        self = .init(data, format: .paperback(type: .interior, volumeIndex: index))
+      case ("paperback", "cover"):
+        guard let index = third |> toIndex,
+              validatePaperbackVolume(data.paperbackVolumes, index) else {
+          throw ParseLogPathError.invalidPaperbackVolume(logPath)
+        }
+        self = .init(data, format: .paperback(type: .cover, volumeIndex: index))
+      case ("audio", "mp3"):
+        guard let index = third |> toIndex,
+              validateMp3Part(data.numAudioParts, index) else {
+          throw ParseLogPathError.invalidMp3Part(logPath)
+        }
+        switch segments.first {
+        case "hq":
+          self = .init(data, format: .audio(.mp3(quality: .high, multipartIndex: index)))
+        case "lq":
+          self = .init(data, format: .audio(.mp3(quality: .low, multipartIndex: index)))
+        default:
+          throw ParseLogPathError.invalidMp3Part(logPath)
+        }
+      default:
+        throw ParseLogPathError.invalid(logPath)
+      }
+    }
   }
 
   enum ParseLogPathError: Error, LocalizedError {
@@ -257,18 +311,15 @@ extension DownloadableFile {
 
 // helpers
 
-private func validatePaperbackVolume(_ edition: Edition, _ index: Int) async throws -> Bool {
-  guard let impression = try await edition.impression() else {
-    return false
-  }
-  return index >= 0 && index < impression.paperbackVolumes.count
+private func validatePaperbackVolume(
+  _ volumes: NonEmpty<[Int]>,
+  _ index: Int
+) -> Bool {
+  index >= 0 && index < volumes.count
 }
 
-private func validateMp3Part(_ edition: Edition, _ index: Int) async throws -> Bool {
-  guard let audio = try await edition.audio() else {
-    return false
-  }
-  return index >= 0 && index < audio.parts.require().count
+private func validateMp3Part(_ numAudioParts: Int, _ index: Int) -> Bool {
+  index >= 0 && index < numAudioParts
 }
 
 private func toIndex(_ segment: String.SubSequence) -> Int? {
