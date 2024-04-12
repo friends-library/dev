@@ -10,8 +10,6 @@ struct FriendQuote: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var friend = Parent<Friend>.notLoaded
-
   var isValid: Bool {
     source.firstLetterIsUppercase && text.firstLetterIsUppercase && order > 0
   }

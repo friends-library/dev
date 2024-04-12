@@ -20,14 +20,15 @@ extension LegacyRest {
   }
 
   private static func queryData(lang: Lang) async throws -> Data {
-    let editions = try await Current.db.query(Friend.self).all()
-      .filter { $0.lang == lang }
-      .flatMap { try $0.documents.models }
-      .filter(\.hasNonDraftEdition)
-      .flatMap { try $0.editions.models }
-      .filter { try $0.impression.model != nil && !$0.isDraft }
-      .map(toAppEdition)
-    return try JSONEncoder().encode(editions)
+    fatalError("mega query")
+    // let editions = try await Current.db.query(Friend.self).all()
+    //   .filter { $0.lang == lang }
+    //   .flatMap { try $0.documents.models }
+    //   .filter(\.hasNonDraftEdition)
+    //   .flatMap { try $0.editions.models }
+    //   .filter { try $0.impression.model != nil && !$0.isDraft }
+    //   .map(toAppEdition)
+    // return try JSONEncoder().encode(editions)
   }
 }
 

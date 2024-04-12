@@ -14,24 +14,12 @@ struct Friend: Codable, Sendable {
   var updatedAt = Current.date()
   var deletedAt: Date?
 
-  var documents = Children<Document>.notLoaded
-  var residences = Children<FriendResidence>.notLoaded
-  var quotes = Children<FriendQuote>.notLoaded
-
   var isCompilations: Bool {
     slug.starts(with: "compila")
   }
 
   var directoryPath: String {
     "\(lang)/\(slug)"
-  }
-
-  var hasNonDraftDocument: Bool {
-    documents.require().first { $0.hasNonDraftEdition } != nil
-  }
-
-  var relatedDocuments: [RelatedDocument] {
-    documents.require().flatMap { $0.relatedDocuments.require() }
   }
 
   var alphabeticalName: String {
@@ -66,28 +54,22 @@ struct Friend: Codable, Sendable {
 // loaders
 
 extension Friend {
-  mutating func documents() async throws -> [Document] {
-    try await documents.useLoaded(or: {
-      try await Document.query()
-        .where(.friendId == id)
-        .all()
-    })
+  func documents() async throws -> [Document] {
+    try await Document.query()
+      .where(.friendId == id)
+      .all()
   }
 
-  mutating func residences() async throws -> [FriendResidence] {
-    try await residences.useLoaded(or: {
-      try await FriendResidence.query()
-        .where(.friendId == id)
-        .all()
-    })
+  func residences() async throws -> [FriendResidence] {
+    try await FriendResidence.query()
+      .where(.friendId == id)
+      .all()
   }
 
-  mutating func quotes() async throws -> [FriendQuote] {
-    try await quotes.useLoaded(or: {
-      try await FriendQuote.query()
-        .where(.friendId == id)
-        .all()
-    })
+  func quotes() async throws -> [FriendQuote] {
+    try await FriendQuote.query()
+      .where(.friendId == id)
+      .all()
   }
 }
 

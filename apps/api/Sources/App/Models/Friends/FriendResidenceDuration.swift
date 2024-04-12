@@ -7,8 +7,6 @@ struct FriendResidenceDuration: Codable, Sendable {
   var end: Int
   var createdAt = Current.date()
 
-  var residence = Parent<FriendResidence>.notLoaded
-
   var isValid: Bool {
     start.isValidEarlyQuakerYear && end.isValidEarlyQuakerYear && start <= end
   }

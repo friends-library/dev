@@ -38,8 +38,7 @@ extension CoverWebAppFriends: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     let friends = try await Friend.query().all()
     return try await friends.concurrentMap { friend in
-      var friend = friend
-      return .init(
+      .init(
         name: friend.name,
         alphabeticalName: friend.alphabeticalName,
         description: friend.description,

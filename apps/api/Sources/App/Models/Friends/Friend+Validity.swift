@@ -20,24 +20,25 @@ extension Friend {
       return false
     }
 
-    if case .loaded(let documents) = documents,
-       documents.allSatisfy(\.editions.isLoaded),
-       published == nil,
-       hasNonDraftDocument {
-      return false
-    }
+    // TODO: sad
+    // if case .loaded(let documents) = documents,
+    //    documents.allSatisfy(\.editions.isLoaded),
+    //    published == nil,
+    //    hasNonDraftDocument {
+    //   return false
+    // }
 
-    // test for sequential quotes, when loaded
-    if case .loaded(let quotes) = quotes {
-      let sorted = quotes.sorted { $0.order < $1.order }
-      var prev = 0
-      for quote in sorted {
-        if quote.order != prev + 1 {
-          return false
-        }
-        prev = quote.order
-      }
-    }
+    // // test for sequential quotes, when loaded
+    // if case .loaded(let quotes) = quotes {
+    //   let sorted = quotes.sorted { $0.order < $1.order }
+    //   var prev = 0
+    //   for quote in sorted {
+    //     if quote.order != prev + 1 {
+    //       return false
+    //     }
+    //     prev = quote.order
+    //   }
+    // }
 
     if isCompilations, born != nil || died != nil {
       return false
@@ -47,7 +48,7 @@ extension Friend {
       return false
     }
 
-    if let died = died, let born = born, died - born < 15 {
+    if let died, let born, died - born < 15 {
       return false
     }
 

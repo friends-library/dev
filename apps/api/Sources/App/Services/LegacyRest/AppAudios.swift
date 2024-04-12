@@ -19,24 +19,25 @@ extension LegacyRest {
   }
 
   private static func queryData(lang: Lang) async throws -> Data {
-    let friends: [Friend] = try await Current.db.query(Friend.self)
-      .all()
-      .filter { $0.lang == lang }
+    fatalError("mega query")
+    // let friends: [Friend] = try await Current.db.query(Friend.self)
+    //   .all()
+    //   .filter { $0.lang == lang }
 
-    let documents: [Document] = try friends
-      .flatMap { try $0.documents.models }
-      .filter(\.hasNonDraftEdition)
+    // let documents: [Document] = try friends
+    //   .flatMap { try $0.documents.models }
+    //   .filter(\.hasNonDraftEdition)
 
-    let editions: [Edition] = try documents
-      .flatMap { try $0.editions.models }
-      .filter { try $0.impression.model != nil && !$0.isDraft }
+    // let editions: [Edition] = try documents
+    //   .flatMap { try $0.editions.models }
+    //   .filter { try $0.impression.model != nil && !$0.isDraft }
 
-    let audios: [AppAudio] = try editions
-      .compactMap { try $0.audio.model }
-      .filter(\.isPublished)
-      .map(toAppAudio)
+    // let audios: [AppAudio] = try editions
+    //   .compactMap { try $0.audio.model }
+    //   .filter(\.isPublished)
+    //   .map(toAppAudio)
 
-    return try JSONEncoder().encode(audios)
+    // return try JSONEncoder().encode(audios)
   }
 }
 

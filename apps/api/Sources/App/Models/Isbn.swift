@@ -7,8 +7,6 @@ struct Isbn: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var edition = OptionalParent<Edition>.notLoaded
-
   var isValid: Bool {
     code.rawValue.match(#"^978-1-64476-\d\d\d-\d$"#)
   }

@@ -8,9 +8,6 @@ struct FriendResidence: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var friend = Parent<Friend>.notLoaded
-  var durations = Children<FriendResidenceDuration>.notLoaded
-
   var isValid: Bool {
     city.firstLetterIsUppercase && region.firstLetterIsUppercase
   }
@@ -26,11 +23,9 @@ struct FriendResidence: Codable, Sendable {
 // loaders
 
 extension FriendResidence {
-  mutating func durations() async throws -> [FriendResidenceDuration] {
-    try await durations.useLoaded(or: {
-      try await FriendResidenceDuration.query()
-        .where(.friendResidenceId == id)
-        .all()
-    })
+  func durations() async throws -> [FriendResidenceDuration] {
+    try await FriendResidenceDuration.query()
+      .where(.friendResidenceId == id)
+      .all()
   }
 }

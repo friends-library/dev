@@ -12,23 +12,24 @@ struct AllFriendPages: Pair {
 extension AllFriendPages: Resolver {
   static func resolve(with lang: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
+    fatalError("mega query")
 
-    let langFriends = try await Friend.query()
-      .where(.lang == lang)
-      .all()
-      .filter(\.hasNonDraftDocument)
+    // let langFriends = try await Friend.query()
+    //   .where(.lang == lang)
+    //   .all()
+    //   .filter(\.hasNonDraftDocument)
 
-    let downloads = try await Current.db.customQuery(
-      AllDocumentDownloads.self,
-      withBindings: [.enum(lang), .null]
-    )
+    // let downloads = try await Current.db.customQuery(
+    //   AllDocumentDownloads.self,
+    //   withBindings: [.enum(lang), .null]
+    // )
 
-    return try langFriends.reduce(into: [:]) { result, friend in
-      result[friend.slug] = try FriendPage.Output(
-        friend,
-        downloads: downloads.urlPathDict,
-        in: context
-      )
-    }
+    // return try langFriends.reduce(into: [:]) { result, friend in
+    //   result[friend.slug] = try FriendPage.Output(
+    //     friend,
+    //     downloads: downloads.urlPathDict,
+    //     in: context
+    //   )
+    // }
   }
 }
