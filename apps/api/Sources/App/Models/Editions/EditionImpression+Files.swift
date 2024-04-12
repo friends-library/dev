@@ -1,8 +1,8 @@
 import Foundation
 import NonEmpty
 
-struct EditionImpressionFiles: Encodable {
-  struct Ebook: Encodable {
+struct EditionImpressionFiles /*: Encodable */ {
+  struct Ebook /*: Encodable */ {
     let epub: DownloadableFile
     let mobi: DownloadableFile
     let pdf: DownloadableFile
@@ -10,7 +10,7 @@ struct EditionImpressionFiles: Encodable {
     let app: DownloadableFile
   }
 
-  struct Paperback: Encodable {
+  struct Paperback /*: Encodable */ {
     let interior: NonEmpty<[DownloadableFile]>
     let cover: NonEmpty<[DownloadableFile]>
   }
@@ -31,36 +31,37 @@ struct EditionImpressionFiles: Encodable {
 
 extension EditionImpression {
   func files() async throws -> EditionImpressionFiles {
-    let edition = try await edition()
+    fatalError("todo")
+    // let edition = try await edition()
 
-    var interiors = paperbackVolumes.indices.map { index -> DownloadableFile in
-      let volumeIndex = paperbackVolumes.count == 1 ? nil : index
-      return DownloadableFile(
-        edition: edition,
-        format: .paperback(type: .interior, volumeIndex: volumeIndex)
-      )
-    }
+    // var interiors = paperbackVolumes.indices.map { index -> DownloadableFile in
+    //   let volumeIndex = paperbackVolumes.count == 1 ? nil : index
+    //   return DownloadableFile(
+    //     edition: edition,
+    //     format: .paperback(type: .interior, volumeIndex: volumeIndex)
+    //   )
+    // }
 
-    var covers = paperbackVolumes.indices.map { index -> DownloadableFile in
-      let volumeIndex = paperbackVolumes.count == 1 ? nil : index
-      return DownloadableFile(
-        edition: edition,
-        format: .paperback(type: .cover, volumeIndex: volumeIndex)
-      )
-    }
+    // var covers = paperbackVolumes.indices.map { index -> DownloadableFile in
+    //   let volumeIndex = paperbackVolumes.count == 1 ? nil : index
+    //   return DownloadableFile(
+    //     edition: edition,
+    //     format: .paperback(type: .cover, volumeIndex: volumeIndex)
+    //   )
+    // }
 
-    return EditionImpressionFiles(
-      ebook: .init(
-        epub: .init(edition: edition, format: .ebook(.epub)),
-        mobi: .init(edition: edition, format: .ebook(.mobi)),
-        pdf: .init(edition: edition, format: .ebook(.pdf)),
-        speech: .init(edition: edition, format: .ebook(.speech)),
-        app: .init(edition: edition, format: .ebook(.app))
-      ),
-      paperback: .init(
-        interior: .init(interiors.removeFirst()) + interiors,
-        cover: .init(covers.removeFirst()) + covers
-      )
-    )
+    // return EditionImpressionFiles(
+    //   ebook: .init(
+    //     epub: .init(edition: edition, format: .ebook(.epub)),
+    //     mobi: .init(edition: edition, format: .ebook(.mobi)),
+    //     pdf: .init(edition: edition, format: .ebook(.pdf)),
+    //     speech: .init(edition: edition, format: .ebook(.speech)),
+    //     app: .init(edition: edition, format: .ebook(.app))
+    //   ),
+    //   paperback: .init(
+    //     interior: .init(interiors.removeFirst()) + interiors,
+    //     cover: .init(covers.removeFirst()) + covers
+    //   )
+    // )
   }
 }

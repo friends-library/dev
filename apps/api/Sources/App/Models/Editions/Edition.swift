@@ -14,10 +14,6 @@ struct Edition: Codable, Sendable {
   var deletedAt: Date? = nil
 
   var document = Parent<Document>.notLoaded
-  var chapters = Children<EditionChapter>.notLoaded
-  var impression: OptionalChild<EditionImpression> = .notLoaded
-  var isbn: OptionalChild<Isbn> = .notLoaded
-  var audio: OptionalChild<Audio> = .notLoaded
 
   var lang: Lang {
     document.require().lang
@@ -50,6 +46,13 @@ struct Edition: Codable, Sendable {
   }
 }
 
+extension Edition {
+  struct DirectoryPathData {
+    var document: Document.DirectoryPathData
+    var type: EditionType
+  }
+}
+
 // loaders
 
 extension Edition {
@@ -61,38 +64,27 @@ extension Edition {
     })
   }
 
-  mutating func impression() async throws -> EditionImpression? {
-    let id = id
-    return try await impression.useLoaded(or: {
-      try await EditionImpression.query()
-        .where(.editionId == id)
-        .first()
-    })
+  func impression() async throws -> EditionImpression? {
+    try await EditionImpression.query()
+      .where(.editionId == id)
+      .first()
   }
 
-  mutating func isbn() async throws -> Isbn? {
-    let id = id
-    return try await isbn.useLoaded(or: {
-      try await Isbn.query()
-        .where(.editionId == id)
-        .first()
-    })
+  func isbn() async throws -> Isbn? {
+    try await Isbn.query()
+      .where(.editionId == id)
+      .first()
   }
 
-  mutating func audio() async throws -> Audio? {
-    let id = id
-    return try await audio.useLoaded(or: {
-      try await Audio.query()
-        .where(.editionId == id)
-        .first()
-    })
+  func audio() async throws -> Audio? {
+    try await Audio.query()
+      .where(.editionId == id)
+      .first()
   }
 
-  mutating func chapters() async throws -> [EditionChapter] {
-    try await chapters.useLoaded(or: {
-      try await EditionChapter.query()
-        .where(.editionId == id)
-        .all()
-    })
+  func chapters() async throws -> [EditionChapter] {
+    try await EditionChapter.query()
+      .where(.editionId == id)
+      .all()
   }
 }

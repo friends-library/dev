@@ -5,13 +5,13 @@ public struct VerifyConsistentChapterHeadingsJob: AsyncScheduledJob {
   public func run(context: QueueContext) async throws {
     let editions = try await Current.db.query(Edition.self).all()
     for edition in editions {
-      await verifyConsistentChapterHeadings(edition)
+      try await verifyConsistentChapterHeadings(edition)
     }
   }
 }
 
-private func verifyConsistentChapterHeadings(_ edition: Edition) async {
-  let chapters = edition.chapters.require()
+private func verifyConsistentChapterHeadings(_ edition: Edition) async throws {
+  let chapters = try await edition.chapters()
   guard chapters.count > 1 else { return }
 
   var someShortHeadingsIncludeSequence = false

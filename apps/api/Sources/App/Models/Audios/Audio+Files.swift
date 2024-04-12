@@ -1,7 +1,7 @@
 import Foundation
 
-struct AudioFiles: Encodable {
-  struct Qualities: Encodable {
+struct AudioFiles /*: Encodable */ {
+  struct Qualities /*: Encodable */ {
     let hq: DownloadableFile
     let lq: DownloadableFile
 
@@ -21,20 +21,21 @@ struct AudioFiles: Encodable {
 
 extension Audio {
   var files: AudioFiles {
-    let edition = edition.require()
-    return AudioFiles(
-      podcast: .init(
-        hq: .init(edition: edition, format: .audio(.podcast(.high))),
-        lq: .init(edition: edition, format: .audio(.podcast(.low)))
-      ),
-      mp3s: .init(
-        hq: .init(edition: edition, format: .audio(.mp3s(.high))),
-        lq: .init(edition: edition, format: .audio(.mp3s(.low)))
-      ),
-      m4b: .init(
-        hq: .init(edition: edition, format: .audio(.m4b(.high))),
-        lq: .init(edition: edition, format: .audio(.m4b(.low)))
-      )
-    )
+    fatalError("todo")
+    // let edition = edition.require()
+    // return AudioFiles(
+    //   podcast: .init(
+    //     hq: .init(edition: edition, format: .audio(.podcast(.high))),
+    //     lq: .init(edition: edition, format: .audio(.podcast(.low)))
+    //   ),
+    //   mp3s: .init(
+    //     hq: .init(edition: edition, format: .audio(.mp3s(.high))),
+    //     lq: .init(edition: edition, format: .audio(.mp3s(.low)))
+    //   ),
+    //   m4b: .init(
+    //     hq: .init(edition: edition, format: .audio(.m4b(.high))),
+    //     lq: .init(edition: edition, format: .audio(.m4b(.low)))
+    //   )
+    // )
   }
 }

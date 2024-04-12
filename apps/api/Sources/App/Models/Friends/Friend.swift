@@ -51,6 +51,23 @@ struct Friend: Codable, Sendable {
   }
 }
 
+protocol DirectoryPathable {
+  var directoryPath: String { get }
+}
+
+extension Friend {
+  struct DirectoryPathData {
+    var lang: Lang
+    var slug: String
+  }
+}
+
+extension Friend.DirectoryPathData: DirectoryPathable {
+  var directoryPath: String {
+    "\(lang)/\(slug)"
+  }
+}
+
 // loaders
 
 extension Friend {

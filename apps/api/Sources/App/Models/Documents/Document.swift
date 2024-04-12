@@ -87,6 +87,19 @@ struct Document: Codable, Sendable {
   }
 }
 
+extension Document {
+  struct DirectoryPathData {
+    var friend: Friend.DirectoryPathData
+    var slug: String
+  }
+}
+
+extension Document.DirectoryPathData: DirectoryPathable {
+  var directoryPath: String {
+    "\(friend.directoryPath)/\(slug)"
+  }
+}
+
 // loaders
 
 extension Document {

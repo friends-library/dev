@@ -53,7 +53,7 @@ struct EditFriend: Pair {
 extension EditFriend: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    var friend = try await Friend.find(input)
+    let friend = try await Friend.find(input)
     let documents = try await friend.documents()
     let quotes = try await friend.quotes()
     let residences = try await friend.residences()

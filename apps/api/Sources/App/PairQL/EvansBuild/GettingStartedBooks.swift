@@ -40,14 +40,17 @@ extension GettingStartedBooks: Resolver {
 
     let documents = try await input.resolve()
 
-    return try documents.map { document in
+    // TODO: probably mega query?
+    return try await documents.concurrentMap { document in
       let friend = try expect(document.friend.require())
       let edition = try expect(document.primaryEdition)
+      let audio = try await edition.audio()
+      let isbn = try expect(await edition.isbn())
       return .init(
         title: document.title,
         slug: document.slug,
         editionType: edition.type,
-        isbn: try expect(edition.isbn.require()).code,
+        isbn: isbn.code,
         customCss: nil,
         customHtml: nil,
         isCompilation: friend.isCompilations,
@@ -55,7 +58,7 @@ extension GettingStartedBooks: Resolver {
         friendSlug: friend.slug,
         friendGender: friend.gender,
         htmlShortTitle: document.htmlShortTitle,
-        hasAudio: edition.audio.require() != nil
+        hasAudio: audio != nil
       )
     }
   }

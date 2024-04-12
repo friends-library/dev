@@ -123,7 +123,6 @@ extension EditDocument.EditDocumentOutput {
     self.friend = .init(id: friend.id, name: friend.name, lang: friend.lang)
 
     self.editions = try await editions.concurrentMap { edition in
-      var edition = edition
       let isbn = try await edition.isbn()
       let audio = try await edition.audio()
       var audioOutput: EditDocument.EditAudio?

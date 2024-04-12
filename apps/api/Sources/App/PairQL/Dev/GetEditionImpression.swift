@@ -33,14 +33,15 @@ extension GetEditionImpression: Resolver {
 
 extension GetEditionImpression.Output.Files {
   init(files: EditionImpressionFiles) {
-    self = .init(
-      paperbackCover: files.paperback.cover.map(\.sourcePath),
-      paperbackInterior: files.paperback.interior.map(\.sourcePath),
-      epub: files.ebook.epub.sourcePath,
-      mobi: files.ebook.mobi.sourcePath,
-      pdf: files.ebook.pdf.sourcePath,
-      speech: files.ebook.speech.sourcePath,
-      app: files.ebook.app.sourcePath
-    )
+    fatalError()
+    // self = .init(
+    //   paperbackCover: files.paperback.cover.map(\.sourcePath),
+    //   paperbackInterior: files.paperback.interior.map(\.sourcePath),
+    //   epub: files.ebook.epub.sourcePath,
+    //   mobi: files.ebook.mobi.sourcePath,
+    //   pdf: files.ebook.pdf.sourcePath,
+    //   speech: files.ebook.speech.sourcePath,
+    //   app: files.ebook.app.sourcePath
+    // )
   }
 }
