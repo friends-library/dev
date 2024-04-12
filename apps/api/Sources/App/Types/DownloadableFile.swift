@@ -34,94 +34,97 @@ struct DownloadableFile {
   }
 
   let format: Format
-  let pathData: Edition.DirectoryPathData
+  let editionId: Edition.Id
+  let edition: Edition.DirectoryPathData
   let documentFilename: String
 
-  // let editionId: Edition.Id
-  // let documentId:
+  var sourceUrl: URL {
+    switch format {
+    case .ebook, .paperback, .audio(.mp3), .audio(.m4b), .audio(.mp3s):
+      return URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(sourcePath)")!
+    case .audio(.podcast):
+      let siteUrl = edition.document.friend.lang == .en
+        ? Env.WEBSITE_URL_EN
+        : Env.WEBSITE_URL_ES
+      return URL(string: "\(siteUrl)/\(sourcePath)")!
+    }
+  }
 
-  // var sourceUrl: URL {
-  //   switch format {
-  //   case .ebook, .paperback, .audio(.mp3), .audio(.m4b), .audio(.mp3s):
-  //     return URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(sourcePath)")!
-  //   case .audio(.podcast):
-  //     let siteUrl = edition.lang == .en ? Env.WEBSITE_URL_EN : Env.WEBSITE_URL_ES
-  //     return URL(string: "\(siteUrl)/\(sourcePath)")!
-  //   }
-  // }
-
-  // var sourcePath: String {
-  //   switch format {
-  //   case .ebook, .paperback, .audio(.mp3), .audio(.m4b), .audio(.mp3s):
-  //     return "\(edition.directoryPath)/\(filename)"
-  //   case .audio(.podcast(let quality)):
-  //     let pathWithoutLang = edition.directoryPath
-  //       .split(separator: "/")
-  //       .dropFirst()
-  //       .joined(separator: "/")
-  //     let qualitySegment = quality == .high ? "" : "lq/"
-  //     return "\(pathWithoutLang)/\(qualitySegment)\(filename)"
-  //   }
-  // }
+  var sourcePath: String {
+    switch format {
+    case .ebook, .paperback, .audio(.mp3), .audio(.m4b), .audio(.mp3s):
+      return "\(edition.directoryPath)/\(filename)"
+    case .audio(.podcast(let quality)):
+      let pathWithoutLang = edition.directoryPath
+        .split(separator: "/")
+        .dropFirst()
+        .joined(separator: "/")
+      let qualitySegment = quality == .high ? "" : "lq/"
+      return "\(pathWithoutLang)/\(qualitySegment)\(filename)"
+    }
+  }
 
   var logUrl: URL {
     URL(string: "\(Env.SELF_URL)/\(logPath)")!
   }
 
-  // var filename: String {
-  //   switch format {
-  //   case .ebook(.epub):
-  //     return "\(edition.filename).epub"
-  //   case .ebook(.mobi):
-  //     return "\(edition.filename).mobi"
-  //   case .ebook(.pdf):
-  //     return "\(edition.filename).pdf"
-  //   case .ebook(.speech):
-  //     return "\(edition.filename).html"
-  //   case .ebook(.app):
-  //     return "\(edition.filename)--(app-ebook).html"
-  //   case .paperback(.interior, let index):
-  //     return "\(edition.filename)--(print)\(index |> volumeFilenameSuffix).pdf"
-  //   case .paperback(.cover, let index):
-  //     return "\(edition.filename)--cover\(index |> volumeFilenameSuffix).pdf"
-  //   case .audio(.m4b(let quality)):
-  //     return "\(edition.document.require().filename)\(quality |> qualityFilenameSuffix).m4b"
-  //   case .audio(.mp3s(let quality)):
-  //     return "\(edition.document.require().filename)--mp3s\(quality |> qualityFilenameSuffix).zip"
-  //   case .audio(.mp3(let quality, let index)):
-  //     return "\(edition.document.require().filename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
-  //   case .audio(.podcast):
-  //     return "podcast.rss"
-  //   }
-  // }
+  var editionFilename: String {
+    "\(documentFilename)--\(edition.type)"
+  }
+
+  var filename: String {
+    switch format {
+    case .ebook(.epub):
+      return "\(editionFilename).epub"
+    case .ebook(.mobi):
+      return "\(editionFilename).mobi"
+    case .ebook(.pdf):
+      return "\(editionFilename).pdf"
+    case .ebook(.speech):
+      return "\(editionFilename).html"
+    case .ebook(.app):
+      return "\(editionFilename)--(app-ebook).html"
+    case .paperback(.interior, let index):
+      return "\(editionFilename)--(print)\(index |> volumeFilenameSuffix).pdf"
+    case .paperback(.cover, let index):
+      return "\(editionFilename)--cover\(index |> volumeFilenameSuffix).pdf"
+    case .audio(.m4b(let quality)):
+      return "\(documentFilename)\(quality |> qualityFilenameSuffix).m4b"
+    case .audio(.mp3s(let quality)):
+      return "\(documentFilename)--mp3s\(quality |> qualityFilenameSuffix).zip"
+    case .audio(.mp3(let quality, let index)):
+      return "\(documentFilename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
+    case .audio(.podcast):
+      return "podcast.rss"
+    }
+  }
 
   var logPath: String {
-    "todo"
-    // let id = edition.id.lowercased
-    // switch format {
-    // case .ebook(.epub):
-    //   return "download/\(id)/ebook/epub"
-    // case .ebook(.mobi):
-    //   return "download/\(id)/ebook/mobi"
-    // case .ebook(.pdf):
-    //   return "download/\(id)/ebook/pdf"
-    // case .ebook(.speech):
-    //   return "download/\(id)/ebook/speech"
-    // case .ebook(.app):
-    //   return "download/\(id)/ebook/app"
-    // case .paperback(.interior, let index):
-    //   return "download/\(id)/paperback/interior\(index |> volumeLogPathSuffix)"
-    // case .paperback(.cover, let index):
-    //   return "download/\(id)/paperback/cover\(index |> volumeLogPathSuffix)"
-    // case .audio(.m4b(let quality)):
-    //   return "download/\(id)/audio/m4b\(quality |> qualityLogPathSuffix)"
-    // case .audio(.mp3s(let quality)):
-    //   return "download/\(id)/audio/mp3s\(quality |> qualityLogPathSuffix)"
-    // case .audio(.mp3(let quality, let index)):
-    //   return "download/\(id)/audio/mp3\(index |> partLogPathSuffix)\(quality |> qualityLogPathSuffix)"
-    // case .audio(.podcast(let quality)):
-    //   return "download/\(id)/audio/podcast\(quality |> qualityLogPathSuffix)/podcast.rss"
-    // }
+    let id = editionId.lowercased
+    switch format {
+    case .ebook(.epub):
+      return "download/\(id)/ebook/epub"
+    case .ebook(.mobi):
+      return "download/\(id)/ebook/mobi"
+    case .ebook(.pdf):
+      return "download/\(id)/ebook/pdf"
+    case .ebook(.speech):
+      return "download/\(id)/ebook/speech"
+    case .ebook(.app):
+      return "download/\(id)/ebook/app"
+    case .paperback(.interior, let index):
+      return "download/\(id)/paperback/interior\(index |> volumeLogPathSuffix)"
+    case .paperback(.cover, let index):
+      return "download/\(id)/paperback/cover\(index |> volumeLogPathSuffix)"
+    case .audio(.m4b(let quality)):
+      return "download/\(id)/audio/m4b\(quality |> qualityLogPathSuffix)"
+    case .audio(.mp3s(let quality)):
+      return "download/\(id)/audio/mp3s\(quality |> qualityLogPathSuffix)"
+    case .audio(.mp3(let quality, let index)):
+      return "download/\(id)/audio/mp3\(index |> partLogPathSuffix)\(quality |> qualityLogPathSuffix)"
+    case .audio(.podcast(let quality)):
+      return "download/\(id)/audio/podcast\(quality |> qualityLogPathSuffix)/podcast.rss"
+    }
   }
 }
 
@@ -132,6 +135,7 @@ private struct DownloadData: CustomQueryable {
   static func query(numBindings: Int) -> String {
     """
       SELECT
+        e.id as edition_id,
         d.id AS document_id,
         d.filename AS document_filename,
         d.slug AS document_slug,
@@ -155,14 +159,13 @@ private struct DownloadData: CustomQueryable {
       WHERE
         e.id = $1
       GROUP BY
-        d.id, d.filename, e.type, f.slug, i.paperback_volumes, f.lang;
+        e.id, d.id, d.filename, e.type, f.slug, i.paperback_volumes, f.lang;
     """
   }
 
-  // /en/compilations/memoirs-of-the-godly/original/Memoirs_of_the_Godly--original.html
-
   var lang: Lang
   var friendSlug: String
+  var editionId: Edition.Id
   var documentId: Document.Id
   var documentFilename: String
   var documentSlug: String
@@ -174,20 +177,8 @@ private struct DownloadData: CustomQueryable {
 // parsing init
 
 extension DownloadableFile {
-  private init(_ data: DownloadData, format: DownloadableFile.Format) {
-    let pathData = Edition.DirectoryPathData(
-      document: .init(
-        friend: .init(lang: .en, slug: data.friendSlug),
-        slug: data.documentSlug
-      ),
-      type: data.editionType
-    )
-    self.init(format: format, pathData: pathData, documentFilename: data.documentFilename)
-  }
-
   init(logPath: String) async throws {
     var segments = logPath.split(separator: "/")
-
     guard !segments.isEmpty, segments.removeFirst() == "download" else {
       throw ParseLogPathError.missingLeadingDownload(logPath)
     }
@@ -277,6 +268,22 @@ extension DownloadableFile {
         throw ParseLogPathError.invalid(logPath)
       }
     }
+  }
+
+  private init(_ data: DownloadData, format: DownloadableFile.Format) {
+    let edition = Edition.DirectoryPathData(
+      document: .init(
+        friend: .init(lang: .en, slug: data.friendSlug),
+        slug: data.documentSlug
+      ),
+      type: data.editionType
+    )
+    self.init(
+      format: format,
+      editionId: data.editionId,
+      edition: edition,
+      documentFilename: data.documentFilename
+    )
   }
 
   enum ParseLogPathError: Error, LocalizedError {
