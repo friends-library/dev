@@ -18,7 +18,7 @@ extension NPSubscriber: ApiModel {
 }
 
 extension NPSubscriber: Model {
-  static var tableName = M35.tableName
+  static var tableName = M36.tableName
 
   func postgresData(for column: ColumnName) -> DuetSQL.Postgres.Data {
     switch column {

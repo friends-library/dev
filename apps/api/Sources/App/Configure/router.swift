@@ -15,7 +15,7 @@ public extension Configure {
     )
 
     app.get(
-      "confirm-email", ":token",
+      "confirm-email", ":language", ":token",
       use: ConfirmEmailRoute.handler(_:)
     )
 

@@ -5,6 +5,9 @@ import XSlack
 
 enum ConfirmEmailRoute: RouteHandler {
   static func handler(_ request: Request) async throws -> Response {
+    let langString = request.parameters.get("language")
+    let lang: Lang = langString == "en" ? .en : .es
+
     // note: more functional way
     guard let tokenString = request.parameters.get("token"),
           let token = UUID(uuidString: tokenString),
@@ -13,24 +16,23 @@ enum ConfirmEmailRoute: RouteHandler {
           .where(.confirmationToken == token)
           .first()
     else {
-      return redirect(success: false)
+      return redirect(success: false, lang: lang)
     }
 
     subscriber.confirmationToken = nil
 
     try await subscriber.save()
 
-    return redirect(success: true)
+    return redirect(success: true, lang: lang)
   }
 }
 
-func redirect(success: Bool) -> Response {
+func redirect(success: Bool, lang: Lang) -> Response {
   .init(
     status: .temporaryRedirect,
-    // TODO: should be language aware
     headers: .init([(
       "Location",
-      "https://friendslibrary.com/\(success ? "success" : "failure")"
+      "\(lang == .en ? Env.WEBSITE_URL_EN : Env.WEBSITE_URL_ES)/\(success ? (lang == .en ? "success" : "exito") : (lang == .en ? "failure" : "fracaso"))"
     )])
   )
 }
