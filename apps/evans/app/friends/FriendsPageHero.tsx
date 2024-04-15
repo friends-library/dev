@@ -1,8 +1,8 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
 import NextBgImage, { bgColor } from 'next-bg-image';
+import { ControlsLink } from './ExploreFriends';
 import Dual from '@/components/core/Dual';
-import { makeScroller } from '@/lib/scroll';
 import HeroBg from '@/public/images/street.jpg';
 
 interface Props {
@@ -13,7 +13,7 @@ const FriendsPageHero: React.FC<Props> = ({ numFriends }) => (
   <NextBgImage
     eager
     className="text-center text-white"
-    src={[bgColor(`rgba(0, 0, 0, 0.52)`), HeroBg]}
+    src={[bgColor(`rgba(0,0,0,0.52)`), HeroBg, bgColor(`rgba(90,78,56,0.75)`)]}
     position="center 88%"
   >
     <div className="px-16 py-16 md:py-24 xl:py-32">
@@ -24,30 +24,10 @@ const FriendsPageHero: React.FC<Props> = ({ numFriends }) => (
           <span className="font-bold">{numFriends}</span> early Friends, and more authors
           are being added regularly. Check out our recently-added authors, or browse the
           full list below. You can also{` `}
-          <a
-            href="#ControlsBlock"
-            className="underline"
-            onClick={(e) => {
-              e.preventDefault();
-              makeScroller(`#ControlsBlock`)();
-            }}
-          >
-            sort
-          </a>
-          {` `}
-          and{` `}
-          <a
-            href="#ControlsBlock"
-            className="underline"
-            onClick={(e) => {
-              e.preventDefault();
-              makeScroller(`#ControlsBlock`)();
-            }}
-          >
-            search
-          </a>
-          {` `}
-          to find exactly who you&rsquo;re looking for.
+          <ControlsLink>sort</ControlsLink>
+          {` `}and{` `}
+          <ControlsLink>search</ControlsLink>
+          {` `}to find exactly who you&rsquo;re looking for.
         </>
         <>
           Actualmente la Biblioteca de Amigos contiene libros escritos por{` `}
@@ -55,29 +35,10 @@ const FriendsPageHero: React.FC<Props> = ({ numFriends }) => (
           constantemente estamos añadiendo nuevos autores. Dale un vistazo a nuestra
           sección, “Autores Añadidos Recientemente,” o explora la lista completa que está
           a continuación. También puedes utilizar las herramientas{` `}
-          <a
-            href="#ControlsBlock"
-            className="underline"
-            onClick={(e) => {
-              e.preventDefault();
-              makeScroller(`#ControlsBlock`)();
-            }}
-          >
-            ordenar
-          </a>
+          <ControlsLink>ordenar</ControlsLink>
           {` `}y{` `}
-          <a
-            href="#ControlsBlock"
-            className="underline"
-            onClick={(e) => {
-              e.preventDefault();
-              makeScroller(`#ControlsBlock`)();
-            }}
-          >
-            buscar
-          </a>
-          {` `}
-          para hallar exactamente lo que estás buscando.
+          <ControlsLink>buscar</ControlsLink>
+          {` `}para hallar exactamente lo que estás buscando.
         </>
       </Dual.P>
     </div>

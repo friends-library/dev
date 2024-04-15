@@ -1,6 +1,6 @@
-import FriendCard from '@evans/pages/friends/FriendCard';
 import type { Meta, StoryObj } from '@storybook/react';
 import { props } from './helpers';
+import FriendCard from '@/app/friends/FriendCard';
 
 const meta = {
   title: 'Friends/FriendCard', // eslint-disable-line

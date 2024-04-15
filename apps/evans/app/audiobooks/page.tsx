@@ -139,4 +139,4 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default Page;
-export const revalidate = 259200; // 3 days
+export const revalidate = 10800; // 3 hours

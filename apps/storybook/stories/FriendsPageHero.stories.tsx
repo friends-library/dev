@@ -1,6 +1,6 @@
-import FriendsPageHero from '@evans/pages/friends/FriendsPageHero';
 import type { Meta, StoryObj } from '@storybook/react';
 import { props } from './helpers';
+import FriendsPageHero from '@/app/friends/FriendsPageHero';
 
 const meta = {
   title: 'Friends/FriendsPageHero', // eslint-disable-line
