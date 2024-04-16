@@ -1,6 +1,6 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import DuoToneWaveBlock from '../getting-started/DuoToneWaveBlock';
+import DuoToneWaveBlock from '@/app/getting-started/DuoToneWaveBlock';
 import Heading from '@/components/core/Heading';
 import Dual from '@/components/core/Dual';
 import Button from '@/components/core/Button';
