@@ -42,10 +42,8 @@ const PathBlock: React.FC<Props> = ({ slug, books, title, color, children }) => 
   return (
     <WaveBottomBlock
       color={color}
-      className={cx(
-        `PathBlock PathBlock--${slug} p-12 text-fl${color}`,
-        books.length <= page * PAGE_SIZE && `pb-10`,
-      )}
+      id={slug}
+      className={cx(`p-12 text-fl${color}`, books.length <= page * PAGE_SIZE && `pb-10`)}
     >
       <h2 className="heading-text mb-6">{title}</h2>
       <p className="body-text mb-12 max-w-4xl mx-auto">{children}</p>

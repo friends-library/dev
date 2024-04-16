@@ -145,7 +145,7 @@ const Page: NextPage = async () => {
         <PathIntro title={t`Doctrine`} color="blue" slug="doctrinal">
           <Blurb.Doctrine />
         </PathIntro>
-        <PathIntro title={t`Spiritual Life`} color="green" slug="spiritual">
+        <PathIntro title={t`Spiritual Life`} color="green" slug="spiritual-life">
           <Blurb.Devotional />
         </PathIntro>
         <PathIntro

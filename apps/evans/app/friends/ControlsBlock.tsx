@@ -20,7 +20,7 @@ const ControlsBlock: React.FC<Props> = ({
   setSearchQuery,
 }) => (
   <div
-    id="ControlsBlock"
+    id="controls"
     className="bg-flgray-100 p-6 pb-12 md:p-8 flex flex-col md:flex-row justify-center items-center"
   >
     <Label>{t`Sort`}</Label>

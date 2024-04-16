@@ -1,7 +1,6 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
 import NextBgImage, { bgColor } from 'next-bg-image';
-import { ControlsLink } from './ExploreFriends';
 import Dual from '@/components/core/Dual';
 import HeroBg from '@/public/images/street.jpg';
 
@@ -24,9 +23,13 @@ const FriendsPageHero: React.FC<Props> = ({ numFriends }) => (
           <span className="font-bold">{numFriends}</span> early Friends, and more authors
           are being added regularly. Check out our recently-added authors, or browse the
           full list below. You can also{` `}
-          <ControlsLink>sort</ControlsLink>
+          <a href="#controls" className="underline">
+            sort
+          </a>
           {` `}and{` `}
-          <ControlsLink>search</ControlsLink>
+          <a href="#controls" className="underline">
+            search
+          </a>
           {` `}to find exactly who you&rsquo;re looking for.
         </>
         <>
@@ -35,9 +38,13 @@ const FriendsPageHero: React.FC<Props> = ({ numFriends }) => (
           constantemente estamos añadiendo nuevos autores. Dale un vistazo a nuestra
           sección, “Autores Añadidos Recientemente,” o explora la lista completa que está
           a continuación. También puedes utilizar las herramientas{` `}
-          <ControlsLink>ordenar</ControlsLink>
+          <a href="#controls" className="underline">
+            ordenar
+          </a>
           {` `}y{` `}
-          <ControlsLink>buscar</ControlsLink>
+          <a href="#controls" className="underline">
+            buscar
+          </a>
           {` `}para hallar exactamente lo que estás buscando.
         </>
       </Dual.P>

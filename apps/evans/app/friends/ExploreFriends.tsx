@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import FriendCard from './FriendCard';
 import ControlsBlock from './ControlsBlock';
 import { getFriendUrl } from '@/lib/friend';
-import { makeScroller } from '@/lib/scroll';
 import { type Api } from '@/lib/ssg/api-client';
 
 type Friend = Api.FriendsPage.Output[number];
@@ -60,19 +59,6 @@ const ExploreFriends: React.FC<Props> = ({ friends }) => {
 };
 
 export default ExploreFriends;
-
-export const ControlsLink: React.FC<{ children: string }> = ({ children }) => (
-  <a
-    href="#ControlsBlock"
-    className="underline"
-    onClick={(e) => {
-      e.preventDefault();
-      makeScroller(`#ControlsBlock`)();
-    }}
-  >
-    {children}
-  </a>
-);
 
 function makeSorter(
   sortOption: string,

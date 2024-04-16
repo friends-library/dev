@@ -1,10 +1,7 @@
-'use client';
-
 import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import { makeScroller } from '@/lib/scroll';
 
 interface Props {
   title: string;
@@ -14,8 +11,8 @@ interface Props {
 }
 
 const PathIntro: React.FC<Props> = ({ color, title, children, slug }) => (
-  <section
-    onClick={() => makeScroller(`.PathBlock--${slug}`)()}
+  <a
+    href={`#${slug}`}
     className={cx(
       `cursor-pointer bg-fl${color}`,
       `p-8 pb-4 md:w-1/2 lg:w-1/4 flex flex-col justify-start`,
@@ -31,7 +28,7 @@ const PathIntro: React.FC<Props> = ({ color, title, children, slug }) => (
       </button>
       <ChevronDownIcon className="text-white antialiased pt-2 h-8" />
     </div>
-  </section>
+  </a>
 );
 
 export default PathIntro;
