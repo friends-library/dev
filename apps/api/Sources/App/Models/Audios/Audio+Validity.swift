@@ -35,18 +35,19 @@ extension Audio {
       return false
     }
 
+    // TODO: sad
     // test for sequential parts, when loaded
-    if case .loaded(let parts) = parts {
-      let sorted = parts.sorted { $0.order < $1.order }
-      var prev = 0
-      for part in sorted {
-        if part.order != prev + 1 {
-          logInvalid("part order is not sequential: \(part.order)")
-          return false
-        }
-        prev = part.order
-      }
-    }
+    // if case .loaded(let parts) = parts {
+    //   let sorted = parts.sorted { $0.order < $1.order }
+    //   var prev = 0
+    //   for part in sorted {
+    //     if part.order != prev + 1 {
+    //       logInvalid("part order is not sequential: \(part.order)")
+    //       return false
+    //     }
+    //     prev = part.order
+    //   }
+    // }
 
     return true
   }

@@ -13,8 +13,8 @@ struct Audio: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var edition = Parent<Edition>.notLoaded
-  var parts = Children<AudioPart>.notLoaded
+  // var edition = Parent<Edition>.notLoaded
+  // var parts = Children<AudioPart>.notLoaded
 
   // var lang: Lang {
   //   edition.require().lang
@@ -28,11 +28,11 @@ struct Audio: Codable, Sendable {
   //   AudioUtil.humanDuration(partDurations: parts.require().map(\.duration), style: .abbrev(lang))
   // }
 
-  var isPublished: Bool {
-    // detect intermediate state between when we have created the audio
-    // row in the database and when the cli app finishes processing all the parts
-    m4bSizeHq != 0 && parts.require().filter(\.isPublished).count > 0
-  }
+  // var isPublished: Bool {
+  //   // detect intermediate state between when we have created the audio
+  //   // row in the database and when the cli app finishes processing all the parts
+  //   m4bSizeHq != 0 && parts.require().filter(\.isPublished).count > 0
+  // }
 
   init(
     id: Id = .init(),
@@ -58,19 +58,15 @@ struct Audio: Codable, Sendable {
 // extensions
 
 extension Audio {
-  mutating func parts() async throws -> [AudioPart] {
-    try await parts.useLoaded(or: {
-      try await AudioPart.query()
-        .where(.audioId == id)
-        .all()
-    })
+  func parts() async throws -> [AudioPart] {
+    try await AudioPart.query()
+      .where(.audioId == id)
+      .all()
   }
 
-  mutating func edition() async throws -> Edition {
-    try await edition.useLoaded(or: {
-      try await Edition.query()
-        .where(.id == editionId)
-        .first()
-    })
+  func edition() async throws -> Edition {
+    try await Edition.query()
+      .where(.id == editionId)
+      .first()
   }
 }

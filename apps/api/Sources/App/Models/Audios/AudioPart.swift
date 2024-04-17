@@ -15,8 +15,6 @@ struct AudioPart: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var audio = Parent<Audio>.notLoaded
-
   var isPublished: Bool {
     // detect intermediate state between when we have created the audio part row
     // in the database (via web gui), but have not finished processing the new

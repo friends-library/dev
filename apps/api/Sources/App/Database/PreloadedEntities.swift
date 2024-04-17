@@ -272,19 +272,6 @@ final class PreloadedEntitiesStore: MemoryStore {
   }
 }
 
-// extensions
-
-extension Children {
-  mutating func push(_ child: C) {
-    switch self {
-    case .notLoaded:
-      self = .loaded([child])
-    case .loaded(let children):
-      self = .loaded(children + [child])
-    }
-  }
-}
-
 // helpers
 
 private func toDict<M: DuetSQL.Model>(_ models: [M]) -> [M.IdValue: M] {

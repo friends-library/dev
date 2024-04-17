@@ -125,7 +125,7 @@ extension EditDocument.EditDocumentOutput {
       let isbn = try await edition.isbn()
       let audio = try await edition.audio()
       var audioOutput: EditDocument.EditAudio?
-      if var audio {
+      if let audio {
         let parts = try await audio.parts()
         audioOutput = .init(
           id: audio.id,
