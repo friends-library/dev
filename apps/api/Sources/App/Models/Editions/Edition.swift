@@ -13,16 +13,6 @@ struct Edition: Codable, Sendable {
   var updatedAt = Current.date()
   var deletedAt: Date? = nil
 
-  var document = Parent<Document>.notLoaded
-
-  var lang: Lang {
-    document.require().lang
-  }
-
-  // var directoryPath: String {
-  //   "\(document.require().directoryPath)/\(type)"
-  // }
-
   init(
     id: Id = .init(),
     documentId: Document.Id,
@@ -58,12 +48,10 @@ extension Edition.DirectoryPathData: DirectoryPathable {
 // loaders
 
 extension Edition {
-  mutating func document() async throws -> Document {
-    try await document.useLoaded(or: {
-      try await Document.query()
-        .where(.id == documentId)
-        .first()
-    })
+  func document() async throws -> Document {
+    try await Document.query()
+      .where(.id == documentId)
+      .first()
   }
 
   func impression() async throws -> EditionImpression? {

@@ -9,7 +9,7 @@ enum PrintJobs {
       .all()
 
     let lineItems = try await orderItems.concurrentMap { item in
-      var edition = try await Edition.query()
+      let edition = try await Edition.query()
         .where(.id == item.editionId)
         .first()
       let document = try await edition.document()

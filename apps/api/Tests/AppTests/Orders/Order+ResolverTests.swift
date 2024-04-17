@@ -50,7 +50,7 @@ final class OrderResolverTests: AppTestCase {
     let (input, item) = try await orderSetup()
     let output = try await CreateOrder.resolve(with: input, in: .mock)
 
-    var retrieved = try await Order.find(output)
+    let retrieved = try await Order.find(output)
     let items = try await retrieved.items()
 
     expect(retrieved.id).toEqual(input.id)

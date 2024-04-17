@@ -17,14 +17,14 @@ final class EditionValidityTests: XCTestCase {
     // allowed because we can't resolve the language, relations not loaded
     XCTAssertTrue(edition.isValid)
 
-    var friend = Friend.empty
-    friend.lang = .es
-    var document = Document.valid
-    document.friend = .loaded(friend)
-    edition.document = .loaded(document)
+    // var friend = Friend.empty
+    // friend.lang = .es
+    // var document = Document.valid
+    // document.friend = .loaded(friend)
+    // edition.document = .loaded(document)
 
-    // now we now it's invalid, because we know the lang is spanish
-    XCTAssertFalse(edition.isValid)
+    // // now we now it's invalid, because we know the lang is spanish
+    // XCTAssertFalse(edition.isValid)
   }
 
   // func testLoadedChaptersWithNonSequentialOrderInvalid() {

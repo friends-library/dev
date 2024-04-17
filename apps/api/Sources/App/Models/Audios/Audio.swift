@@ -16,17 +16,17 @@ struct Audio: Codable, Sendable {
   var edition = Parent<Edition>.notLoaded
   var parts = Children<AudioPart>.notLoaded
 
-  var lang: Lang {
-    edition.require().lang
-  }
+  // var lang: Lang {
+  //   edition.require().lang
+  // }
 
-  var humanDurationClock: String {
-    AudioUtil.humanDuration(partDurations: parts.require().map(\.duration), style: .clock)
-  }
+  // var humanDurationClock: String {
+  //   AudioUtil.humanDuration(partDurations: parts.require().map(\.duration), style: .clock)
+  // }
 
-  var humanDurationAbbrev: String {
-    AudioUtil.humanDuration(partDurations: parts.require().map(\.duration), style: .abbrev(lang))
-  }
+  // var humanDurationAbbrev: String {
+  //   AudioUtil.humanDuration(partDurations: parts.require().map(\.duration), style: .abbrev(lang))
+  // }
 
   var isPublished: Bool {
     // detect intermediate state between when we have created the audio

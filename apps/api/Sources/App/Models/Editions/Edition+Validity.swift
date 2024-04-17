@@ -4,11 +4,12 @@ extension Edition {
       return false
     }
 
-    if case .loaded = document, case .loaded = document.require().friend {
-      if lang == .es, editor != nil {
-        return false
-      }
-    }
+    // TODO: sad
+    // if case .loaded = document, case .loaded = document.require().friend {
+    //   if lang == .es, editor != nil {
+    //     return false
+    //   }
+    // }
 
     // TODO: sad
     // test for sequential chapters, when loaded

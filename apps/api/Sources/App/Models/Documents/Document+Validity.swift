@@ -52,34 +52,35 @@ extension Document {
       }
     }
 
-    if case .loaded = editions, hasNonDraftEdition {
-      if description.count < 5 || partialDescription.count < 5 {
-        logInvalid("Description or partial description is too short")
-        return false
-      }
+    // TODO: sad
+    // if case .loaded = editions, hasNonDraftEdition {
+    //   if description.count < 5 || partialDescription.count < 5 {
+    //     logInvalid("Description or partial description is too short")
+    //     return false
+    //   }
 
-      if let featured = featuredDescription, featured.count < 5 {
-        logInvalid("Featured description is too short")
-        return false
-      }
+    //   if let featured = featuredDescription, featured.count < 5 {
+    //     logInvalid("Featured description is too short")
+    //     return false
+    //   }
+    // }
+
+    // if case .loaded = friend {
+    //   if lang == .en, !filename.match("^[A-Z][A-Za-z0-9_]+$") {
+    //     logInvalid("Filename is invalid (en)")
+    //     return false
+    //   }
+
+    //   if lang == .es, filename.contains(" ") {
+    //     logInvalid("Filename contains space (es)")
+    //     return false
+    //   }
+    // } else {
+    if filename.contains(" ") {
+      logInvalid("Filename contains space")
+      return false
     }
-
-    if case .loaded = friend {
-      if lang == .en, !filename.match("^[A-Z][A-Za-z0-9_]+$") {
-        logInvalid("Filename is invalid (en)")
-        return false
-      }
-
-      if lang == .es, filename.contains(" ") {
-        logInvalid("Filename contains space (es)")
-        return false
-      }
-    } else {
-      if filename.contains(" ") {
-        logInvalid("Filename contains space")
-        return false
-      }
-    }
+    // }
 
     return true
   }

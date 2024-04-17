@@ -24,7 +24,7 @@ final class AdminDomainTests: AppTestCase {
     )
 
     expect(output).toEqual(.success)
-    var edition = try await Edition.find(newId)
+    let edition = try await Edition.find(newId)
     expect(try await edition.isbn()).not.toBeNil()
   }
 }

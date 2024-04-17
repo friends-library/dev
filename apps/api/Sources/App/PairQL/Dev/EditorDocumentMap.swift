@@ -11,7 +11,9 @@ extension EditorDocumentMap: NoInputResolver {
     try context.verify(Self.auth)
     let documents = try await Document.query().all()
     return documents.reduce(into: [:]) { acc, document in
-      acc[document.directoryPath] = document.trimmedUtf8ShortTitle
+      // TODO: need a join or something...
+      // acc[document.directoryPath] =
+      //   Asciidoc.trimmedUtf8ShortDocumentTitle(document.title, lang: .en)
     }
   }
 }

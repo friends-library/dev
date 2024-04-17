@@ -42,8 +42,8 @@ extension GettingStartedBooks: Resolver {
 
     // TODO: probably mega query?
     return try await documents.concurrentMap { document in
-      let friend = try expect(document.friend.require())
-      let edition = try expect(document.primaryEdition)
+      let friend = try expect(await document.friend())
+      let edition = try expect(await document.primaryEdition())
       let audio = try await edition.audio()
       let isbn = try expect(await edition.isbn())
       return .init(
@@ -69,16 +69,18 @@ extension SelectedDocuments {
     let allDocuments = try await Document.query()
       .where(.slug |=| slugs.map { .string($0.documentSlug) })
       .all()
+    return allDocuments
 
-    var documents: [Document] = []
-    for slug in slugs {
-      let matchedDocument = allDocuments.filter { document in
-        guard document.slug == slug.documentSlug else { return false }
-        let friend = document.friend.require()
-        return friend.slug == slug.friendSlug && friend.lang == lang
-      }.first
-      documents.append(try expect(matchedDocument))
-    }
-    return documents
+    // var documents: [Document] = []
+
+    // for slug in slugs {
+    //   let matchedDocument = allDocuments.filter { document in
+    //     guard document.slug == slug.documentSlug else { return false }
+    //     let friend = document.friend.require()
+    //     return friend.slug == slug.friendSlug && friend.lang == lang
+    //   }.first
+    //   documents.append(try expect(matchedDocument))
+    // }
+    // return documents
   }
 }

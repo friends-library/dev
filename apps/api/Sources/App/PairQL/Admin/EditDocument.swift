@@ -102,7 +102,6 @@ extension EditDocument: Resolver {
 
 extension EditDocument.EditDocumentOutput {
   init(model document: Document) async throws {
-    var document = document
     let friend = try await document.friend()
     let editions = try await document.editions()
     let tags = try await document.tags()

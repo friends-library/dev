@@ -34,7 +34,7 @@ struct GetEdition: Pair {
 extension GetEdition: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    var edition = try await Edition.find(input)
+    let edition = try await Edition.find(input)
     let impression = try await edition.impression()
     let document = try await edition.document()
     return .init(

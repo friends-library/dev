@@ -17,7 +17,7 @@ struct Entities {
   var audioPart: AudioPart
 
   static func create(beforePersist: (inout Entities) -> Void = { _ in }) async -> Entities {
-    var friend: Friend = .valid
+    let friend: Friend = .valid
 
     var friendResidence: FriendResidence = .random
     friendResidence.friendId = friend.id

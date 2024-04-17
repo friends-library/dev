@@ -280,8 +280,8 @@ func expect<T>(_ value: T?, file: StaticString = #file, line: UInt = #line) thro
   return value
 }
 
-extension Document {
-  var urlPath: String {
-    "\(friend.require().slug)/\(slug)"
-  }
-}
+// extension Document {
+//   var urlPath: String {
+//     "\(friend.require().slug)/\(slug)"
+//   }
+// }

@@ -29,24 +29,25 @@ struct FriendsPage: Pair {
 extension FriendsPage: Resolver {
   static func resolve(with lang: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let friends = try await Friend.query().where(.lang == lang).all()
-    return try await friends.concurrentMap { friend -> FriendOutput? in
-      guard !friend.isCompilations else { return nil }
-      let documents = try await friend.documents()
-      let numBooks = documents.filter(\.hasNonDraftEdition).count
-      guard numBooks > 0 else { return nil }
-      guard let residence = friend.primaryResidence else { return nil }
-      return .init(
-        slug: friend.slug,
-        gender: friend.gender,
-        name: friend.name,
-        numBooks: numBooks,
-        born: friend.born,
-        died: friend.died,
-        primaryResidence: .init(city: residence.city, region: residence.region),
-        createdAt: friend.createdAt
-      )
-    }.compactMap { $0 }
+    fatalError("mega query")
+    // let friends = try await Friend.query().where(.lang == lang).all()
+    // return try await friends.concurrentMap { friend -> FriendOutput? in
+    //   guard !friend.isCompilations else { return nil }
+    //   let documents = try await friend.documents()
+    //   let numBooks = documents.filter(\.hasNonDraftEdition).count
+    //   guard numBooks > 0 else { return nil }
+    //   guard let residence = friend.primaryResidence else { return nil }
+    //   return .init(
+    //     slug: friend.slug,
+    //     gender: friend.gender,
+    //     name: friend.name,
+    //     numBooks: numBooks,
+    //     born: friend.born,
+    //     died: friend.died,
+    //     primaryResidence: .init(city: residence.city, region: residence.region),
+    //     createdAt: friend.createdAt
+    //   )
+    // }.compactMap { $0 }
   }
 }
 

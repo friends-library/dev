@@ -30,17 +30,16 @@ extension OrderEditions: NoInputResolver {
       .where(.isDraft == false)
       .all()
     return try await editions.concurrentMap { edition -> OrderEdition? in
-      var edition = edition
       guard let impression = try await edition.impression() else {
         return nil
       }
-      var document = try await edition.document()
+      let document = try await edition.document()
       let friend = try await document.friend()
       return .init(
         id: edition.id,
         type: edition.type,
         title: document.title,
-        shortTitle: document.trimmedUtf8ShortTitle,
+        shortTitle: Asciidoc.trimmedUtf8ShortDocumentTitle(document.title, lang: friend.lang),
         author: friend.name,
         lang: friend.lang,
         priceInCents: impression.paperbackPrice,

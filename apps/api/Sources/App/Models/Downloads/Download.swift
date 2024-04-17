@@ -22,8 +22,6 @@ struct Download: Codable, Sendable {
   var longitude: String?
   var createdAt = Current.date()
 
-  var edition = Parent<Edition>.notLoaded
-
   var isValid: Bool { true }
 
   init(

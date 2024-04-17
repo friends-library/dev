@@ -28,7 +28,6 @@ extension Array where Element == SelectableDocuments.SelectableDocument {
   static func load() async throws -> Self {
     let documents = try await Document.query().all()
     return try await documents.concurrentMap { doc in
-      var doc = doc
       let friend = try await doc.friend()
       return .init(
         id: doc.id,

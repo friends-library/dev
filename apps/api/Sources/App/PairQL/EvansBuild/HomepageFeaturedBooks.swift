@@ -32,8 +32,8 @@ extension HomepageFeaturedBooks: Resolver {
 
     // TODO: probably mega query
     return try await documents.concurrentMap { document in
-      let friend = try expect(document.friend.require())
-      let edition = try expect(document.primaryEdition)
+      let friend = try expect(await document.friend())
+      let edition = try expect(await document.primaryEdition())
       let impression = try expect(await edition.impression())
       let isbn = try expect(await edition.isbn())
       return .init(

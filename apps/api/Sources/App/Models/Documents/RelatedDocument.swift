@@ -8,9 +8,6 @@ struct RelatedDocument: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var document = Parent<Document>.notLoaded
-  var parentDocument = Parent<Document>.notLoaded
-
   var isValid: Bool {
     description.count >= 85
       && description.count <= 450

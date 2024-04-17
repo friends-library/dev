@@ -17,31 +17,6 @@ struct Document: Codable, Sendable {
   var updatedAt = Current.date()
   var deletedAt: Date? = nil
 
-  var friend = Parent<Friend>.notLoaded
-  var editions = Children<Edition>.notLoaded
-  var altLanguageDocument = OptionalParent<Document>.notLoaded
-  var relatedDocuments = Children<RelatedDocument>.notLoaded
-  var tags = Children<DocumentTag>.notLoaded
-
-  var lang: Lang {
-    friend.require().lang
-  }
-
-  var primaryEdition: Edition? {
-    let allEditions = editions.require().filter { $0.isDraft == false }
-    return allEditions.first { $0.type == .updated } ??
-      allEditions.first { $0.type == .modernized } ??
-      allEditions.first
-  }
-
-  var hasNonDraftEdition: Bool {
-    editions.require().first { $0.isDraft == false } != nil
-  }
-
-  var directoryPath: String {
-    "\(friend.require().directoryPath)/\(slug)"
-  }
-
   var htmlTitle: String {
     Asciidoc.htmlTitle(title)
   }
@@ -52,10 +27,6 @@ struct Document: Codable, Sendable {
 
   var utf8ShortTitle: String {
     Asciidoc.utf8ShortTitle(title)
-  }
-
-  var trimmedUtf8ShortTitle: String {
-    Asciidoc.trimmedUtf8ShortDocumentTitle(title, lang: friend.require().lang)
   }
 
   init(
@@ -103,45 +74,43 @@ extension Document.DirectoryPathData: DirectoryPathable {
 // loaders
 
 extension Document {
-  mutating func friend() async throws -> Friend {
-    try await friend.useLoaded(or: {
-      try await Friend.query()
-        .where(.id == friendId)
-        .first()
-    })
+  func friend() async throws -> Friend {
+    try await Friend.query()
+      .where(.id == friendId)
+      .first()
   }
 
-  mutating func editions() async throws -> [Edition] {
-    try await editions.useLoaded(or: {
-      try await Edition.query()
-        .where(.documentId == id)
-        .all()
-    })
+  func editions() async throws -> [Edition] {
+    try await Edition.query()
+      .where(.documentId == id)
+      .all()
   }
 
-  mutating func tags() async throws -> [DocumentTag] {
-    try await tags.useLoaded(or: {
-      try await DocumentTag.query()
-        .where(.documentId == id)
-        .all()
-    })
+  func tags() async throws -> [DocumentTag] {
+    try await DocumentTag.query()
+      .where(.documentId == id)
+      .all()
   }
 
-  mutating func relatedDocuments() async throws -> [RelatedDocument] {
-    try await relatedDocuments.useLoaded(or: {
-      try await RelatedDocument.query()
-        .where(.parentDocumentId == id)
-        .all()
-    })
+  func relatedDocuments() async throws -> [RelatedDocument] {
+    try await RelatedDocument.query()
+      .where(.parentDocumentId == id)
+      .all()
   }
 
-  mutating func altLanguageDocument() async throws -> Document? {
-    try await altLanguageDocument.useLoaded(or: {
-      guard let altLanguageId = altLanguageId else { return nil }
-      return try await Document.query()
-        .where(.id == altLanguageId)
-        .first()
-    })
+  func altLanguageDocument() async throws -> Document? {
+    guard let altLanguageId = altLanguageId else { return nil }
+    return try await Document.query()
+      .where(.id == altLanguageId)
+      .first()
+  }
+
+  func primaryEdition() async throws -> Edition? {
+    let editions = try await editions()
+    let allEditions = editions.filter { $0.isDraft == false }
+    return allEditions.first { $0.type == .updated } ??
+      allEditions.first { $0.type == .modernized } ??
+      allEditions.first
   }
 
   mutating func numDownloads() async throws -> Int {
