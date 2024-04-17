@@ -19,13 +19,9 @@ struct Edition: Codable, Sendable {
     document.require().lang
   }
 
-  var directoryPath: String {
-    "\(document.require().directoryPath)/\(type)"
-  }
-
-  var filename: String {
-    "\(document.require().filename)--\(type)"
-  }
+  // var directoryPath: String {
+  //   "\(document.require().directoryPath)/\(type)"
+  // }
 
   init(
     id: Id = .init(),

@@ -57,54 +57,55 @@ struct GetAudios: Pair {
 extension GetAudios: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let audios = try await App.Audio.query().all()
-    return try await audios.concurrentMap { audio in
-      var audio = audio
-      let parts = try await audio.parts()
-      var edition = try await audio.edition()
-      var document = try await edition.document()
-      let friend = try await document.friend()
-      return .init(
-        id: audio.id,
-        isIncomplete: audio.isIncomplete,
-        m4bSizeHq: audio.m4bSizeHq.rawValue,
-        m4bSizeLq: audio.m4bSizeLq.rawValue,
-        mp3ZipSizeHq: audio.mp3ZipSizeHq.rawValue,
-        mp3ZipSizeLq: audio.mp3ZipSizeLq.rawValue,
-        reader: audio.reader,
-        parts: parts.map { part in
-          .init(
-            id: part.id,
-            chapters: Array(part.chapters),
-            durationInSeconds: part.duration.rawValue,
-            title: part.title,
-            order: part.order,
-            mp3SizeHq: part.mp3SizeHq.rawValue,
-            mp3SizeLq: part.mp3SizeLq.rawValue
-          )
-        },
-        edition: .init(
-          id: edition.id,
-          path: edition.directoryPath,
-          type: edition.type,
-          coverImagePath: edition.images.square.w1400.path
-        ),
-        document: .init(
-          filename: document.filename,
-          title: document.title,
-          slug: document.slug,
-          description: document.description,
-          path: document.directoryPath,
-          tags: []
-        ),
-        friend: .init(
-          lang: friend.lang,
-          name: friend.name,
-          slug: friend.slug,
-          alphabeticalName: friend.alphabeticalName,
-          isCompilations: friend.isCompilations
-        )
-      )
-    }
+    fatalError("mega query")
+    // let audios = try await App.Audio.query().all()
+    // return try await audios.concurrentMap { audio in
+    //   var audio = audio
+    //   let parts = try await audio.parts()
+    //   var edition = try await audio.edition()
+    //   var document = try await edition.document()
+    //   let friend = try await document.friend()
+    //   return .init(
+    //     id: audio.id,
+    //     isIncomplete: audio.isIncomplete,
+    //     m4bSizeHq: audio.m4bSizeHq.rawValue,
+    //     m4bSizeLq: audio.m4bSizeLq.rawValue,
+    //     mp3ZipSizeHq: audio.mp3ZipSizeHq.rawValue,
+    //     mp3ZipSizeLq: audio.mp3ZipSizeLq.rawValue,
+    //     reader: audio.reader,
+    //     parts: parts.map { part in
+    //       .init(
+    //         id: part.id,
+    //         chapters: Array(part.chapters),
+    //         durationInSeconds: part.duration.rawValue,
+    //         title: part.title,
+    //         order: part.order,
+    //         mp3SizeHq: part.mp3SizeHq.rawValue,
+    //         mp3SizeLq: part.mp3SizeLq.rawValue
+    //       )
+    //     },
+    //     edition: .init(
+    //       id: edition.id,
+    //       path: edition.directoryPath,
+    //       type: edition.type,
+    //       coverImagePath: edition.images.square.w1400.path
+    //     ),
+    //     document: .init(
+    //       filename: document.filename,
+    //       title: document.title,
+    //       slug: document.slug,
+    //       description: document.description,
+    //       path: document.directoryPath,
+    //       tags: []
+    //     ),
+    //     friend: .init(
+    //       lang: friend.lang,
+    //       name: friend.name,
+    //       slug: friend.slug,
+    //       alphabeticalName: friend.alphabeticalName,
+    //       isCompilations: friend.isCompilations
+    //     )
+    //   )
+    // }
   }
 }

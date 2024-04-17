@@ -63,9 +63,10 @@ final class PrintJobsTests: AppTestCase {
         externalId: order.id.rawValue.uuidString,
         lineItems: [.init(
           title: entities.document.title,
-          cover: entities.editionImpression.files.paperback.cover.first.sourceUrl.absoluteString,
-          interior: entities.editionImpression.files.paperback.interior.first.sourceUrl
-            .absoluteString,
+          cover: "TODO",
+          // entities.editionImpression.files.paperback.cover.first.sourceUrl.absoluteString,
+          interior: "TODO",
+          // entities.editionImpression.files.paperback.interior.first.sourceUrl.absoluteString,
           podPackageId: Lulu.podPackageId(
             size: entities.editionImpression.paperbackSizeVariant.printSize,
             pages: entities.editionImpression.paperbackVolumes.first
@@ -107,9 +108,10 @@ final class PrintJobsTests: AppTestCase {
         lineItems: [
           .init(
             title: entities.document.title + ", vol. 1",
-            cover: entities.editionImpression.files.paperback.cover.first.sourceUrl.absoluteString,
-            interior: entities.editionImpression.files.paperback.interior.first.sourceUrl
-              .absoluteString,
+            cover: "TODO",
+            // entities.editionImpression.files.paperback.cover.first.sourceUrl.absoluteString,
+            interior: "TODO",
+            // entities.editionImpression.files.paperback.interior.first.sourceUrl.absoluteString,
             podPackageId: Lulu.podPackageId(
               size: entities.editionImpression.paperbackSizeVariant.printSize,
               pages: entities.editionImpression.paperbackVolumes.first
@@ -118,9 +120,10 @@ final class PrintJobsTests: AppTestCase {
           ),
           .init(
             title: entities.document.title + ", vol. 2",
-            cover: entities.editionImpression.files.paperback.cover[1].sourceUrl.absoluteString,
-            interior: entities.editionImpression.files.paperback.interior[1].sourceUrl
-              .absoluteString,
+            cover: "TODO",
+            // entities.editionImpression.files.paperback.cover[1].sourceUrl.absoluteString,
+            interior: "TODO",
+            // entities.editionImpression.files.paperback.interior[1].sourceUrl.absoluteString,
             podPackageId: Lulu.podPackageId(
               size: entities.editionImpression.paperbackSizeVariant.printSize,
               pages: entities.editionImpression.paperbackVolumes.first

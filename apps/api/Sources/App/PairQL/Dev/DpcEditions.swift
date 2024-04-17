@@ -36,34 +36,35 @@ struct DpcEditions: Pair {
 
 extension DpcEditions: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    let editions = try await Edition.query().all()
-    return try await editions.concurrentMap { edition in
-      var edition = edition
-      let isbn = try await edition.isbn()
-      var document = try await edition.document()
-      let friend = try await document.friend()
-      return .init(
-        id: edition.id,
-        type: edition.type,
-        editor: edition.editor,
-        directoryPath: edition.directoryPath,
-        paperbackSplits: edition.paperbackSplits.map { Array($0) },
-        isbn: isbn?.code,
-        document: .init(
-          title: document.title,
-          originalTitle: document.originalTitle,
-          description: document.description,
-          slug: document.slug,
-          published: document.published
-        ),
-        friend: .init(
-          isCompilations: friend.isCompilations,
-          name: friend.name,
-          alphabeticalName: friend.alphabeticalName,
-          slug: friend.slug,
-          lang: friend.lang
-        )
-      )
-    }
+    fatalError("mega query")
+    // let editions = try await Edition.query().all()
+    // return try await editions.concurrentMap { edition in
+    //   var edition = edition
+    //   let isbn = try await edition.isbn()
+    //   var document = try await edition.document()
+    //   let friend = try await document.friend()
+    //   return .init(
+    //     id: edition.id,
+    //     type: edition.type,
+    //     editor: edition.editor,
+    //     directoryPath: edition.directoryPath,
+    //     paperbackSplits: edition.paperbackSplits.map { Array($0) },
+    //     isbn: isbn?.code,
+    //     document: .init(
+    //       title: document.title,
+    //       originalTitle: document.originalTitle,
+    //       description: document.description,
+    //       slug: document.slug,
+    //       published: document.published
+    //     ),
+    //     friend: .init(
+    //       isCompilations: friend.isCompilations,
+    //       name: friend.name,
+    //       alphabeticalName: friend.alphabeticalName,
+    //       slug: friend.slug,
+    //       lang: friend.lang
+    //     )
+    //   )
+    // }
   }
 }

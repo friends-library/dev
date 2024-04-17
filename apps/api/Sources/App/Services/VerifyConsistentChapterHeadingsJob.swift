@@ -37,7 +37,7 @@ private func verifyConsistentChapterHeadings(_ edition: Edition) async throws {
   if someShortHeadingsIncludeSequence, !allSequencedShortHeadingsIncludeSequence {
     await slackError(
       """
-      Edition `\(edition.directoryPath)` has *inconsistent short headings:*
+      Edition `\(edition.id)` has *inconsistent short headings:*
       ```
       - \(chapters.map(\.shortHeading).joined(separator: "\n- "))
       ```

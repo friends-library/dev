@@ -40,8 +40,8 @@ extension GetEdition: Resolver {
     return .init(
       type: edition.type,
       isDraft: edition.isDraft,
-      allSquareImages: edition.images.square.all.map(Output.Image.init),
-      allThreeDImages: edition.images.threeD.all.map(Output.Image.init),
+      allSquareImages: [], // edition.images.square.all.map(Output.Image.init),
+      allThreeDImages: [], // edition.images.threeD.all.map(Output.Image.init),
       impression: impression.map { .init(
         id: $0.id,
         adocLength: $0.adocLength,

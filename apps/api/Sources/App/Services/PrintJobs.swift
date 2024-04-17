@@ -9,9 +9,10 @@ enum PrintJobs {
       .all()
 
     let lineItems = try await orderItems.concurrentMap { item in
-      let edition = try await Edition.query()
+      var edition = try await Edition.query()
         .where(.id == item.editionId)
         .first()
+      let document = try await edition.document()
       guard let impression = try await edition.impression() else {
         throw Error.unexpectedMissingEditionImpression(order.id, edition.id)
       }
@@ -19,7 +20,7 @@ enum PrintJobs {
         let titleSuffix = impression.paperbackVolumes.count > 1 ? ", vol. \(index + 1)" : ""
         // let files = try await impression.files()
         return Lulu.Api.CreatePrintJobBody.LineItem(
-          title: edition.document.require().title + titleSuffix,
+          title: document.title + titleSuffix,
           cover: "todo", // files.paperback.cover[index].sourceUrl.absoluteString,
           interior: "todo", // files.paperback.interior[index].sourceUrl.absoluteString,
           podPackageId: Lulu.podPackageId(

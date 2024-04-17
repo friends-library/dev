@@ -29,7 +29,7 @@ extension OrderEditions: NoInputResolver {
     let editions = try await Edition.query()
       .where(.isDraft == false)
       .all()
-    return try await editions.concurrentMap { edition in
+    return try await editions.concurrentMap { edition -> OrderEdition? in
       var edition = edition
       guard let impression = try await edition.impression() else {
         return nil
@@ -46,8 +46,8 @@ extension OrderEditions: NoInputResolver {
         priceInCents: impression.paperbackPrice,
         paperbackSize: impression.paperbackSize,
         paperbackVolumes: impression.paperbackVolumes,
-        smallImgUrl: edition.images.threeD.w55.url.absoluteString,
-        largeImgUrl: edition.images.threeD.w110.url.absoluteString
+        smallImgUrl: "TODO", // edition.images.threeD.w55.url.absoluteString,
+        largeImgUrl: "TODO" // edition.images.threeD.w110.url.absoluteString
       )
     }.compactMap { $0 }
   }

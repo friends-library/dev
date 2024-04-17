@@ -71,36 +71,36 @@ extension Edition {
     let threeD: ThreeD
   }
 
-  var images: Images {
-    let path = "\(directoryPath)/images"
-    return Images(
-      square: .init(
-        w45: squareImage(45, path),
-        w90: squareImage(90, path),
-        w180: squareImage(180, path),
-        w270: squareImage(270, path),
-        w300: squareImage(300, path),
-        w450: squareImage(450, path),
-        w600: squareImage(600, path),
-        w750: squareImage(750, path),
-        w900: squareImage(900, path),
-        w1150: squareImage(1150, path),
-        w1400: squareImage(1400, path)
-      ),
-      threeD: .init(
-        w55: threeDImage(55, path),
-        w110: threeDImage(110, path),
-        w250: threeDImage(250, path),
-        w400: threeDImage(400, path),
-        w550: threeDImage(550, path),
-        w700: threeDImage(700, path),
-        w850: threeDImage(850, path),
-        w1000: threeDImage(1000, path),
-        // keep largest size in sync with cli/src/cmd/publish/cover-server.ts
-        w1120: threeDImage(1120, path)
-      )
-    )
-  }
+  // var images: Images {
+  //   let path = "\(directoryPath)/images"
+  //   return Images(
+  //     square: .init(
+  //       w45: squareImage(45, path),
+  //       w90: squareImage(90, path),
+  //       w180: squareImage(180, path),
+  //       w270: squareImage(270, path),
+  //       w300: squareImage(300, path),
+  //       w450: squareImage(450, path),
+  //       w600: squareImage(600, path),
+  //       w750: squareImage(750, path),
+  //       w900: squareImage(900, path),
+  //       w1150: squareImage(1150, path),
+  //       w1400: squareImage(1400, path)
+  //     ),
+  //     threeD: .init(
+  //       w55: threeDImage(55, path),
+  //       w110: threeDImage(110, path),
+  //       w250: threeDImage(250, path),
+  //       w400: threeDImage(400, path),
+  //       w550: threeDImage(550, path),
+  //       w700: threeDImage(700, path),
+  //       w850: threeDImage(850, path),
+  //       w1000: threeDImage(1000, path),
+  //       // keep largest size in sync with cli/src/cmd/publish/cover-server.ts
+  //       w1120: threeDImage(1120, path)
+  //     )
+  //   )
+  // }
 }
 
 // helpers

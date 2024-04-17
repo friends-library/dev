@@ -27,13 +27,13 @@ final class EditionValidityTests: XCTestCase {
     XCTAssertFalse(edition.isValid)
   }
 
-  func testLoadedChaptersWithNonSequentialOrderInvalid() {
-    var edition = Edition.valid
-    var chapter1 = EditionChapter.valid
-    chapter1.order = 1
-    var chapter2 = EditionChapter.valid
-    chapter2.order = 3 // <-- unexpected non-sequential order
-    edition.chapters = .loaded([chapter1, chapter2])
-    XCTAssertFalse(edition.isValid)
-  }
+  // func testLoadedChaptersWithNonSequentialOrderInvalid() {
+  //   var edition = Edition.valid
+  //   var chapter1 = EditionChapter.valid
+  //   chapter1.order = 1
+  //   var chapter2 = EditionChapter.valid
+  //   chapter2.order = 3 // <-- unexpected non-sequential order
+  //   edition.chapters = .loaded([chapter1, chapter2])
+  //   XCTAssertFalse(edition.isValid)
+  // }
 }

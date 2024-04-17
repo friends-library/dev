@@ -17,7 +17,7 @@ final class OrderEmailsTests: AppTestCase {
     item.quantity = 1
     item.orderId = order.id
     item.editionId = entities.edition.id
-    connect(&order, \.items, to: &item, \.order)
+    // connect(&order, \.items, to: &item, \.order)
     try! await item.save()
     try! await order.save()
     return (order, entities.document.title)

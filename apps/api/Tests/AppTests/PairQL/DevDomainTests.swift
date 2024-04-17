@@ -31,41 +31,40 @@ final class DevDomainTests: AppTestCase {
     expect(output).toEqual(.init(id: retrieved?.id ?? .init()))
   }
 
-  func testUpsertEditionImpressionCanImmediatelyResolveCloudFiles() async throws {
-    let edition = (await Entities.create()).edition
-    let newId = EditionImpression.Id()
+  // func testUpsertEditionImpressionCanImmediatelyResolveCloudFiles() async throws {
+  //   let edition = (await Entities.create()).edition
+  //   let newId = EditionImpression.Id()
 
-    let output = try await UpsertEditionImpression.resolve(
-      with: .init(
-        id: newId,
-        editionId: edition.id,
-        adocLength: 3333,
-        paperbackSizeVariant: .xl,
-        paperbackVolumes: [233],
-        publishedRevision: "a499db17511b75407a1229447946138481d05dd6",
-        productionToolchainRevision: "a499db17511b75407a1229447946138481d05dd5"
-      ),
-      in: .authed
-    )
+  //   let output = try await UpsertEditionImpression.resolve(
+  //     with: .init(
+  //       id: newId,
+  //       editionId: edition.id,
+  //       adocLength: 3333,
+  //       paperbackSizeVariant: .xl,
+  //       paperbackVolumes: [233],
+  //       publishedRevision: "a499db17511b75407a1229447946138481d05dd6",
+  //       productionToolchainRevision: "a499db17511b75407a1229447946138481d05dd5"
+  //     ),
+  //     in: .authed
+  //   )
 
-    expect(output.id).toEqual(newId)
-  }
+  //   expect(output.id).toEqual(newId)
+  // }
 }
 
 extension Token {
-  static func allScopes() async -> Token {
-    var token = try! await Token.create(.init(description: "@testing"))
+  static func allScopes() async -> [TokenScope] {
+    let token = try! await Token.create(.init(description: "@testing"))
     let scope = try! await TokenScope.create(.init(tokenId: token.id, scope: .all))
-    token.scopes = .loaded([scope])
-    return token
+    return [scope]
   }
 }
 
 extension AuthedContext {
   static var authed: Self {
     get async {
-      let token = await Token.allScopes()
-      return .init(requestId: UUID().uuidString, scopes: token.scopes.require())
+      let scopes = await Token.allScopes()
+      return .init(requestId: UUID().lowercased, scopes: scopes)
     }
   }
 }

@@ -77,9 +77,9 @@ extension GetOrder: Resolver {
             documentTitle: document.utf8ShortTitle,
             authorName: friend.name,
             image: .init(
-              width: edition.images.threeD.w250.width,
-              height: edition.images.threeD.w250.height,
-              url: edition.images.threeD.w250.url.absoluteString
+              width: 250, // TODO: edition.images.threeD.w250.width,
+              height: 250, // TODO: edition.images.threeD.w250.height,
+              url: "TODO" //  edition.images.threeD.w250.url.absoluteString
             )
           )
         )
