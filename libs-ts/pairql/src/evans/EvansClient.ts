@@ -29,4 +29,10 @@ export default class EvansClient extends Client {
   ): Promise<Result<P.SubmitContactForm.Output>> {
     return this.query<P.SubmitContactForm.Output>(input, `SubmitContactForm`);
   }
+
+  public subscribeToNarrowPath(
+    input: P.SubscribeToNarrowPath.Input,
+  ): Promise<Result<P.SubscribeToNarrowPath.Output>> {
+    return this.query<P.SubscribeToNarrowPath.Output>(input, `SubscribeToNarrowPath`);
+  }
 }

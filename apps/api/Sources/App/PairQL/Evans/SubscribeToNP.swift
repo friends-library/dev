@@ -29,7 +29,7 @@ extension SubscribeToNarrowPath: Resolver {
       to: .init(email: input.email.rawValue),
       from: .friendsLibrary,
       subject: "Please confirm your email address",
-      html: "<div><a href=\"\(Env.SELF_URL)/confirm-email/en/\(token.lowercased)\">Click here</a></div>"
+      html: "<div><a href=\"\(Env.SELF_URL)/confirm-email/\(input.lang == .en ? "en" : "es")/\(token.lowercased)\">Click here</a></div>"
     ))
 
     return .success
