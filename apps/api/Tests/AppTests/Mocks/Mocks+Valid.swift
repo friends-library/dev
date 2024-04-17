@@ -19,7 +19,7 @@ extension FriendQuote {
     var quote = FriendQuote.empty
     quote.source = "Bob Smith"
     quote.text = "So good"
-    quote.order = Int.random
+    quote.order = 1
     precondition(quote.isValid)
     return quote
   }

@@ -25,7 +25,7 @@ struct CreateOrderItems: AsyncMigration {
 
   func revert(on database: Database) async throws {
     Current.logger.info("Running migration: CreateOrderItems DOWN")
-    return try await database.schema(M3.tableName).delete()
+    try await database.schema(M3.tableName).delete()
   }
 }
 

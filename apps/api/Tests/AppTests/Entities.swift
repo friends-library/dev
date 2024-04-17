@@ -21,49 +21,38 @@ struct Entities {
 
     var friendResidence: FriendResidence = .random
     friendResidence.friendId = friend.id
-    // // connect(&friend, \.residences, to: &friendResidence, \.friend)
 
     var friendResidenceDuration: FriendResidenceDuration = .valid
     friendResidenceDuration.friendResidenceId = friendResidence.id
-    // // connect(&friendResidence, \.durations, to: &friendResidenceDuration, \.residence)
 
     var friendQuote: FriendQuote = .valid
     friendQuote.friendId = friend.id
-    // connect(&friend, \.quotes, to: &friendQuote, \.friend)
 
     var document: Document = .valid
     document.altLanguageId = nil
     document.friendId = friend.id
-    // connect(&friend, \.documents, to: &document, \.friend)
 
     var documentTag: DocumentTag = .random
     documentTag.documentId = document.id
-    // connect(&document, \.tags, to: &documentTag, \.document)
 
     var edition: Edition = .valid
     edition.documentId = document.id
-    // connect(&document, \.editions, to: &edition, \.document)
 
     var editionChapter: EditionChapter = .valid
     editionChapter.editionId = edition.id
-    // connect(&edition, \.chapters, to: &editionChapter, \.edition)
 
     var editionImpression: EditionImpression? = .valid
     editionImpression!.editionId = edition.id
-    // connect(&edition, \.impression, to: &editionImpression, \.edition)
 
     var isbn: Isbn? = .random
     isbn!.editionId = edition.id
-    // connect(&edition, \.isbn, to: &isbn, \.edition)
 
     var audio: Audio? = .valid
     audio!.editionId = edition.id
-    // connect(&edition, \.audio, to: &audio, \.edition)
 
     var audioPart: AudioPart = .valid
     audioPart.audioId = audio!.id
     audioPart.order = 1
-    // connect(&audio!, \.parts, to: &audioPart, \.audio)
 
     var entities = Entities(
       friend: friend,

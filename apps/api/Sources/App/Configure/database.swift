@@ -17,6 +17,6 @@ extension Configure {
       as: .psql
     )
 
-    Current.db = LiveDatabase(db: app.db as! SQLDatabase)
+    Current.db = LiveClient(sql: app.db as! SQLDatabase)
   }
 }

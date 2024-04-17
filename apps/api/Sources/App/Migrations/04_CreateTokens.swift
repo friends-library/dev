@@ -1,11 +1,10 @@
 import Fluent
 import Vapor
 
-struct CreateTokens: Migration {
-
-  func prepare(on database: Database) -> Future<Void> {
+struct CreateTokens: AsyncMigration {
+  func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: CreateTokens UP")
-    return database.schema(Token.M4.tableName)
+    try await database.schema(Token.M4.tableName)
       .id()
       .field(Token.M4.value, .uuid, .required)
       .field(Token.M4.description, .string, .required)
@@ -14,8 +13,8 @@ struct CreateTokens: Migration {
       .create()
   }
 
-  func revert(on database: Database) -> Future<Void> {
+  func revert(on database: Database) async throws {
     Current.logger.info("Running migration: CreateTokens DOWN")
-    return database.schema(Token.M4.tableName).delete()
+    try await database.schema(Token.M4.tableName).delete()
   }
 }

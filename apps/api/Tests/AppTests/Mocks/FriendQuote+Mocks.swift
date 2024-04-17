@@ -14,7 +14,7 @@ extension FriendQuote {
       friendId: .init(),
       source: "@random".random,
       text: "@random".random,
-      order: Int.random
+      order: Int.random(in: 0 ... 1000)
     )
   }
 }

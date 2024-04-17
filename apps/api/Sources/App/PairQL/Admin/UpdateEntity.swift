@@ -125,9 +125,6 @@ extension UpdateEntity: Resolver {
     }
 
     guard model.isValid else {
-      // necessary because models above are reference types, and the
-      // mutations would persist in the in-memory db store, unless flushed
-      try await Current.db.clearEntityCache()
       throw ModelError.invalidEntity
     }
 

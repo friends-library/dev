@@ -13,8 +13,8 @@ struct AddTokenUses: AsyncMigration {
   func revert(on database: Database) async throws {
     Current.logger.info("Running migration: AddTokenUses DOWN")
     try await database.schema(Token.M4.tableName)
-      .field(Token.M27.uses, .int)
-      .delete()
+      .deleteField(Token.M27.uses)
+      .update()
   }
 }
 

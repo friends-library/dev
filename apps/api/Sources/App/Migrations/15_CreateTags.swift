@@ -35,6 +35,7 @@ struct CreateTags: AsyncMigration {
   func revert(on database: Database) async throws {
     Current.logger.info("Running migration: CreateTags DOWN")
     try await database.schema(M15.tableName).delete()
+    try await database.enum(M15.DocumentTagEnum.name).delete()
   }
 }
 

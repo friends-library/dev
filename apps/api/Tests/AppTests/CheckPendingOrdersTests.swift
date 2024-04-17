@@ -76,7 +76,7 @@ final class CheckPendingOrdersTests: AppTestCase {
 
     await OrderPrintJobCoordinator.checkPendingOrders()
 
-    var retrieved = try await Current.db.find(order.id)
+    let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .rejected)
     XCTAssertEqual(
       sent.slacks,

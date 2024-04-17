@@ -5,6 +5,9 @@ import Vapor
 struct RemoveDuplicatePodcastDownloads: AsyncMigration {
   func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: RemoveDuplicatePodcastDownloads UP")
+    guard Env.mode == .prod else {
+      return
+    }
 
     let downloads = try await Current.db.query(Download.self)
       .where(.format == .enum(Download.Format.podcast))

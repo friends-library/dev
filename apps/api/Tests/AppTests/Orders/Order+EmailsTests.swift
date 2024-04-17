@@ -6,9 +6,8 @@ import XExpect
 @testable import App
 
 final class OrderEmailsTests: AppTestCase {
-
   func mockOrder(lang: Lang) async -> (Order, String) {
-    var order = Order.random
+    var order = Order.empty
     order.lang = lang
     order.email = "foo@bar.com"
     order.addressName = "Bob Villa"
@@ -17,9 +16,8 @@ final class OrderEmailsTests: AppTestCase {
     item.quantity = 1
     item.orderId = order.id
     item.editionId = entities.edition.id
-    // connect(&order, \.items, to: &item, \.order)
-    try! await item.save()
-    try! await order.save()
+    try! await order.create()
+    try! await item.create()
     return (order, entities.document.title)
   }
 
