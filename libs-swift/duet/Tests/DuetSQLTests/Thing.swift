@@ -1,7 +1,7 @@
 import DuetSQL
 import Tagged
 
-final class Thing: Codable {
+struct Thing: Codable {
   enum CustomEnum: String, Codable {
     case foo
     case bar
