@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
-import { makeScroller } from '@/lib/scroll';
 import { LANG } from '@/lib/env';
 
 const NavBlock: React.FC = () => {
@@ -48,10 +47,6 @@ const Link: React.FC<LinkProps> = ({ label, index, bg, block }) => (
       `lg:bg-fl${bg} lg:w-1/6 lg:flex-grow lg:border-0`,
     )}
     href={`#${block}`}
-    onClick={(e) => {
-      e.preventDefault();
-      makeScroller(`#${block}`)();
-    }}
   >
     {label}
   </a>

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import type { AudioQuality, AudioQualities } from '@friends-library/types';
-import WaveBottomBlock from '../getting-started/WaveBottomBlock';
 import DownloadAudiobook from './DownloadAudiobook';
+import WaveBottomBlock from '@/components/blocks/WaveBottomBlock';
 import { LANG } from '@/lib/env';
 import AudioPlayer from '@/components/core/AudioPlayer';
 

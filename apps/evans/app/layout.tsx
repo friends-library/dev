@@ -7,7 +7,7 @@ import Footer from '@/components/chrome/Footer';
 import { LANG } from '@/lib/env';
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <html lang={LANG}>
+  <html lang={LANG} className="scroll-pt-[70px] scroll-smooth">
     <head>
       <NextBgStaticCss />
     </head>
