@@ -1,21 +1,20 @@
 import Foundation
 
-extension Friend {
-  var primaryResidence: FriendResidence? {
-    fatalError("mega query") // only used in two pairql build queries
-    // var primary: FriendResidence?
-    // for residence in residences.require() {
-    //   guard let current = primary else {
-    //     primary = residence
-    //     continue
-    //   }
-    //   let currentTotal = totalAdultYears(current.durations.require(), born)
-    //   let nextTotal = totalAdultYears(residence.durations.require(), born)
-    //   if nextTotal > currentTotal {
-    //     primary = residence
-    //   }
-    // }
-    // return primary
+extension JoinedFriend {
+  var primaryResidence: JoinedFriendResidence? {
+    var primary: JoinedFriendResidence?
+    for residence in residences {
+      guard let current = primary else {
+        primary = residence
+        continue
+      }
+      let currentTotal = totalAdultYears(current.durations, model.born)
+      let nextTotal = totalAdultYears(residence.durations, model.born)
+      if nextTotal > currentTotal {
+        primary = residence
+      }
+    }
+    return primary
   }
 }
 

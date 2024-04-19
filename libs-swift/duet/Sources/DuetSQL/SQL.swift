@@ -290,7 +290,6 @@ private actor PreparedStatements {
   }
 }
 
-@MainActor
 private var prepared = PreparedStatements()
 
 private func unPrepare(statement: SQL.PreparedStatement) -> String {

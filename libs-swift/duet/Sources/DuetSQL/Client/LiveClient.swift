@@ -90,6 +90,7 @@ public struct LiveClient: Client {
     offset: Int? = nil,
     withSoftDeleted: Bool = false
   ) async throws -> [M] {
+    print("selecting \(Model.self)")
     let prepared = SQL.select(
       .all,
       from: M.self,
@@ -98,7 +99,10 @@ public struct LiveClient: Client {
       limit: limit,
       offset: offset
     )
+    print("prepared: \(prepared)")
     let rows = try await SQL.execute(prepared, on: sql)
+    print("rows: \(rows)")
+
     return try rows.compactMap { try $0.decode(Model.self) }
   }
 

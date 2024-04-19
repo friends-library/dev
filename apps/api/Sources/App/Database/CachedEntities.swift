@@ -1,154 +1,145 @@
 import Duet
 
 @dynamicMemberLookup
-final class MutBox<T: Sendable> {
-  private var value: T
-  private var _sealed: Box<T>?
-
-  init(_ value: T) {
-    self.value = value
-  }
-
-  subscript<U>(dynamicMember keyPath: WritableKeyPath<T, U>) -> U {
-    get { value[keyPath: keyPath] }
-    set { value[keyPath: keyPath] = newValue }
-  }
-
-  var sealed: Box<T> {
-    if let sealed = _sealed {
-      return sealed
-    } else {
-      let sealed = Box(value)
-      self._sealed = sealed
-      return sealed
-    }
-  }
-}
-
-@dynamicMemberLookup
-final class Box<T: Sendable>: Sendable {
-  let value: T
-
-  init(_ value: T) {
-    self.value = value
-  }
-
-  subscript<U>(dynamicMember keyPath: KeyPath<T, U>) -> U {
-    value[keyPath: keyPath]
-  }
-}
-
-struct Person: Sendable {
-  var name: String
-  var age: Int
-}
-
-func test() {
-  let boxm = MutBox(Person(name: "Alice", age: 30))
-  boxm.age += 1
-  boxm.name = "Bob"
-  // let box = boxm.sealed
-  // box.age += 1
-  // print(box.value)
-}
-
-struct BJoinedFriend: Sendable {
-  var model: Box<Friend>
-}
-
-struct MutJoinedFriend {
-  var model: MutBox<Friend>
-  // var documents: [JoinedDocument] = []
-
-  func sealed() -> BJoinedFriend {
-    BJoinedFriend(model: model.sealed)
-  }
-}
-
-@dynamicMemberLookup
-class JoinedFriend {
+final class JoinedFriend {
   let model: Friend
-  fileprivate(set) var documents: [JoinedDocument] = []
+  let residences: [JoinedFriendResidence]
+  fileprivate(set) var documents: [JoinedDocument]
 
   subscript<T>(dynamicMember keyPath: KeyPath<Friend, T>) -> T {
     model[keyPath: keyPath]
   }
 
-  init(model: Friend) {
+  init(
+    _ model: Friend,
+    residences: [JoinedFriendResidence],
+    documents: [JoinedDocument] = []
+  ) {
     self.model = model
+    self.residences = residences
+    self.documents = documents
   }
 }
 
-extension JoinedFriend: @unchecked Sendable {}
+@dynamicMemberLookup
+final class JoinedFriendResidence: Sendable {
+  let model: FriendResidence
+  let durations: [FriendResidenceDuration]
+
+  subscript<T>(dynamicMember keyPath: KeyPath<FriendResidence, T>) -> T {
+    model[keyPath: keyPath]
+  }
+
+  init(_ model: FriendResidence, durations: [FriendResidenceDuration]) {
+    self.model = model
+    self.durations = durations
+  }
+}
 
 @dynamicMemberLookup
-struct JoinedDocument {
-  var model: Document
-  var altLanguage: Document?
-  var friend: JoinedFriend
-  var editions: [JoinedEdition] = []
+final class JoinedDocument {
+  let model: Document
+  let tags: [DocumentTag.TagType]
+  fileprivate(set) var altLanguage: JoinedDocument?
+  fileprivate(set) unowned var friend: JoinedFriend
+  fileprivate(set) var editions: [JoinedEdition] = []
+
+  var hasNonDraftEdition: Bool {
+    editions.contains { !$0.isDraft }
+  }
+
+  var primaryEdition: JoinedEdition? {
+    let allEditions = editions.filter { $0.isDraft == false }
+    return allEditions.first { $0.type == .updated } ??
+      allEditions.first { $0.type == .modernized } ??
+      allEditions.first
+  }
 
   subscript<T>(dynamicMember keyPath: KeyPath<Document, T>) -> T {
     model[keyPath: keyPath]
   }
+
+  init(
+    _ model: Document,
+    friend: JoinedFriend,
+    altLanguage: JoinedDocument? = nil,
+    tags: [DocumentTag.TagType]
+  ) {
+    self.model = model
+    self.tags = tags
+    self.altLanguage = altLanguage
+    self.friend = friend
+  }
 }
 
 @dynamicMemberLookup
-struct JoinedEdition {
-  var model: Edition
-  var document: JoinedDocument
-  @Boxed var isbn: JoinedIsbn?
-  @Boxed var impression: JoinedEditionImpression?
+final class JoinedEdition {
+  let model: Edition
+  fileprivate(set) unowned var document: JoinedDocument?
+  fileprivate(set) var isbn: JoinedIsbn?
+  fileprivate(set) var impression: JoinedEditionImpression?
+  fileprivate(set) var audio: JoinedAudio?
 
   subscript<T>(dynamicMember keyPath: KeyPath<Edition, T>) -> T {
     model[keyPath: keyPath]
   }
+
+  init(
+    _ model: Edition,
+    document: JoinedDocument,
+    isbn: JoinedIsbn? = nil,
+    impression: JoinedEditionImpression? = nil
+  ) {
+    self.model = model
+    self.document = document
+    self.isbn = isbn
+    self.impression = impression
+  }
 }
 
 @dynamicMemberLookup
-struct JoinedEditionImpression {
-  var model: EditionImpression
-  var edition: JoinedEdition
+final class JoinedAudio {
+  let model: Audio
+  fileprivate(set) unowned var edition: JoinedEdition
+
+  subscript<T>(dynamicMember keyPath: KeyPath<Audio, T>) -> T {
+    model[keyPath: keyPath]
+  }
+
+  init(_ model: Audio, edition: JoinedEdition) {
+    self.model = model
+    self.edition = edition
+  }
+}
+
+@dynamicMemberLookup
+final class JoinedEditionImpression {
+  let model: EditionImpression
+  fileprivate(set) unowned var edition: JoinedEdition
 
   subscript<T>(dynamicMember keyPath: KeyPath<EditionImpression, T>) -> T {
     model[keyPath: keyPath]
   }
+
+  init(_ model: EditionImpression, edition: JoinedEdition) {
+    self.model = model
+    self.edition = edition
+  }
 }
 
+// todo, unjoin?
 @dynamicMemberLookup
-struct JoinedIsbn {
-  var model: Isbn
-  var edition: JoinedEdition?
+final class JoinedIsbn {
+  let model: Isbn
+  fileprivate(set) unowned var edition: JoinedEdition?
 
   subscript<T>(dynamicMember keyPath: KeyPath<Isbn, T>) -> T {
     model[keyPath: keyPath]
   }
-}
 
-@globalActor
-actor EntitiesActor {
-  static let shared = EntitiesActor()
-
-  private var loaded = false
-  private var friends: [Friend.Id: Friend] = [:]
-  private var documents: [Document.Id: Document] = [:]
-
-  func load() async throws {
-    guard !loaded else { return }
-    async let friends = Friend.query().all()
-    async let documents = Document.query().all()
-    self.friends = try await friends.map
-    self.documents = try await documents.map
-  }
-
-  public func documents(where predicate: (@Sendable (Document) -> Bool)?) async throws
-    -> [Document] {
-    if !loaded { try await load() }
-    if let predicate {
-      return documents.values.filter(predicate)
-    } else {
-      return Array(documents.values)
-    }
+  init(_ model: Isbn, edition: JoinedEdition?) {
+    self.model = model
+    self.edition = edition
   }
 }
 
@@ -161,9 +152,85 @@ actor EntitiesActor {
   private var joinedEditions: [Edition.Id: JoinedEdition] = [:]
   private var joinedImpressions: [EditionImpression.Id: JoinedEditionImpression] = [:]
   private var joinedIsbns: [Isbn.Id: JoinedIsbn] = [:]
+  private var joinedAudios: [Audio.Id: JoinedAudio] = [:]
+  // private var joinedResidences: [FriendResidence.Id: JoinedFriendResidence] = [:]
 
-  public func friends(predicate: (@Sendable (Friend) -> Bool)? = nil) async throws
-    -> [JoinedFriend] {
+  public func load() async throws {
+    async let friends = Friend.query().all()
+    async let documents = Document.query().all()
+    async let editions = Edition.query().all()
+    async let impressions = EditionImpression.query().all()
+    async let isbns = Isbn.query().all()
+    async let audios = Audio.query().all()
+    async let tags = DocumentTag.query().all()
+    async let residences = FriendResidence.query().all()
+    async let durations = FriendResidenceDuration.query().all()
+
+    let residenceDurations = try await durations.reduce(into: [:]) { durations, model in
+      durations[model.friendResidenceId, default: []].append(model)
+    }
+
+    let joinedResidences = try await residences.reduce(into: [:]) { joined, model in
+      joined[model.friendId, default: []]
+        .append(JoinedFriendResidence(model, durations: residenceDurations[model.id] ?? []))
+    }
+
+    joinedFriends = try await friends.reduce(into: [:]) { joined, model in
+      joined[model.id] = JoinedFriend(model, residences: joinedResidences[model.id] ?? [])
+    }
+
+    let documentTags = try await tags.reduce(into: [:]) { tags, model in
+      tags[model.documentId, default: []].append(model.type)
+    }
+
+    joinedDocuments = try await documents.reduce(into: [:]) { joined, model in
+      let friend = joinedFriends[model.friendId]!
+      let joinedDocument = JoinedDocument(model, friend: friend, tags: documentTags[model.id] ?? [])
+      joined[model.id] = joinedDocument
+      friend.documents.append(joinedDocument)
+    }
+
+    for doc in joinedDocuments.values {
+      if let altLanguageId = doc.altLanguageId {
+        doc.altLanguage = joinedDocuments[altLanguageId]
+      }
+    }
+
+    joinedEditions = try await editions.reduce(into: [:]) { joined, model in
+      let document = joinedDocuments[model.documentId]!
+      let joinedEdition = JoinedEdition(model, document: document)
+      joined[model.id] = joinedEdition
+      document.editions.append(joinedEdition)
+    }
+
+    joinedImpressions = try await impressions.reduce(into: [:]) { joined, model in
+      let edition = joinedEditions[model.editionId]!
+      let joinedImpression = JoinedEditionImpression(model, edition: edition)
+      joined[model.id] = joinedImpression
+      edition.impression = joinedImpression
+    }
+
+    joinedIsbns = try await isbns.reduce(into: [:]) { joined, model in
+      let joinedIsbn = JoinedIsbn(model, edition: model.editionId.flatMap { joinedEditions[$0] })
+      joined[model.id] = joinedIsbn
+      if let edition = joinedIsbn.edition {
+        edition.isbn = joinedIsbn
+      }
+    }
+
+    joinedAudios = try await audios.reduce(into: [:]) { joined, model in
+      let edition = joinedEditions[model.editionId]!
+      let joinedAudio = JoinedAudio(model, edition: edition)
+      joined[model.id] = joinedAudio
+      edition.audio = joinedAudio
+    }
+
+    loaded = true
+  }
+
+  public func friends(
+    where predicate: (@Sendable (Friend) -> Bool)? = nil
+  ) async throws -> [JoinedFriend] {
     if !loaded { try await load() }
     if let predicate {
       return joinedFriends.values.filter { predicate($0.model) }
@@ -172,75 +239,23 @@ actor EntitiesActor {
     }
   }
 
-  public func documents(predicate: ((Document) -> Bool)?) -> [Document] {
+  public func documents(
+    where predicate: (@Sendable (Document) -> Bool)? = nil
+  ) async throws -> [JoinedDocument] {
+    if !loaded { try await load() }
     if let predicate {
-      return joinedDocuments.values.map(\.model).filter(predicate)
+      return joinedDocuments.values.filter { predicate($0.model) }
     } else {
-      return joinedDocuments.values.map(\.model)
+      return Array(joinedDocuments.values)
     }
-  }
-
-  public func load() async throws {
-    async let friends = Friend.query().all()
-    async let documents = Document.query().all()
-    async let editions = Edition.query().all()
-    async let impressions = EditionImpression.query().all()
-    async let isbns = Isbn.query().all()
-    let documentsMap = try await documents.map
-
-    joinedFriends = try await friends.reduce(into: [:]) { joined, friend in
-      joined[friend.id] = JoinedFriend(model: friend)
-    }
-
-    joinedDocuments = try await documents.reduce(into: [:]) { joined, document in
-      let joinedDocument = JoinedDocument(
-        model: document,
-        altLanguage: document.altLanguageId.flatMap { documentsMap[$0] },
-        friend: joinedFriends[document.friendId]!
-      )
-      joined[document.id] = joinedDocument
-      joinedFriends[document.friendId]!.documents.append(joinedDocument)
-    }
-
-    joinedEditions = try await editions.reduce(into: [:]) { joined, edition in
-      let joinedEdition = JoinedEdition(
-        model: edition,
-        document: joinedDocuments[edition.documentId]!
-      )
-      joined[edition.id] = joinedEdition
-      joinedDocuments[edition.documentId]!.editions.append(joinedEdition)
-    }
-
-    joinedImpressions = try await impressions.reduce(into: [:]) { joined, impression in
-      let joinedImpression = JoinedEditionImpression(
-        model: impression,
-        edition: joinedEditions[impression.editionId]!
-      )
-      joined[impression.id] = joinedImpression
-      joinedEditions[impression.editionId]!.impression = joinedImpression
-    }
-
-    joinedIsbns = try await isbns.reduce(into: [:]) { joined, isbn in
-      let joinedIsbn = JoinedIsbn(
-        model: isbn
-        // , edition: isbn.editionId.flatMap { joinedEditions[$0] }
-      )
-      joined[isbn.id] = joinedIsbn
-      if let editionId = isbn.editionId, joinedEditions[editionId] != nil {
-        joined[isbn.id]!.edition = joinedEditions[editionId]
-        joinedEditions[editionId]!.isbn = joinedIsbn
-      }
-    }
-  }
-
-  // func friends() throws -> some Collection<JoinedFriend> {
-  //   joinedFriends.values
-  // }
-
-  func documents() throws -> some Collection<JoinedDocument> {
-    joinedDocuments.values
   }
 }
+
+extension JoinedFriend: @unchecked Sendable {}
+extension JoinedDocument: @unchecked Sendable {}
+extension JoinedEdition: @unchecked Sendable {}
+extension JoinedIsbn: @unchecked Sendable {}
+extension JoinedEditionImpression: @unchecked Sendable {}
 
 extension Array where Element: ApiModel {
   var map: [Element.IdValue: Element] {
@@ -249,25 +264,3 @@ extension Array where Element: ApiModel {
     }
   }
 }
-
-@dynamicMemberLookup
-@propertyWrapper
-enum Boxed<T> {
-  indirect case wrapped(T)
-
-  var wrappedValue: T {
-    get { switch self { case .wrapped(let x): return x } }
-    set { self = .wrapped(newValue) }
-  }
-
-  init(wrappedValue: T) {
-    self = .wrapped(wrappedValue)
-  }
-
-  subscript<U>(dynamicMember keyPath: KeyPath<T, U>) -> U {
-    wrappedValue[keyPath: keyPath]
-  }
-}
-
-extension Boxed: Codable where T: Codable {}
-extension Boxed: Sendable where T: Sendable {}
