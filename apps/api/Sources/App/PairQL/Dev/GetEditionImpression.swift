@@ -1,7 +1,7 @@
 import PairQL
 
 struct GetEditionImpression: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = EditionImpression.Id
 

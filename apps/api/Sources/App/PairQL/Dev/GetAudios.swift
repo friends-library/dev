@@ -1,7 +1,7 @@
 import PairQL
 
 struct GetAudios: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct AudioPart: PairNestable {
     var id: App.AudioPart.Id

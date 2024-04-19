@@ -2,7 +2,7 @@ import NonEmpty
 import PairQL
 
 struct DpcEditions: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct EditionOutput: PairOutput {
     let id: Edition.Id
@@ -36,7 +36,7 @@ struct DpcEditions: Pair {
 
 extension DpcEditions: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    fatalError("mega query")
+    fatalError("maybe mega query")
     // let editions = try await Edition.query().all()
     // return try await editions.concurrentMap { edition in
     //   var edition = edition

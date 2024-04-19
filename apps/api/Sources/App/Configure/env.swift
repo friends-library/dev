@@ -18,7 +18,9 @@ extension Configure {
 // extensions
 
 extension Vapor.Environment {
-  static var mode = Mode.dev
+
+  // concurrency todo
+  nonisolated(unsafe) static var mode = Mode.dev
 
   enum Mode: Equatable {
     case prod

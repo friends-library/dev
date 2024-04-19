@@ -2,7 +2,7 @@ import Foundation
 import PairQL
 
 struct AudiobooksPage: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = Lang
 

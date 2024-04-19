@@ -28,7 +28,7 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
     }
   }
 
-  static let router = OneOf {
+  nonisolated(unsafe) static let router = OneOf {
     Route(.case(PairQLRoute.dev)) {
       Method.post
       Path { "dev" }
@@ -59,7 +59,7 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
       Path { "native" }
       NativeRoute.router
     }
-  }
+  }.eraseToAnyParserPrinter()
 
   static func handler(_ request: Request) async throws -> Response {
     guard var requestData = URLRequestData(request: request),

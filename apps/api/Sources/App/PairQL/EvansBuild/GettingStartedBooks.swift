@@ -12,7 +12,7 @@ struct SelectedDocuments: PairInput {
 }
 
 struct GettingStartedBooks: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = SelectedDocuments
 

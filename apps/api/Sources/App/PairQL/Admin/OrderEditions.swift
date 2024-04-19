@@ -4,7 +4,7 @@ import PairQL
 import TaggedMoney
 
 struct OrderEditions: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct OrderEdition: PairOutput {
     let id: Edition.Id

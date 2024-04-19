@@ -71,10 +71,10 @@ extension Friend.DirectoryPathData: DirectoryPathable {
 // loaders
 
 extension Friend {
+
+  @EntitiesActor
   func documents() async throws -> [Document] {
-    try await Document.query()
-      .where(.friendId == id)
-      .all()
+    try await EntitiesActor.shared.documents(where: { $0.friendId == id })
   }
 
   func residences() async throws -> [FriendResidence] {

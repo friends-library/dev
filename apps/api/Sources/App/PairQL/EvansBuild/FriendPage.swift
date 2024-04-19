@@ -4,7 +4,7 @@ import NonEmpty
 import PairQL
 
 struct FriendPage: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct Input: PairInput {
     var slug: String
@@ -86,7 +86,7 @@ struct FriendPage: Pair {
 extension FriendPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    fatalError("mega query")
+    fatalError("maybe.. mega query")
     // let friend = try await Friend.query()
     //   .where(.lang == input.lang)
     //   .where(.slug == input.slug)

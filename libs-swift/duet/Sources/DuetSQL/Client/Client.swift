@@ -1,7 +1,7 @@
 import Duet
 import Tagged
 
-public protocol Client: SQLQuerying, SQLMutating {
+public protocol Client: SQLQuerying, SQLMutating, Sendable {
   func query<M: Model>(_ Model: M.Type) -> DuetQuery<M>
 
   @discardableResult

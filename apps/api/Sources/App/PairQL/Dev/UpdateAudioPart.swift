@@ -2,7 +2,7 @@ import NonEmpty
 import PairQL
 
 struct UpdateAudioPart: Pair {
-  static var auth: Scope = .mutateEntities
+  static let auth: Scope = .mutateEntities
 
   struct Input: PairInput {
     let id: AudioPart.Id

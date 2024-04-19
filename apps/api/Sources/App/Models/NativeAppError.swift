@@ -41,13 +41,13 @@ struct NativeAppError: Codable, Sendable {
 extension NativeAppError {
   enum M35 {
     static let tableName = "native_app_errors"
-    static let buildSemver = FieldKey("build_semver")
-    static let buildNumber = FieldKey("build_number")
-    static let lang = FieldKey("lang")
-    static let detail = FieldKey("detail")
-    static let platform = FieldKey("platform")
-    static let installId = FieldKey("install_id")
-    static let errorMessage = FieldKey("error_message")
-    static let errorStack = FieldKey("error_stack")
+    nonisolated(unsafe) static let buildSemver = FieldKey("build_semver")
+    nonisolated(unsafe) static let buildNumber = FieldKey("build_number")
+    nonisolated(unsafe) static let lang = FieldKey("lang")
+    nonisolated(unsafe) static let detail = FieldKey("detail")
+    nonisolated(unsafe) static let platform = FieldKey("platform")
+    nonisolated(unsafe) static let installId = FieldKey("install_id")
+    nonisolated(unsafe) static let errorMessage = FieldKey("error_message")
+    nonisolated(unsafe) static let errorStack = FieldKey("error_stack")
   }
 }

@@ -3,7 +3,7 @@ import Foundation
 import PairQL
 
 struct PublishedFriendSlugs: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
   typealias Input = Lang
   typealias Output = [String]
 }

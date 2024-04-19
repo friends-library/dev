@@ -1,5 +1,5 @@
 import DuetSQL
-import Vapor
+@preconcurrency import Vapor
 import XCore
 import XSlack
 
@@ -132,7 +132,8 @@ enum DownloadRoute: RouteHandler {
 
 // private helpers
 
-private var lastLocation: IpApi.Response?
+// concurrency todo
+private nonisolated(unsafe) var lastLocation: IpApi.Response?
 
 private func slackDownload(
   file: DownloadableFile,

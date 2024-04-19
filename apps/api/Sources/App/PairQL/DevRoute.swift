@@ -6,7 +6,7 @@ import Vapor
 enum DevRoute: PairRoute {
   case authed(UUID, AuthedDevRoute)
 
-  static let router = OneOf {
+  nonisolated(unsafe) static let router = OneOf {
     Route(/Self.authed) {
       Headers {
         Field("Authorization") {
@@ -34,7 +34,7 @@ enum AuthedDevRoute: PairRoute {
   case updateAudioPart(UpdateAudioPart.Input)
   case upsertEditionImpression(UpsertEditionImpression.Input)
 
-  static let router: AnyParserPrinter<URLRequestData, AuthedDevRoute> = OneOf {
+  nonisolated(unsafe) static let router: AnyParserPrinter<URLRequestData, AuthedDevRoute> = OneOf {
     Route(/Self.createArtifactProductionVersion) {
       Operation(CreateArtifactProductionVersion.self)
       Body(.input(CreateArtifactProductionVersion.self))

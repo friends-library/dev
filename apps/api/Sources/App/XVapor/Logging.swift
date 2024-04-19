@@ -3,13 +3,15 @@ import Logging
 public extension Logger {
   static let null = Logger(label: "(null)", factory: { _ in NullHandler() })
 
-  static func passthrough(_ receiver: @escaping (Logger.Level, Logger.Message) -> Void) -> Logger {
+  static func passthrough(
+    _ receiver: @escaping @Sendable (Logger.Level, Logger.Message) -> Void
+  ) -> Logger {
     Logger(label: "(passthrough)", factory: { _ in PassthroughHandler(receive: receiver) })
   }
 }
 
-private struct PassthroughHandler: LogHandler {
-  var receive: (Logger.Level, Logger.Message) -> Void = { _, _ in }
+private struct PassthroughHandler: LogHandler, Sendable {
+  var receive: @Sendable (Logger.Level, Logger.Message) -> Void = { _, _ in }
 
   public func log(
     level: Logger.Level,

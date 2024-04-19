@@ -6,7 +6,7 @@ import Vapor
 enum EvansBuildRoute: PairRoute {
   case authed(UUID, AuthedEvansBuildRoute)
 
-  static let router = OneOf {
+  nonisolated(unsafe) static let router = OneOf {
     Route(/Self.authed) {
       Headers {
         Field("Authorization") {
@@ -19,7 +19,7 @@ enum EvansBuildRoute: PairRoute {
   }
 }
 
-enum AuthedEvansBuildRoute: PairRoute {
+enum AuthedEvansBuildRoute: PairRoute, Sendable {
   case allDocumentPages(Lang)
   case allFriendPages(Lang)
   case audiobooksPage(Lang)
@@ -34,7 +34,7 @@ enum AuthedEvansBuildRoute: PairRoute {
   case publishedFriendSlugs(Lang)
   case totalPublished
 
-  static let router: AnyParserPrinter<URLRequestData, AuthedEvansBuildRoute> = OneOf {
+  nonisolated(unsafe) static let router = OneOf {
     Route(/Self.allDocumentPages) {
       Operation(AllDocumentPages.self)
       Body(.input(AllDocumentPages.self))
@@ -86,8 +86,7 @@ enum AuthedEvansBuildRoute: PairRoute {
     Route(/Self.totalPublished) {
       Operation(TotalPublished.self)
     }
-  }
-  .eraseToAnyParserPrinter()
+  }.eraseToAnyParserPrinter()
 }
 
 extension EvansBuildRoute: RouteResponder {

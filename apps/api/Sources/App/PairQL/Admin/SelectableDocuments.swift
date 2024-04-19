@@ -1,7 +1,7 @@
 import PairQL
 
 struct SelectableDocuments: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct SelectableDocument: PairOutput {
     let id: Document.Id

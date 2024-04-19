@@ -1,6 +1,6 @@
 import DuetSQL
 
-public struct PqlError: Error, Codable, Equatable {
+public struct PqlError: Error, Codable, Equatable, Sendable {
   public var id: String
   public var requestId: String
   public var type: Kind
@@ -23,7 +23,7 @@ public struct PqlError: Error, Codable, Equatable {
 }
 
 public extension PqlError {
-  enum Kind: String, Codable, CaseIterable {
+  enum Kind: String, Codable, CaseIterable, Sendable {
     case notFound
     case badRequest
     case serverError

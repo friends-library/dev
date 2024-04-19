@@ -2,7 +2,7 @@ import PairQL
 import TaggedTime
 
 struct EditDocument: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = Document.Id
 

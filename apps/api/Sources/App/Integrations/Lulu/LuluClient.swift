@@ -3,12 +3,11 @@ import NonEmpty
 import XHttp
 
 extension Lulu.Api {
-
-  struct Client {
-    var createPrintJob: (CreatePrintJobBody) async throws -> PrintJob
-    var listPrintJobs: (NonEmpty<[Int64]>?) async throws -> [PrintJob]
-    var getPrintJobStatus: (Int64) async throws -> PrintJob.Status
-    var createPrintJobCostCalculation: (
+  struct Client: Sendable {
+    var createPrintJob: @Sendable (CreatePrintJobBody) async throws -> PrintJob
+    var listPrintJobs: @Sendable (NonEmpty<[Int64]>?) async throws -> [PrintJob]
+    var getPrintJobStatus: @Sendable (Int64) async throws -> PrintJob.Status
+    var createPrintJobCostCalculation: @Sendable (
       ShippingAddress,
       ShippingOptionLevel,
       [PrintJobCostCalculationsBody.LineItem]
@@ -43,7 +42,7 @@ extension Lulu.Api.Client {
 
 // live implementations
 
-private func getPrintJobStatus(id: Int64) async throws -> Lulu.Api.PrintJob.Status {
+@Sendable private func getPrintJobStatus(id: Int64) async throws -> Lulu.Api.PrintJob.Status {
   try await HTTP.get(
     "\(Env.LULU_API_ENDPOINT)/print-jobs/\(id)/status/",
     decoding: Lulu.Api.PrintJob.Status.self,
@@ -52,7 +51,8 @@ private func getPrintJobStatus(id: Int64) async throws -> Lulu.Api.PrintJob.Stat
   )
 }
 
-private func listPrintJobs(_ ids: NonEmpty<[Int64]>? = nil) async throws -> [Lulu.Api.PrintJob] {
+@Sendable private func listPrintJobs(_ ids: NonEmpty<[Int64]>? = nil) async throws
+  -> [Lulu.Api.PrintJob] {
   var query = ""
   ids.map { query += "?id=" + $0.map(String.init).joined(separator: "&id=") }
   return try await HTTP.get(
@@ -63,13 +63,13 @@ private func listPrintJobs(_ ids: NonEmpty<[Int64]>? = nil) async throws -> [Lul
   ).results
 }
 
-private func createPrintJob(
+@Sendable private func createPrintJob(
   _ body: Lulu.Api.CreatePrintJobBody
 ) async throws -> Lulu.Api.PrintJob {
   try await postJson(body, to: "print-jobs/", decoding: Lulu.Api.PrintJob.self)
 }
 
-private func printJobCost(
+@Sendable private func printJobCost(
   address: Lulu.Api.ShippingAddress,
   shippingLevel: Lulu.Api.ShippingOptionLevel,
   items: [Lulu.Api.PrintJobCostCalculationsBody.LineItem]

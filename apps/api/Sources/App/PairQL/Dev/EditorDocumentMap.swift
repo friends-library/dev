@@ -1,7 +1,7 @@
 import PairQL
 
 struct EditorDocumentMap: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
   // [directoryPath: trimmedUtf8ShortTitle]
   typealias Output = [String: String]
 }

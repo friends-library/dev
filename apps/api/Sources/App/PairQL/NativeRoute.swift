@@ -4,7 +4,7 @@ import Vapor
 enum NativeRoute: PairRoute {
   case reportError(ReportError.Input)
 
-  static let router = OneOf {
+  nonisolated(unsafe) static let router = OneOf {
     Route(/Self.reportError) {
       Operation(ReportError.self)
       Body(.input(ReportError.self))

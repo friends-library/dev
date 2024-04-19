@@ -2,7 +2,7 @@ import Foundation
 import PairQL
 
 struct EditFriend: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = Friend.Id
 

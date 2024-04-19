@@ -1,7 +1,7 @@
 import PairQL
 
 struct ListFriends: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct FriendOutput: PairOutput {
     let id: Friend.Id

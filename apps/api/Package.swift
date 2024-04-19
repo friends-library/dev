@@ -50,6 +50,10 @@ let package = Package(
         "ShellOut",
       ],
       swiftSettings: [
+        .unsafeFlags([
+          "-Xfrontend", "-warn-concurrency",
+          "-Xfrontend", "-enable-actor-data-race-checks",
+        ]),
         .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),
       ]
     ),

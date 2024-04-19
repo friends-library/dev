@@ -1,7 +1,7 @@
 import Foundation
 
-struct UserAgentParser {
-  var parse: (String) -> UserAgentDeviceData?
+struct UserAgentParser: Sendable {
+  var parse: @Sendable (String) -> UserAgentDeviceData?
 }
 
 extension UserAgentParser {

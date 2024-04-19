@@ -1,7 +1,7 @@
 import PairQL
 
 struct CreateEditionChapters: Pair {
-  static var auth: Scope = .mutateEntities
+  static let auth: Scope = .mutateEntities
 
   struct CreateEditionChapterInput: PairInput {
     let editionId: Edition.Id

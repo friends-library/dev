@@ -76,13 +76,13 @@ struct HandleEditionIds: AsyncMigration {
 
 extension Download {
   enum M10 {
-    static let editionId = FieldKey("edition_id")
+    nonisolated(unsafe) static let editionId = FieldKey("edition_id")
   }
 }
 
 extension OrderItem {
   enum M10 {
-    static let editionId = FieldKey("edition_id")
+    nonisolated(unsafe) static let editionId = FieldKey("edition_id")
   }
 }
 

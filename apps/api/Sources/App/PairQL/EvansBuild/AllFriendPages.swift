@@ -2,7 +2,7 @@ import DuetSQL
 import PairQL
 
 struct AllFriendPages: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
   typealias Input = Lang
   typealias Output = [String: FriendPage.Output]
 }

@@ -11,7 +11,7 @@ struct AudioQualities<T: PairNestable>: PairNestable {
 }
 
 struct DocumentPage: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct Input: PairInput {
     var lang: Lang

@@ -1,6 +1,6 @@
 import Foundation
 
-struct UserAgentDeviceData: Decodable {
+struct UserAgentDeviceData: Decodable, Sendable {
   let isBot: Bool
   let isMobile: Bool
   let os: String

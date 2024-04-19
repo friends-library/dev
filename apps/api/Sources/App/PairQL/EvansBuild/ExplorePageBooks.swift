@@ -4,7 +4,7 @@ import NonEmpty
 import PairQL
 
 struct ExplorePageBooks: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
   typealias Input = Lang
 
   struct Book: PairOutput {
@@ -56,14 +56,22 @@ struct ExplorePageBooks: Pair {
 extension ExplorePageBooks: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    fatalError("mega query")
-    // let langDocuments = try await Document.query().all()
+    let friends = try await JoinedEntities.shared.friends()
+    var documents = try await Document.query().all()
+    print(friends)
+    documents
+      .sort { _, _ in true
+
+        // $0.primaryEdition?.impression.require()?.createdAt ?? .distantPast > $1.primaryEdition?
+        //   .impression.require()?.createdAt ?? .distantPast
+      }
     //   .filter(\.hasNonDraftEdition)
     //   .filter { $0.friend.require().lang == input }
     //   .sorted(by: {
     //     $0.primaryEdition?.impression.require()?.createdAt ?? .distantPast
     //       > $1.primaryEdition?.impression.require()?.createdAt ?? .distantPast
     //   })
+    fatalError("mega query")
 
     // return try langDocuments.enumerated().map { i, document in
     //   let friend = document.friend.require()

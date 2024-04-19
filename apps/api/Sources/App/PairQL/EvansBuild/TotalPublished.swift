@@ -3,7 +3,7 @@ import Foundation
 import PairQL
 
 struct TotalPublished: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct Counts: PairNestable {
     var en: Int

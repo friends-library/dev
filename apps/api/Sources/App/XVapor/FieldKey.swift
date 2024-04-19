@@ -5,7 +5,8 @@ public extension FieldKey {
     self.init(stringLiteral: stringLiteral)
   }
 
-  static let createdAt = FieldKey("created_at")
-  static let updatedAt = FieldKey("updated_at")
-  static let deletedAt = FieldKey("deleted_at")
+  // todo concurrency
+  nonisolated(unsafe) static let createdAt = FieldKey("created_at")
+  nonisolated(unsafe) static let updatedAt = FieldKey("updated_at")
+  nonisolated(unsafe) static let deletedAt = FieldKey("deleted_at")
 }

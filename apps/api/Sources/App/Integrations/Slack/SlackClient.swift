@@ -3,13 +3,13 @@ import XHttp
 import XSlack
 
 extension FlpSlack {
-  struct Client {
+  struct Client: Sendable {
     var send = send(_:)
     var sendSync = sendSync(_:)
   }
 }
 
-private func send(_ slack: FlpSlack.Message) async {
+@Sendable private func send(_ slack: FlpSlack.Message) async {
   switch slack.channel {
   case .info, .orders, .downloads, .other:
     Current.logger.info("Sent a slack to `\(slack.channel)`: \(slack.message.text)")
@@ -26,7 +26,7 @@ private func send(_ slack: FlpSlack.Message) async {
   }
 }
 
-private func sendSync(_ slack: FlpSlack.Message) {
+@Sendable private func sendSync(_ slack: FlpSlack.Message) {
   let semaphore = DispatchSemaphore(value: 0)
   Task {
     await send(slack)

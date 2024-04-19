@@ -20,6 +20,6 @@ struct AddTokenUses: AsyncMigration {
 
 extension Token {
   enum M27 {
-    static let uses = FieldKey("uses")
+    nonisolated(unsafe) static let uses = FieldKey("uses")
   }
 }

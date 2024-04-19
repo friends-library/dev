@@ -2,7 +2,7 @@ import NonEmpty
 import PairQL
 
 struct CoverWebAppFriends: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct FriendOuput: PairOutput {
     let name: String

@@ -3,7 +3,7 @@ import PairQL
 import TaggedTime
 
 struct DeleteEntity: Pair {
-  static var auth: Scope = .queryTokens
+  static let auth: Scope = .queryTokens
 
   struct Input: PairInput {
     let type: AdminRoute.EntityType

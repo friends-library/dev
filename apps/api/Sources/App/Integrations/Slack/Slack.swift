@@ -2,7 +2,7 @@ import Foundation
 import XSlack
 
 enum FlpSlack {
-  struct Message: Equatable {
+  struct Message: Equatable, Sendable {
     enum Channel {
       case errors
       case info

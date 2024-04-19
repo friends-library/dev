@@ -8,7 +8,7 @@ enum EvansRoute: PairRoute {
   case logJsError(LogJsError.Input)
   case submitContactForm(SubmitContactForm.Input)
 
-  static let router = OneOf {
+  nonisolated(unsafe) static let router = OneOf {
     Route(/Self.logJsError) {
       Operation(LogJsError.self)
       Body(.input(LogJsError.self))

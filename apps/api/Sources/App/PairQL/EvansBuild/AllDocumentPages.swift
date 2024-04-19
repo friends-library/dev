@@ -2,7 +2,7 @@ import DuetSQL
 import PairQL
 
 struct AllDocumentPages: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
   typealias Input = Lang
   typealias Output = [String: DocumentPage.Output]
 }
@@ -10,6 +10,8 @@ struct AllDocumentPages: Pair {
 extension AllDocumentPages: Resolver {
   static func resolve(with lang: Lang, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
+    // let documents = try await JoinedEntities.shared.documents()
+
     fatalError("mega query")
     // async let allDocuments = Document.query().all()
 

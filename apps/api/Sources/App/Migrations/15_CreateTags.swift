@@ -41,9 +41,9 @@ struct CreateTags: AsyncMigration {
 
 extension DocumentTag {
   enum M15 {
-    static let tableName = "document_tags"
-    static let type = FieldKey("type")
-    static let documentId = FieldKey("document_id")
+    nonisolated(unsafe) static let tableName = "document_tags"
+    nonisolated(unsafe) static let type = FieldKey("type")
+    nonisolated(unsafe) static let documentId = FieldKey("document_id")
     enum DocumentTagEnum {
       static let name = "document_tags_enum"
       static let caseJournal = "journal"
