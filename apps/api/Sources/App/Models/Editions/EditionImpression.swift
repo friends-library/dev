@@ -42,6 +42,10 @@ struct EditionImpression: Codable, Sendable {
 // loaders
 
 extension EditionImpression {
+  func joined() async throws -> JoinedEditionImpression {
+    try await JoinedEntities.shared.editionImpression(id)
+  }
+
   func edition() async throws -> Edition {
     try await Edition.query()
       .where(.id == editionId)

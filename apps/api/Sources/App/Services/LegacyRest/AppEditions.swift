@@ -1,7 +1,6 @@
 import Vapor
 
 extension LegacyRest {
-
   static func appEditions(lang: Lang) async throws -> Response {
     Current.logger.info("Serving app editions, lang=\(lang)")
     let data: Data
@@ -20,15 +19,14 @@ extension LegacyRest {
   }
 
   private static func queryData(lang: Lang) async throws -> Data {
-    fatalError("mega query")
-    // let editions = try await Current.db.query(Friend.self).all()
-    //   .filter { $0.lang == lang }
-    //   .flatMap { try $0.documents.models }
-    //   .filter(\.hasNonDraftEdition)
-    //   .flatMap { try $0.editions.models }
-    //   .filter { try $0.impression.model != nil && !$0.isDraft }
-    //   .map(toAppEdition)
-    // return try JSONEncoder().encode(editions)
+    let editions = try await JoinedEntities.shared.friends()
+      .filter { $0.lang == lang }
+      .flatMap(\.documents)
+      .filter(\.hasNonDraftEdition)
+      .flatMap(\.editions)
+      .filter { $0.impression != nil && !$0.isDraft }
+      .map(toAppEdition)
+    return try JSONEncoder().encode(editions)
   }
 }
 
@@ -110,78 +108,93 @@ private struct AppEdition: Codable {
   let chapters: [Chapter]
 }
 
-private func toAppEdition(_ edition: Edition) -> AppEdition {
-  fatalError("mega query")
-  // let document = edition.document.require()
-  // let friend = document.friend.require()
-  // let impression = edition.impression.require()!
-  // let audio = edition.audio.require()
-  // return .init(
-  //   id: "\(document.id.lowercased)--\(edition.type)",
-  //   lang: friend.lang,
-  //   document: .init(
-  //     id: document.id.lowercased,
-  //     title: document.title,
-  //     utf8ShortTitle: document.utf8ShortTitle,
-  //     trimmedUtf8ShortTitle: document.trimmedUtf8ShortTitle,
-  //     description: document.description,
-  //     shortDescription: document.partialDescription
-  //   ),
-  //   revision: impression.publishedRevision.rawValue,
-  //   type: edition.type,
-  //   publishedDate: impression.createdAt.isoString,
-  //   friend: .init(
-  //     name: friend.name,
-  //     nameSort: friend.alphabeticalName,
-  //     isCompilations: friend.isCompilations
-  //   ),
-  //   ebook: AppEdition.Ebook(
-  //     loggedDownloadUrl: impression.files.ebook.app.logUrl.absoluteString,
-  //     directDownloadUrl: impression.files.ebook.app.sourceUrl.absoluteString,
-  //     numPages: impression.paperbackVolumes.reduce(0, +)
-  //   ),
-  //   isMostModernized: document.primaryEdition! == edition,
-  //   audio: audio?.isPublished == true ? .init(
-  //     reader: audio!.reader,
-  //     totalDuration: audio!.parts.require().map(\.duration).reduce(0, +).rawValue,
-  //     publishedDate: audio!.createdAt.isoString,
-  //     parts: audio!.parts.require()
-  //       .filter(\.isPublished)
-  //       .sorted { $0.order < $1.order }
-  //       .enumerated()
-  //       .map { index, part in
-  //         .init(
-  //           editionId: "\(document.id.lowercased)--\(edition.type)",
-  //           index: index,
-  //           title: part.title,
-  //           utf8ShortTitle: Asciidoc.utf8ShortTitle(part.title),
-  //           duration: part.duration.rawValue,
-  //           size: part.mp3SizeHq.rawValue,
-  //           sizeLq: part.mp3SizeLq.rawValue,
-  //           url: part.mp3File.hq.sourceUrl.absoluteString,
-  //           urlLq: part.mp3File.lq.sourceUrl.absoluteString
-  //         )
-  //       }
-  //   ) : nil,
-  //   images: AppEdition.Images(
-  //     square: edition.images.square.all
-  //       .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) },
-  //     threeD: edition.images.threeD.all
-  //       .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) }
-  //   ),
-  //   chapters: edition.chapters.require().sorted { $0.order < $1.order }.enumerated()
-  //     .map { index, chapter in .init(
-  //       index: index,
-  //       id: chapter.htmlId,
-  //       slug: chapter.slug,
-  //       shortHeading: Asciidoc.utf8ShortTitle(chapter.shortHeading),
-  //       isIntermediateTitle: chapter.isIntermediateTitle,
-  //       isSequenced: chapter.isSequenced,
-  //       hasNonSequenceTitle: chapter.hasNonSequenceTitle,
-  //       sequenceNumber: chapter.sequenceNumber,
-  //       nonSequenceTitle: chapter.nonSequenceTitle
-  //     ) }
+private func toAppEdition(_ edition: JoinedEdition) -> AppEdition {
+  let document = edition.document
+  let friend = document.friend
+  let impression = edition.impression!
+  let audio = edition.audio
+  // /Users/jared/mfl/apps/api/Sources/App/Services/LegacyRest/AppEditions.swift
+  // let thing = AppEdition.Document(
+  //   id: document.id.lowercased,
+  //   title: document.title,
+  //   utf8ShortTitle: document.utf8ShortTitle,
+  //   trimmedUtf8ShortTitle: document.trimmedUtf8ShortTitle,
+  //   description: document.description,
+  //   shortDescription: document.partialDescription
   // )
+
+  // let ebook = AppEdition.Ebook(
+  //   loggedDownloadUrl: impression.files.ebook.app.logUrl.absoluteString,
+  //   directDownloadUrl: impression.files.ebook.app.sourceUrl.absoluteString,
+  //   numPages: impression.paperbackVolumes.reduce(0, +)
+  // )
+  // fatalError("todo")
+  return .init(
+    id: "\(document.id.lowercased)--\(edition.type)",
+    lang: friend.lang,
+    document: .init(
+      id: document.id.lowercased,
+      title: document.title,
+      utf8ShortTitle: document.utf8ShortTitle,
+      trimmedUtf8ShortTitle: document.trimmedUtf8ShortTitle,
+      description: document.description,
+      shortDescription: document.partialDescription
+    ),
+    revision: impression.publishedRevision.rawValue,
+    type: edition.type,
+    publishedDate: impression.createdAt.isoString,
+    friend: .init(
+      name: friend.name,
+      nameSort: friend.alphabeticalName,
+      isCompilations: friend.isCompilations
+    ),
+    ebook: AppEdition.Ebook(
+      loggedDownloadUrl: impression.files.ebook.app.logUrl.absoluteString,
+      directDownloadUrl: impression.files.ebook.app.sourceUrl.absoluteString,
+      numPages: impression.paperbackVolumes.reduce(0, +)
+    ),
+    isMostModernized: document.primaryEdition!.id == edition.id,
+    audio: audio?.isPublished == true ? .init(
+      reader: audio!.reader,
+      totalDuration: audio!.parts.map(\.duration).reduce(0, +).rawValue,
+      publishedDate: audio!.createdAt.isoString,
+      parts: audio!.parts
+        .filter(\.isPublished)
+        .sorted { $0.order < $1.order }
+        .enumerated()
+        .map { index, part in
+          .init(
+            editionId: "\(document.id.lowercased)--\(edition.type)",
+            index: index,
+            title: part.title,
+            utf8ShortTitle: Asciidoc.utf8ShortTitle(part.title),
+            duration: part.duration.rawValue,
+            size: part.mp3SizeHq.rawValue,
+            sizeLq: part.mp3SizeLq.rawValue,
+            url: part.mp3File.hq.sourceUrl.absoluteString,
+            urlLq: part.mp3File.lq.sourceUrl.absoluteString
+          )
+        }
+    ) : nil,
+    images: AppEdition.Images(
+      square: edition.images.square.all
+        .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) },
+      threeD: edition.images.threeD.all
+        .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) }
+    ),
+    chapters: edition.chapters.sorted { $0.order < $1.order }.enumerated()
+      .map { index, chapter in .init(
+        index: index,
+        id: chapter.htmlId,
+        slug: chapter.slug,
+        shortHeading: Asciidoc.utf8ShortTitle(chapter.shortHeading),
+        isIntermediateTitle: chapter.isIntermediateTitle,
+        isSequenced: chapter.isSequenced,
+        hasNonSequenceTitle: chapter.hasNonSequenceTitle,
+        sequenceNumber: chapter.sequenceNumber,
+        nonSequenceTitle: chapter.nonSequenceTitle
+      ) }
+  )
 }
 
 @propertyWrapper

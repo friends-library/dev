@@ -2,6 +2,11 @@ import Vapor
 import XCore
 
 struct DownloadableFile {
+  var format: Format
+  var editionId: Edition.Id
+  var edition: Edition.DirectoryPathData
+  var documentFilename: String
+
   enum Format: Equatable, Encodable {
     enum Ebook: String, Codable, CaseIterable, Equatable {
       case epub
@@ -32,11 +37,6 @@ struct DownloadableFile {
     case audio(Audio)
     case paperback(type: Paperback, volumeIndex: Int?)
   }
-
-  let format: Format
-  let editionId: Edition.Id
-  let edition: Edition.DirectoryPathData
-  let documentFilename: String
 
   var sourceUrl: URL {
     switch format {

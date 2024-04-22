@@ -26,7 +26,7 @@ extension GetEditionImpression: Resolver {
     try context.verify(Self.auth)
     // TODO: this first query is unnessary
     let impression = try await EditionImpression.find(input)
-    let files = try await impression.files()
+    let files = (try await impression.joined()).files
     return .init(id: impression.id, cloudFiles: .init(files: files))
   }
 }

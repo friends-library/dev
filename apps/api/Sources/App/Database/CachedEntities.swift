@@ -1,10 +1,16 @@
 import Duet
 
+// TODO: namespace under model: Friend.Joined
+
 @dynamicMemberLookup
 final class JoinedFriend {
   let model: Friend
   let residences: [JoinedFriendResidence]
   fileprivate(set) var documents: [JoinedDocument]
+
+  var directoryPathData: Friend.DirectoryPathData {
+    .init(lang: model.lang, slug: model.slug)
+  }
 
   subscript<T>(dynamicMember keyPath: KeyPath<Friend, T>) -> T {
     model[keyPath: keyPath]
@@ -55,6 +61,14 @@ final class JoinedDocument {
       allEditions.first
   }
 
+  var directoryPathData: Document.DirectoryPathData {
+    .init(friend: friend.directoryPathData, slug: model.slug)
+  }
+
+  var trimmedUtf8ShortTitle: String {
+    Asciidoc.trimmedUtf8ShortDocumentTitle(model.title, lang: friend.lang)
+  }
+
   subscript<T>(dynamicMember keyPath: KeyPath<Document, T>) -> T {
     model[keyPath: keyPath]
   }
@@ -75,10 +89,15 @@ final class JoinedDocument {
 @dynamicMemberLookup
 final class JoinedEdition {
   let model: Edition
-  fileprivate(set) unowned var document: JoinedDocument?
+  let chapters: [EditionChapter]
+  fileprivate(set) unowned var document: JoinedDocument
   fileprivate(set) var isbn: JoinedIsbn?
   fileprivate(set) var impression: JoinedEditionImpression?
   fileprivate(set) var audio: JoinedAudio?
+
+  var directoryPathData: Edition.DirectoryPathData {
+    .init(document: document.directoryPathData, type: model.type)
+  }
 
   subscript<T>(dynamicMember keyPath: KeyPath<Edition, T>) -> T {
     model[keyPath: keyPath]
@@ -87,11 +106,13 @@ final class JoinedEdition {
   init(
     _ model: Edition,
     document: JoinedDocument,
+    chapters: [EditionChapter],
     isbn: JoinedIsbn? = nil,
     impression: JoinedEditionImpression? = nil
   ) {
     self.model = model
     self.document = document
+    self.chapters = chapters
     self.isbn = isbn
     self.impression = impression
   }
@@ -100,15 +121,17 @@ final class JoinedEdition {
 @dynamicMemberLookup
 final class JoinedAudio {
   let model: Audio
+  let parts: [AudioPart]
   fileprivate(set) unowned var edition: JoinedEdition
 
   subscript<T>(dynamicMember keyPath: KeyPath<Audio, T>) -> T {
     model[keyPath: keyPath]
   }
 
-  init(_ model: Audio, edition: JoinedEdition) {
+  init(_ model: Audio, edition: JoinedEdition, parts: [AudioPart]) {
     self.model = model
     self.edition = edition
+    self.parts = parts
   }
 }
 
@@ -159,9 +182,11 @@ final class JoinedIsbn {
     async let friends = Friend.query().all()
     async let documents = Document.query().all()
     async let editions = Edition.query().all()
+    async let chapters = EditionChapter.query().all()
     async let impressions = EditionImpression.query().all()
     async let isbns = Isbn.query().all()
     async let audios = Audio.query().all()
+    async let audioParts = AudioPart.query().all()
     async let tags = DocumentTag.query().all()
     async let residences = FriendResidence.query().all()
     async let durations = FriendResidenceDuration.query().all()
@@ -196,9 +221,17 @@ final class JoinedIsbn {
       }
     }
 
+    let chapterMap = try await chapters.reduce(into: [:]) { map, model in
+      map[model.editionId, default: []].append(model)
+    }
+
     joinedEditions = try await editions.reduce(into: [:]) { joined, model in
       let document = joinedDocuments[model.documentId]!
-      let joinedEdition = JoinedEdition(model, document: document)
+      let joinedEdition = JoinedEdition(
+        model,
+        document: document,
+        chapters: chapterMap[model.id] ?? []
+      )
       joined[model.id] = joinedEdition
       document.editions.append(joinedEdition)
     }
@@ -218,9 +251,17 @@ final class JoinedIsbn {
       }
     }
 
+    let audioPartMap = try await audioParts.reduce(into: [:]) { map, model in
+      map[model.audioId, default: []].append(model)
+    }
+
     joinedAudios = try await audios.reduce(into: [:]) { joined, model in
       let edition = joinedEditions[model.editionId]!
-      let joinedAudio = JoinedAudio(model, edition: edition)
+      let joinedAudio = JoinedAudio(
+        model,
+        edition: edition,
+        parts: audioPartMap[model.id] ?? []
+      )
       joined[model.id] = joinedAudio
       edition.audio = joinedAudio
     }
@@ -248,6 +289,18 @@ final class JoinedIsbn {
     } else {
       return Array(joinedDocuments.values)
     }
+  }
+
+  public func editionImpression(
+    _ id: EditionImpression
+      .Id
+  ) async throws -> JoinedEditionImpression {
+    if !loaded { try await load() }
+    guard let impression = joinedImpressions[id] else {
+      struct Rofl: Error {}
+      throw Rofl()
+    }
+    return impression
   }
 }
 
