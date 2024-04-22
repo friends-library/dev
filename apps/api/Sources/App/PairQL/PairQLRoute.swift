@@ -61,7 +61,7 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
     }
   }.eraseToAnyParserPrinter()
 
-  static func handler(_ request: Request) async throws -> Response {
+  @Sendable static func handler(_ request: Request) async throws -> Response {
     guard var requestData = URLRequestData(request: request),
           requestData.path.removeFirst() == "pairql" else {
       throw Abort(.badRequest)

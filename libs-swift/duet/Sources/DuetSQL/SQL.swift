@@ -203,7 +203,7 @@ public enum SQL {
       let key = [statement.query, types].joined()
       let name: String
 
-      if let previouslyInsertedName = await prepared.get(key) {
+      if let previouslyInsertedName = await PreparedStatements.shared.get(key) {
         name = previouslyInsertedName
       } else {
         let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
@@ -217,7 +217,7 @@ public enum SQL {
           print("\n```SQL\n\(insertPrepareSql)\n```")
         }
 
-        await prepared.set(name, forKey: key)
+        await PreparedStatements.shared.set(name, forKey: key)
         _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
       }
 
@@ -243,7 +243,7 @@ public enum SQL {
   }
 
   public static func resetPreparedStatements() async {
-    await prepared.reset()
+    await PreparedStatements.shared.reset()
   }
 }
 
@@ -274,7 +274,9 @@ private extension Optional where Wrapped == Int {
   }
 }
 
-private actor PreparedStatements {
+@globalActor private actor PreparedStatements {
+  static let shared = PreparedStatements()
+
   var statements: [String: String] = [:]
 
   func get(_ key: String) -> String? {
@@ -289,8 +291,6 @@ private actor PreparedStatements {
     statements = [:]
   }
 }
-
-private var prepared = PreparedStatements()
 
 private func unPrepare(statement: SQL.PreparedStatement) -> String {
   var sql = statement.query

@@ -65,8 +65,6 @@ extension ExplorePageBooks: Resolver {
           > $1.primaryEdition?.impression?.createdAt ?? .distantPast
       })
 
-    print("Fetched \(documents.count) books for lang \(input)")
-
     return try documents.enumerated().map { i, document in
       let friend = document.friend
       let primaryEdition = try expect(document.primaryEdition)

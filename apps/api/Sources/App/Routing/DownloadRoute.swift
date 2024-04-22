@@ -1,10 +1,10 @@
 import DuetSQL
-@preconcurrency import Vapor
+import Vapor
 import XCore
 import XSlack
 
 enum DownloadRoute: RouteHandler {
-  static func handler(_ request: Request) async throws -> Response {
+  @Sendable static func handler(_ request: Request) async throws -> Response {
     struct RefererQuery: Content { let referer: String? }
     let query = try? request.query.decode(RefererQuery.self)
     var path = request.url.path
