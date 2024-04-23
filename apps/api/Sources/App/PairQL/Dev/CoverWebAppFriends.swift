@@ -36,43 +36,34 @@ struct CoverWebAppFriends: Pair {
 
 extension CoverWebAppFriends: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    fatalError("mega query")
-    // let friends = try await Friend.query().all()
-    // return try await friends.concurrentMap { friend in
-    //   .init(
-    //     name: friend.name,
-    //     alphabeticalName: friend.alphabeticalName,
-    //     description: friend.description,
-    //     documents: try await (try await friend.documents()).concurrentMap { doc in
-    //       var doc = doc
-    //       return .init(
-    //         lang: friend.lang,
-    //         title: doc.title,
-    //         isCompilation: friend.isCompilations,
-    //         directoryPath: doc.directoryPath,
-    //         description: doc.description,
-    //         editions: try await (try await doc.editions()).concurrentMap { edition in
-    //           let isbn = try await edition.isbn()
-    //           let impression = try await edition.impression()
-    //           var audioPartTitles: [String]?
-    //           if var audio = try await edition.audio() {
-    //             let parts = try await audio.parts()
-    //             audioPartTitles = parts.map(\.title)
-    //           }
-    //           return .init(
-    //             id: edition.id,
-    //             path: edition.directoryPath,
-    //             isDraft: edition.isDraft,
-    //             type: edition.type,
-    //             pages: impression.map(\.paperbackVolumes),
-    //             size: impression?.paperbackSize,
-    //             isbn: isbn?.code,
-    //             audioPartTitles: audioPartTitles
-    //           )
-    //         }
-    //       )
-    //     }
-    // )
-    // }
+    let friends = try await JoinedEntities.shared.friends()
+    return friends.map { friend in
+      .init(
+        name: friend.name,
+        alphabeticalName: friend.alphabeticalName,
+        description: friend.description,
+        documents: friend.documents.map { document in
+          .init(
+            lang: document.friend.lang,
+            title: document.title,
+            isCompilation: document.friend.isCompilations,
+            directoryPath: document.directoryPath,
+            description: document.description,
+            editions: document.editions.map { edition in
+              .init(
+                id: edition.id,
+                path: edition.directoryPath,
+                isDraft: edition.isDraft,
+                type: edition.type,
+                pages: edition.impression.map(\.paperbackVolumes),
+                size: edition.impression?.paperbackSize,
+                isbn: edition.isbn?.code,
+                audioPartTitles: edition.audio.map { $0.parts.map(\.title) }
+              )
+            }
+          )
+        }
+      )
+    }
   }
 }

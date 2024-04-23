@@ -1,4 +1,4 @@
-import Duet
+import DuetSQL
 
 // TODO: namespace under model: Friend.Joined
 
@@ -65,6 +65,10 @@ final class JoinedDocument {
     .init(friend: friend.directoryPathData, slug: model.slug)
   }
 
+  var directoryPath: String {
+    directoryPathData.directoryPath
+  }
+
   var trimmedUtf8ShortTitle: String {
     Asciidoc.trimmedUtf8ShortDocumentTitle(model.title, lang: friend.lang)
   }
@@ -97,6 +101,10 @@ final class JoinedEdition {
 
   var directoryPathData: Edition.DirectoryPathData {
     .init(document: document.directoryPathData, type: model.type)
+  }
+
+  var directoryPath: String {
+    directoryPathData.directoryPath
   }
 
   subscript<T>(dynamicMember keyPath: KeyPath<Edition, T>) -> T {
@@ -292,13 +300,11 @@ final class JoinedIsbn {
   }
 
   public func editionImpression(
-    _ id: EditionImpression
-      .Id
+    _ id: EditionImpression.Id
   ) async throws -> JoinedEditionImpression {
     if !loaded { try await load() }
     guard let impression = joinedImpressions[id] else {
-      struct Rofl: Error {}
-      throw Rofl()
+      throw DuetSQLError.notFound("EditionImpression: \(id.lowercased)")
     }
     return impression
   }

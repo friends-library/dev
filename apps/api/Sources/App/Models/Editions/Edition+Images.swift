@@ -74,7 +74,7 @@ extension Edition {
 
 extension JoinedEdition {
   var images: Edition.Images {
-    let path = "\(directoryPathData.directoryPath)/images"
+    let path = "\(directoryPath)/images"
     return Edition.Images(
       square: .init(
         w45: squareImage(45, path),
