@@ -5,7 +5,7 @@ import XExpect
 @testable import App
 
 final class EvansDomainTests: AppTestCase {
-  func testSubscribingToNarrowPathHappyPath() async throws {
+  func testSubscribingAndUnsubscribingHappyPath() async throws {
     let token = UUID()
     Current.uuid = { token }
 
@@ -31,7 +31,13 @@ final class EvansDomainTests: AppTestCase {
       expect(subscriber.confirmationToken).toBeNil()
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
-        .toEqual("\(Env.WEBSITE_URL_EN)/success")
+        .toEqual("\(Env.WEBSITE_URL_EN)/narrow-path?result=success&action=emailConfirmation")
+    }
+
+    try app.test(.GET, "unsubscribe/en/\(subscriber.id.uuidString)") { res in
+      expect(res.status).toEqual(.temporaryRedirect)
+      expect(res.headers.first(name: .location))
+        .toEqual("\(Env.WEBSITE_URL_EN)/narrow-path?result=success&action=unsubscribe")
     }
   }
 
@@ -39,7 +45,7 @@ final class EvansDomainTests: AppTestCase {
     try app.test(.GET, "confirm-email/es/ham-sandwich") { res in
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
-        .toEqual("\(Env.WEBSITE_URL_ES)/fracaso")
+        .toEqual("\(Env.WEBSITE_URL_ES)/el-camino-estrecho?result=failure&action=emailConfirmation")
     }
   }
 
@@ -47,7 +53,7 @@ final class EvansDomainTests: AppTestCase {
     try app.test(.GET, "confirm-email/en/\(UUID())") { res in
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
-        .toEqual("\(Env.WEBSITE_URL_EN)/failure")
+        .toEqual("\(Env.WEBSITE_URL_EN)/narrow-path?result=failure&action=emailConfirmation")
     }
   }
 }

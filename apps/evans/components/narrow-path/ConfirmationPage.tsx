@@ -5,17 +5,18 @@ import cx from 'classnames';
 import { CheckIcon, XIcon } from 'lucide-react';
 
 interface Props {
-  type: 'success' | 'error';
+  result: 'success' | 'failure';
+  action: 'emailConfirmation' | 'unsubscribe';
 }
 
-const ConfirmationPage: React.FC<Props> = ({ type }) => {
+const ConfirmationPage: React.FC<Props> = ({ result, action }) => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
   }, []);
 
-  const c = content[type];
+  const c = content[action][result];
 
   return (
     <main>
@@ -23,7 +24,7 @@ const ConfirmationPage: React.FC<Props> = ({ type }) => {
         <div
           className={cx(
             `h-[200%] w-full bg-gradient-to-b from-white to-white absolute left-0 transition-[top,opacity] duration-700`,
-            type === `success` ? `via-green-300` : `via-red-300`,
+            result === `success` ? `via-green-300` : `via-red-300`,
             !loaded ? `top-[100%]` : `-top-[100%] opacity-0`,
           )}
         />
@@ -36,10 +37,10 @@ const ConfirmationPage: React.FC<Props> = ({ type }) => {
           <div
             className={cx(
               `w-20 h-20 rounded-full flex justify-center items-center relative relative`,
-              type === `success` ? `bg-green-200` : `bg-red-200`,
+              result === `success` ? `bg-green-200` : `bg-red-200`,
             )}
           >
-            {type === `error` ? (
+            {result === `failure` ? (
               <XIcon className="text-red-800 relative" size={40} strokeWidth={3} />
             ) : (
               <CheckIcon className="text-green-800 relative" size={40} strokeWidth={3} />
@@ -60,12 +61,24 @@ const ConfirmationPage: React.FC<Props> = ({ type }) => {
 export default ConfirmationPage;
 
 const content = {
-  success: {
-    title: `Email verified!`,
-    description: `Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.`,
+  emailConfirmation: {
+    success: {
+      title: `Email confirmed!`,
+      description: `Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.`,
+    },
+    failure: {
+      title: `Uh oh!`,
+      description: `Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.`,
+    },
   },
-  error: {
-    title: `Uh-oh, something went wrong!`,
-    description: `Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.`,
+  unsubscribe: {
+    success: {
+      title: `Unsubscribed`,
+      description: `Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.`,
+    },
+    failure: {
+      title: `Uh oh!`,
+      description: `Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.`,
+    },
   },
 };

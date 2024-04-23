@@ -53,12 +53,8 @@ const nextConfig = {
           destination: `/contact`,
         },
         {
-          source: `/exito`,
-          destination: `/success`,
-        },
-        {
-          source: `/fracaso`,
-          destination: `/failure`,
+          source: `/el-camino-estrecho`,
+          destination: `/narrow-path`,
         },
       ],
     };

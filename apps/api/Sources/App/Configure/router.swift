@@ -19,6 +19,11 @@ public extension Configure {
       use: ConfirmEmailRoute.handler(_:)
     )
 
+    app.get(
+      "unsubscribe", ":language", ":id",
+      use: UnsubscribeRoute.handler(_:)
+    )
+
     app.on(
       .POST,
       "pairql", ":domain", ":operation",
@@ -30,4 +35,21 @@ public extension Configure {
 
 protocol RouteHandler {
   @Sendable static func handler(_ request: Request) async throws -> Response
+}
+
+// helpers
+
+func redirect(reason: ReasonToRedirect, success: Bool, lang: Lang) -> Response {
+  .init(
+    status: .temporaryRedirect,
+    headers: .init([(
+      "Location",
+      "\(lang == .en ? Env.WEBSITE_URL_EN : Env.WEBSITE_URL_ES)/\(lang == .en ? "narrow-path" : "el-camino-estrecho")?result=\(success ? "success" : "failure")&action=\(reason == .emailConfirmation ? "emailConfirmation" : "unsubscribe")"
+    )])
+  )
+}
+
+enum ReasonToRedirect {
+  case emailConfirmation
+  case unsubscribe
 }
