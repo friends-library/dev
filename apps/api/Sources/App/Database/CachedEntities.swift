@@ -46,7 +46,7 @@ final class JoinedFriendResidence: Sendable {
 final class JoinedDocument {
   let model: Document
   let tags: [DocumentTag.TagType]
-  fileprivate(set) var altLanguage: JoinedDocument?
+  fileprivate(set) var altLanguageDocument: JoinedDocument?
   fileprivate(set) unowned var friend: JoinedFriend
   fileprivate(set) var editions: [JoinedEdition] = []
 
@@ -80,12 +80,12 @@ final class JoinedDocument {
   init(
     _ model: Document,
     friend: JoinedFriend,
-    altLanguage: JoinedDocument? = nil,
+    altLanguageDocument: JoinedDocument? = nil,
     tags: [DocumentTag.TagType]
   ) {
     self.model = model
     self.tags = tags
-    self.altLanguage = altLanguage
+    self.altLanguageDocument = altLanguageDocument
     self.friend = friend
   }
 }
@@ -225,7 +225,7 @@ final class JoinedIsbn {
 
     for doc in joinedDocuments.values {
       if let altLanguageId = doc.altLanguageId {
-        doc.altLanguage = joinedDocuments[altLanguageId]
+        doc.altLanguageDocument = joinedDocuments[altLanguageId]
       }
     }
 
@@ -277,26 +277,24 @@ final class JoinedIsbn {
     loaded = true
   }
 
-  public func friends(
-    where predicate: (@Sendable (Friend) -> Bool)? = nil
-  ) async throws -> [JoinedFriend] {
+  public func friends() async throws -> [JoinedFriend] {
     if !loaded { try await load() }
-    if let predicate {
-      return joinedFriends.values.filter { predicate($0.model) }
-    } else {
-      return Array(joinedFriends.values)
-    }
+    return Array(joinedFriends.values)
   }
 
-  public func documents(
-    where predicate: (@Sendable (Document) -> Bool)? = nil
-  ) async throws -> [JoinedDocument] {
+  public func documents() async throws -> [JoinedDocument] {
     if !loaded { try await load() }
-    if let predicate {
-      return joinedDocuments.values.filter { predicate($0.model) }
-    } else {
-      return Array(joinedDocuments.values)
-    }
+    return Array(joinedDocuments.values)
+  }
+
+  public func editionImpressions() async throws -> [JoinedEditionImpression] {
+    if !loaded { try await load() }
+    return Array(joinedImpressions.values)
+  }
+
+  public func audios() async throws -> [JoinedAudio] {
+    if !loaded { try await load() }
+    return Array(joinedAudios.values)
   }
 
   public func editionImpression(
@@ -314,6 +312,7 @@ extension JoinedFriend: @unchecked Sendable {}
 extension JoinedDocument: @unchecked Sendable {}
 extension JoinedEdition: @unchecked Sendable {}
 extension JoinedIsbn: @unchecked Sendable {}
+extension JoinedAudio: @unchecked Sendable {}
 extension JoinedEditionImpression: @unchecked Sendable {}
 
 extension Array where Element: ApiModel {
