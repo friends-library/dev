@@ -1,11 +1,12 @@
 import DuetSQL
 
-// TODO: namespace under model: Friend.Joined
+// TODO: namespace under model: Friend.Joined?
 
 @dynamicMemberLookup
 final class JoinedFriend {
   let model: Friend
   let residences: [JoinedFriendResidence]
+  let quotes: [FriendQuote]
   fileprivate(set) var documents: [JoinedDocument]
 
   var directoryPathData: Friend.DirectoryPathData {
@@ -19,10 +20,12 @@ final class JoinedFriend {
   init(
     _ model: Friend,
     residences: [JoinedFriendResidence],
+    quotes: [FriendQuote],
     documents: [JoinedDocument] = []
   ) {
     self.model = model
     self.residences = residences
+    self.quotes = quotes
     self.documents = documents
   }
 }
@@ -49,6 +52,7 @@ final class JoinedDocument {
   fileprivate(set) var altLanguageDocument: JoinedDocument?
   fileprivate(set) unowned var friend: JoinedFriend
   fileprivate(set) var editions: [JoinedEdition] = []
+  fileprivate(set) var relatedDocuments: [JoinedRelatedDocument] = []
 
   var hasNonDraftEdition: Bool {
     editions.contains { !$0.isDraft }
@@ -87,6 +91,27 @@ final class JoinedDocument {
     self.tags = tags
     self.altLanguageDocument = altLanguageDocument
     self.friend = friend
+  }
+}
+
+@dynamicMemberLookup
+final class JoinedRelatedDocument {
+  let model: RelatedDocument
+  let document: JoinedDocument
+  let parentDocument: JoinedDocument
+
+  subscript<T>(dynamicMember keyPath: KeyPath<RelatedDocument, T>) -> T {
+    model[keyPath: keyPath]
+  }
+
+  init(
+    _ model: RelatedDocument,
+    document: JoinedDocument,
+    parentDocument: JoinedDocument
+  ) {
+    self.model = model
+    self.document = document
+    self.parentDocument = parentDocument
   }
 }
 
@@ -184,7 +209,6 @@ final class JoinedIsbn {
   private var joinedImpressions: [EditionImpression.Id: JoinedEditionImpression] = [:]
   private var joinedIsbns: [Isbn.Id: JoinedIsbn] = [:]
   private var joinedAudios: [Audio.Id: JoinedAudio] = [:]
-  // private var joinedResidences: [FriendResidence.Id: JoinedFriendResidence] = [:]
 
   public func load() async throws {
     async let friends = Friend.query().all()
@@ -198,6 +222,8 @@ final class JoinedIsbn {
     async let tags = DocumentTag.query().all()
     async let residences = FriendResidence.query().all()
     async let durations = FriendResidenceDuration.query().all()
+    async let relatedDocuments = RelatedDocument.query().all()
+    async let quotes = FriendQuote.query().all()
 
     let residenceDurations = try await durations.reduce(into: [:]) { durations, model in
       durations[model.friendResidenceId, default: []].append(model)
@@ -208,8 +234,16 @@ final class JoinedIsbn {
         .append(JoinedFriendResidence(model, durations: residenceDurations[model.id] ?? []))
     }
 
+    let quotesMap = try await quotes.reduce(into: [:]) { quotes, model in
+      quotes[model.friendId, default: []].append(model)
+    }
+
     joinedFriends = try await friends.reduce(into: [:]) { joined, model in
-      joined[model.id] = JoinedFriend(model, residences: joinedResidences[model.id] ?? [])
+      joined[model.id] = JoinedFriend(
+        model,
+        residences: joinedResidences[model.id] ?? [],
+        quotes: quotesMap[model.id] ?? []
+      )
     }
 
     let documentTags = try await tags.reduce(into: [:]) { tags, model in
@@ -226,6 +260,18 @@ final class JoinedIsbn {
     for doc in joinedDocuments.values {
       if let altLanguageId = doc.altLanguageId {
         doc.altLanguageDocument = joinedDocuments[altLanguageId]
+      }
+    }
+
+    for relatedDocument in try await relatedDocuments {
+      if let document = joinedDocuments[relatedDocument.documentId],
+         let parentDocument = joinedDocuments[relatedDocument.parentDocumentId] {
+        let joinedRelatedDocument = JoinedRelatedDocument(
+          relatedDocument,
+          document: document,
+          parentDocument: parentDocument
+        )
+        parentDocument.relatedDocuments.append(joinedRelatedDocument)
       }
     }
 
