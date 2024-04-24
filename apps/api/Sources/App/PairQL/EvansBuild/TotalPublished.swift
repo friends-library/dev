@@ -19,32 +19,30 @@ struct TotalPublished: Pair {
 extension TotalPublished: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    fatalError("mega query")
+    let allDocuments = try await JoinedEntities.shared.documents()
+    let allAudios = try await JoinedEntities.shared.audios()
 
-//     let allDocuments = try await Document.query().all()
-//     let allAudios = try await Audio.query().all()
-
-//     return .init(
-//       books: .init(
-//         en: allDocuments
-//           .filter(\.hasNonDraftEdition)
-//           .filter { $0.friend.require().lang == .en }
-//           .count,
-//         es: allDocuments
-//           .filter(\.hasNonDraftEdition)
-//           .filter { $0.friend.require().lang == .es }
-//           .count
-//       ),
-//       audiobooks: .init(
-//         en: allAudios
-//           .filter { $0.edition.require().document.require().friend.require().lang == .en }
-//           .filter { $0.edition.require().isDraft == false }
-//           .count,
-//         es: allAudios
-//           .filter { $0.edition.require().document.require().friend.require().lang == .es }
-//           .filter { $0.edition.require().isDraft == false }
-//           .count
-//       )
-//     )
+    return .init(
+      books: .init(
+        en: allDocuments
+          .filter(\.hasNonDraftEdition)
+          .filter { $0.friend.lang == .en }
+          .count,
+        es: allDocuments
+          .filter(\.hasNonDraftEdition)
+          .filter { $0.friend.lang == .es }
+          .count
+      ),
+      audiobooks: .init(
+        en: allAudios
+          .filter { $0.edition.document.friend.lang == .en }
+          .filter { $0.edition.isDraft == false }
+          .count,
+        es: allAudios
+          .filter { $0.edition.document.friend.lang == .es }
+          .filter { $0.edition.isDraft == false }
+          .count
+      )
+    )
   }
 }
