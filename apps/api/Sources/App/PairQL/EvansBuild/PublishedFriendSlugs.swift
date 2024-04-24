@@ -11,10 +11,8 @@ struct PublishedFriendSlugs: Pair {
 extension PublishedFriendSlugs: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    fatalError("mega query")
-    // let allFriends = try await Friend.query()
-    //   .where(.lang == input)
-    //   .all()
-    // return allFriends.filter(\.hasNonDraftDocument).map(\.slug)
+    return try await JoinedEntities.shared.friends()
+      .filter { $0.lang == input && $0.hasNonDraftDocument }
+      .map(\.slug)
   }
 }
