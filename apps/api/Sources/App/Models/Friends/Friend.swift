@@ -68,6 +68,12 @@ extension Friend.DirectoryPathData: DirectoryPathable {
   }
 }
 
+extension JoinedFriend {
+  var hasNonDraftDocument: Bool {
+    documents.first { $0.hasNonDraftEdition } != nil
+  }
+}
+
 // loaders
 
 extension Friend {
