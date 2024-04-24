@@ -40,12 +40,11 @@ extension GettingStartedBooks: Resolver {
 
     let documents = try await input.resolve()
 
-    // TODO: probably mega query?
     return try await documents.concurrentMap { document in
-      let friend = try expect(await document.friend())
-      let edition = try expect(await document.primaryEdition())
-      let audio = try await edition.audio()
-      let isbn = try expect(await edition.isbn())
+      let friend = document.friend
+      let edition = try expect(document.primaryEdition)
+      let audio = edition.audio
+      let isbn = try expect(edition.isbn)
       return .init(
         title: document.title,
         slug: document.slug,
@@ -65,22 +64,19 @@ extension GettingStartedBooks: Resolver {
 }
 
 extension SelectedDocuments {
-  func resolve() async throws -> [Document] {
-    let allDocuments = try await Document.query()
-      .where(.slug |=| slugs.map { .string($0.documentSlug) })
-      .all()
-    return allDocuments
+  func resolve() async throws -> [JoinedDocument] {
+    let docSlugs = slugs.map(\.documentSlug)
+    let allDocuments = try await JoinedEntities.shared.documents()
+      .filter { docSlugs.contains($0.slug) }
 
-    // var documents: [Document] = []
-
-    // for slug in slugs {
-    //   let matchedDocument = allDocuments.filter { document in
-    //     guard document.slug == slug.documentSlug else { return false }
-    //     let friend = document.friend.require()
-    //     return friend.slug == slug.friendSlug && friend.lang == lang
-    //   }.first
-    //   documents.append(try expect(matchedDocument))
-    // }
-    // return documents
+    var documents: [JoinedDocument] = []
+    for slug in slugs {
+      let matchedDocument = allDocuments.filter { document in
+        guard document.slug == slug.documentSlug else { return false }
+        return document.friend.slug == slug.friendSlug && document.friend.lang == lang
+      }.first
+      documents.append(try expect(matchedDocument))
+    }
+    return documents
   }
 }
