@@ -30,23 +30,19 @@ extension HomepageFeaturedBooks: Resolver {
 
     let documents = try await input.resolve()
 
-    // TODO: probably mega query
-    return try await documents.concurrentMap { document in
-      let friend = try expect(await document.friend())
-      let edition = try expect(await document.primaryEdition())
-      let impression = try expect(await edition.impression())
-      let isbn = try expect(await edition.isbn())
+    return try documents.map { document in
+      let edition = try expect(document.primaryEdition)
       return .init(
-        isbn: isbn.code,
+        isbn: try expect(edition.isbn).code,
         title: document.title,
         htmlShortTitle: document.htmlShortTitle,
-        paperbackVolumes: impression.paperbackVolumes,
+        paperbackVolumes: try expect(edition.impression).paperbackVolumes,
         customCss: nil,
         customHtml: nil,
-        isCompilation: friend.isCompilations,
-        friendName: friend.name,
-        friendSlug: friend.slug,
-        friendGender: friend.gender,
+        isCompilation: document.friend.isCompilations,
+        friendName: document.friend.name,
+        friendSlug: document.friend.slug,
+        friendGender: document.friend.gender,
         documentSlug: document.slug,
         featuredDescription: try expect(document.featuredDescription)
       )

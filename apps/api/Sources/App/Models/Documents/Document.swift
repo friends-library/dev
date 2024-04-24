@@ -113,7 +113,7 @@ extension Document {
       allEditions.first
   }
 
-  mutating func numDownloads() async throws -> Int {
+  func numDownloads() async throws -> Int {
     let editions = try await editions()
     let rows = try await Current.db.customQuery(
       DocumentDownloads.self,

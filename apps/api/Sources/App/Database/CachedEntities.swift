@@ -287,6 +287,11 @@ final class JoinedIsbn {
     return Array(joinedDocuments.values)
   }
 
+  public func editions() async throws -> [JoinedEdition] {
+    if !loaded { try await load() }
+    return Array(joinedEditions.values)
+  }
+
   public func editionImpressions() async throws -> [JoinedEditionImpression] {
     if !loaded { try await load() }
     return Array(joinedImpressions.values)
