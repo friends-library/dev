@@ -113,22 +113,6 @@ private func toAppEdition(_ edition: JoinedEdition) -> AppEdition {
   let friend = document.friend
   let impression = edition.impression!
   let audio = edition.audio
-  // /Users/jared/mfl/apps/api/Sources/App/Services/LegacyRest/AppEditions.swift
-  // let thing = AppEdition.Document(
-  //   id: document.id.lowercased,
-  //   title: document.title,
-  //   utf8ShortTitle: document.utf8ShortTitle,
-  //   trimmedUtf8ShortTitle: document.trimmedUtf8ShortTitle,
-  //   description: document.description,
-  //   shortDescription: document.partialDescription
-  // )
-
-  // let ebook = AppEdition.Ebook(
-  //   loggedDownloadUrl: impression.files.ebook.app.logUrl.absoluteString,
-  //   directDownloadUrl: impression.files.ebook.app.sourceUrl.absoluteString,
-  //   numPages: impression.paperbackVolumes.reduce(0, +)
-  // )
-  // fatalError("todo")
   return .init(
     id: "\(document.id.lowercased)--\(edition.type)",
     lang: friend.lang,
