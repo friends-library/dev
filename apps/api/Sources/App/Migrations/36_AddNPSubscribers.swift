@@ -3,7 +3,7 @@ import Vapor
 
 struct AddNPSubscribers: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: AddSubscribers UP")
+    Current.logger.info("Running migration: AddNPSubscribers UP")
     let lang = try await database.enum(Order.M2.LangEnum.name).read()
     try await database.schema(NPSubscriber.M36.tableName)
       .id()
@@ -18,7 +18,7 @@ struct AddNPSubscribers: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: AddSubscribers DOWN")
+    Current.logger.info("Running migration: AddNPSubscribers DOWN")
     try await database.schema(NPSubscriber.M36.tableName).delete()
   }
 }

@@ -1,7 +1,7 @@
 import PairQL
 
 struct ListDocuments: Pair {
-  static let auth: Scope = .queryEntities
+  static var auth: Scope = .queryEntities
 
   struct DocumentOutput: PairOutput {
     let id: Document.Id

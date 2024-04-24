@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
 import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import EvansClient from '@friends-library/pairql/evans';
 import { Loader2Icon, XIcon } from 'lucide-react';
-import WaveBottomBlock from '../getting-started/WaveBottomBlock';
+import EvansClient from '@friends-library/pairql/evans';
 import { LANG } from '@/lib/env';
+import WaveBottomBlock from '@/components/blocks/WaveBottomBlock';
 
 const NarrowPathSignupBlock: React.FC = () => {
   const [emailAddress, setEmailAddress] = useState(``);
