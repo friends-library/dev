@@ -10,28 +10,22 @@ struct AllDocumentPages: Pair {
 extension AllDocumentPages: Resolver {
   static func resolve(with lang: Lang, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    // let documents = try await JoinedEntities.shared.documents()
+    let documents = try await JoinedEntities.shared.documents()
+      .filter { $0.friend.lang == lang && $0.hasNonDraftEdition }
 
-    fatalError("mega query")
-    // async let allDocuments = Document.query().all()
+    let downloads = try await Current.db.customQuery(
+      AllDocumentDownloads.self,
+      withBindings: [.enum(lang), .null]
+    )
 
-    // let langDocuments = try await allDocuments
-    //   .filter(\.hasNonDraftEdition)
-    //   .filter { $0.lang == lang }
-
-    // let downloads = try await Current.db.customQuery(
-    //   AllDocumentDownloads.self,
-    //   withBindings: [.enum(lang), .null]
-    // )
-
-    // return try langDocuments.reduce(into: [:]) { result, document in
-    //   result[document.urlPath] = try DocumentPage.Output(
-    //     document,
-    //     downloads: downloads.urlPathDict,
-    //     numTotalBooks: langDocuments.count,
-    //     in: context
-    //   )
-    // }
+    return try documents.reduce(into: [:]) { result, document in
+      result[document.urlPath] = try DocumentPage.Output(
+        document,
+        downloads: downloads.urlPathDict,
+        numTotalBooks: documents.count,
+        in: context
+      )
+    }
   }
 }
 
