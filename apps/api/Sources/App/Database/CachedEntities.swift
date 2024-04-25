@@ -357,6 +357,14 @@ final class JoinedIsbn {
     }
     return impression
   }
+
+  public func edition(_ id: Edition.Id) async throws -> JoinedEdition {
+    if !loaded { try await load() }
+    guard let edition = joinedEditions[id] else {
+      throw DuetSQLError.notFound("Edition: \(id.lowercased)")
+    }
+    return edition
+  }
 }
 
 extension JoinedFriend: @unchecked Sendable {}

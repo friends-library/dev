@@ -1,3 +1,5 @@
+import DuetSQL
+import NonEmpty
 import Vapor
 import XCore
 
@@ -126,52 +128,6 @@ struct DownloadableFile {
       return "download/\(id)/audio/podcast\(quality |> qualityLogPathSuffix)/podcast.rss"
     }
   }
-}
-
-import DuetSQL
-import NonEmpty
-
-private struct DownloadData: CustomQueryable {
-  static func query(numBindings: Int) -> String {
-    """
-      SELECT
-        e.id as edition_id,
-        d.id AS document_id,
-        d.filename AS document_filename,
-        d.slug AS document_slug,
-        e.type AS edition_type,
-        f.lang,
-        f.slug AS friend_slug,
-        i.paperback_volumes,
-        COUNT(ap.audio_id)::INTEGER AS num_audio_parts
-      FROM
-        editions e
-      JOIN
-        documents d ON e.document_id = d.id
-      JOIN
-        friends f ON d.friend_id = f.id
-      JOIN
-        edition_impressions i ON e.id = i.edition_id
-      LEFT JOIN
-        edition_audios a ON e.id = a.edition_id
-      LEFT JOIN
-        edition_audio_parts ap ON a.id = ap.audio_id
-      WHERE
-        e.id = $1
-      GROUP BY
-        e.id, d.id, d.filename, e.type, f.slug, i.paperback_volumes, f.lang;
-    """
-  }
-
-  var lang: Lang
-  var friendSlug: String
-  var editionId: Edition.Id
-  var documentId: Document.Id
-  var documentFilename: String
-  var documentSlug: String
-  var editionType: EditionType
-  var paperbackVolumes: NonEmpty<[Int]>
-  var numAudioParts: Int
 }
 
 // parsing init
@@ -474,4 +430,53 @@ extension DownloadableFile.Format {
       return .downloads
     }
   }
+}
+
+private struct DownloadData: CustomQueryable {
+  static func query(numBindings: Int) -> String {
+    """
+      SELECT
+        e.id as edition_id,
+        d.id AS document_id,
+        d.\(Document.columnName(.filename)) AS document_filename,
+        d.\(Document.columnName(.slug)) AS document_slug,
+        e.\(Edition.columnName(.type)) AS edition_type,
+        f.\(Friend.columnName(.lang)),
+        f.\(Friend.columnName(.slug)) AS friend_slug,
+        i.\(EditionImpression.columnName(.paperbackVolumes)),
+        COUNT(ap.\(AudioPart.columnName(.audioId)))::INTEGER AS num_audio_parts
+      FROM
+        \(Edition.tableName) e
+      JOIN
+        \(Document.tableName) d ON e.\(Edition.columnName(.documentId)) = d.id
+      JOIN
+        \(Friend.tableName) f ON d.\(Document.columnName(.friendId)) = f.id
+      JOIN
+        \(EditionImpression.tableName) i ON e.id = i.\(EditionImpression.columnName(.editionId))
+      LEFT JOIN
+        \(Audio.tableName) a ON e.id = a.\(Audio.columnName(.editionId))
+      LEFT JOIN
+        \(AudioPart.tableName) ap ON a.id = ap.\(AudioPart.columnName(.audioId))
+      WHERE
+        e.id = $1
+      GROUP BY
+        e.id,
+        d.id,
+        d.\(Document.columnName(.filename)),
+        e.\(Edition.columnName(.type)),
+        f.\(Friend.columnName(.slug)),
+        i.\(EditionImpression.columnName(.paperbackVolumes)),
+        f.\(Friend.columnName(.lang));
+    """
+  }
+
+  var lang: Lang
+  var friendSlug: String
+  var editionId: Edition.Id
+  var documentId: Document.Id
+  var documentFilename: String
+  var documentSlug: String
+  var editionType: EditionType
+  var paperbackVolumes: NonEmpty<[Int]>
+  var numAudioParts: Int
 }

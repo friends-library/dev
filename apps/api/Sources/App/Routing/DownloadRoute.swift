@@ -37,103 +37,108 @@ enum DownloadRoute: RouteHandler {
   ) async throws -> Response {
     let response = Response()
     response.status = Redirect.temporary.status
-    fatalError("todo")
-    // TODO:
-    // response.headers.replaceOrAdd(name: .location, value: file.sourceUrl.absoluteString)
+    response.headers.replaceOrAdd(name: .location, value: file.sourceUrl.absoluteString)
 
-    // let isAppUserAgent = userAgent.contains("FriendsLibrary")
-    // var source: Download.DownloadSource = isAppUserAgent ? .app : .website
+    let isAppUserAgent = userAgent.contains("FriendsLibrary")
+    var source: Download.DownloadSource = isAppUserAgent ? .app : .website
 
-    // switch (userAgent |> isPodcast, file.format) {
-    // case (true, _), (_, .audio(.podcast)):
-    //   source = .podcast
-    //   response.status = Redirect.permanent.status
-    // default:
-    //   break
-    // }
+    switch (userAgent |> isPodcast, file.format) {
+    case (true, _), (_, .audio(.podcast)):
+      source = .podcast
+      response.status = Redirect.permanent.status
+    default:
+      break
+    }
 
-    // // do all db/api/logging work in background task to return response faster
-    // let bgWork = Task { [source] in
-    //   guard let device = Current.userAgentParser.parse(userAgent) else {
-    //     await slackError("Failed to parse user agent `\(userAgent)` into device data")
-    //     return
-    //   }
+    // do all db/api/logging work in background task to return response faster
+    let bgWork = Task { [source] in
+      guard let device = Current.userAgentParser.parse(userAgent) else {
+        await slackError("Failed to parse user agent `\(userAgent)` into device data")
+        return
+      }
 
-    //   if !isAppUserAgent, device.isBot == true {
-    //     await slackDebug("Bot download: `\(userAgent)`")
-    //     return
-    //   }
+      if !isAppUserAgent, device.isBot == true {
+        await slackDebug("Bot download: `\(userAgent)`")
+        return
+      }
 
-    //   guard let downloadFormat = file.format.downloadFormat else {
-    //     await slackError("Unexpected download format: \(file.format)")
-    //     return
-    //   }
+      guard let downloadFormat = file.format.downloadFormat else {
+        await slackError("Unexpected download format: \(file.format)")
+        return
+      }
 
-    //   // prevent duplicate podcast downloads
-    //   if downloadFormat == .podcast, let ipAddress = ipAddress {
-    //     let dupe = try? await Current.db.query(Download.self)
-    //       .where(.ip == .string(ipAddress))
-    //       .where(.format == .enum(Download.Format.podcast))
-    //       .where(.editionId == file.edition.id)
-    //       .first()
+      // prevent duplicate podcast downloads
+      if downloadFormat == .podcast, let ipAddress = ipAddress {
+        let dupe = try? await Current.db.query(Download.self)
+          .where(.ip == .string(ipAddress))
+          .where(.format == .enum(Download.Format.podcast))
+          .where(.editionId == file.editionId)
+          .first()
 
-    //     if dupe != nil {
-    //       await slackDebug(
-    //         "Duplicate podcast download, edition: `\(file.edition.id.lowercased)`, ip: `\(ipAddress)`"
-    //       )
-    //       return
-    //     }
-    //   }
+        if dupe != nil {
+          await slackDebug(
+            "Duplicate podcast download, edition: `\(file.editionId.lowercased)`, ip: `\(ipAddress)`"
+          )
+          return
+        }
+      }
 
-    //   var download = Download(
-    //     editionId: file.edition.id,
-    //     format: downloadFormat,
-    //     source: source,
-    //     isMobile: device.isMobile,
-    //     audioQuality: file.format.audioQuality,
-    //     audioPartNumber: file.format.audioPartNumber,
-    //     userAgent: userAgent.isEmpty ? nil : userAgent,
-    //     os: device.os,
-    //     browser: device.browser,
-    //     platform: device.platform,
-    //     referrer: referrer,
-    //     ip: ipAddress
-    //   )
+      var download = Download(
+        editionId: file.editionId,
+        format: downloadFormat,
+        source: source,
+        isMobile: device.isMobile,
+        audioQuality: file.format.audioQuality,
+        audioPartNumber: file.format.audioPartNumber,
+        userAgent: userAgent.isEmpty ? nil : userAgent,
+        os: device.os,
+        browser: device.browser,
+        platform: device.platform,
+        referrer: referrer,
+        ip: ipAddress
+      )
 
-    //   var location: IpApi.Response?
-    //   if let ip = ipAddress, ip != "127.0.0.1" {
-    //     do {
-    //       location = try await Current.ipApiClient.getIpData(ip)
-    //       download.city = location?.city
-    //       download.region = location?.region
-    //       download.postalCode = location?.postal
-    //       download.latitude = location?.latitude.map { String($0) }
-    //       download.longitude = location?.longitude.map { String($0) }
-    //     } catch {
-    //       await slackError("Error fetching download location data: \(error)")
-    //     }
-    //   }
+      var location: IpApi.Response?
+      if let ip = ipAddress, ip != "127.0.0.1" {
+        do {
+          location = try await Current.ipApiClient.getIpData(ip)
+          download.city = location?.city
+          download.region = location?.region
+          download.postalCode = location?.postal
+          download.latitude = location?.latitude.map { String($0) }
+          download.longitude = location?.longitude.map { String($0) }
+        } catch {
+          await slackError("Error fetching download location data: \(error)")
+        }
+      }
 
-    //   do {
-    //     try await Current.db.create(download)
-    //     await slackDownload(file: file, location: location, device: device, referrer: referrer)
-    //   } catch {
-    //     await slackError("Error creating download: \(error)")
-    //   }
-    // }
+      do {
+        try await Current.db.create(download)
+        await slackDownload(file: file, location: location, device: device, referrer: referrer)
+      } catch {
+        await slackError("Error creating download: \(error)")
+      }
+    }
 
-    // if Env.mode == .test {
-    //   await bgWork.value
-    // }
+    if Env.mode == .test {
+      await bgWork.value
+    }
 
-    // return response
+    return response
   }
 }
 
 // private helpers
 
-// concurrency todo
-private nonisolated(unsafe) var lastLocation: IpApi.Response?
+private actor LastLocation {
+  var value: IpApi.Response?
+
+  func update(_ newValue: IpApi.Response?) {
+    value = newValue
+  }
+}
+
+private let lastLocation = LastLocation()
 
 private func slackDownload(
   file: DownloadableFile,
@@ -141,83 +146,87 @@ private func slackDownload(
   device: UserAgentDeviceData,
   referrer: String?
 ) async {
-  fatalError("todo")
-  // let document = file.edition.document.require()
-  // let friend = document.friend.require()
-  // let duplicatesLastLocation = location != nil && location == lastLocation
-  // lastLocation = location
+  guard let edition = try? await JoinedEntities.shared.edition(file.editionId) else {
+    await slackError("Failed to fetch edition for download: \(file.editionId)")
+    return
+  }
+  let document = edition.document
+  let friend = document.friend
+  let lastLoc = await lastLocation.value
+  let duplicatesLastLocation = location != nil && location == lastLoc
+  await lastLocation.update(location)
 
-  // var refererLink = ""
-  // if let referrer = referrer, let refererUrl = URL(string: referrer) {
-  //   let urlString = refererUrl.absoluteString
-  //   let path = urlString.replacingOccurrences(
-  //     of: #"https:\/\/([^/]+)\/"#,
-  //     with: "",
-  //     options: .regularExpression
-  //   )
-  //   refererLink = "\nDownloaded from: \(Slack.Message.link(to: urlString, withText: path))"
-  // }
+  var refererLink = ""
+  if let referrer = referrer, let refererUrl = URL(string: referrer) {
+    let urlString = refererUrl.absoluteString
+    let path = urlString.replacingOccurrences(
+      of: #"https:\/\/([^/]+)\/"#,
+      with: "",
+      options: .regularExpression
+    )
+    refererLink = "\nDownloaded from: \(Slack.Message.link(to: urlString, withText: path))"
+  }
 
-  // var duplicateLocation = ""
-  // if duplicatesLastLocation, lastLocation?.compactSummary.isEmpty == false {
-  //   duplicateLocation = "\nLocation: _(same as prev)_ \(lastLocation?.compactSummary ?? "")"
-  // }
+  var duplicateLocation = ""
+  if duplicatesLastLocation, lastLoc?.compactSummary.isEmpty == false {
+    duplicateLocation = "\nLocation: _(same as prev)_ \(lastLoc?.compactSummary ?? "")"
+  }
 
-  // var blocks: [Slack.Message.Content.Block] = [
-  //   .header(text: document.trimmedUtf8ShortTitle),
-  //   .section(
-  //     text: """
-  //     by *\(friend.name)*
-  //     Edition: _\(file.edition.type)_
-  //     Format: `\(file.format.description)`
-  //     Device: _\(device.slackSummary)_\(refererLink)\(duplicateLocation)
-  //     """,
-  //     accessory: .image(
-  //       url: file.edition.images.square.w450.url,
-  //       altText: "Image of \(document.title)"
-  //     )
-  //   ),
-  // ]
+  var blocks: [Slack.Message.Content.Block] = [
+    .header(text: document.trimmedUtf8ShortTitle),
+    .section(
+      text: """
+      by *\(friend.name)*
+      Edition: _\(file.edition.type)_
+      Format: `\(file.format.description)`
+      Device: _\(device.slackSummary)_\(refererLink)\(duplicateLocation)
+      """,
+      accessory: .image(
+        url: edition.images.square.w450.url,
+        altText: "Image of \(document.title)"
+      )
+    ),
+  ]
 
-  // if let location = location, !location.slashedSummary.isEmpty, !duplicatesLastLocation {
-  //   var accessory: Slack.Message.Content.Block?
-  //   if let countryCode = countryCodes[location.countryName ?? ""] {
-  //     accessory = .image(
-  //       url: URL(string: "https://flagcdn.com/w640/\(countryCode).png")!,
-  //       altText: "Flag of \(location.countryName ?? countryCode)"
-  //     )
-  //   }
+  if let location, !location.slashedSummary.isEmpty, !duplicatesLastLocation {
+    var accessory: Slack.Message.Content.Block?
+    if let countryCode = countryCodes[location.countryName ?? ""] {
+      accessory = .image(
+        url: URL(string: "https://flagcdn.com/w640/\(countryCode).png")!,
+        altText: "Flag of \(location.countryName ?? countryCode)"
+      )
+    }
 
-  //   var mapLink = ""
-  //   if let googleMapUrl = location.googleMapUrl {
-  //     mapLink = "\n" + Slack.Message.link(to: googleMapUrl, withText: "Google Map")
-  //   }
+    var mapLink = ""
+    if let googleMapUrl = location.googleMapUrl {
+      mapLink = "\n" + Slack.Message.link(to: googleMapUrl, withText: "Google Map")
+    }
 
-  //   blocks.append(.section(
-  //     text: """
-  //     *Approximate Location:*
-  //     City: _\(location.city ?? "`none`")_
-  //     Country: _\(location.countryName ?? "`none`")_
-  //     Zip: _\(location.postal ?? "`none`")_
-  //     Region: _\(location.region ?? "`none`")_\(mapLink)
-  //     """,
-  //     accessory: accessory
-  //   ))
+    blocks.append(.section(
+      text: """
+      *Approximate Location:*
+      City: _\(location.city ?? "`none`")_
+      Country: _\(location.countryName ?? "`none`")_
+      Zip: _\(location.postal ?? "`none`")_
+      Region: _\(location.region ?? "`none`")_\(mapLink)
+      """,
+      accessory: accessory
+    ))
 
-  //   if let mapImageUrl = location.mapImageUrl {
-  //     blocks.append(.image(url: mapImageUrl, altText: "Map of \(location.compactSummary)"))
-  //   }
-  // }
+    if let mapImageUrl = location.mapImageUrl {
+      blocks.append(.image(url: mapImageUrl, altText: "Map of \(location.compactSummary)"))
+    }
+  }
 
-  // blocks.append(.divider)
+  blocks.append(.divider)
 
-  // let slack = FlpSlack.Message(
-  //   blocks: blocks,
-  //   fallbackText: "New download: \(file.logPath)",
-  //   channel: file.format.slackChannel
-  // )
+  let slack = FlpSlack.Message(
+    blocks: blocks,
+    fallbackText: "New download: \(file.logPath)",
+    channel: file.format.slackChannel
+  )
 
-  // await Current.slackClient.send(slack)
+  await Current.slackClient.send(slack)
 
   if let location = location,
      location.slashedSummary.isEmpty,

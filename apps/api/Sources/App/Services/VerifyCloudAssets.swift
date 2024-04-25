@@ -32,9 +32,10 @@ public struct VerifyCloudAssets: AsyncScheduledJob {
 
   func verify(chunk uris: [URI], in context: QueueContext) async throws -> [String] {
     try await withThrowingTaskGroup(of: String?.self, returning: [String].self) { group in
+      let client = context.application.client
       for uri in uris {
         group.addTask {
-          let response = try await context.application.client.send(.HEAD, to: uri)
+          let response = try await client.send(.HEAD, to: uri)
           return response.status != .ok ? "missing cloud asset: \(uri)" : nil
         }
       }
