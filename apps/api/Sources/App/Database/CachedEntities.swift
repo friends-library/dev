@@ -154,17 +154,32 @@ final class JoinedEdition {
 @dynamicMemberLookup
 final class JoinedAudio {
   let model: Audio
-  let parts: [AudioPart]
+  fileprivate(set) var parts: [JoinedAudioPart]
   fileprivate(set) unowned var edition: JoinedEdition
 
   subscript<T>(dynamicMember keyPath: KeyPath<Audio, T>) -> T {
     model[keyPath: keyPath]
   }
 
-  init(_ model: Audio, edition: JoinedEdition, parts: [AudioPart]) {
+  init(_ model: Audio, edition: JoinedEdition, parts: [JoinedAudioPart] = []) {
     self.model = model
     self.edition = edition
     self.parts = parts
+  }
+}
+
+@dynamicMemberLookup
+final class JoinedAudioPart {
+  let model: AudioPart
+  fileprivate(set) unowned var audio: JoinedAudio
+
+  subscript<T>(dynamicMember keyPath: KeyPath<AudioPart, T>) -> T {
+    model[keyPath: keyPath]
+  }
+
+  init(_ model: AudioPart, audio: JoinedAudio) {
+    self.model = model
+    self.audio = audio
   }
 }
 
@@ -209,6 +224,7 @@ final class JoinedIsbn {
   private var joinedImpressions: [EditionImpression.Id: JoinedEditionImpression] = [:]
   private var joinedIsbns: [Isbn.Id: JoinedIsbn] = [:]
   private var joinedAudios: [Audio.Id: JoinedAudio] = [:]
+  private var joinedAudioParts: [AudioPart.Id: JoinedAudioPart] = [:]
 
   public func friends() async throws -> [JoinedFriend] {
     if !loaded { try await load() }
@@ -364,19 +380,24 @@ final class JoinedIsbn {
       }
     }
 
-    let audioPartMap = try await audioParts.reduce(into: [:]) { map, model in
-      map[model.audioId, default: []].append(model)
-    }
-
     joinedAudios = try await audios.reduce(into: [:]) { joined, model in
       let edition = joinedEditions[model.editionId]!
-      let joinedAudio = JoinedAudio(
-        model,
-        edition: edition,
-        parts: audioPartMap[model.id] ?? []
-      )
+      // let parts = audioPartsMap[model.id] ?? []
+      let joinedAudio = JoinedAudio(model, edition: edition)
       joined[model.id] = joinedAudio
       edition.audio = joinedAudio
+      // parts.forEach { $0.audio = joinedAudio }
+    }
+
+    // let audioPartsMap = try await audioParts.reduce(into: [:]) { map, model in
+    //   map[model.audioId, default: []].append(joinedAudioParts[model.id]!)
+    // }
+
+    joinedAudioParts = try await audioParts.reduce(into: [:]) { joined, model in
+      let audio = joinedAudios[model.audioId]!
+      let joinedAudioPart = JoinedAudioPart(model, audio: audio)
+      joined[model.id] = joinedAudioPart
+      audio.parts.append(joinedAudioPart)
     }
 
     loaded = true
