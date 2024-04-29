@@ -210,7 +210,66 @@ final class JoinedIsbn {
   private var joinedIsbns: [Isbn.Id: JoinedIsbn] = [:]
   private var joinedAudios: [Audio.Id: JoinedAudio] = [:]
 
-  public func load() async throws {
+  public func friends() async throws -> [JoinedFriend] {
+    if !loaded { try await load() }
+    return Array(joinedFriends.values)
+  }
+
+  public func friend(_ id: Friend.Id) async throws -> JoinedFriend {
+    if !loaded { try await load() }
+    guard let friend = joinedFriends[id] else {
+      throw DuetSQLError.notFound("Friend: \(id.lowercased)")
+    }
+    return friend
+  }
+
+  public func documents() async throws -> [JoinedDocument] {
+    if !loaded { try await load() }
+    return Array(joinedDocuments.values)
+  }
+
+  public func document(_ id: Document.Id) async throws -> JoinedDocument {
+    if !loaded { try await load() }
+    guard let document = joinedDocuments[id] else {
+      throw DuetSQLError.notFound("Document: \(id.lowercased)")
+    }
+    return document
+  }
+
+  public func editions() async throws -> [JoinedEdition] {
+    if !loaded { try await load() }
+    return Array(joinedEditions.values)
+  }
+
+  public func editionImpressions() async throws -> [JoinedEditionImpression] {
+    if !loaded { try await load() }
+    return Array(joinedImpressions.values)
+  }
+
+  public func audios() async throws -> [JoinedAudio] {
+    if !loaded { try await load() }
+    return Array(joinedAudios.values)
+  }
+
+  public func editionImpression(
+    _ id: EditionImpression.Id
+  ) async throws -> JoinedEditionImpression {
+    if !loaded { try await load() }
+    guard let impression = joinedImpressions[id] else {
+      throw DuetSQLError.notFound("EditionImpression: \(id.lowercased)")
+    }
+    return impression
+  }
+
+  public func edition(_ id: Edition.Id) async throws -> JoinedEdition {
+    if !loaded { try await load() }
+    guard let edition = joinedEditions[id] else {
+      throw DuetSQLError.notFound("Edition: \(id.lowercased)")
+    }
+    return edition
+  }
+
+  func load() async throws {
     async let friends = Friend.query().all()
     async let documents = Document.query().all()
     async let editions = Edition.query().all()
@@ -321,49 +380,6 @@ final class JoinedIsbn {
     }
 
     loaded = true
-  }
-
-  public func friends() async throws -> [JoinedFriend] {
-    if !loaded { try await load() }
-    return Array(joinedFriends.values)
-  }
-
-  public func documents() async throws -> [JoinedDocument] {
-    if !loaded { try await load() }
-    return Array(joinedDocuments.values)
-  }
-
-  public func editions() async throws -> [JoinedEdition] {
-    if !loaded { try await load() }
-    return Array(joinedEditions.values)
-  }
-
-  public func editionImpressions() async throws -> [JoinedEditionImpression] {
-    if !loaded { try await load() }
-    return Array(joinedImpressions.values)
-  }
-
-  public func audios() async throws -> [JoinedAudio] {
-    if !loaded { try await load() }
-    return Array(joinedAudios.values)
-  }
-
-  public func editionImpression(
-    _ id: EditionImpression.Id
-  ) async throws -> JoinedEditionImpression {
-    if !loaded { try await load() }
-    guard let impression = joinedImpressions[id] else {
-      throw DuetSQLError.notFound("EditionImpression: \(id.lowercased)")
-    }
-    return impression
-  }
-
-  public func edition(_ id: Edition.Id) async throws -> JoinedEdition {
-    if !loaded { try await load() }
-    guard let edition = joinedEditions[id] else {
-      throw DuetSQLError.notFound("Edition: \(id.lowercased)")
-    }
-    return edition
   }
 }
 

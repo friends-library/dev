@@ -32,17 +32,18 @@ struct GetEdition: Pair {
 }
 
 extension GetEdition: Resolver {
-  static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
+  static func resolve(
+    with editionId: Edition.Id,
+    in context: AuthedContext
+  ) async throws -> Output {
     try context.verify(Self.auth)
-    let edition = try await Edition.find(input)
-    let impression = try await edition.impression()
-    let document = try await edition.document()
+    let edition = try await JoinedEntities.shared.edition(editionId)
     return .init(
       type: edition.type,
       isDraft: edition.isDraft,
-      allSquareImages: [], // edition.images.square.all.map(Output.Image.init),
-      allThreeDImages: [], // edition.images.threeD.all.map(Output.Image.init),
-      impression: impression.map { .init(
+      allSquareImages: edition.images.square.all.map(Output.Image.init),
+      allThreeDImages: edition.images.threeD.all.map(Output.Image.init),
+      impression: edition.impression.map { .init(
         id: $0.id,
         adocLength: $0.adocLength,
         paperbackSizeVariant: $0.paperbackSizeVariant,
@@ -51,7 +52,7 @@ extension GetEdition: Resolver {
         publishedRevision: $0.publishedRevision,
         productionToolchainRevision: $0.productionToolchainRevision
       ) },
-      documentFilename: document.filename
+      documentFilename: edition.document.filename
     )
   }
 }

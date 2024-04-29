@@ -1,3 +1,4 @@
+import DuetSQL
 import PairQL
 import TaggedTime
 
@@ -88,9 +89,12 @@ struct EditDocument: Pair {
 // resolver
 
 extension EditDocument: Resolver {
-  static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
+  static func resolve(
+    with documentId: Document.Id,
+    in context: AuthedContext
+  ) async throws -> Output {
     try context.verify(Self.auth)
-    let document = try await Document.find(input)
+    let document = try await JoinedEntities.shared.document(documentId)
     return try await .init(
       document: .init(model: document),
       selectableDocuments: .load()
@@ -101,11 +105,13 @@ extension EditDocument: Resolver {
 // extensions
 
 extension EditDocument.EditDocumentOutput {
-  init(model document: Document) async throws {
-    let friend = try await document.friend()
-    let editions = try await document.editions()
-    let tags = try await document.tags()
-    let relatedDocuments = try await document.relatedDocuments()
+  init(model document: JoinedDocument) async throws {
+    let friend = document.friend
+    let editions = document.editions
+    let relatedDocuments = document.relatedDocuments
+    let tags = try await DocumentTag.query()
+      .where(.documentId == document.id)
+      .all()
 
     id = document.id
     altLanguageId = document.altLanguageId
@@ -121,12 +127,12 @@ extension EditDocument.EditDocumentOutput {
 
     self.friend = .init(id: friend.id, name: friend.name, lang: friend.lang)
 
-    self.editions = try await editions.concurrentMap { edition in
-      let isbn = try await edition.isbn()
-      let audio = try await edition.audio()
+    self.editions = editions.map { edition in
+      let isbn = edition.isbn
+      let audio = edition.audio
       var audioOutput: EditDocument.EditAudio?
       if let audio {
-        let parts = try await audio.parts()
+        let parts = audio.parts
         audioOutput = .init(
           id: audio.id,
           editionId: audio.editionId,

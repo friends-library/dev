@@ -26,27 +26,27 @@ struct OrderEditions: Pair {
 extension OrderEditions: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let editions = try await Edition.query()
-      .where(.isDraft == false)
-      .all()
+    let editions = try await JoinedEntities.shared.editions()
+      .filter { !$0.isDraft }
     return try await editions.concurrentMap { edition -> OrderEdition? in
-      guard let impression = try await edition.impression() else {
+      guard let impression = edition.impression else {
         return nil
       }
-      let document = try await edition.document()
-      let friend = try await document.friend()
       return .init(
         id: edition.id,
         type: edition.type,
-        title: document.title,
-        shortTitle: Asciidoc.trimmedUtf8ShortDocumentTitle(document.title, lang: friend.lang),
-        author: friend.name,
-        lang: friend.lang,
+        title: edition.document.title,
+        shortTitle: Asciidoc.trimmedUtf8ShortDocumentTitle(
+          edition.document.title,
+          lang: edition.document.friend.lang
+        ),
+        author: edition.document.friend.name,
+        lang: edition.document.friend.lang,
         priceInCents: impression.paperbackPrice,
         paperbackSize: impression.paperbackSize,
         paperbackVolumes: impression.paperbackVolumes,
-        smallImgUrl: "TODO", // edition.images.threeD.w55.url.absoluteString,
-        largeImgUrl: "TODO" // edition.images.threeD.w110.url.absoluteString
+        smallImgUrl: edition.images.threeD.w55.url.absoluteString,
+        largeImgUrl: edition.images.threeD.w110.url.absoluteString
       )
     }.compactMap { $0 }
   }

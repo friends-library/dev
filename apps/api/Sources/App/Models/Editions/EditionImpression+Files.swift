@@ -1,8 +1,8 @@
 import Foundation
 import NonEmpty
 
-struct EditionImpressionFiles /*: Encodable */ {
-  struct Ebook /*: Encodable */ {
+struct EditionImpressionFiles {
+  struct Ebook {
     let epub: DownloadableFile
     let mobi: DownloadableFile
     let pdf: DownloadableFile
@@ -10,7 +10,7 @@ struct EditionImpressionFiles /*: Encodable */ {
     let app: DownloadableFile
   }
 
-  struct Paperback /*: Encodable */ {
+  struct Paperback {
     let interior: NonEmpty<[DownloadableFile]>
     let cover: NonEmpty<[DownloadableFile]>
   }
@@ -29,14 +29,20 @@ struct EditionImpressionFiles /*: Encodable */ {
   }
 }
 
-extension JoinedEditionImpression {
+extension JoinedEdition {
   func downloadableFile(format: DownloadableFile.Format) -> DownloadableFile {
     DownloadableFile(
       format: format,
-      editionId: edition.id,
-      edition: edition.directoryPathData,
-      documentFilename: edition.document.filename
+      editionId: model.id,
+      edition: directoryPathData,
+      documentFilename: document.filename
     )
+  }
+}
+
+extension JoinedEditionImpression {
+  func downloadableFile(format: DownloadableFile.Format) -> DownloadableFile {
+    edition.downloadableFile(format: format)
   }
 
   var files: EditionImpressionFiles {

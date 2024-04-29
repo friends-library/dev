@@ -53,10 +53,7 @@ struct EditFriend: Pair {
 extension EditFriend: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let friend = try await Friend.find(input)
-    let documents = try await friend.documents()
-    let quotes = try await friend.quotes()
-    let residences = try await friend.residences()
+    let friend = try await JoinedEntities.shared.friend(input)
     return .init(
       friend: .init(
         id: friend.id,
@@ -68,8 +65,8 @@ extension EditFriend: Resolver {
         died: friend.died,
         description: friend.description,
         published: friend.published,
-        residences: try await residences.concurrentMap { residence in
-          let durations = try await residence.durations()
+        residences: friend.residences.map { residence in
+          let durations = residence.durations
           return .init(
             id: residence.id,
             friendId: residence.friendId,
@@ -83,10 +80,10 @@ extension EditFriend: Resolver {
             ) }
           )
         },
-        quotes: quotes.map {
+        quotes: friend.quotes.map {
           .init(id: $0.id, friendId: $0.friendId, source: $0.source, text: $0.text, order: $0.order)
         },
-        documents: try await documents.concurrentMap { try await .init(model: $0) }
+        documents: try await friend.documents.concurrentMap { try await .init(model: $0) }
       ),
       selectableDocuments: try await .load()
     )

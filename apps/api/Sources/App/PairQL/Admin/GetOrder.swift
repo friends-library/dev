@@ -65,21 +65,19 @@ extension GetOrder: Resolver {
       lang: order.lang,
       source: order.source,
       items: try await items.concurrentMap { item in
-        let edition = try await item.edition()
-        let document = try await edition.document()
-        let friend = try await document.friend()
+        let edition = try await JoinedEntities.shared.edition(item.editionId)
         return .init(
           id: item.id,
           quantity: item.quantity,
           unitPriceInCents: item.unitPrice,
           edition: .init(
             type: edition.type,
-            documentTitle: document.utf8ShortTitle,
-            authorName: friend.name,
+            documentTitle: edition.document.utf8ShortTitle,
+            authorName: edition.document.friend.name,
             image: .init(
-              width: 250, // TODO: edition.images.threeD.w250.width,
-              height: 250, // TODO: edition.images.threeD.w250.height,
-              url: "TODO" //  edition.images.threeD.w250.url.absoluteString
+              width: edition.images.threeD.w250.width,
+              height: edition.images.threeD.w250.height,
+              url: edition.images.threeD.w250.url.absoluteString
             )
           )
         )

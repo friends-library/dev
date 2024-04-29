@@ -36,7 +36,7 @@ final class PrintJobsTests: AppTestCase {
   }
 
   func testCreatePrintJob() async throws {
-    var payload: Lulu.Api.CreatePrintJobBody!
+    nonisolated(unsafe) var payload: Lulu.Api.CreatePrintJobBody!
 
     Current.luluClient.createPrintJob = {
       payload = $0
@@ -78,7 +78,7 @@ final class PrintJobsTests: AppTestCase {
   }
 
   func testCreatePrintJobWithFauxVolumes() async throws {
-    var payload: Lulu.Api.CreatePrintJobBody!
+    nonisolated(unsafe) var payload: Lulu.Api.CreatePrintJobBody!
 
     Current.luluClient.createPrintJob = {
       payload = $0
