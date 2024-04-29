@@ -119,8 +119,8 @@ final class JoinedRelatedDocument {
 final class JoinedEdition {
   let model: Edition
   let chapters: [EditionChapter]
+  let isbn: Isbn?
   fileprivate(set) unowned var document: JoinedDocument
-  fileprivate(set) var isbn: JoinedIsbn?
   fileprivate(set) var impression: JoinedEditionImpression?
   fileprivate(set) var audio: JoinedAudio?
 
@@ -140,7 +140,7 @@ final class JoinedEdition {
     _ model: Edition,
     document: JoinedDocument,
     chapters: [EditionChapter],
-    isbn: JoinedIsbn? = nil,
+    isbn: Isbn?,
     impression: JoinedEditionImpression? = nil
   ) {
     self.model = model
@@ -198,22 +198,6 @@ final class JoinedEditionImpression {
   }
 }
 
-// todo, unjoin?
-@dynamicMemberLookup
-final class JoinedIsbn {
-  let model: Isbn
-  fileprivate(set) unowned var edition: JoinedEdition?
-
-  subscript<T>(dynamicMember keyPath: KeyPath<Isbn, T>) -> T {
-    model[keyPath: keyPath]
-  }
-
-  init(_ model: Isbn, edition: JoinedEdition?) {
-    self.model = model
-    self.edition = edition
-  }
-}
-
 @globalActor actor JoinedEntities {
   static let shared = JoinedEntities()
 
@@ -222,7 +206,6 @@ final class JoinedIsbn {
   private var joinedDocuments: [Document.Id: JoinedDocument] = [:]
   private var joinedEditions: [Edition.Id: JoinedEdition] = [:]
   private var joinedImpressions: [EditionImpression.Id: JoinedEditionImpression] = [:]
-  private var joinedIsbns: [Isbn.Id: JoinedIsbn] = [:]
   private var joinedAudios: [Audio.Id: JoinedAudio] = [:]
   private var joinedAudioParts: [AudioPart.Id: JoinedAudioPart] = [:]
 
@@ -354,12 +337,19 @@ final class JoinedIsbn {
       map[model.editionId, default: []].append(model)
     }
 
+    let isbnMap: [Edition.Id: Isbn] = try await isbns.reduce(into: [:]) { map, model in
+      if let editionId = model.editionId {
+        map[editionId] = model
+      }
+    }
+
     joinedEditions = try await editions.reduce(into: [:]) { joined, model in
       let document = joinedDocuments[model.documentId]!
       let joinedEdition = JoinedEdition(
         model,
         document: document,
-        chapters: chapterMap[model.id] ?? []
+        chapters: chapterMap[model.id] ?? [],
+        isbn: isbnMap[model.id]
       )
       joined[model.id] = joinedEdition
       document.editions.append(joinedEdition)
@@ -372,26 +362,12 @@ final class JoinedIsbn {
       edition.impression = joinedImpression
     }
 
-    joinedIsbns = try await isbns.reduce(into: [:]) { joined, model in
-      let joinedIsbn = JoinedIsbn(model, edition: model.editionId.flatMap { joinedEditions[$0] })
-      joined[model.id] = joinedIsbn
-      if let edition = joinedIsbn.edition {
-        edition.isbn = joinedIsbn
-      }
-    }
-
     joinedAudios = try await audios.reduce(into: [:]) { joined, model in
       let edition = joinedEditions[model.editionId]!
-      // let parts = audioPartsMap[model.id] ?? []
       let joinedAudio = JoinedAudio(model, edition: edition)
       joined[model.id] = joinedAudio
       edition.audio = joinedAudio
-      // parts.forEach { $0.audio = joinedAudio }
     }
-
-    // let audioPartsMap = try await audioParts.reduce(into: [:]) { map, model in
-    //   map[model.audioId, default: []].append(joinedAudioParts[model.id]!)
-    // }
 
     joinedAudioParts = try await audioParts.reduce(into: [:]) { joined, model in
       let audio = joinedAudios[model.audioId]!
@@ -404,10 +380,11 @@ final class JoinedIsbn {
   }
 }
 
+// SAFETY: the only props that are unsendable `var` are fileprivate(set) and
+// setup synchronously in the `load` method, which is isolated to a global actor
 extension JoinedFriend: @unchecked Sendable {}
 extension JoinedDocument: @unchecked Sendable {}
 extension JoinedEdition: @unchecked Sendable {}
-extension JoinedIsbn: @unchecked Sendable {}
 extension JoinedAudio: @unchecked Sendable {}
 extension JoinedEditionImpression: @unchecked Sendable {}
 
