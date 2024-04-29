@@ -8,20 +8,20 @@ struct AddEditionIdForeignKeys: AsyncMigration {
 
     _ = try await sql.raw(
       """
-      ALTER TABLE \(raw: OrderItem.M3.tableName) 
-      ADD CONSTRAINT \(raw: M26.orderItemsEditionIdForeignKey) 
-      FOREIGN KEY (\(raw: OrderItem.M10.editionId.description)) 
-      REFERENCES \(raw: Edition.M17.tableName) (\(raw: FieldKey.id.description))
+      ALTER TABLE \(unsafeRaw: OrderItem.M3.tableName)
+      ADD CONSTRAINT \(unsafeRaw: M26.orderItemsEditionIdForeignKey)
+      FOREIGN KEY (\(unsafeRaw: OrderItem.M10.editionId.description))
+      REFERENCES \(unsafeRaw: Edition.M17.tableName) (\(col: .id))
       ON DELETE NO ACTION;
       """
     ).all()
 
     _ = try await sql.raw(
       """
-      ALTER TABLE \(raw: Download.M1.tableName) 
-      ADD CONSTRAINT \(raw: M26.downloadsEditionIdForeignKey) 
-      FOREIGN KEY (\(raw: Download.M10.editionId.description)) 
-      REFERENCES \(raw: Edition.M17.tableName) (\(raw: FieldKey.id.description))
+      ALTER TABLE \(unsafeRaw: Download.M1.tableName)
+      ADD CONSTRAINT \(unsafeRaw: M26.downloadsEditionIdForeignKey)
+      FOREIGN KEY (\(unsafeRaw: Download.M10.editionId.description))
+      REFERENCES \(unsafeRaw: Edition.M17.tableName) (\(col: .id))
       ON DELETE NO ACTION;
       """
     ).all()
@@ -33,15 +33,15 @@ struct AddEditionIdForeignKeys: AsyncMigration {
 
     _ = try await sql.raw(
       """
-      ALTER TABLE \(raw: OrderItem.M3.tableName)
-      DROP CONSTRAINT \(raw: M26.orderItemsEditionIdForeignKey);
+      ALTER TABLE \(unsafeRaw: OrderItem.M3.tableName)
+      DROP CONSTRAINT \(unsafeRaw: M26.orderItemsEditionIdForeignKey);
       """
     ).all()
 
     _ = try await sql.raw(
       """
-      ALTER TABLE \(raw: Download.M1.tableName)
-      DROP CONSTRAINT \(raw: M26.downloadsEditionIdForeignKey);
+      ALTER TABLE \(unsafeRaw: Download.M1.tableName)
+      DROP CONSTRAINT \(unsafeRaw: M26.downloadsEditionIdForeignKey);
       """
     ).all()
   }

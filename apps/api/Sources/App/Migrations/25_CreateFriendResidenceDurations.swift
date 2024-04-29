@@ -29,8 +29,8 @@ struct CreateFriendResidenceDurations: AsyncMigration {
 extension FriendResidenceDuration {
   enum M25 {
     static let tableName = "friend_residence_durations"
-    nonisolated(unsafe) static let friendResidenceId = FieldKey("friend_residence_id")
-    nonisolated(unsafe) static let start = FieldKey("start")
-    nonisolated(unsafe) static let end = FieldKey("end")
+    static let friendResidenceId = FieldKey("friend_residence_id")
+    static let start = FieldKey("start")
+    static let end = FieldKey("end")
   }
 }

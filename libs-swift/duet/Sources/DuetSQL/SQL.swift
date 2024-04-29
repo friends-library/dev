@@ -195,7 +195,7 @@ public enum SQL {
         if LOG_SQL {
           print("\n```SQL\n\(statement.query)\n```")
         }
-        return try await db.raw("\(raw: statement.query)").all()
+        return try await db.raw("\(unsafeRaw: statement.query)").all()
       }
 
       let types = statement.bindings.map(\.typeName).list
@@ -218,14 +218,14 @@ public enum SQL {
         }
 
         await PreparedStatements.shared.set(name, forKey: key)
-        _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
+        _ = try await db.raw("\(unsafeRaw: insertPrepareSql)").all().get()
       }
 
       if LOG_SQL {
         print("\n```SQL\n\(unPrepare(statement: statement))\n```")
       }
 
-      return try await db.raw("\(raw: "EXECUTE \(name)(\(params))")").all()
+      return try await db.raw("\(unsafeRaw: "EXECUTE \(name)(\(params))")").all()
     } else {
       fatalError("SQL.execute() is not available on this platform")
     }

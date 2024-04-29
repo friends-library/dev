@@ -20,6 +20,6 @@ struct AddOrderFeesColumn: AsyncMigration {
 
 extension Order {
   enum M28 {
-    nonisolated(unsafe) static let fees = FieldKey("fees")
+    static let fees = FieldKey("fees")
   }
 }

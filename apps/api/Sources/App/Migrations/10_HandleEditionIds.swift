@@ -52,7 +52,7 @@ struct HandleEditionIds: AsyncMigration {
       AND
         \"\(Download.M1.editionType)\" = '\(editionType)'
       """
-      _ = try await db.raw("\(raw: updateDownload)").all()
+      _ = try await db.raw("\(unsafeRaw: updateDownload)").all()
 
       let updateOrderItem = """
       UPDATE \(OrderItem.M3.tableName)
@@ -62,7 +62,7 @@ struct HandleEditionIds: AsyncMigration {
       AND
         \"\(OrderItem.M3.editionType)\" = '\(editionType)'
       """
-      _ = try await db.raw("\(raw: updateOrderItem)").all()
+      _ = try await db.raw("\(unsafeRaw: updateOrderItem)").all()
     }
   }
 
@@ -76,13 +76,13 @@ struct HandleEditionIds: AsyncMigration {
 
 extension Download {
   enum M10 {
-    nonisolated(unsafe) static let editionId = FieldKey("edition_id")
+    static let editionId = FieldKey("edition_id")
   }
 }
 
 extension OrderItem {
   enum M10 {
-    nonisolated(unsafe) static let editionId = FieldKey("edition_id")
+    static let editionId = FieldKey("edition_id")
   }
 }
 

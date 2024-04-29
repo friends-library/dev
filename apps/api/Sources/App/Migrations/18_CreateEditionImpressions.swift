@@ -34,12 +34,11 @@ struct CreateEditionImpressions: AsyncMigration {
 extension EditionImpression {
   enum M18 {
     static let tableName = "edition_impressions"
-    nonisolated(unsafe) static let editionId = FieldKey("edition_id")
-    nonisolated(unsafe) static let adocLength = FieldKey("adoc_length")
-    nonisolated(unsafe) static let publishedRevision = FieldKey("published_revision")
-    nonisolated(unsafe) static let productionToolchainRevision =
-      FieldKey("production_toolchain_revision")
-    nonisolated(unsafe) static let paperbackSizeVariant = FieldKey("paperback_size_variant")
-    nonisolated(unsafe) static let paperbackVolumes = FieldKey("paperback_volumes")
+    static let editionId = FieldKey("edition_id")
+    static let adocLength = FieldKey("adoc_length")
+    static let publishedRevision = FieldKey("published_revision")
+    static let productionToolchainRevision = FieldKey("production_toolchain_revision")
+    static let paperbackSizeVariant = FieldKey("paperback_size_variant")
+    static let paperbackVolumes = FieldKey("paperback_volumes")
   }
 }

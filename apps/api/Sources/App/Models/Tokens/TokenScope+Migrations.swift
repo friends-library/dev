@@ -4,8 +4,8 @@ extension TokenScope {
   enum M5 {
     static let tableName = "token_scopes"
     static let dbEnumName = "scopes"
-    nonisolated(unsafe) static let scope = FieldKey("scope")
-    nonisolated(unsafe) static let tokenId = FieldKey("token_id")
+    static let scope = FieldKey("scope")
+    static let tokenId = FieldKey("token_id")
     enum Scope {
       static let queryDownloads = "queryDownloads"
       static let mutateDownloads = "mutateDownloads"

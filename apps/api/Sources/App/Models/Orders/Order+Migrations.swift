@@ -3,25 +3,25 @@ import Fluent
 extension Order {
   enum M2 {
     static let tableName = "orders"
-    nonisolated(unsafe) static let id = FieldKey("id")
-    nonisolated(unsafe) static let paymentId = FieldKey("payment_id")
-    nonisolated(unsafe) static let printJobStatus = FieldKey("print_job_status")
-    nonisolated(unsafe) static let printJobId = FieldKey("print_job_id")
-    nonisolated(unsafe) static let amount = FieldKey("amount")
-    nonisolated(unsafe) static let shipping = FieldKey("shipping")
-    nonisolated(unsafe) static let taxes = FieldKey("taxes")
-    nonisolated(unsafe) static let ccFeeOffset = FieldKey("cc_fee_offset")
-    nonisolated(unsafe) static let shippingLevel = FieldKey("shipping_level")
-    nonisolated(unsafe) static let email = FieldKey("email")
-    nonisolated(unsafe) static let addressName = FieldKey("address_name")
-    nonisolated(unsafe) static let addressStreet = FieldKey("address_street")
-    nonisolated(unsafe) static let addressStreet2 = FieldKey("address_street2")
-    nonisolated(unsafe) static let addressCity = FieldKey("address_city")
-    nonisolated(unsafe) static let addressState = FieldKey("address_state")
-    nonisolated(unsafe) static let addressZip = FieldKey("address_zip")
-    nonisolated(unsafe) static let addressCountry = FieldKey("address_country")
-    nonisolated(unsafe) static let lang = FieldKey("lang")
-    nonisolated(unsafe) static let source = FieldKey("source")
+    static let id = FieldKey("id")
+    static let paymentId = FieldKey("payment_id")
+    static let printJobStatus = FieldKey("print_job_status")
+    static let printJobId = FieldKey("print_job_id")
+    static let amount = FieldKey("amount")
+    static let shipping = FieldKey("shipping")
+    static let taxes = FieldKey("taxes")
+    static let ccFeeOffset = FieldKey("cc_fee_offset")
+    static let shippingLevel = FieldKey("shipping_level")
+    static let email = FieldKey("email")
+    static let addressName = FieldKey("address_name")
+    static let addressStreet = FieldKey("address_street")
+    static let addressStreet2 = FieldKey("address_street2")
+    static let addressCity = FieldKey("address_city")
+    static let addressState = FieldKey("address_state")
+    static let addressZip = FieldKey("address_zip")
+    static let addressCountry = FieldKey("address_country")
+    static let lang = FieldKey("lang")
+    static let source = FieldKey("source")
 
     enum PrintJobStatusEnum {
       static let name = "order_print_job_status"
@@ -58,6 +58,6 @@ extension Order {
   }
 
   enum M7 {
-    nonisolated(unsafe) static let freeOrderRequestId = FieldKey("free_order_request_id")
+    static let freeOrderRequestId = FieldKey("free_order_request_id")
   }
 }

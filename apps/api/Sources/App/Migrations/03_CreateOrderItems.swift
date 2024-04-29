@@ -34,12 +34,12 @@ struct CreateOrderItems: AsyncMigration {
 extension OrderItem {
   enum M3 {
     static let tableName = "order_items"
-    nonisolated(unsafe) static let orderId = FieldKey("order_id")
-    nonisolated(unsafe) static let title = FieldKey("title")
-    nonisolated(unsafe) static let documentId = FieldKey("document_id")
-    nonisolated(unsafe) static let editionType = FieldKey("edition_type")
-    nonisolated(unsafe) static let quantity = FieldKey("quantity")
-    nonisolated(unsafe) static let unitPrice = FieldKey("unit_price")
-    nonisolated(unsafe) static let createdAt = FieldKey("created_at")
+    static let orderId = FieldKey("order_id")
+    static let title = FieldKey("title")
+    static let documentId = FieldKey("document_id")
+    static let editionType = FieldKey("edition_type")
+    static let quantity = FieldKey("quantity")
+    static let unitPrice = FieldKey("unit_price")
+    static let createdAt = FieldKey("created_at")
   }
 }

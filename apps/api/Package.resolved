@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/fluent-kit.git",
       "state" : {
-        "revision" : "81db32f719a660f65266efeac121168db2710f20",
-        "version" : "1.47.3"
+        "revision" : "0f32c02202792cbed49711bcd720cf7dbbb385db",
+        "version" : "1.48.2"
       }
     },
     {
@@ -140,8 +140,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/sql-kit.git",
       "state" : {
-        "revision" : "b2f128cb62a3abfbb1e3b2893ff3ee69e70f4f0f",
-        "version" : "3.28.0"
+        "revision" : "9afdc96113b673819ccdc4819f77e901c698a87a",
+        "version" : "3.29.3"
       }
     },
     {
