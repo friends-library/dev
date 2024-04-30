@@ -3,7 +3,6 @@ import FluentSQL
 import XCore
 
 public enum SQL {
-
   public enum OrderDirection {
     case asc
     case desc
@@ -188,47 +187,43 @@ public enum SQL {
     _ statement: PreparedStatement,
     on db: SQLDatabase
   ) async throws -> [SQLRow] {
-    if #available(macOS 12, *) {
-      // e.g. SELECT statements with no WHERE clause have
-      // no bindings, and so can't be sent as a pg prepared statement
-      if statement.bindings.isEmpty {
-        if LOG_SQL {
-          print("\n```SQL\n\(statement.query)\n```")
-        }
-        return try await db.raw("\(unsafeRaw: statement.query)").all()
+    // e.g. SELECT statements with no WHERE clause have
+    // no bindings, and so can't be sent as a pg prepared statement
+    if statement.bindings.isEmpty {
+      if LOG_SQL {
+        print("\n```SQL\n\(statement.query)\n```")
       }
+      return try await db.raw("\(unsafeRaw: statement.query)").all()
+    }
 
-      let types = statement.bindings.map(\.typeName).list
-      let params = statement.bindings.map(\.param).list
-      let key = [statement.query, types].joined()
-      let name: String
+    let types = statement.bindings.map(\.typeName).list
+    let params = statement.bindings.map(\.param).list
+    let key = [statement.query, types].joined()
+    let name: String
 
-      if let previouslyInsertedName = await PreparedStatements.shared.get(key) {
-        name = previouslyInsertedName
-      } else {
-        let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
-        name = "plan_\(id)"
-        let insertPrepareSql = """
-        PREPARE \(name)(\(types)) AS
-        \(statement.query)
-        """
-
-        if LOG_SQL {
-          print("\n```SQL\n\(insertPrepareSql)\n```")
-        }
-
-        await PreparedStatements.shared.set(name, forKey: key)
-        _ = try await db.raw("\(unsafeRaw: insertPrepareSql)").all().get()
-      }
+    if let previouslyInsertedName = await PreparedStatements.shared.get(key) {
+      name = previouslyInsertedName
+    } else {
+      let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+      name = "plan_\(id)"
+      let insertPrepareSql = """
+      PREPARE \(name)(\(types)) AS
+      \(statement.query)
+      """
 
       if LOG_SQL {
-        print("\n```SQL\n\(unPrepare(statement: statement))\n```")
+        print("\n```SQL\n\(insertPrepareSql)\n```")
       }
 
-      return try await db.raw("\(unsafeRaw: "EXECUTE \(name)(\(params))")").all()
-    } else {
-      fatalError("SQL.execute() is not available on this platform")
+      await PreparedStatements.shared.set(name, forKey: key)
+      _ = try await db.raw("\(unsafeRaw: insertPrepareSql)").all().get()
     }
+
+    if LOG_SQL {
+      print("\n```SQL\n\(unPrepare(statement: statement))\n```")
+    }
+
+    return try await db.raw("\(unsafeRaw: "EXECUTE \(name)(\(params))")").all()
   }
 
   private static func whereClause<M: Model>(
