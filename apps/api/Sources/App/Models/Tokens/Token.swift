@@ -10,7 +10,12 @@ struct Token: Codable, Sendable {
 
   var isValid: Bool { true }
 
-  init(id: Id = .init(), value: Value = .init(), description: String, uses: Int? = nil) {
+  init(
+    id: Id = .init(),
+    value: Value = .init(),
+    description: String,
+    uses: Int? = nil
+  ) {
     self.id = id
     self.value = value
     self.description = description

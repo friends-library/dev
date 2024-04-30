@@ -17,7 +17,7 @@ struct InitOrder: Pair {
 
 extension InitOrder: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
-    let orderId = Order.Id()
+    let orderId = Order.Id(Current.uuid())
     do {
       async let pi = Current.stripeClient.createPaymentIntent(
         input.rawValue, .USD,

@@ -30,32 +30,32 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
 
   nonisolated(unsafe) static let router = OneOf {
     Route(.case(PairQLRoute.dev)) {
-      Method.post
+      Method("POST")
       Path { "dev" }
       DevRoute.router
     }
     Route(.case(PairQLRoute.admin)) {
-      Method.post
+      Method("POST")
       Path { "admin" }
       AdminRoute.router
     }
     Route(.case(PairQLRoute.order)) {
-      Method.post
+      Method("POST")
       Path { "order" }
       OrderRoute.router
     }
     Route(.case(PairQLRoute.evans)) {
-      Method.post
+      Method("POST")
       Path { "evans" }
       EvansRoute.router
     }
     Route(.case(PairQLRoute.evansBuild)) {
-      Method.post
+      Method("POST")
       Path { "evans-build" }
       EvansBuildRoute.router
     }
     Route(.case(PairQLRoute.native)) {
-      Method.post
+      Method("POST")
       Path { "native" }
       NativeRoute.router
     }
