@@ -6,7 +6,7 @@ import XHttp
 #endif
 
 public extension Stripe {
-  struct Client {
+  struct Client: Sendable {
     public var createPaymentIntent = createPaymentIntent(amountInCents:currency:metadata:secretKey:)
     public var cancelPaymentIntent = cancelPaymentIntent(id:secretKey:)
     public var createRefund = createRefund(paymentIntentId:secretKey:)
@@ -18,22 +18,36 @@ public extension Stripe {
     public init() {}
 
     public init(
-      createPaymentIntent: @escaping (
+      createPaymentIntent: @Sendable @escaping (
         Int,
         Stripe.Api.Currency,
         [String: String],
         String
       ) async throws -> Stripe.Api.PaymentIntent,
-      cancelPaymentIntent: @escaping (String, String) async throws -> Stripe.Api.PaymentIntent,
-      createRefund: @escaping (String, String) async throws -> Stripe.Api.Refund,
-      getCheckoutSession: @escaping (String, String) async throws -> Stripe.Api.CheckoutSession,
-      createCheckoutSession: @escaping (
+      cancelPaymentIntent: @Sendable @escaping (
+        String,
+        String
+      ) async throws -> Stripe.Api.PaymentIntent,
+      createRefund: @Sendable @escaping (
+        String,
+        String
+      ) async throws -> Stripe.Api.Refund,
+      getCheckoutSession: @Sendable @escaping (
+        String,
+        String
+      ) async throws -> Stripe.Api.CheckoutSession,
+      createCheckoutSession: @Sendable @escaping (
         CheckoutSessionData,
         String
       ) async throws -> Stripe.Api.CheckoutSession,
-      getSubscription: @escaping (String, String) async throws -> Stripe.Api.Subscription,
-      createBillingPortalSession: @escaping (String, String) async throws -> Stripe.Api
-        .BillingPortalSession
+      getSubscription: @Sendable @escaping (
+        String,
+        String
+      ) async throws -> Stripe.Api.Subscription,
+      createBillingPortalSession: @Sendable @escaping (
+        String,
+        String
+      ) async throws -> Stripe.Api.BillingPortalSession
     ) {
       self.createPaymentIntent = createPaymentIntent
       self.cancelPaymentIntent = cancelPaymentIntent
@@ -48,7 +62,7 @@ public extension Stripe {
 
 // implementations
 
-private func createBillingPortalSession(
+@Sendable private func createBillingPortalSession(
   customerId: String,
   secretKey: String
 ) async throws -> Stripe.Api.BillingPortalSession {
@@ -60,7 +74,7 @@ private func createBillingPortalSession(
   return try await decode(Stripe.Api.BillingPortalSession.self, data: data, response: res)
 }
 
-private func getSubscription(
+@Sendable private func getSubscription(
   id: String,
   secretKey: String
 ) async throws -> Stripe.Api.Subscription {
@@ -71,7 +85,7 @@ private func getSubscription(
   return try await decode(Stripe.Api.Subscription.self, data: data, response: response)
 }
 
-private func getCheckoutSession(
+@Sendable private func getCheckoutSession(
   id: String,
   secretKey: String
 ) async throws -> Stripe.Api.CheckoutSession {
@@ -82,7 +96,7 @@ private func getCheckoutSession(
   return try await decode(Stripe.Api.CheckoutSession.self, data: data, response: response)
 }
 
-private func createCheckoutSession(
+@Sendable private func createCheckoutSession(
   data: Stripe.CheckoutSessionData,
   secretKey: String
 ) async throws -> Stripe.Api.CheckoutSession {
@@ -127,7 +141,7 @@ private func createCheckoutSession(
   return try await decode(Stripe.Api.CheckoutSession.self, data: data, response: response)
 }
 
-private func createRefund(
+@Sendable private func createRefund(
   paymentIntentId: String,
   secretKey: String
 ) async throws -> Stripe.Api.Refund {
@@ -139,7 +153,7 @@ private func createRefund(
   return try await decode(Stripe.Api.Refund.self, data: data, response: response)
 }
 
-private func createPaymentIntent(
+@Sendable private func createPaymentIntent(
   amountInCents: Int,
   currency: Stripe.Api.Currency,
   metadata: [String: String],
@@ -163,7 +177,7 @@ private func createPaymentIntent(
   return try await decode(Stripe.Api.PaymentIntent.self, data: data, response: response)
 }
 
-private func cancelPaymentIntent(
+@Sendable private func cancelPaymentIntent(
   id: String,
   secretKey: String
 ) async throws -> Stripe.Api.PaymentIntent {

@@ -18,22 +18,22 @@ public struct SyncStagingDbJob: ScheduledJob {
       }
     }
   }
+}
 
-  private func logError(_ error: ShellOutError) async {
-    await slackError(
-      """
-      Error running `SyncStagingDbJob` bash script:
+private func logError(_ error: ShellOutError) async {
+  await slackError(
+    """
+    Error running `SyncStagingDbJob` bash script:
 
-      *stderr*:
-      ```
-      \(error.message)
-      ```
+    *stderr*:
+    ```
+    \(error.message)
+    ```
 
-      *stdout*:
-      ```
-      \(error.output)
-      ```
-      """
-    )
-  }
+    *stdout*:
+    ```
+    \(error.output)
+    ```
+    """
+  )
 }

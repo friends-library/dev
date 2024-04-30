@@ -11,9 +11,19 @@ let package = Package(
     .package("pointfreeco/swift-url-routing@0.5.0"),
   ],
   targets: [
-    .target(name: "PairQL", dependencies: [
-      .product(name: "URLRouting", package: "swift-url-routing"),
-    ]),
+    .target(
+      name: "PairQL",
+      dependencies: [
+        .product(name: "URLRouting", package: "swift-url-routing"),
+      ],
+      swiftSettings: [
+        .unsafeFlags([
+          "-Xfrontend", "-warn-concurrency",
+          "-Xfrontend", "-enable-actor-data-race-checks",
+          "-Xfrontend", "-warnings-as-errors",
+        ]),
+      ]
+    ),
   ]
 )
 
