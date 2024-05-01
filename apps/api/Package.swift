@@ -12,6 +12,7 @@ let package = Package(
     .github("jaredh159/swift-tagged@0.8.2"),
     .github("pointfreeco/swift-nonempty@0.5.0"),
     .github("pointfreeco/vapor-routing@0.1.3"),
+    .github("pointfreeco/swift-concurrency-extras@1.1.0"),
     .github("kylehughes/RomanNumeralKit@1.0.0"),
     .github("JohnSundell/ShellOut@2.0.0"),
     .github("onevcat/Rainbow@4.0.1"),
@@ -68,6 +69,7 @@ let package = Package(
         .product(name: "XSendGrid", package: "x-sendgrid"),
         .product(name: "XExpect", package: "x-expect"),
         .product(name: "XCTVapor", package: "vapor"),
+        .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras"),
       ]
     ),
   ]

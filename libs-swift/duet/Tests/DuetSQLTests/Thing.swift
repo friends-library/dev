@@ -21,7 +21,7 @@ struct Thing: Codable {
   var deletedAt: Date?
 
   init(
-    id: Id = .init(),
+    id: Id = .init(UUID()),
     string: String = "foo",
     version: String = "1.0.0",
     int: Int = 123,
