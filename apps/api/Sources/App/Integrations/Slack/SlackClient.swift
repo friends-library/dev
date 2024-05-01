@@ -26,6 +26,10 @@ extension FlpSlack {
   }
 }
 
+#if os(Linux)
+  extension DispatchSemaphore: @unchecked Sendable {}
+#endif
+
 @Sendable private func sendSync(_ slack: FlpSlack.Message) {
   let semaphore = DispatchSemaphore(value: 0)
   Task {

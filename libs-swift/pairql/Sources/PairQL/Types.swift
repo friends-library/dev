@@ -4,7 +4,6 @@ import Foundation
 @_exported import URLRouting
 
 #if os(Linux)
-  // core libs stuff not all up to date for Sendable
   extension JSONEncoder: @unchecked Sendable {}
   extension JSONDecoder.DateDecodingStrategy: @unchecked Sendable {}
   extension ISO8601DateFormatter: @unchecked Sendable {}

@@ -4,20 +4,37 @@ import Vapor
 import XSendGrid
 import XStripe
 
-struct Environment: @unchecked Sendable {
-  var uuid: () -> UUID = UUID.init
-  var date: () -> Date = Date.init
-  var db: DuetSQL.Client = ThrowingClient()
-  var logger = Logger(label: "api.friendslibrary")
-  var slackClient: FlpSlack.Client = .init()
-  var luluClient: Lulu.Api.Client = .live
-  var sendGridClient: SendGrid.Client.SlackErrorLogging = .live
-  var stripeClient = Stripe.Client()
-  var ipApiClient = IpApi.Client()
-  var userAgentParser: UserAgentParser = .live
-}
+#if !DEBUG
+  struct Environment: Sendable {
+    var uuid: @Sendable () -> UUID = { UUID() }
+    var date: @Sendable () -> Date = { Date() }
+    var db: DuetSQL.Client = ThrowingClient()
+    var logger = Logger(label: "api.friendslibrary")
+    let slackClient: FlpSlack.Client = .init()
+    let luluClient: Lulu.Api.Client = .live
+    let sendGridClient: SendGrid.Client.SlackErrorLogging = .live
+    let stripeClient = Stripe.Client()
+    let ipApiClient = IpApi.Client()
+    let userAgentParser: UserAgentParser = .live
+  }
+#else
+  struct Environment: Sendable {
+    var uuid: @Sendable () -> UUID = { UUID() }
+    var date: @Sendable () -> Date = { Date() }
+    var db: DuetSQL.Client = ThrowingClient()
+    var logger = Logger(label: "api.friendslibrary")
+    var slackClient: FlpSlack.Client = .init()
+    var luluClient: Lulu.Api.Client = .live
+    var sendGridClient: SendGrid.Client.SlackErrorLogging = .live
+    var stripeClient = Stripe.Client()
+    var ipApiClient = IpApi.Client()
+    var userAgentParser: UserAgentParser = .live
+  }
+#endif
 
-// concurrency todo
+// SAFETY: in non-debug, only `Current.db` and `Current.logger` are mutable
+// and they are mutated only synchronously during bootstrapping
+// before the app starts serving requests
 nonisolated(unsafe) var Current = Environment()
 
 extension UUID {
