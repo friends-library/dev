@@ -54,17 +54,3 @@ extension JoinedAudio {
     )
   }
 }
-
-extension Audio {
-  func parts() async throws -> [AudioPart] {
-    try await AudioPart.query()
-      .where(.audioId == id)
-      .all()
-  }
-
-  func edition() async throws -> Edition {
-    try await Edition.query()
-      .where(.id == editionId)
-      .first()
-  }
-}

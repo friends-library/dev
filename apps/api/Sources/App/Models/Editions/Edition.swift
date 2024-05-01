@@ -32,6 +32,8 @@ struct Edition: Codable, Sendable {
   }
 }
 
+// extensions
+
 extension Edition {
   struct DirectoryPathData {
     var document: Document.DirectoryPathData
@@ -42,39 +44,5 @@ extension Edition {
 extension Edition.DirectoryPathData: DirectoryPathable {
   var directoryPath: String {
     "\(document.directoryPath)/\(type)"
-  }
-}
-
-// loaders
-
-extension Edition {
-  func document() async throws -> Document {
-    try await Document.query()
-      .where(.id == documentId)
-      .first()
-  }
-
-  func impression() async throws -> EditionImpression? {
-    try await EditionImpression.query()
-      .where(.editionId == id)
-      .first()
-  }
-
-  func isbn() async throws -> Isbn? {
-    try await Isbn.query()
-      .where(.editionId == id)
-      .first()
-  }
-
-  func audio() async throws -> Audio? {
-    try await Audio.query()
-      .where(.editionId == id)
-      .first()
-  }
-
-  func chapters() async throws -> [EditionChapter] {
-    try await EditionChapter.query()
-      .where(.editionId == id)
-      .all()
   }
 }

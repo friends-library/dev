@@ -51,6 +51,9 @@ struct Friend: Codable, Sendable {
   }
 }
 
+// extensions
+
+// TODO: move
 protocol DirectoryPathable {
   var directoryPath: String { get }
 }
@@ -73,31 +76,6 @@ extension JoinedFriend {
     documents.first { $0.hasNonDraftEdition } != nil
   }
 }
-
-// loaders
-
-extension Friend {
-
-  // @EntitiesActor
-  func documents() async throws -> [Document] {
-    // try await EntitiesActor.shared.documents(where: { $0.friendId == id })
-    []
-  }
-
-  func residences() async throws -> [FriendResidence] {
-    try await FriendResidence.query()
-      .where(.friendId == id)
-      .all()
-  }
-
-  func quotes() async throws -> [FriendQuote] {
-    try await FriendQuote.query()
-      .where(.friendId == id)
-      .all()
-  }
-}
-
-// extensions
 
 extension Friend {
   enum Gender: String, Codable, CaseIterable {

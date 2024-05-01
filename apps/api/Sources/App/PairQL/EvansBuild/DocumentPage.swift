@@ -129,9 +129,16 @@ extension DocumentPage: Resolver {
       throw Abort(.notFound)
     }
 
+    let rows = try await Current.db.customQuery(
+      DocumentDownloads.self,
+      withBindings: document.editions.map { .uuid($0.id) }
+    )
+    assert(rows.count == 1)
+    let numDownloads = rows.first?.total ?? 0
+
     return try .init(
       document,
-      downloads: [document.urlPath: try await document.model.numDownloads()],
+      downloads: [document.urlPath: numDownloads],
       numTotalBooks: publishedDocs.count,
       in: context
     )
@@ -277,4 +284,20 @@ extension JoinedDocument {
   var urlPath: String {
     "\(friend.slug)/\(model.slug)"
   }
+}
+
+private struct DocumentDownloads: CustomQueryable {
+  static func query(numBindings: Int) -> String {
+    let bindings = (1 ... numBindings).map { "$\($0)" }.joined(separator: ", ")
+    return """
+      SELECT SUM(document_downloads) AS total
+      FROM (
+        SELECT COUNT(*)::INTEGER AS document_downloads
+        FROM \(Download.tableName)
+        WHERE \(Download.columnName(.editionId)) IN (\(bindings))
+      ) AS subquery;
+    """
+  }
+
+  let total: Int
 }

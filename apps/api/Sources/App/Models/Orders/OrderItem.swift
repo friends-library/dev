@@ -25,13 +25,3 @@ struct OrderItem: Codable, Sendable {
     self.unitPrice = unitPrice
   }
 }
-
-// loaders
-
-extension OrderItem {
-  func edition() async throws -> Edition {
-    try await Edition.query()
-      .where(.id == editionId)
-      .first()
-  }
-}

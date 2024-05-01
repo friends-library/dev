@@ -19,13 +19,3 @@ struct FriendResidence: Codable, Sendable {
     self.region = region
   }
 }
-
-// loaders
-
-extension FriendResidence {
-  func durations() async throws -> [FriendResidenceDuration] {
-    try await FriendResidenceDuration.query()
-      .where(.friendResidenceId == id)
-      .all()
-  }
-}

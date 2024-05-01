@@ -26,14 +26,13 @@ extension SelectableDocuments: NoInputResolver {
 
 extension Array where Element == SelectableDocuments.SelectableDocument {
   static func load() async throws -> Self {
-    let documents = try await Document.query().all()
-    return try await documents.concurrentMap { doc in
-      let friend = try await doc.friend()
-      return .init(
-        id: doc.id,
-        title: doc.title,
-        lang: friend.lang,
-        friendAlphabeticalName: friend.alphabeticalName
+    let documents = try await JoinedEntities.shared.documents()
+    return documents.map { document in
+      .init(
+        id: document.id,
+        title: document.title,
+        lang: document.friend.lang,
+        friendAlphabeticalName: document.friend.alphabeticalName
       )
     }
   }
