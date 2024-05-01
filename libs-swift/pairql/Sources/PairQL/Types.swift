@@ -1,4 +1,8 @@
-import Foundation
+#if os(Linux)
+  @preconcurrency import Foundation
+#else
+  import Foundation
+#endif
 
 @_exported import CasePaths
 @_exported import URLRouting
