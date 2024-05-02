@@ -1,3 +1,4 @@
+import ConcurrencyExtras
 import FluentSQL
 import Vapor
 import XCTest
@@ -51,11 +52,13 @@ class AppTestCase: XCTestCase {
 
 func mockUUIDs() -> (UUID, UUID, UUID) {
   let uuids = (UUID(), UUID(), UUID())
-  var array = [uuids.0, uuids.1, uuids.2]
+  let array = LockIsolated([uuids.0, uuids.1, uuids.2])
 
-  UUID.new = {
-    guard !array.isEmpty else { return UUID() }
-    return array.removeFirst()
+  Current.uuid = {
+    array.withValue { array in
+      guard !array.isEmpty else { return UUID() }
+      return array.removeFirst()
+    }
   }
 
   return uuids
@@ -100,7 +103,7 @@ func sync(
   }
 }
 
-#if DEBUG
+#if DEBUG && os(macOS)
   import Darwin
 
   func eprint(_ items: Any...) {

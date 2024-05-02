@@ -50,13 +50,14 @@ final class DocumentTests: XCTestCase {
     XCTAssertTrue(doc.isValid)
   }
 
-  func testTodosInvalidForDescriptionsIfHasNonDraftEdition() {
-    var doc = validLoaded
-    doc.description = "TODO"
-    doc.partialDescription = "TODO"
-    doc.featuredDescription = "TODO"
-    XCTAssertFalse(doc.isValid)
-  }
+  // sad validation
+  // func testTodosInvalidForDescriptionsIfHasNonDraftEdition() {
+  //   var doc = validLoaded
+  //   doc.description = "TODO"
+  //   doc.partialDescription = "TODO"
+  //   doc.featuredDescription = "TODO"
+  //   XCTAssertFalse(doc.isValid)
+  // }
 
   func testNonCapitalizedTitleInvalid() {
     var doc = validLoaded

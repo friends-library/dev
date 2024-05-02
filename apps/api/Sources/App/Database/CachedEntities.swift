@@ -7,7 +7,12 @@ final class JoinedFriend {
   let model: Friend
   let residences: [JoinedFriendResidence]
   let quotes: [FriendQuote]
-  fileprivate(set) var documents: [JoinedDocument]
+
+  #if DEBUG
+    var documents: [JoinedDocument]
+  #else
+    fileprivate(set) var documents: [JoinedDocument]
+  #endif
 
   var directoryPathData: Friend.DirectoryPathData {
     .init(lang: model.lang, slug: model.slug)
@@ -49,10 +54,18 @@ final class JoinedFriendResidence: Sendable {
 final class JoinedDocument {
   let model: Document
   let tags: [DocumentTag.TagType]
-  fileprivate(set) var altLanguageDocument: JoinedDocument?
-  fileprivate(set) unowned var friend: JoinedFriend
-  fileprivate(set) var editions: [JoinedEdition] = []
-  fileprivate(set) var relatedDocuments: [JoinedRelatedDocument] = []
+
+  #if DEBUG
+    var altLanguageDocument: JoinedDocument?
+    unowned var friend: JoinedFriend
+    var editions: [JoinedEdition] = []
+    var relatedDocuments: [JoinedRelatedDocument] = []
+  #else
+    fileprivate(set) var altLanguageDocument: JoinedDocument?
+    fileprivate(set) unowned var friend: JoinedFriend
+    fileprivate(set) var editions: [JoinedEdition] = []
+    fileprivate(set) var relatedDocuments: [JoinedRelatedDocument] = []
+  #endif
 
   var hasNonDraftEdition: Bool {
     editions.contains { !$0.isDraft }
@@ -120,9 +133,16 @@ final class JoinedEdition {
   let model: Edition
   let chapters: [EditionChapter]
   let isbn: Isbn?
-  fileprivate(set) unowned var document: JoinedDocument
-  fileprivate(set) var impression: JoinedEditionImpression?
-  fileprivate(set) var audio: JoinedAudio?
+
+  #if DEBUG
+    unowned var document: JoinedDocument
+    var impression: JoinedEditionImpression?
+    var audio: JoinedAudio?
+  #else
+    fileprivate(set) unowned var document: JoinedDocument
+    fileprivate(set) var impression: JoinedEditionImpression?
+    fileprivate(set) var audio: JoinedAudio?
+  #endif
 
   var directoryPathData: Edition.DirectoryPathData {
     .init(document: document.directoryPathData, type: model.type)
@@ -154,8 +174,14 @@ final class JoinedEdition {
 @dynamicMemberLookup
 final class JoinedAudio {
   let model: Audio
-  fileprivate(set) var parts: [JoinedAudioPart]
-  fileprivate(set) unowned var edition: JoinedEdition
+
+  #if DEBUG
+    var parts: [JoinedAudioPart]
+    unowned var edition: JoinedEdition
+  #else
+    fileprivate(set) var parts: [JoinedAudioPart]
+    fileprivate(set) unowned var edition: JoinedEdition
+  #endif
 
   subscript<T>(dynamicMember keyPath: KeyPath<Audio, T>) -> T {
     model[keyPath: keyPath]
@@ -171,7 +197,12 @@ final class JoinedAudio {
 @dynamicMemberLookup
 final class JoinedAudioPart {
   let model: AudioPart
-  fileprivate(set) unowned var audio: JoinedAudio
+
+  #if DEBUG
+    unowned var audio: JoinedAudio
+  #else
+    fileprivate(set) unowned var audio: JoinedAudio
+  #endif
 
   subscript<T>(dynamicMember keyPath: KeyPath<AudioPart, T>) -> T {
     model[keyPath: keyPath]
@@ -186,7 +217,12 @@ final class JoinedAudioPart {
 @dynamicMemberLookup
 final class JoinedEditionImpression {
   let model: EditionImpression
-  fileprivate(set) unowned var edition: JoinedEdition
+
+  #if DEBUG
+    unowned var edition: JoinedEdition
+  #else
+    fileprivate(set) unowned var edition: JoinedEdition
+  #endif
 
   subscript<T>(dynamicMember keyPath: KeyPath<EditionImpression, T>) -> T {
     model[keyPath: keyPath]
@@ -376,7 +412,7 @@ final class JoinedEditionImpression {
       audio.parts.append(joinedAudioPart)
     }
 
-    loaded = true
+    // loaded = true
   }
 }
 

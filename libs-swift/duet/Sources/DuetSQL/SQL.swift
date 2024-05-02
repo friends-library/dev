@@ -193,7 +193,14 @@ public enum SQL {
       if LOG_SQL {
         print("\n```SQL\n\(statement.query)\n```")
       }
-      return try await db.raw("\(unsafeRaw: statement.query)").all()
+      do {
+        return try await db.raw("\(unsafeRaw: statement.query)").all()
+      } catch {
+        #if DEBUG
+          print("Error executing SQL (no bindings): \(String(reflecting: error))")
+        #endif
+        throw error
+      }
     }
 
     let types = statement.bindings.map(\.typeName).list
@@ -216,14 +223,28 @@ public enum SQL {
       }
 
       await PreparedStatements.shared.set(name, forKey: key)
-      _ = try await db.raw("\(unsafeRaw: insertPrepareSql)").all().get()
+      do {
+        _ = try await db.raw("\(unsafeRaw: insertPrepareSql)").all().get()
+      } catch {
+        #if DEBUG
+          print("Error preparing SQL: \(String(reflecting: error))")
+        #endif
+        throw error
+      }
     }
 
     if LOG_SQL {
       print("\n```SQL\n\(unPrepare(statement: statement))\n```")
     }
 
-    return try await db.raw("\(unsafeRaw: "EXECUTE \(name)(\(params))")").all()
+    do {
+      return try await db.raw("\(unsafeRaw: "EXECUTE \(name)(\(params))")").all()
+    } catch {
+      #if DEBUG
+        print("Error executing prepared SQL: \(String(reflecting: error))")
+      #endif
+      throw error
+    }
   }
 
   private static func whereClause<M: Model>(

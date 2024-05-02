@@ -80,8 +80,10 @@ extension CreateEntity: Resolver {
         paperbackOverrideSize: input.paperbackOverrideSize
       )
       isbn.editionId = edition.id
+      guard edition.isValid else { throw ModelError.invalidEntity }
+      try await edition.create()
       try await isbn.save()
-      model = edition
+      return .success
 
     case .friend(let input):
       model = Friend(

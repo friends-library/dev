@@ -63,10 +63,9 @@ final class PrintJobsTests: AppTestCase {
         externalId: order.id.rawValue.uuidString,
         lineItems: [.init(
           title: entities.document.title,
-          cover: "TODO",
-          // entities.editionImpression.files.paperback.cover.first.sourceUrl.absoluteString,
-          interior: "TODO",
-          // entities.editionImpression.files.paperback.interior.first.sourceUrl.absoluteString,
+          cover: entities.editionImpression.files.paperback.cover.first.sourceUrl.absoluteString,
+          interior: entities.editionImpression.files.paperback.interior.first.sourceUrl
+            .absoluteString,
           podPackageId: Lulu.podPackageId(
             size: entities.editionImpression.paperbackSizeVariant.printSize,
             pages: entities.editionImpression.paperbackVolumes.first
@@ -85,9 +84,9 @@ final class PrintJobsTests: AppTestCase {
       return .init(id: 1, status: .init(name: .created), lineItems: [])
     }
 
-    var entities = await Entities.create()
-    entities.editionImpression.paperbackVolumes = .init(123, 234)
-    try await entities.editionImpression.save()
+    let entities = await Entities.create {
+      $0.editionImpression.paperbackVolumes = .init(123, 234)
+    }
 
     let order = Order.random
     var item = OrderItem.random
@@ -108,10 +107,9 @@ final class PrintJobsTests: AppTestCase {
         lineItems: [
           .init(
             title: entities.document.title + ", vol. 1",
-            cover: "TODO",
-            // entities.editionImpression.files.paperback.cover.first.sourceUrl.absoluteString,
-            interior: "TODO",
-            // entities.editionImpression.files.paperback.interior.first.sourceUrl.absoluteString,
+            cover: entities.editionImpression.files.paperback.cover.first.sourceUrl.absoluteString,
+            interior: entities.editionImpression.files.paperback.interior.first.sourceUrl
+              .absoluteString,
             podPackageId: Lulu.podPackageId(
               size: entities.editionImpression.paperbackSizeVariant.printSize,
               pages: entities.editionImpression.paperbackVolumes.first
@@ -120,10 +118,9 @@ final class PrintJobsTests: AppTestCase {
           ),
           .init(
             title: entities.document.title + ", vol. 2",
-            cover: "TODO",
-            // entities.editionImpression.files.paperback.cover[1].sourceUrl.absoluteString,
-            interior: "TODO",
-            // entities.editionImpression.files.paperback.interior[1].sourceUrl.absoluteString,
+            cover: entities.editionImpression.files.paperback.cover[1].sourceUrl.absoluteString,
+            interior: entities.editionImpression.files.paperback.interior[1].sourceUrl
+              .absoluteString,
             podPackageId: Lulu.podPackageId(
               size: entities.editionImpression.paperbackSizeVariant.printSize,
               pages: entities.editionImpression.paperbackVolumes.first
