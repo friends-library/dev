@@ -35,6 +35,7 @@ struct AddNPQuotes: AsyncMigration {
 extension NPQuote {
   enum M37 {
     static let tableName = "np_quotes"
+    static let id = FieldKey("id")
     static let lang = FieldKey("lang")
     static let isFriend = FieldKey("is_friend")
     static let quote = FieldKey("quote")

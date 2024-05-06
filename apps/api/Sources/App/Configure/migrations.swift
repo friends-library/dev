@@ -38,5 +38,6 @@ extension Configure {
     app.migrations.add(CreateNativeAppErrors())
     app.migrations.add(AddNPSubscribers())
     app.migrations.add(AddNPQuotes())
+    app.migrations.add(AddSentNPQuotes())
   }
 }
