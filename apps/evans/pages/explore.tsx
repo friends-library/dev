@@ -30,22 +30,10 @@ type Props = {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const props = await Promise.all([
     api.explorePageBooks(LANG),
-    // api.totalPublished(),
-    Promise.resolve({
-      books: {
-        en: 99,
-        es: 99,
-      },
-      audiobooks: {
-        en: 99,
-        es: 99,
-      },
-    }),
-    // custom.all(),
-    // ]).then(([books, totalPublished, customCode]) => ({
-  ]).then(([books, totalPublished]) => ({
-    // books: books.map(custom.merging(customCode, (b) => [b.friendSlug, b.slug])),
-    books,
+    api.totalPublished(),
+    custom.all(),
+  ]).then(([books, totalPublished, customCode]) => ({
+    books: books.map(custom.merging(customCode, (b) => [b.friendSlug, b.slug])),
     totalPublished,
   }));
   return { props };

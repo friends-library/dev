@@ -14,7 +14,7 @@ public extension SQL {
     indirect case and(WhereConstraint<M>, WhereConstraint<M>)
     indirect case not(WhereConstraint<M>)
 
-    func isSatisfied(by model: M) -> Bool {
+    public func isSatisfied(by model: M) -> Bool {
       switch self {
       case .not(let constraint):
         return !constraint.isSatisfied(by: model)

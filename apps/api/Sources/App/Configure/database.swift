@@ -19,6 +19,6 @@ extension Configure {
       as: .psql
     )
 
-    Current.db = LiveClient(sql: app.db as! SQLDatabase)
+    Current.db = FlushingDbClient(app.db as! SQLDatabase)
   }
 }

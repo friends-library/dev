@@ -245,6 +245,16 @@ final class JoinedEditionImpression {
   private var joinedAudios: [Audio.Id: JoinedAudio] = [:]
   private var joinedAudioParts: [AudioPart.Id: JoinedAudioPart] = [:]
 
+  public func flush() {
+    loaded = false
+    joinedFriends = [:]
+    joinedDocuments = [:]
+    joinedEditions = [:]
+    joinedImpressions = [:]
+    joinedAudios = [:]
+    joinedAudioParts = [:]
+  }
+
   public func friends() async throws -> [JoinedFriend] {
     if !loaded { try await load() }
     return Array(joinedFriends.values)
@@ -412,7 +422,8 @@ final class JoinedEditionImpression {
       audio.parts.append(joinedAudioPart)
     }
 
-    // loaded = true
+    // swiftformat:disable redundantSelf
+    self.loaded = true
   }
 }
 
