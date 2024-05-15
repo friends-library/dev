@@ -13,7 +13,7 @@ extension AllFriendPages: Resolver {
   static func resolve(with lang: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
 
-    let friends = try await JoinedEntities.shared.friends()
+    let friends = try await Friend.Joined.all()
       .filter { $0.lang == lang && $0.hasNonDraftDocument }
 
     let downloads = try await Current.db.customQuery(

@@ -51,9 +51,9 @@ struct EditFriend: Pair {
 }
 
 extension EditFriend: Resolver {
-  static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
+  static func resolve(with friendId: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let friend = try await JoinedEntities.shared.friend(input)
+    let friend = try await Friend.Joined.find(friendId)
     return .init(
       friend: .init(
         id: friend.id,

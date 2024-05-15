@@ -72,7 +72,7 @@ extension Edition {
   }
 }
 
-extension JoinedEdition {
+extension Edition.Joined {
   var images: Edition.Images {
     let path = "\(directoryPath)/images"
     return Edition.Images(

@@ -27,7 +27,7 @@ class AppTestCase: XCTestCase {
     Current = .mock
     Current.uuid = { UUID() }
     try! Configure.app(app)
-    Current.db = FlushingDbClient(origin: LiveClient(sql: app.db as! SQLDatabase))
+    Current.db = FlushingDbClient(app.db as! SQLDatabase)
     Current.logger = .null
     app.logger = .null
     if !migrated {

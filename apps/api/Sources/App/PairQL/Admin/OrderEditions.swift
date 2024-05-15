@@ -26,7 +26,7 @@ struct OrderEditions: Pair {
 extension OrderEditions: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let editions = try await JoinedEntities.shared.editions()
+    let editions = try await Edition.Joined.all()
       .filter { !$0.isDraft }
     return try await editions.concurrentMap { edition -> OrderEdition? in
       guard let impression = edition.impression else {

@@ -87,7 +87,7 @@ struct FriendPage: Pair {
 extension FriendPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let friend = try await JoinedEntities.shared.friends()
+    let friend = try await Friend.Joined.all()
       .first { $0.lang == input.lang && $0.slug == input.slug }
 
     guard let friend else {
@@ -106,7 +106,7 @@ extension FriendPage: Resolver {
 // extensions
 
 extension FriendPage.Output {
-  init(_ friend: JoinedFriend, downloads: [String: Int], in context: AuthedContext) throws {
+  init(_ friend: Friend.Joined, downloads: [String: Int], in context: AuthedContext) throws {
     let documents = friend.documents.filter(\.hasNonDraftEdition)
     guard !documents.isEmpty else {
       throw context.error(

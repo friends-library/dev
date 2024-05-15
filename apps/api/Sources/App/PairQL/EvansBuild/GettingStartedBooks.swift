@@ -64,16 +64,16 @@ extension GettingStartedBooks: Resolver {
 }
 
 extension SelectedDocuments {
-  func resolve() async throws -> [JoinedDocument] {
+  func resolve() async throws -> [Document.Joined] {
     let docSlugs = slugs.map(\.documentSlug)
-    let allDocuments = try await JoinedEntities.shared.documents()
+    let allDocuments = try await Document.Joined.all()
       .filter { docSlugs.contains($0.slug) }
 
-    var documents: [JoinedDocument] = []
+    var documents: [Document.Joined] = []
     for slug in slugs {
-      let matchedDocument = allDocuments.filter { document in
-        guard document.slug == slug.documentSlug else { return false }
-        return document.friend.slug == slug.friendSlug && document.friend.lang == lang
+      let matchedDocument = allDocuments.filter { doc in
+        guard doc.slug == slug.documentSlug else { return false }
+        return doc.friend.slug == slug.friendSlug && doc.friend.lang == lang
       }.first
       documents.append(try expect(matchedDocument))
     }

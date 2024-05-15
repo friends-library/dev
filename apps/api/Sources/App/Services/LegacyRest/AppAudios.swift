@@ -18,7 +18,7 @@ extension LegacyRest {
   }
 
   private static func queryData(lang: Lang) async throws -> Data {
-    let audios = try await JoinedEntities.shared.audios()
+    let audios = try await Audio.Joined.all()
       .filter { audio in
         audio.edition.document.friend.lang == lang
           && audio.edition.document.hasNonDraftEdition
@@ -54,7 +54,7 @@ private struct AppAudio: Codable {
   let parts: [Part]
 }
 
-private func toAppAudio(_ audio: JoinedAudio) -> AppAudio {
+private func toAppAudio(_ audio: Audio.Joined) -> AppAudio {
   let edition = audio.edition
   let document = edition.document
   let friend = document.friend

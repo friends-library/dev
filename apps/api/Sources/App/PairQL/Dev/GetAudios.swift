@@ -57,7 +57,7 @@ struct GetAudios: Pair {
 extension GetAudios: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let audios = try await JoinedEntities.shared.audios()
+    let audios = try await App.Audio.Joined.all()
     return audios.map { audio in
       .init(
         id: audio.id,

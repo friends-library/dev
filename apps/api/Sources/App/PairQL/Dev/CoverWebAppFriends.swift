@@ -36,7 +36,7 @@ struct CoverWebAppFriends: Pair {
 
 extension CoverWebAppFriends: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    let friends = try await JoinedEntities.shared.friends()
+    let friends = try await Friend.Joined.all()
     return friends.map { friend in
       .init(
         name: friend.name,

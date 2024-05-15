@@ -3,14 +3,14 @@ import Vapor
 
 public struct VerifyConsistentChapterHeadingsJob: AsyncScheduledJob {
   public func run(context: QueueContext) async throws {
-    let editions = try await JoinedEntities.shared.editions()
+    let editions = try await Edition.Joined.all()
     for edition in editions {
       try await verifyConsistentChapterHeadings(edition)
     }
   }
 }
 
-private func verifyConsistentChapterHeadings(_ edition: JoinedEdition) async throws {
+private func verifyConsistentChapterHeadings(_ edition: Edition.Joined) async throws {
   let chapters = edition.chapters
   guard chapters.count > 1 else { return }
 

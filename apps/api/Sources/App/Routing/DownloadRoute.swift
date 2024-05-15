@@ -146,7 +146,7 @@ private func slackDownload(
   device: UserAgentDeviceData,
   referrer: String?
 ) async {
-  guard let edition = try? await JoinedEntities.shared.edition(file.editionId) else {
+  guard let edition = try? await Edition.Joined.find(file.editionId) else {
     await slackError("Failed to fetch edition for download: \(file.editionId)")
     return
   }

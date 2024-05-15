@@ -1,7 +1,7 @@
 import Foundation
 import NonEmpty
 
-extension JoinedAudioPart {
+extension AudioPart.Joined {
   var mp3File: AudioFiles.Qualities {
     let edition = audio.edition
     let index = audio.parts.count > 1 ? model.order - 1 : nil

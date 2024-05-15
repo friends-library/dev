@@ -19,7 +19,7 @@ struct AudioFiles {
   }
 }
 
-extension JoinedAudio {
+extension Audio.Joined {
   var files: AudioFiles {
     AudioFiles(
       podcast: .init(

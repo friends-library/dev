@@ -19,7 +19,7 @@ extension LegacyRest {
   }
 
   private static func queryData(lang: Lang) async throws -> Data {
-    let editions = try await JoinedEntities.shared.friends()
+    let editions = try await Friend.Joined.all()
       .filter { $0.lang == lang }
       .flatMap(\.documents)
       .filter(\.hasNonDraftEdition)
@@ -108,7 +108,7 @@ private struct AppEdition: Codable {
   let chapters: [Chapter]
 }
 
-private func toAppEdition(_ edition: JoinedEdition) -> AppEdition {
+private func toAppEdition(_ edition: Edition.Joined) -> AppEdition {
   let document = edition.document
   let friend = document.friend
   let impression = edition.impression!

@@ -37,7 +37,7 @@ extension GetEdition: Resolver {
     in context: AuthedContext
   ) async throws -> Output {
     try context.verify(Self.auth)
-    let edition = try await JoinedEntities.shared.edition(editionId)
+    let edition = try await Edition.Joined.find(editionId)
     return .init(
       type: edition.type,
       isDraft: edition.isDraft,

@@ -10,7 +10,7 @@ struct AllDocumentPages: Pair {
 extension AllDocumentPages: Resolver {
   static func resolve(with lang: Lang, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let documents = try await JoinedEntities.shared.documents()
+    let documents = try await Document.Joined.all()
       .filter { $0.friend.lang == lang && $0.hasNonDraftEdition }
 
     let downloads = try await Current.db.customQuery(

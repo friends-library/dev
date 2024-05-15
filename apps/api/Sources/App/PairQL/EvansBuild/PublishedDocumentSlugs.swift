@@ -18,7 +18,7 @@ extension PublishedDocumentSlugs: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
 
-    let allFriends = try await JoinedEntities.shared.friends()
+    let allFriends = try await Friend.Joined.all()
       .filter { $0.lang == input }
 
     return allFriends.filter(\.hasNonDraftDocument).map { friend in

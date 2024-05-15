@@ -65,7 +65,7 @@ extension GetOrder: Resolver {
       lang: order.lang,
       source: order.source,
       items: try await items.concurrentMap { item in
-        let edition = try await JoinedEntities.shared.edition(item.editionId)
+        let edition = try await Edition.Joined.find(item.editionId)
         return .init(
           id: item.id,
           quantity: item.quantity,

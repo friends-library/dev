@@ -7,7 +7,7 @@ struct FlushingDbClient: DuetSQL.Client {
   func update<M>(_ model: M) async throws -> M where M: DuetSQL.Model {
     let updated = try await origin.update(model)
     if M.isPreloaded {
-      await JoinedEntities.shared.flush()
+      await JoinedEntityCache.shared.flush()
     }
     return updated
   }
@@ -49,7 +49,7 @@ struct FlushingDbClient: DuetSQL.Client {
   func create<M>(_ models: [M]) async throws -> [M] where M: DuetSQL.Model {
     let created = try await origin.create(models)
     if M.isPreloaded {
-      await JoinedEntities.shared.flush()
+      await JoinedEntityCache.shared.flush()
     }
     return created
   }
@@ -70,7 +70,7 @@ struct FlushingDbClient: DuetSQL.Client {
       offset: offset
     )
     if M.isPreloaded {
-      await JoinedEntities.shared.flush()
+      await JoinedEntityCache.shared.flush()
     }
     return deleted
   }
@@ -90,7 +90,7 @@ struct FlushingDbClient: DuetSQL.Client {
       offset: offset
     )
     if M.isPreloaded {
-      await JoinedEntities.shared.flush()
+      await JoinedEntityCache.shared.flush()
     }
     return deleted
   }

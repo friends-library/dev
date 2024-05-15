@@ -18,18 +18,18 @@ struct Entities {
     var audioPart: AudioPart
   }
 
-  var friend: JoinedFriend
-  var friendResidence: JoinedFriendResidence
+  var friend: Friend.Joined
+  var friendResidence: FriendResidence.Joined
   var friendResidenceDuration: FriendResidenceDuration
   var friendQuote: FriendQuote
-  var document: JoinedDocument
+  var document: Document.Joined
   var documentTag: DocumentTag
   var edition: Edition
   var editionChapter: EditionChapter
-  var editionImpression: JoinedEditionImpression
+  var editionImpression: EditionImpression.Joined
   var isbn: Isbn
-  var audio: JoinedAudio
-  var audioPart: JoinedAudioPart
+  var audio: Audio.Joined
+  var audioPart: AudioPart.Joined
 
   static func create(
     beforePersist: (inout Entities.Unjoined) -> Void = { _ in }
@@ -107,25 +107,25 @@ struct Entities {
 
 extension Entities.Unjoined {
   func join() -> Entities {
-    let friendResidence = JoinedFriendResidence(
+    let friendResidence = FriendResidence.Joined(
       friendResidence,
       durations: [friendResidenceDuration]
     )
 
-    let friend = JoinedFriend(
+    let friend = Friend.Joined(
       friend,
       residences: [friendResidence],
       quotes: [friendQuote]
     )
 
-    let document = JoinedDocument(
+    let document = Document.Joined(
       document,
       friend: friend,
       tags: [documentTag.type]
     )
     friend.documents.append(document)
 
-    let edition = JoinedEdition(
+    let edition = Edition.Joined(
       edition,
       document: document,
       chapters: [editionChapter],
@@ -133,11 +133,11 @@ extension Entities.Unjoined {
     )
     document.editions.append(edition)
 
-    let impression = JoinedEditionImpression(editionImpression, edition: edition)
+    let impression = EditionImpression.Joined(editionImpression, edition: edition)
     edition.impression = impression
 
-    let audio = JoinedAudio(audio, edition: edition)
-    let audioPart = JoinedAudioPart(audioPart, audio: audio)
+    let audio = Audio.Joined(audio, edition: edition)
+    let audioPart = AudioPart.Joined(audioPart, audio: audio)
     audio.parts.append(audioPart)
     edition.audio = audio
 

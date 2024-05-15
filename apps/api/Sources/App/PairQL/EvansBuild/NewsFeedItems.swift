@@ -33,7 +33,7 @@ extension NewsFeedItems: Resolver {
     try context.verify(Self.auth)
     var items: [NewsFeedItem] = []
 
-    let impressions = try await JoinedEntities.shared.editionImpressions()
+    let impressions = try await EditionImpression.Joined.all()
       .sorted(by: { $0.createdAt > $1.createdAt })
       .prefix(24)
 
@@ -56,7 +56,7 @@ extension NewsFeedItems: Resolver {
       ))
     }
 
-    let audiobooks = try await JoinedEntities.shared.audios()
+    let audiobooks = try await Audio.Joined.all()
       .sorted(by: { $0.createdAt > $1.createdAt })
       .prefix(24)
 
@@ -80,7 +80,7 @@ extension NewsFeedItems: Resolver {
     }
 
     if lang == .en {
-      let documents = try await JoinedEntities.shared.documents()
+      let documents = try await Document.Joined.all()
         .filter { $0.altLanguageId != nil && !$0.incomplete }
         .filter { $0.friend.lang == .es && $0.hasNonDraftEdition }
         .sorted(by: { $0.createdAt > $1.createdAt })

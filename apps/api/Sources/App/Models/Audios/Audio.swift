@@ -36,7 +36,7 @@ struct Audio: Codable, Sendable {
 
 // extensions
 
-extension JoinedAudio {
+extension Audio.Joined {
   var isPublished: Bool {
     // detect intermediate state between when we have created the audio
     // row in the database and when the cli app finishes processing all the parts

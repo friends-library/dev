@@ -117,7 +117,7 @@ struct DocumentPage: Pair {
 extension DocumentPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let publishedDocs = try await JoinedEntities.shared.documents()
+    let publishedDocs = try await Document.Joined.all()
       .filter(\.hasNonDraftEdition)
       .filter { $0.friend.lang == input.lang }
 
@@ -147,7 +147,7 @@ extension DocumentPage: Resolver {
 
 extension DocumentPage.Output {
   init(
-    _ document: JoinedDocument,
+    _ document: Document.Joined,
     downloads: [String: Int],
     numTotalBooks: Int,
     in context: AuthedContext
@@ -280,7 +280,7 @@ func expect<T>(_ value: T?, file: StaticString = #file, line: UInt = #line) thro
   return value
 }
 
-extension JoinedDocument {
+extension Document.Joined {
   var urlPath: String {
     "\(friend.slug)/\(model.slug)"
   }

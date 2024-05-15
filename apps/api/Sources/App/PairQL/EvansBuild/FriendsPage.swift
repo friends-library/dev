@@ -29,7 +29,7 @@ struct FriendsPage: Pair {
 extension FriendsPage: Resolver {
   static func resolve(with lang: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let friends = try await JoinedEntities.shared.friends()
+    let friends = try await Friend.Joined.all()
       .filter { $0.lang == lang }
     return friends.map { friend -> FriendOutput? in
       guard !friend.isCompilations else { return nil }

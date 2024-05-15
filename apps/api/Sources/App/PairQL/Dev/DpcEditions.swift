@@ -36,7 +36,7 @@ struct DpcEditions: Pair {
 
 extension DpcEditions: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    let editions = try await JoinedEntities.shared.editions()
+    let editions = try await Edition.Joined.all()
     return editions.map { edition in
       let document = edition.document
       let friend = document.friend

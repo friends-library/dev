@@ -9,7 +9,7 @@ enum PrintJobs {
       .all()
 
     let lineItems = try await orderItems.concurrentMap { item in
-      let edition = try await JoinedEntities.shared.edition(item.editionId)
+      let edition = try await Edition.Joined.find(item.editionId)
       guard let impression = edition.impression else {
         throw Error.unexpectedMissingEditionImpression(order.id, edition.id)
       }

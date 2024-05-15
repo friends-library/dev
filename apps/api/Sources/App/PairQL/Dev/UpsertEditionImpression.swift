@@ -31,7 +31,7 @@ extension UpsertEditionImpression: Resolver {
     guard impression.isValid else { throw ModelError.invalidEntity }
     try await impression.upsert()
     // TODO: check this, used to have cache ramifications...
-    let joined = try await JoinedEntities.shared.editionImpression(input.id)
+    let joined = try await EditionImpression.Joined.find(input.id)
     return .init(id: impression.id, cloudFiles: .init(files: joined.files))
   }
 }

@@ -71,9 +71,13 @@ extension Friend.DirectoryPathData: DirectoryPathable {
   }
 }
 
-extension JoinedFriend {
+extension Friend.Joined {
   var hasNonDraftDocument: Bool {
     documents.first { $0.hasNonDraftEdition } != nil
+  }
+
+  var directoryPathData: Friend.DirectoryPathData {
+    .init(lang: model.lang, slug: model.slug)
   }
 }
 

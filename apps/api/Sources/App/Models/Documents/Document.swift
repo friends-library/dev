@@ -61,14 +61,37 @@ struct Document: Codable, Sendable {
 // extensions
 
 extension Document {
-  struct DirectoryPathData {
+  struct DirectoryPathData: DirectoryPathable {
     var friend: Friend.DirectoryPathData
     var slug: String
+
+    var directoryPath: String {
+      "\(friend.directoryPath)/\(slug)"
+    }
   }
 }
 
-extension Document.DirectoryPathData: DirectoryPathable {
+extension Document.Joined {
+  var hasNonDraftEdition: Bool {
+    editions.contains { !$0.isDraft }
+  }
+
+  var primaryEdition: Edition.Joined? {
+    let allEditions = editions.filter { $0.isDraft == false }
+    return allEditions.first { $0.type == .updated } ??
+      allEditions.first { $0.type == .modernized } ??
+      allEditions.first
+  }
+
+  var directoryPathData: Document.DirectoryPathData {
+    .init(friend: friend.directoryPathData, slug: model.slug)
+  }
+
   var directoryPath: String {
-    "\(friend.directoryPath)/\(slug)"
+    directoryPathData.directoryPath
+  }
+
+  var trimmedUtf8ShortTitle: String {
+    Asciidoc.trimmedUtf8ShortDocumentTitle(model.title, lang: friend.lang)
   }
 }

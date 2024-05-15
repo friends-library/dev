@@ -57,7 +57,7 @@ extension ExplorePageBooks: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
 
-    let documents = try await JoinedEntities.shared.documents()
+    let documents = try await Document.Joined.all()
       .filter(\.hasNonDraftEdition)
       .filter { $0.friend.lang == input }
       .sorted(by: {

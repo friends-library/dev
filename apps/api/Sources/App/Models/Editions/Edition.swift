@@ -35,14 +35,22 @@ struct Edition: Codable, Sendable {
 // extensions
 
 extension Edition {
-  struct DirectoryPathData {
+  struct DirectoryPathData: DirectoryPathable {
     var document: Document.DirectoryPathData
     var type: EditionType
+
+    var directoryPath: String {
+      "\(document.directoryPath)/\(type)"
+    }
   }
 }
 
-extension Edition.DirectoryPathData: DirectoryPathable {
+extension Edition.Joined {
+  var directoryPathData: Edition.DirectoryPathData {
+    .init(document: document.directoryPathData, type: model.type)
+  }
+
   var directoryPath: String {
-    "\(document.directoryPath)/\(type)"
+    directoryPathData.directoryPath
   }
 }

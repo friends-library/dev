@@ -29,7 +29,7 @@ struct EditionImpressionFiles {
   }
 }
 
-extension JoinedEdition {
+extension Edition.Joined {
   func downloadableFile(format: DownloadableFile.Format) -> DownloadableFile {
     DownloadableFile(
       format: format,
@@ -40,7 +40,7 @@ extension JoinedEdition {
   }
 }
 
-extension JoinedEditionImpression {
+extension EditionImpression.Joined {
   func downloadableFile(format: DownloadableFile.Format) -> DownloadableFile {
     edition.downloadableFile(format: format)
   }

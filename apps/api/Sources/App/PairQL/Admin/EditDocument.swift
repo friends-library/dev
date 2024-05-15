@@ -94,7 +94,7 @@ extension EditDocument: Resolver {
     in context: AuthedContext
   ) async throws -> Output {
     try context.verify(Self.auth)
-    let document = try await JoinedEntities.shared.document(documentId)
+    let document = try await Document.Joined.find(documentId)
     return try await .init(
       document: .init(model: document),
       selectableDocuments: .load()
@@ -105,7 +105,7 @@ extension EditDocument: Resolver {
 // extensions
 
 extension EditDocument.EditDocumentOutput {
-  init(model document: JoinedDocument) async throws {
+  init(model document: Document.Joined) async throws {
     let friend = document.friend
     let editions = document.editions
     let relatedDocuments = document.relatedDocuments

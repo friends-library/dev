@@ -3,8 +3,8 @@ import Vapor
 
 public struct VerifyCloudAssets: AsyncScheduledJob {
   public func run(context: QueueContext) async throws {
-    let editionImpressions = try await JoinedEntities.shared.editionImpressions()
-    let audios = try await JoinedEntities.shared.audios()
+    let editionImpressions = try await EditionImpression.Joined.all()
+    let audios = try await Audio.Joined.all()
     let audioParts = audios.flatMap(\.parts)
 
     let impressionFiles = editionImpressions

@@ -29,7 +29,7 @@ struct AudiobooksPage: Pair {
 extension AudiobooksPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let audiobooks = try await JoinedEntities.shared.audios()
+    let audiobooks = try await Audio.Joined.all()
     return try audiobooks.compactMap { audiobook in
       let edition = audiobook.edition
       let document = edition.document

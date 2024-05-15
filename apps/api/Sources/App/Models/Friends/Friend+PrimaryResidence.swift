@@ -1,8 +1,8 @@
 import Foundation
 
-extension JoinedFriend {
-  var primaryResidence: JoinedFriendResidence? {
-    var primary: JoinedFriendResidence?
+extension Friend.Joined {
+  var primaryResidence: FriendResidence.Joined? {
+    var primary: FriendResidence.Joined?
     for residence in residences {
       guard let current = primary else {
         primary = residence
