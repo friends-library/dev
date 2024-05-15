@@ -6,8 +6,6 @@ struct DocumentTag: Codable, Sendable {
   var type: TagType
   var createdAt = Current.date()
 
-  var isValid: Bool { true }
-
   init(id: Id = .init(), documentId: Document.Id, type: TagType) {
     self.id = id
     self.documentId = documentId

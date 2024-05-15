@@ -32,5 +32,11 @@ enum ModelError: Error {
 }
 
 protocol ApiModel: Model, Equatable {
-  var isValid: Bool { get }
+  func isValid() async -> Bool
+}
+
+extension ApiModel {
+  func isValid() async -> Bool {
+    true
+  }
 }

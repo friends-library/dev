@@ -20,8 +20,6 @@ struct TokenScope: Codable, Sendable {
   var tokenId: Token.Id
   var createdAt = Current.date()
 
-  var isValid: Bool { true }
-
   init(id: Id = .init(), tokenId: Token.Id, scope: Scope) {
     self.id = id
     self.scope = scope

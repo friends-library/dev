@@ -8,8 +8,6 @@ struct Token: Codable, Sendable {
   var uses: Int?
   var createdAt = Current.date()
 
-  var isValid: Bool { true }
-
   init(
     id: Id = .init(),
     value: Value = .init(),
@@ -27,9 +25,7 @@ struct Token: Codable, Sendable {
 
 extension Token {
   typealias Value = Tagged<(Token, value: ()), UUID>
-}
 
-extension Token {
   func scopes() async throws -> [TokenScope] {
     try await TokenScope.query()
       .where(.tokenId == id)

@@ -1,21 +1,22 @@
 import XCTest
+import XExpect
 
 @testable import App
 
 final class EditionValidityTests: XCTestCase {
-  func testEditorOnNonUpdatedEditionInvalid() {
+  func testEditorOnNonUpdatedEditionInvalid() async {
     var edition = Edition.valid
     edition.editor = "Bob"
     edition.type = .original
-    XCTAssertFalse(edition.isValid)
+    expect(await edition.isValid()).toBeFalse()
   }
 
-  func testSpanishUpdatedEditionsShouldNotHaveEditor() {
+  func testSpanishUpdatedEditionsShouldNotHaveEditor() async {
     var edition = Edition.valid
     edition.editor = "Bob"
     edition.type = .updated
     // allowed because we can't resolve the language, relations not loaded
-    XCTAssertTrue(edition.isValid)
+    expect(await edition.isValid()).toBeTrue()
 
     // var friend = Friend.empty
     // friend.lang = .es
@@ -27,7 +28,7 @@ final class EditionValidityTests: XCTestCase {
     // XCTAssertFalse(edition.isValid)
   }
 
-  // func testLoadedChaptersWithNonSequentialOrderInvalid() {
+  // func testLoadedChaptersWithNonSequentialOrderInvalid() async {
   //   var edition = Edition.valid
   //   var chapter1 = EditionChapter.valid
   //   chapter1.order = 1

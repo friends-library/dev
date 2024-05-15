@@ -8,12 +8,6 @@ struct RelatedDocument: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var isValid: Bool {
-    description.count >= 85
-      && description.count <= 450
-      && !description.containsUnpresentableSubstring
-  }
-
   init(
     id: Id = .init(),
     description: String,
@@ -24,5 +18,15 @@ struct RelatedDocument: Codable, Sendable {
     self.description = description
     self.documentId = documentId
     self.parentDocumentId = parentDocumentId
+  }
+}
+
+// extensions
+
+extension RelatedDocument {
+  func isValid() async -> Bool {
+    description.count >= 85
+      && description.count <= 450
+      && !description.containsUnpresentableSubstring
   }
 }

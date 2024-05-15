@@ -27,8 +27,6 @@ struct Order: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var isValid: Bool { true }
-
   var address: ShippingAddress {
     .init(
       name: addressName,

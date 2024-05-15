@@ -1,120 +1,120 @@
 import XCTest
+import XExpect
 
 @testable import App
 
-final class DocumentTests: XCTestCase {
-  var validLoaded: Document {
+final class DocumentTests: AppTestCase {
+  var validDocument: Document {
     var friend = Friend.empty
     friend.lang = .en
     var edition = Edition.empty
     edition.isDraft = false
-    // TODO: ???
     let document = Document.valid
-    // document.friend = .loaded(friend)
-    // document.editions = .loaded([edition])
     return document
   }
 
-  func testEmptyTitleInvalid() {
-    var doc = validLoaded
+  func testEmptyTitleInvalid() async {
+    var doc = validDocument
     doc.title = ""
-    XCTAssertFalse(doc.isValid)
+    expect(await doc.isValid()).toBeFalse()
   }
 
-  func testOriginalTitleTooShortInvalid() {
-    var doc = validLoaded
+  func testOriginalTitleTooShortInvalid() async {
+    var doc = validDocument
     doc.originalTitle = "Abc"
-    XCTAssertFalse(doc.isValid)
+    expect(await doc.isValid()).toBeFalse()
   }
 
-  func testOriginalTitleNotCapitalizedInvalid() {
-    var doc = validLoaded
+  func testOriginalTitleNotCapitalizedInvalid() async {
+    var doc = validDocument
     doc.originalTitle = "the life and labors of george dilwynn"
-    XCTAssertFalse(doc.isValid)
+    expect(await doc.isValid()).toBeFalse()
   }
 
-  func testPublishedDateOutOfBoundsInvalid() {
-    var doc = validLoaded
+  func testPublishedDateOutOfBoundsInvalid() async {
+    var doc = validDocument
     doc.published = 1500
-    XCTAssertFalse(doc.isValid)
-    doc = validLoaded
+    expect(await doc.isValid()).toBeFalse()
+    doc = validDocument
     doc.published = 1901
-    XCTAssertFalse(doc.isValid)
+    expect(await doc.isValid()).toBeFalse()
   }
 
-  func testTodosOkForDescriptionsIfEditionsNotLoaded() {
+  func testTodosOkForDescriptionsIfEditionsNotLoaded() async {
     var doc = Document.valid
     doc.description = "TODO"
     doc.partialDescription = "TODO"
     doc.featuredDescription = "TODO"
-    XCTAssertTrue(doc.isValid)
+    expect(await doc.isValid()).toBeTrue()
   }
 
-  // sad validation
-  // func testTodosInvalidForDescriptionsIfHasNonDraftEdition() {
-  //   var doc = validLoaded
-  //   doc.description = "TODO"
-  //   doc.partialDescription = "TODO"
-  //   doc.featuredDescription = "TODO"
-  //   XCTAssertFalse(doc.isValid)
-  // }
+  func testTodosInvalidForDescriptionsIfHasNonDraftEdition() async {
+    let doc = await Entities.create {
+      $0.document.description = "TODO"
+      $0.document.partialDescription = "TODO"
+      $0.document.featuredDescription = "TODO"
+    }.document.model
+    expect(await doc.isValid()).toBeFalse()
+  }
 
-  func testNonCapitalizedTitleInvalid() {
-    var doc = validLoaded
+  func testNonCapitalizedTitleInvalid() async {
+    var doc = validDocument
     doc.title = "no Cross, No Crown"
-    XCTAssertFalse(doc.isValid)
+    expect(await doc.isValid()).toBeFalse()
   }
 
-  func testTooShortTitleInValid() {
-    var doc = validLoaded
+  func testTooShortTitleInValid() async {
+    var doc = validDocument
     doc.title = "No"
-    XCTAssertFalse(doc.isValid)
+    expect(await doc.isValid()).toBeFalse()
   }
 
-  func testNonSluggySlugInvalid() {
-    var doc = validLoaded
+  func testNonSluggySlugInvalid() async {
+    var doc = validDocument
     doc.slug = "This is not A Sluggy Slug"
-    XCTAssertFalse(doc.isValid)
+    expect(await doc.isValid()).toBeFalse()
   }
 
-  func testMalformedFilenameInvalid() {
-    var doc = validLoaded
+  func testMalformedFilenameInvalid() async {
+    var doc = validDocument
     doc.filename = "This is not A good filename :("
-    XCTAssertFalse(doc.isValid)
+    expect(await doc.isValid()).toBeFalse()
   }
 
-  // func testPrimaryEdition() {
-  //   var updated: Edition = .empty
-  //   updated.type = .updated
-  //   var modernized: Edition = .empty
-  //   modernized.type = .modernized
-  //   var original: Edition = .empty
-  //   original.type = .original
+  func testPrimaryEdition() async {
+    let document = await Entities.create().document
+    var updatedModel: Edition = .empty
+    updatedModel.type = .updated
+    let updated = Edition.Joined(updatedModel, document: document)
+    var modernizedModel: Edition = .empty
+    modernizedModel.type = .modernized
+    let modernized = Edition.Joined(modernizedModel, document: document)
+    var originalModel: Edition = .empty
+    originalModel.type = .original
+    let original = Edition.Joined(originalModel, document: document)
 
-  //   var document: Document = .empty
+    document.editions = [updated, modernized, original]
+    XCTAssertEqual(updated.model, document.primaryEdition?.model)
 
-  //   document.editions = .loaded([updated, modernized, original])
-  //   XCTAssertEqual(updated, document.primaryEdition)
+    document.editions = [modernized, original, updated]
+    XCTAssertEqual(updated.model, document.primaryEdition?.model)
 
-  //   document.editions = .loaded([modernized, original, updated])
-  //   XCTAssertEqual(updated, document.primaryEdition)
+    document.editions = [original, updated, modernized]
+    XCTAssertEqual(updated.model, document.primaryEdition?.model)
 
-  //   document.editions = .loaded([original, updated, modernized])
-  //   XCTAssertEqual(updated, document.primaryEdition)
+    document.editions = [original, modernized]
+    XCTAssertEqual(modernized.model, document.primaryEdition?.model)
 
-  //   document.editions = .loaded([original, modernized])
-  //   XCTAssertEqual(modernized, document.primaryEdition)
+    document.editions = [modernized, original]
+    XCTAssertEqual(modernized.model, document.primaryEdition?.model)
 
-  //   document.editions = .loaded([modernized, original])
-  //   XCTAssertEqual(modernized, document.primaryEdition)
+    document.editions = [updated, original]
+    XCTAssertEqual(updated.model, document.primaryEdition?.model)
 
-  //   document.editions = .loaded([updated, original])
-  //   XCTAssertEqual(updated, document.primaryEdition)
+    document.editions = [original]
+    XCTAssertEqual(original.model, document.primaryEdition?.model)
 
-  //   document.editions = .loaded([original])
-  //   XCTAssertEqual(original, document.primaryEdition)
-
-  //   document.editions = .loaded([modernized])
-  //   XCTAssertEqual(modernized, document.primaryEdition)
-  // }
+    document.editions = [modernized]
+    XCTAssertEqual(modernized.model, document.primaryEdition?.model)
+  }
 }

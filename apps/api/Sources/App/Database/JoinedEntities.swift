@@ -113,8 +113,8 @@ extension Edition {
     init(
       _ model: Edition,
       document: Document.Joined,
-      chapters: [EditionChapter],
-      isbn: Isbn?,
+      chapters: [EditionChapter] = [],
+      isbn: Isbn? = nil,
       impression: EditionImpression.Joined? = nil
     ) {
       self.model = model
@@ -503,5 +503,35 @@ extension FriendResidence.Joined {
 extension RelatedDocument.Joined {
   subscript<T>(dynamicMember keyPath: KeyPath<RelatedDocument, T>) -> T {
     model[keyPath: keyPath]
+  }
+}
+
+extension Audio {
+  func joined() async throws -> Audio.Joined {
+    try await Audio.Joined.find(id)
+  }
+}
+
+extension Friend {
+  func joined() async throws -> Friend.Joined {
+    try await Friend.Joined.find(id)
+  }
+}
+
+extension Document {
+  func joined() async throws -> Document.Joined {
+    try await Document.Joined.find(id)
+  }
+}
+
+extension Edition {
+  func joined() async throws -> Edition.Joined {
+    try await Edition.Joined.find(id)
+  }
+}
+
+extension EditionImpression {
+  func joined() async throws -> EditionImpression.Joined {
+    try await EditionImpression.Joined.find(id)
   }
 }

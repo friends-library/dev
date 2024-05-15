@@ -10,10 +10,6 @@ struct FriendQuote: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var isValid: Bool {
-    source.firstLetterIsUppercase && text.firstLetterIsUppercase && order > 0
-  }
-
   init(
     id: Id = .init(),
     friendId: Friend.Id,
@@ -28,5 +24,13 @@ struct FriendQuote: Codable, Sendable {
     self.text = text
     self.order = order
     self.context = context
+  }
+}
+
+// extensions
+
+extension FriendQuote {
+  func isValid() async -> Bool {
+    source.firstLetterIsUppercase && text.firstLetterIsUppercase && order > 0
   }
 }

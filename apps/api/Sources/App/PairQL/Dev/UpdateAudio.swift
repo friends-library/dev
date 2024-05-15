@@ -26,7 +26,7 @@ extension UpdateAudio: Resolver {
     audio.mp3ZipSizeLq = input.mp3ZipSizeLq
     audio.m4bSizeHq = input.m4bSizeHq
     audio.m4bSizeLq = input.m4bSizeLq
-    guard audio.isValid else { throw ModelError.invalidEntity }
+    guard await audio.isValid() else { throw ModelError.invalidEntity }
     try await audio.save()
     return .success
   }

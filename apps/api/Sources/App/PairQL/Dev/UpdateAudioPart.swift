@@ -27,7 +27,7 @@ extension UpdateAudioPart: Resolver {
     audioPart.order = input.order
     audioPart.mp3SizeHq = .init(input.mp3SizeHq)
     audioPart.mp3SizeLq = .init(input.mp3SizeLq)
-    guard audioPart.isValid else { throw ModelError.invalidEntity }
+    guard await audioPart.isValid() else { throw ModelError.invalidEntity }
     try await audioPart.save()
     return .success
   }

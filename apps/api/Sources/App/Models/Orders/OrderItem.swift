@@ -9,8 +9,6 @@ struct OrderItem: Codable, Sendable {
   var unitPrice: Cents<Int>
   var createdAt = Current.date()
 
-  var isValid: Bool { true }
-
   init(
     id: Id = .init(),
     orderId: Order.Id,

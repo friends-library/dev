@@ -1,5 +1,5 @@
 extension Document {
-  var isValid: Bool {
+  func isValid() async -> Bool {
     if !title.firstLetterIsUppercase {
       logInvalid("Title does not start with uppercase letter")
       return false
@@ -52,35 +52,28 @@ extension Document {
       }
     }
 
-    // TODO: sad
-    // if case .loaded = editions, hasNonDraftEdition {
-    //   if description.count < 5 || partialDescription.count < 5 {
-    //     logInvalid("Description or partial description is too short")
-    //     return false
-    //   }
-
-    //   if let featured = featuredDescription, featured.count < 5 {
-    //     logInvalid("Featured description is too short")
-    //     return false
-    //   }
-    // }
-
-    // if case .loaded = friend {
-    //   if lang == .en, !filename.match("^[A-Z][A-Za-z0-9_]+$") {
-    //     logInvalid("Filename is invalid (en)")
-    //     return false
-    //   }
-
-    //   if lang == .es, filename.contains(" ") {
-    //     logInvalid("Filename contains space (es)")
-    //     return false
-    //   }
-    // } else {
     if filename.contains(" ") {
       logInvalid("Filename contains space")
       return false
     }
-    // }
+
+    guard let joined = try? await joined() else { return true }
+
+    if joined.hasNonDraftEdition {
+      if description.count < 5 || partialDescription.count < 5 {
+        logInvalid("Description or partial description is too short")
+        return false
+      }
+      if let featured = featuredDescription, featured.count < 5 {
+        logInvalid("Featured description is too short")
+        return false
+      }
+    }
+
+    if joined.friend.lang == .en, !filename.match("^[A-Z][A-Za-z0-9_]+$") {
+      logInvalid("Filename is invalid (en)")
+      return false
+    }
 
     return true
   }

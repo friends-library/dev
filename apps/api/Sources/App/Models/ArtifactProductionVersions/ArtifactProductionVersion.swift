@@ -5,12 +5,16 @@ struct ArtifactProductionVersion: Codable, Sendable {
   var version: GitCommitSha
   var createdAt = Current.date()
 
-  var isValid: Bool {
-    version.rawValue.isValidGitCommitFullSha
-  }
-
   init(id: Id = .init(), version: GitCommitSha) {
     self.id = id
     self.version = version
+  }
+}
+
+// extensions
+
+extension ArtifactProductionVersion {
+  func isValid() async -> Bool {
+    version.rawValue.isValidGitCommitFullSha
   }
 }

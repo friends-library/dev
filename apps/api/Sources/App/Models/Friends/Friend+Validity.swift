@@ -1,5 +1,5 @@
 extension Friend {
-  var isValid: Bool {
+  func isValid() async -> Bool {
     if !name.firstLetterIsUppercase {
       return false
     }
@@ -20,25 +20,11 @@ extension Friend {
       return false
     }
 
-    // TODO: sad
-    // if case .loaded(let documents) = documents,
-    //    documents.allSatisfy(\.editions.isLoaded),
-    //    published == nil,
-    //    hasNonDraftDocument {
-    //   return false
-    // }
-
-    // // test for sequential quotes, when loaded
-    // if case .loaded(let quotes) = quotes {
-    //   let sorted = quotes.sorted { $0.order < $1.order }
-    //   var prev = 0
-    //   for quote in sorted {
-    //     if quote.order != prev + 1 {
-    //       return false
-    //     }
-    //     prev = quote.order
-    //   }
-    // }
+    if let joined = try? await joined(),
+       published == nil,
+       joined.hasNonDraftDocument {
+      return false
+    }
 
     if isCompilations, born != nil || died != nil {
       return false
@@ -54,6 +40,21 @@ extension Friend {
 
     if born?.isValidEarlyQuakerYear == false || died?.isValidEarlyQuakerYear == false {
       return false
+    }
+
+    if let joined = try? await joined() {
+      if published == nil, joined.hasNonDraftDocument {
+        return false
+      }
+
+      let sorted = joined.quotes.sorted { $0.order < $1.order }
+      var prev = 0
+      for quote in sorted {
+        if quote.order != prev + 1 {
+          return false
+        }
+        prev = quote.order
+      }
     }
 
     return true

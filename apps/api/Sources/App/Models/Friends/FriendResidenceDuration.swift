@@ -7,10 +7,6 @@ struct FriendResidenceDuration: Codable, Sendable {
   var end: Int
   var createdAt = Current.date()
 
-  var isValid: Bool {
-    start.isValidEarlyQuakerYear && end.isValidEarlyQuakerYear && start <= end
-  }
-
   init(
     id: Id = .init(),
     friendResidenceId: FriendResidence.Id,
@@ -21,5 +17,13 @@ struct FriendResidenceDuration: Codable, Sendable {
     self.friendResidenceId = friendResidenceId
     self.start = start
     self.end = end
+  }
+}
+
+// extensions
+
+extension FriendResidenceDuration {
+  func isValid() async -> Bool {
+    start.isValidEarlyQuakerYear && end.isValidEarlyQuakerYear && start <= end
   }
 }

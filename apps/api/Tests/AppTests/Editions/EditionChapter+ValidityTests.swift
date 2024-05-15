@@ -1,44 +1,45 @@
 import XCTest
+import XExpect
 
 @testable import App
 
 final class EditionChapterValidityTests: XCTestCase {
-  func testOrderLessThan1OrSuperBigInvalid() {
+  func testOrderLessThan1OrSuperBigInvalid() async {
     var chapter = EditionChapter.valid
     chapter.order = 0
-    XCTAssertFalse(chapter.isValid)
+    expect(await chapter.isValid()).toBeFalse()
     chapter.order = 400
-    XCTAssertFalse(chapter.isValid)
+    expect(await chapter.isValid()).toBeFalse()
   }
 
-  func testWierdValueForSequenceNumberInvalid() {
+  func testWierdValueForSequenceNumberInvalid() async {
     var chapter = EditionChapter.valid
     chapter.sequenceNumber = 0
-    XCTAssertFalse(chapter.isValid)
+    expect(await chapter.isValid()).toBeFalse()
     chapter.sequenceNumber = 201
-    XCTAssertFalse(chapter.isValid)
+    expect(await chapter.isValid()).toBeFalse()
   }
 
-  func testEmptyOrNonCapitalizedShortHeadingInvalid() {
+  func testEmptyOrNonCapitalizedShortHeadingInvalid() async {
     var chapter = EditionChapter.valid
     chapter.shortHeading = ""
-    XCTAssertFalse(chapter.isValid)
+    expect(await chapter.isValid()).toBeFalse()
     chapter.shortHeading = "bad lowercased"
-    XCTAssertFalse(chapter.isValid)
+    expect(await chapter.isValid()).toBeFalse()
   }
 
-  func testEmptyOrNonCapitalizedNonSequenceTitleInvalid() {
+  func testEmptyOrNonCapitalizedNonSequenceTitleInvalid() async {
     var chapter = EditionChapter.valid
     chapter.nonSequenceTitle = ""
-    XCTAssertFalse(chapter.isValid)
+    expect(await chapter.isValid()).toBeFalse()
     chapter.nonSequenceTitle = "bad lowercased"
-    XCTAssertFalse(chapter.isValid)
+    expect(await chapter.isValid()).toBeFalse()
   }
 
-  func testSequenceNumberAndNonSequenceTitleBothNullInvalid() {
+  func testSequenceNumberAndNonSequenceTitleBothNullInvalid() async {
     var chapter = EditionChapter.valid
     chapter.sequenceNumber = nil
     chapter.nonSequenceTitle = nil
-    XCTAssertFalse(chapter.isValid)
+    expect(await chapter.isValid()).toBeFalse()
   }
 }

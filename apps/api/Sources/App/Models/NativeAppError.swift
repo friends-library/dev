@@ -13,8 +13,6 @@ struct NativeAppError: Codable, Sendable {
   var errorStack: String?
   var createdAt = Current.date()
 
-  var isValid: Bool { true }
-
   init(
     id: Id = .init(),
     buildSemver: String,

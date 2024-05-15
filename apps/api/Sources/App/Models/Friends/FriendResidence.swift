@@ -8,14 +8,18 @@ struct FriendResidence: Codable, Sendable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
-  var isValid: Bool {
-    city.firstLetterIsUppercase && region.firstLetterIsUppercase
-  }
-
   init(id: Id = .init(), friendId: Friend.Id, city: String, region: String) {
     self.id = id
     self.friendId = friendId
     self.city = city
     self.region = region
+  }
+}
+
+// extensions
+
+extension FriendResidence {
+  func isValid() async -> Bool {
+    city.firstLetterIsUppercase && region.firstLetterIsUppercase
   }
 }

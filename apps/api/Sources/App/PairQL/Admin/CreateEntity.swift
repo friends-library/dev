@@ -80,7 +80,7 @@ extension CreateEntity: Resolver {
         paperbackOverrideSize: input.paperbackOverrideSize
       )
       isbn.editionId = edition.id
-      guard edition.isValid else { throw ModelError.invalidEntity }
+      guard await edition.isValid() else { throw ModelError.invalidEntity }
       try await edition.create()
       try await isbn.save()
       return .success
@@ -148,7 +148,7 @@ extension CreateEntity: Resolver {
       )
     }
 
-    guard model.isValid else {
+    guard await model.isValid() else {
       throw ModelError.invalidEntity
     }
 

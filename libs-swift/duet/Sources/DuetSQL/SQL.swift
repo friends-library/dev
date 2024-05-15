@@ -196,8 +196,9 @@ public enum SQL {
       do {
         return try await db.raw("\(unsafeRaw: statement.query)").all()
       } catch {
-        #if DEBUG
+        #if DEBUG && !canImport(XCTest)
           print("Error executing SQL (no bindings): \(String(reflecting: error))")
+          print("Query: \(statement.query)")
         #endif
         throw error
       }
@@ -226,8 +227,9 @@ public enum SQL {
       do {
         _ = try await db.raw("\(unsafeRaw: insertPrepareSql)").all().get()
       } catch {
-        #if DEBUG
+        #if DEBUG && !canImport(XCTest)
           print("Error preparing SQL: \(String(reflecting: error))")
+          print("Query: \(statement.query)")
         #endif
         throw error
       }
@@ -240,7 +242,7 @@ public enum SQL {
     do {
       return try await db.raw("\(unsafeRaw: "EXECUTE \(name)(\(params))")").all()
     } catch {
-      #if DEBUG
+      #if DEBUG && !canImport(XCTest)
         print("Error executing prepared SQL: \(String(reflecting: error))")
       #endif
       throw error

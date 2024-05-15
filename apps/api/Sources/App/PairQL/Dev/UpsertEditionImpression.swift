@@ -28,7 +28,7 @@ extension UpsertEditionImpression: Resolver {
       publishedRevision: input.publishedRevision,
       productionToolchainRevision: input.productionToolchainRevision
     )
-    guard impression.isValid else { throw ModelError.invalidEntity }
+    guard await impression.isValid() else { throw ModelError.invalidEntity }
     try await impression.upsert()
     // TODO: check this, used to have cache ramifications...
     let joined = try await EditionImpression.Joined.find(input.id)

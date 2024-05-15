@@ -1,33 +1,34 @@
 import XCTest
+import XExpect
 
 @testable import App
 
 final class EditionImpressionValidityTests: XCTestCase {
-  func testOutOfBoundPaperbackVolumesInvalid() {
+  func testOutOfBoundPaperbackVolumesInvalid() async {
     var impression = EditionImpression.valid
     impression.paperbackVolumes = .init(0)
-    XCTAssertFalse(impression.isValid)
+    expect(await impression.isValid()).toBeFalse()
     impression.paperbackVolumes = .init(100, 999_999)
-    XCTAssertFalse(impression.isValid)
+    expect(await impression.isValid()).toBeFalse()
   }
 
-  func testOutOfBoundsAdocLengthInvalid() {
+  func testOutOfBoundsAdocLengthInvalid() async {
     var impression = EditionImpression.valid
     impression.adocLength = 100
-    XCTAssertFalse(impression.isValid)
+    expect(await impression.isValid()).toBeFalse()
     impression.adocLength = 33_333_333_333
-    XCTAssertFalse(impression.isValid)
+    expect(await impression.isValid()).toBeFalse()
   }
 
-  func testNonGitCommitFullShaPublishedRevisionInvalid() {
+  func testNonGitCommitFullShaPublishedRevisionInvalid() async {
     var impression = EditionImpression.valid
     impression.publishedRevision = "not a sha"
-    XCTAssertFalse(impression.isValid)
+    expect(await impression.isValid()).toBeFalse()
   }
 
-  func testNonGitCommitFullShaProductionToolchainRevisionInvalid() {
+  func testNonGitCommitFullShaProductionToolchainRevisionInvalid() async {
     var impression = EditionImpression.valid
     impression.productionToolchainRevision = "not a sha"
-    XCTAssertFalse(impression.isValid)
+    expect(await impression.isValid()).toBeFalse()
   }
 }

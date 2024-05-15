@@ -124,7 +124,7 @@ extension UpdateEntity: Resolver {
       model = tokenScope
     }
 
-    guard model.isValid else {
+    guard await model.isValid() else {
       throw ModelError.invalidEntity
     }
 

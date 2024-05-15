@@ -1,5 +1,5 @@
 extension EditionImpression {
-  var isValid: Bool {
+  func isValid() async -> Bool {
     if !paperbackVolumes.allSatisfy({ $0 >= 2 && $0 <= 720 }) {
       return false
     }
