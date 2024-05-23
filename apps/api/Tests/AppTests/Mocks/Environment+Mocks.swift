@@ -7,7 +7,7 @@ extension Environment {
   static let mock = Environment(
     uuid: { .mock },
     date: { Date(timeIntervalSince1970: 0) },
-    db: ThrowingClient(), // ???
+    db: ThrowingClient(),
     logger: .null,
     slackClient: .mock,
     luluClient: .mock,

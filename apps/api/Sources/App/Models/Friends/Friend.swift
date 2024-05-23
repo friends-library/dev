@@ -53,11 +53,6 @@ struct Friend: Codable, Sendable {
 
 // extensions
 
-// TODO: move
-protocol DirectoryPathable {
-  var directoryPath: String { get }
-}
-
 extension Friend {
   struct DirectoryPathData {
     var lang: Lang

@@ -7,18 +7,9 @@ import XExpect
 @testable import App
 
 final class DownloadableFileTests: AppTestCase {
-  // var entities: Entities?
-  // var impression: EditionImpression.Joined { entities!.editionImpression }
-  // var edition: Edition { entities!.edition }
   var cloudUrl: String { Env.CLOUD_STORAGE_BUCKET_URL }
   var selfUrl: String { Env.SELF_URL }
   var websiteUrl: String { Env.WEBSITE_URL_EN }
-
-  // override func invokeTest() {
-  //   withMainSerialExecutor {
-  //     super.invokeTest()
-  //   }
-  // }
 
   func getEntities() async throws -> Entities {
     try await Current.db.deleteAll(Download.self)
@@ -90,7 +81,7 @@ final class DownloadableFileTests: AppTestCase {
       "stitcher more stuff",
     ]
     for userAgent in userAgents {
-      let file = DownloadableFile(entities, format: .ebook(.epub))
+      let file = entities.edition.downloadableFile(format: .ebook(.epub))
       let res = try await DownloadRoute.logAndRedirect(file: file, userAgent: userAgent)
       let download = try await Current.db.query(Download.self)
         .where(.userAgent == .string(userAgent))
@@ -103,7 +94,7 @@ final class DownloadableFileTests: AppTestCase {
   func testBotDownload() async throws {
     let entities = try await getEntities()
     let botUa = "GoogleBot"
-    let file = DownloadableFile(entities, format: .ebook(.epub))
+    let file = entities.edition.downloadableFile(format: .ebook(.epub))
     let res = try await DownloadRoute.logAndRedirect(file: file, userAgent: botUa)
     let downloads = try await Current.db.query(Download.self)
       .where(.userAgent == .string("GoogleBot"))
@@ -118,7 +109,7 @@ final class DownloadableFileTests: AppTestCase {
     Current.ipApiClient.getIpData = { _ in throw "whoops" }
     let userAgent = "FriendsLibrary".random
     let device = Current.userAgentParser.parse(userAgent)
-    let file = DownloadableFile(entities, format: .ebook(.epub))
+    let file = entities.edition.downloadableFile(format: .ebook(.epub))
 
     let res = try await DownloadRoute.logAndRedirect(
       file: file,
@@ -161,10 +152,8 @@ final class DownloadableFileTests: AppTestCase {
     }
 
     let userAgent = "Netscape 3.0".random
-    let file = DownloadableFile(
-      entities,
-      format: .audio(.mp3(quality: .high, multipartIndex: 3))
-    )
+    let file = entities.edition
+      .downloadableFile(format: .audio(.mp3(quality: .high, multipartIndex: 3)))
 
     _ = try await DownloadRoute.logAndRedirect(
       file: file,
@@ -190,7 +179,8 @@ final class DownloadableFileTests: AppTestCase {
   func testAppUaIsNotCountedAsBot() async throws {
     let entities = try await getEntities()
     let userAgent = "FriendsLibrary GoogleBot".random
-    let file = DownloadableFile(entities, format: .ebook(.epub))
+    let file = entities.edition.downloadableFile(format: .ebook(.epub))
+
     _ = try await DownloadRoute.logAndRedirect(file: file, userAgent: userAgent)
 
     let inserted = try await Current.db.query(Download.self)
@@ -219,9 +209,13 @@ final class DownloadableFileTests: AppTestCase {
     XCTAssertEqual(beforeDupe.count, 1)
     XCTAssertEqual(beforeDupe.first?.format, .podcast)
 
-    let file = DownloadableFile(entities, format: .audio(.podcast(.high)))
+    let file = entities.edition.downloadableFile(format: .audio(.podcast(.high)))
 
-    _ = try await DownloadRoute.logAndRedirect(file: file, userAgent: "", ipAddress: "1.2.3.4")
+    _ = try await DownloadRoute.logAndRedirect(
+      file: file,
+      userAgent: "",
+      ipAddress: "1.2.3.4"
+    )
 
     let afterDupe = try await Current.db.query(Download.self)
       .where(.editionId == entities.edition.id)
@@ -289,7 +283,7 @@ final class DownloadableFileTests: AppTestCase {
     ]
 
     for (format, pathEnd) in tests {
-      let downloadable = DownloadableFile(entities, format: format)
+      let downloadable = entities.edition.downloadableFile(format: format)
       XCTAssertEqual(downloadable.logPath, "download/\(entities.edition.id.lowercased)/\(pathEnd)")
       XCTAssertEqual(downloadable.logUrl.absoluteString, "\(selfUrl)/\(downloadable.logPath)")
     }
@@ -297,7 +291,7 @@ final class DownloadableFileTests: AppTestCase {
 
   func testSourcePath() async throws {
     let entities = try await getEntities()
-    let epub = DownloadableFile(entities, format: .ebook(.epub))
+    let epub = entities.edition.downloadableFile(format: .ebook(.epub))
     expect(epub.sourcePath).toEqual("\(entities.edition.directoryPath)/Journal--updated.epub")
   }
 
@@ -323,7 +317,7 @@ final class DownloadableFileTests: AppTestCase {
     ]
 
     for (format, logPath, logUrl, sourcePath, sourceUrl) in tests {
-      let downloadable = DownloadableFile(entities, format: format)
+      let downloadable = entities.edition.downloadableFile(format: format)
       XCTAssertEqual(downloadable.logPath, logPath)
       XCTAssertEqual(downloadable.logUrl.absoluteString, logUrl)
       XCTAssertEqual(downloadable.sourcePath, sourcePath)
@@ -356,23 +350,12 @@ final class DownloadableFileTests: AppTestCase {
     ]
 
     for (format, expectedFilename) in tests {
-      let downloadable = DownloadableFile(entities, format: format)
+      let downloadable = entities.edition.downloadableFile(format: format)
       XCTAssertEqual(downloadable.filename, expectedFilename)
       XCTAssertEqual(
         downloadable.sourceUrl.absoluteString,
         "\(cloudUrl)/\(edition.directoryPath)/\(expectedFilename)"
       )
     }
-  }
-}
-
-extension DownloadableFile {
-  init(_ entities: Entities, format: Format) {
-    self.init(
-      format: format,
-      editionId: entities.edition.id,
-      edition: entities.edition.directoryPathData,
-      documentFilename: entities.document.filename
-    )
   }
 }

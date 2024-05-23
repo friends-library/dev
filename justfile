@@ -129,7 +129,7 @@ nx-run-many targets:
 
 [private]
 exec-api cmd *args:
-  @cd apps/api && SWIFT_STRICT_CONCURRENCY=minimal ./.build/debug/Run {{cmd}} {{args}}
+  @cd apps/api && ./.build/debug/Run {{cmd}} {{args}}
 
 [private]
 watch-swift dir cmd ignore1="•" ignore2="•" ignore3="•":

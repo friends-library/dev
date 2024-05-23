@@ -40,3 +40,7 @@ extension ApiModel {
     true
   }
 }
+
+protocol DirectoryPathable {
+  var directoryPath: String { get }
+}

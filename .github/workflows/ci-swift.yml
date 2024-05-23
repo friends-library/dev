@@ -78,7 +78,6 @@ jobs:
 
 env:
   SWIFT_DETERMINISTIC_HASHING: 1
-  # SWIFT_STRICT_CONCURRENCY: minimal
   DATABASE_HOST: postgres
   DATABASE_NAME: vapor_database
   DATABASE_USERNAME: vapor_username

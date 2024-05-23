@@ -20,16 +20,8 @@ public struct BackupJob: AsyncScheduledJob, Sendable {
   }
 
   public func run(context: QueueContext) async throws {
-    // if #available(macOS 12, *) {
     try await handler(backupFileData)
-    // }
   }
-
-  // public func run(context: QueueContext) -> EventLoopFuture<Void> {
-  //   let promise = context.eventLoop.makePromise(of: Void.self)
-  //   promise.completeWithTask { try await run(context: context) }
-  //   return promise.futureResult
-  // }
 
   private var backupFileData: Data {
     let pgDump = Process()
