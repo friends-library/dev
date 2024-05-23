@@ -8,10 +8,10 @@ extension UUID: UUIDStringable {}
   }
 #endif
 
-public protocol UUIDStringable {
+public protocol UUIDStringable: Sendable {
   var uuidString: String { get }
 }
 
-public protocol UUIDIdentifiable {
+public protocol UUIDIdentifiable: Sendable {
   var uuidId: UUID { get }
 }

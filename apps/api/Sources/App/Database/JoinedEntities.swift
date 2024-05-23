@@ -324,14 +324,15 @@ extension EditionImpression {
     }
 
     joinedDocuments = documents.reduce(into: [:]) { joined, model in
-      let friend = joinedFriends[model.friendId]!
-      let joinedDocument = Document.Joined(
-        model,
-        friend: friend,
-        tags: documentTags[model.id] ?? []
-      )
-      joined[model.id] = joinedDocument
-      friend.documents.append(joinedDocument)
+      if let friend = joinedFriends[model.friendId] {
+        let joinedDocument = Document.Joined(
+          model,
+          friend: friend,
+          tags: documentTags[model.id] ?? []
+        )
+        joined[model.id] = joinedDocument
+        friend.documents.append(joinedDocument)
+      }
     }
 
     for doc in joinedDocuments.values {
@@ -363,36 +364,41 @@ extension EditionImpression {
     }
 
     joinedEditions = editions.reduce(into: [:]) { joined, model in
-      let document = joinedDocuments[model.documentId]!
-      let joinedEdition = Edition.Joined(
-        model,
-        document: document,
-        chapters: chapterMap[model.id] ?? [],
-        isbn: isbnMap[model.id]
-      )
-      joined[model.id] = joinedEdition
-      document.editions.append(joinedEdition)
+      if let document = joinedDocuments[model.documentId] {
+        let joinedEdition = Edition.Joined(
+          model,
+          document: document,
+          chapters: chapterMap[model.id] ?? [],
+          isbn: isbnMap[model.id]
+        )
+        joined[model.id] = joinedEdition
+        document.editions.append(joinedEdition)
+      }
     }
 
     joinedImpressions = impressions.reduce(into: [:]) { joined, model in
-      let edition = joinedEditions[model.editionId]!
-      let joinedImpression = EditionImpression.Joined(model, edition: edition)
-      joined[model.id] = joinedImpression
-      edition.impression = joinedImpression
+      if let edition = joinedEditions[model.editionId] {
+
+        let joinedImpression = EditionImpression.Joined(model, edition: edition)
+        joined[model.id] = joinedImpression
+        edition.impression = joinedImpression
+      }
     }
 
     joinedAudios = audios.reduce(into: [:]) { joined, model in
-      let edition = joinedEditions[model.editionId]!
-      let joinedAudio = Audio.Joined(model, edition: edition)
-      joined[model.id] = joinedAudio
-      edition.audio = joinedAudio
+      if let edition = joinedEditions[model.editionId] {
+        let joinedAudio = Audio.Joined(model, edition: edition)
+        joined[model.id] = joinedAudio
+        edition.audio = joinedAudio
+      }
     }
 
     joinedAudioParts = audioParts.reduce(into: [:]) { joined, model in
-      let audio = joinedAudios[model.audioId]!
-      let joinedAudioPart = AudioPart.Joined(model, audio: audio)
-      joined[model.id] = joinedAudioPart
-      audio.parts.append(joinedAudioPart)
+      if let audio = joinedAudios[model.audioId] {
+        let joinedAudioPart = AudioPart.Joined(model, audio: audio)
+        joined[model.id] = joinedAudioPart
+        audio.parts.append(joinedAudioPart)
+      }
     }
 
     // swiftformat:disable redundantSelf
@@ -535,3 +541,13 @@ extension EditionImpression {
     try await EditionImpression.Joined.find(id)
   }
 }
+
+#if DEBUG && os(macOS)
+  import Darwin
+
+  func eprint(_ items: Any...) {
+    let s = items.map { "\($0)" }.joined(separator: " ")
+    fputs(s + "\n", stderr)
+    fflush(stderr)
+  }
+#endif

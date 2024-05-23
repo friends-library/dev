@@ -16,7 +16,7 @@ struct DocumentTag: Codable, Sendable {
 // extensions
 
 extension DocumentTag {
-  enum TagType: String, Codable, CaseIterable {
+  enum TagType: String, Codable, CaseIterable, Sendable {
     case journal
     case letters
     case exhortation

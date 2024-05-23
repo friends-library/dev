@@ -1,6 +1,6 @@
 public extension SQL {
 
-  enum WhereConstraint<M: Model>: Equatable {
+  enum WhereConstraint<M: Model>: Equatable, Sendable {
     case equals(M.ColumnName, Postgres.Data)
     case lessThan(M.ColumnName, Postgres.Data)
     case greaterThan(M.ColumnName, Postgres.Data)

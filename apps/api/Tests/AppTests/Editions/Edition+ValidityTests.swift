@@ -3,7 +3,7 @@ import XExpect
 
 @testable import App
 
-final class EditionValidityTests: XCTestCase {
+final class EditionValidityTests: AppTestCase {
   func testEditorOnNonUpdatedEditionInvalid() async {
     var edition = Edition.valid
     edition.editor = "Bob"
@@ -15,26 +15,27 @@ final class EditionValidityTests: XCTestCase {
     var edition = Edition.valid
     edition.editor = "Bob"
     edition.type = .updated
-    // allowed because we can't resolve the language, relations not loaded
+
+    // allowed because we can't resolve the language, no joined entities
     expect(await edition.isValid()).toBeTrue()
 
-    // var friend = Friend.empty
-    // friend.lang = .es
-    // var document = Document.valid
-    // document.friend = .loaded(friend)
-    // edition.document = .loaded(document)
+    let entities = await Entities.create {
+      $0.edition.editor = "Bob"
+      $0.edition.type = .updated
+      $0.friend.lang = .es // <-- problem
+    }
 
-    // // now we now it's invalid, because we know the lang is spanish
-    // XCTAssertFalse(edition.isValid)
+    expect(await entities.edition.isValid()).toBeFalse()
   }
 
-  // func testLoadedChaptersWithNonSequentialOrderInvalid() async {
-  //   var edition = Edition.valid
-  //   var chapter1 = EditionChapter.valid
-  //   chapter1.order = 1
-  //   var chapter2 = EditionChapter.valid
-  //   chapter2.order = 3 // <-- unexpected non-sequential order
-  //   edition.chapters = .loaded([chapter1, chapter2])
-  //   XCTAssertFalse(edition.isValid)
-  // }
+  func testLoadedChaptersWithNonSequentialOrderInvalid() async {
+    let entities = await Entities.create { $0.editionChapter.order = 1 }
+    try! await EditionChapter.create(.init(
+      editionId: entities.edition.id,
+      order: 3, // <-- unexpected non-sequential order
+      shortHeading: "",
+      isIntermediateTitle: false
+    ))
+    expect(await entities.edition.isValid()).toBeFalse()
+  }
 }

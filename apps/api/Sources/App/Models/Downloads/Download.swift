@@ -68,12 +68,12 @@ struct Download: Codable, Sendable {
 // extensions
 
 extension Download {
-  enum AudioQuality: String, Codable, CaseIterable {
+  enum AudioQuality: String, Codable, CaseIterable, Sendable {
     case lq
     case hq
   }
 
-  enum Format: String, Codable, CaseIterable {
+  enum Format: String, Codable, CaseIterable, Sendable {
     case epub
     case mobi
     case webPdf
@@ -85,7 +85,7 @@ extension Download {
     case appEbook
   }
 
-  enum DownloadSource: String, Codable, CaseIterable {
+  enum DownloadSource: String, Codable, CaseIterable, Sendable {
     case website
     case podcast
     case app

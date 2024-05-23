@@ -1,17 +1,17 @@
 import Tagged
 
-enum Lang: String, Codable, CaseIterable {
+enum Lang: String, Codable, CaseIterable, Sendable {
   case en
   case es
 }
 
-enum EditionType: String, Codable, CaseIterable {
+enum EditionType: String, Codable, CaseIterable, Sendable {
   case updated
   case original
   case modernized
 }
 
-enum PrintSizeVariant: String, Codable, CaseIterable {
+enum PrintSizeVariant: String, Codable, CaseIterable, Sendable {
   case s
   case m
   case xl
@@ -29,7 +29,7 @@ enum PrintSizeVariant: String, Codable, CaseIterable {
   }
 }
 
-enum PrintSize: String, Codable, CaseIterable {
+enum PrintSize: String, Codable, CaseIterable, Sendable {
   case s
   case m
   case xl

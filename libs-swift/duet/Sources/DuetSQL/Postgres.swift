@@ -2,7 +2,7 @@ import Duet
 import Foundation
 import XCore
 
-public protocol PostgresEnum {
+public protocol PostgresEnum: Sendable {
   var typeName: String { get }
   var rawValue: String { get }
 }
@@ -42,7 +42,7 @@ public enum Postgres {
     }
   }
 
-  public enum Data {
+  public enum Data: Sendable {
     case id(UUIDIdentifiable)
     case string(String?)
     case varchar(String?)

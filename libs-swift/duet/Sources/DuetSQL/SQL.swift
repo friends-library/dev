@@ -3,7 +3,7 @@ import FluentSQL
 import XCore
 
 public enum SQL {
-  public enum OrderDirection {
+  public enum OrderDirection: Sendable {
     case asc
     case desc
 
@@ -17,7 +17,7 @@ public enum SQL {
     }
   }
 
-  public struct Order<M: Model> {
+  public struct Order<M: Model>: Sendable {
     let column: M.ColumnName
     let direction: OrderDirection
 

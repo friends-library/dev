@@ -29,7 +29,6 @@ final class OrderEmailsTests: AppTestCase {
     XCTAssertEqual("[,] Friends Library Order Shipped", email.subject)
     XCTAssertTrue(email.text.hasPrefix("Bob,"))
     XCTAssertTrue(email.text.contains("(\(order.id.lowercased))"))
-    // XCTAssertTrue(email.text.contains("* (1) \(docTitle)"))
     expect(email.text).toContain("* (1) \(docTitle)")
     XCTAssertTrue(email.text.contains("/track/123"))
   }

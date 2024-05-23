@@ -3,7 +3,7 @@ import XExpect
 
 @testable import App
 
-final class FriendValidityTests: XCTestCase {
+final class FriendValidityTests: AppTestCase {
   func testNonCapitalizedNameInvalid() async {
     var friend = Friend.valid
     friend.name = "george fox"
@@ -55,26 +55,27 @@ final class FriendValidityTests: XCTestCase {
     expect(await friend.isValid()).toBeFalse()
   }
 
-  // func testPublishedShouldNotBeNilIfFriendHasNonDraftDocument() async {
-  //   var edition = Edition.valid
-  //   edition.isDraft = false
-  //   var document = Document.valid
-  //   document.editions = .loaded([edition])
-  //   var friend = Friend.valid
-  //   friend.documents = .loaded([document])
-  //   friend.published = nil // <-- not allowed, has a non draft document
-  //   expect(await friend.isValid()).toBeFalse()
-  // }
+  func testPublishedShouldNotBeNilIfFriendHasNonDraftDocument() async throws {
+    let entities = await Entities.create {
+      $0.edition.isDraft = false
+      $0.friend.published = nil // <-- not allowed, has a non draft document
+    }
+    expect(await entities.friend.model.isValid()).toBeFalse()
+  }
 
-  // func testQuoteOrdersMustBeSequentialIfLoaded() async {
-  //   var quote1 = FriendQuote.empty
-  //   quote1.order = 1
-  //   var quote2 = FriendQuote.empty
-  //   quote2.order = 3 // <-- unexpected non-sequential order
-  //   var friend = Friend.valid
-  //   friend.quotes = .loaded([quote1, quote2])
-  //   expect(await friend.isValid()).toBeFalse()
-  // }
+  func testQuoteOrdersMustBeSequentialIfLoaded() async throws {
+    let entities = await Entities.create {
+      $0.friendQuote.order = 1
+    }
+    try await FriendQuote.create(.init(
+      friendId: entities.friend.id,
+      source: "",
+      text: "",
+      order: 3 // <-- unexpected non-sequential order
+    ))
+    let friend = try await Friend.Joined.find(entities.friend.id)
+    expect(await friend.model.isValid()).toBeFalse()
+  }
 
   func testDiedRequiredIfNotCompilations() async {
     var friend = Friend.valid

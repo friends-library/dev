@@ -31,25 +31,25 @@ final class DevDomainTests: AppTestCase {
     expect(output).toEqual(.init(id: retrieved?.id ?? .init()))
   }
 
-  // func testUpsertEditionImpressionCanImmediatelyResolveCloudFiles() async throws {
-  //   let edition = (await Entities.create()).edition
-  //   let newId = EditionImpression.Id()
+  func testUpsertEditionImpressionCanImmediatelyResolveCloudFiles() async throws {
+    let entities = await Entities.create()
 
-  //   let output = try await UpsertEditionImpression.resolve(
-  //     with: .init(
-  //       id: newId,
-  //       editionId: edition.id,
-  //       adocLength: 3333,
-  //       paperbackSizeVariant: .xl,
-  //       paperbackVolumes: [233],
-  //       publishedRevision: "a499db17511b75407a1229447946138481d05dd6",
-  //       productionToolchainRevision: "a499db17511b75407a1229447946138481d05dd5"
-  //     ),
-  //     in: .authed
-  //   )
-
-  //   expect(output.id).toEqual(newId)
-  // }
+    let output = try await UpsertEditionImpression.resolve(
+      with: .init(
+        id: entities.editionImpression.id,
+        editionId: entities.edition.id,
+        adocLength: 3333,
+        paperbackSizeVariant: .xl,
+        paperbackVolumes: [233],
+        publishedRevision: "a499db17511b75407a1229447946138481d05dd6",
+        productionToolchainRevision: "a499db17511b75407a1229447946138481d05dd5"
+      ),
+      in: .authed
+    )
+    expect(output.id).toEqual(entities.editionImpression.id)
+    let fetched = try await EditionImpression.find(entities.editionImpression.id)
+    expect(fetched.adocLength).toEqual(3333)
+  }
 }
 
 extension Token {

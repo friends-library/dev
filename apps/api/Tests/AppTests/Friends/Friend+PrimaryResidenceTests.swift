@@ -2,71 +2,67 @@ import XCTest
 
 @testable import App
 
-// final class FriendPrimaryResidenceTests: XCTestCase {
+final class FriendPrimaryResidenceTests: AppTestCase {
 
-//   func testReturnsUnDatedResidenceIfOnlyOne() {
-//     var residence: FriendResidence = .empty
-//     residence.city = "Sheffield"
-//     residence.region = "England"
-//     residence.durations = .loaded([])
+  func testReturnsUnDatedResidenceIfOnlyOne() async throws {
+    let entities = await Entities.create {
+      $0.friendResidence.city = "Sheffield"
+      $0.friendResidence.region = "England"
+    }
+    try await entities.friendResidenceDuration.delete() // no durations
+    XCTAssertEqual(entities.friendResidence.model, entities.friend.primaryResidence?.model)
+  }
 
-//     var friend: Friend = .empty
-//     friend.residences = .loaded([residence])
+  func testReturnsResidenceWithLongestDurationIfSeveral() async throws {
+    let entities = await Entities.create {
+      $0.friend.born = 1700
+      $0.friend.died = 1780
+      $0.friendResidence.city = "Sheffield"
+      $0.friendResidence.region = "England"
+      // short duration
+      $0.friendResidenceDuration.start = 1770
+      $0.friendResidenceDuration.end = 1780
+    }
 
-//     XCTAssertEqual(residence, friend.primaryResidence)
-//   }
+    let longResidence = try await FriendResidence.create(.init(
+      friendId: entities.friend.id,
+      city: "York",
+      region: "England"
+    ))
 
-//   func testReturnsResidenceWithLongestDurationIfSeveral() {
-//     var longDuration: FriendResidenceDuration = .empty
-//     longDuration.start = 1700
-//     longDuration.end = 1770
+    try await FriendResidenceDuration.create(.init(
+      friendResidenceId: longResidence.id,
+      start: 1700,
+      end: 1770
+    ))
 
-//     var shortDuration: FriendResidenceDuration = .empty
-//     shortDuration.start = 1770
-//     shortDuration.end = 1780
+    let friend = try await Friend.Joined.find(entities.friend.id)
+    XCTAssertEqual(longResidence, friend.primaryResidence?.model)
+  }
 
-//     var longResidence: FriendResidence = .empty
-//     longResidence.city = "York"
-//     longResidence.region = "England"
-//     longResidence.durations = .loaded([longDuration])
+  func testDiscountsGrowingUpYearsWhenChoosingPrimaryResidence() async throws {
+    let entities = await Entities.create {
+      $0.friend.born = 1700
+      $0.friend.died = 1724
+      $0.friendResidence.city = "York"
+      $0.friendResidence.region = "England"
+      // childhood duration:
+      $0.friendResidenceDuration.start = 1700
+      $0.friendResidenceDuration.end = 1717
+    }
 
-//     var shortResidence: FriendResidence = .empty
-//     shortResidence.city = "Sheffield"
-//     shortResidence.region = "England"
-//     shortResidence.durations = .loaded([shortDuration])
+    let adultResidence = try await FriendResidence.create(.init(
+      friendId: entities.friend.id,
+      city: "Sheffield",
+      region: "England"
+    ))
 
-//     var friend: Friend = .empty
-//     friend.born = 1700
-//     friend.died = 1780
-//     friend.residences = .loaded([longResidence, shortResidence])
+    try await FriendResidenceDuration.create(.init(
+      friendResidenceId: adultResidence.id,
+      start: 1717, end: 1724 // <-- shorter, but adult
+    ))
 
-//     XCTAssertEqual(longResidence, friend.primaryResidence)
-//   }
-
-//   func testDiscountsGrowingUpYearsWhenChoosingPrimaryResidence() {
-//     var childhood: FriendResidenceDuration = .empty
-//     childhood.start = 1700
-//     childhood.end = 1717
-
-//     var adulthood: FriendResidenceDuration = .empty
-//     adulthood.start = 1717
-//     adulthood.end = 1724
-
-//     var childhoodResidence: FriendResidence = .empty
-//     childhoodResidence.city = "York"
-//     childhoodResidence.region = "England"
-//     childhoodResidence.durations = .loaded([childhood])
-
-//     var adultResidence: FriendResidence = .empty
-//     adultResidence.city = "Sheffield"
-//     adultResidence.region = "England"
-//     adultResidence.durations = .loaded([adulthood])
-
-//     var friend: Friend = .empty
-//     friend.born = 1700
-//     friend.died = 1724
-//     friend.residences = .loaded([childhoodResidence, adultResidence])
-
-//     XCTAssertEqual(adultResidence, friend.primaryResidence)
-//   }
-// }
+    let friend = try await Friend.Joined.find(entities.friend.id)
+    XCTAssertEqual(adultResidence, friend.primaryResidence?.model)
+  }
+}
