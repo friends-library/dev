@@ -25,7 +25,7 @@ final class EditionValidityTests: AppTestCase {
       $0.friend.lang = .es // <-- problem
     }
 
-    expect(await entities.edition.isValid()).toBeFalse()
+    expect(await entities.edition.model.isValid()).toBeFalse()
   }
 
   func testLoadedChaptersWithNonSequentialOrderInvalid() async {
@@ -36,6 +36,6 @@ final class EditionValidityTests: AppTestCase {
       shortHeading: "",
       isIntermediateTitle: false
     ))
-    expect(await entities.edition.isValid()).toBeFalse()
+    expect(await entities.edition.model.isValid()).toBeFalse()
   }
 }

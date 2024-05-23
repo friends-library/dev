@@ -24,7 +24,7 @@ struct Entities {
   var friendQuote: FriendQuote
   var document: Document.Joined
   var documentTag: DocumentTag
-  var edition: Edition
+  var edition: Edition.Joined
   var editionChapter: EditionChapter
   var editionImpression: EditionImpression.Joined
   var isbn: Isbn
@@ -148,7 +148,7 @@ extension Entities.Unjoined {
       friendQuote: friendQuote,
       document: document,
       documentTag: documentTag,
-      edition: self.edition,
+      edition: edition,
       editionChapter: editionChapter,
       editionImpression: impression,
       isbn: isbn,
