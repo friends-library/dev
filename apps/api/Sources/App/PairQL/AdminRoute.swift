@@ -6,7 +6,7 @@ import Vapor
 enum AdminRoute: PairRoute {
   case authed(UUID, AuthedAdminRoute)
 
-  static let router = OneOf {
+  nonisolated(unsafe) static let router = OneOf {
     Route(/Self.authed) {
       Headers {
         Field("Authorization") {
@@ -35,7 +35,7 @@ enum AuthedAdminRoute: PairRoute {
   case selectableDocuments
   case updateEntity(UpdateEntity.Input)
 
-  static let router: AnyParserPrinter<URLRequestData, AuthedAdminRoute> = OneOf {
+  nonisolated(unsafe) static let router = OneOf {
     Route(/Self.createEntity) {
       Operation(CreateEntity.self)
       Body(.input(CreateEntity.self))

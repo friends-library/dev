@@ -1,6 +1,6 @@
 import DuetSQL
 
-final class Friend: Codable {
+struct Friend: Codable, Sendable {
   var id: Id
   var lang: Lang
   var name: String
@@ -14,24 +14,12 @@ final class Friend: Codable {
   var updatedAt = Current.date()
   var deletedAt: Date?
 
-  var documents = Children<Document>.notLoaded
-  var residences = Children<FriendResidence>.notLoaded
-  var quotes = Children<FriendQuote>.notLoaded
-
   var isCompilations: Bool {
     slug.starts(with: "compila")
   }
 
   var directoryPath: String {
     "\(lang)/\(slug)"
-  }
-
-  var hasNonDraftDocument: Bool {
-    documents.require().first { $0.hasNonDraftEdition } != nil
-  }
-
-  var relatedDocuments: [RelatedDocument] {
-    documents.require().flatMap { $0.relatedDocuments.require() }
   }
 
   var alphabeticalName: String {
@@ -63,35 +51,30 @@ final class Friend: Codable {
   }
 }
 
-// loaders
+// extensions
 
 extension Friend {
-  func documents() async throws -> [Document] {
-    try await documents.useLoaded(or: {
-      try await Document.query()
-        .where(.friendId == id)
-        .all()
-    })
-  }
-
-  func residences() async throws -> [FriendResidence] {
-    try await residences.useLoaded(or: {
-      try await FriendResidence.query()
-        .where(.friendId == id)
-        .all()
-    })
-  }
-
-  func quotes() async throws -> [FriendQuote] {
-    try await quotes.useLoaded(or: {
-      try await FriendQuote.query()
-        .where(.friendId == id)
-        .all()
-    })
+  struct DirectoryPathData {
+    var lang: Lang
+    var slug: String
   }
 }
 
-// extensions
+extension Friend.DirectoryPathData: DirectoryPathable {
+  var directoryPath: String {
+    "\(lang)/\(slug)"
+  }
+}
+
+extension Friend.Joined {
+  var hasNonDraftDocument: Bool {
+    documents.first { $0.hasNonDraftEdition } != nil
+  }
+
+  var directoryPathData: Friend.DirectoryPathData {
+    .init(lang: model.lang, slug: model.slug)
+  }
+}
 
 extension Friend {
   enum Gender: String, Codable, CaseIterable {

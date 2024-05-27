@@ -12,7 +12,7 @@ enum OrderRoute: PairRoute {
   case getPrintJobExploratoryMetadata(GetPrintJobExploratoryMetadata.Input)
   case sendOrderConfirmationEmail(Order.Id)
 
-  static let router = OneOf {
+  nonisolated(unsafe) static let router = OneOf {
     Route(/Self.brickOrder) {
       Operation(BrickOrder.self)
       Body(.input(BrickOrder.self))

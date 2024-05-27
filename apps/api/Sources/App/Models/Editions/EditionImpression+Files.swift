@@ -1,8 +1,8 @@
 import Foundation
 import NonEmpty
 
-struct EditionImpressionFiles: Encodable {
-  struct Ebook: Encodable {
+struct EditionImpressionFiles {
+  struct Ebook {
     let epub: DownloadableFile
     let mobi: DownloadableFile
     let pdf: DownloadableFile
@@ -10,7 +10,7 @@ struct EditionImpressionFiles: Encodable {
     let app: DownloadableFile
   }
 
-  struct Paperback: Encodable {
+  struct Paperback {
     let interior: NonEmpty<[DownloadableFile]>
     let cover: NonEmpty<[DownloadableFile]>
   }
@@ -29,33 +29,39 @@ struct EditionImpressionFiles: Encodable {
   }
 }
 
-extension EditionImpression {
+extension Edition.Joined {
+  func downloadableFile(format: DownloadableFile.Format) -> DownloadableFile {
+    DownloadableFile(
+      format: format,
+      editionId: model.id,
+      edition: directoryPathData,
+      documentFilename: document.filename
+    )
+  }
+}
+
+extension EditionImpression.Joined {
+  func downloadableFile(format: DownloadableFile.Format) -> DownloadableFile {
+    edition.downloadableFile(format: format)
+  }
+
   var files: EditionImpressionFiles {
-    let edition = edition.require()
-
-    var interiors = paperbackVolumes.indices.map { index -> DownloadableFile in
-      let volumeIndex = paperbackVolumes.count == 1 ? nil : index
-      return DownloadableFile(
-        edition: edition,
-        format: .paperback(type: .interior, volumeIndex: volumeIndex)
-      )
+    var interiors = model.paperbackVolumes.indices.map { index -> DownloadableFile in
+      let volumeIndex = model.paperbackVolumes.count == 1 ? nil : index
+      return downloadableFile(format: .paperback(type: .interior, volumeIndex: volumeIndex))
     }
-
-    var covers = paperbackVolumes.indices.map { index -> DownloadableFile in
-      let volumeIndex = paperbackVolumes.count == 1 ? nil : index
-      return DownloadableFile(
-        edition: edition,
-        format: .paperback(type: .cover, volumeIndex: volumeIndex)
-      )
+    var covers = model.paperbackVolumes.indices.map { index -> DownloadableFile in
+      let volumeIndex = model.paperbackVolumes.count == 1 ? nil : index
+      return downloadableFile(format: .paperback(type: .cover, volumeIndex: volumeIndex))
     }
 
     return EditionImpressionFiles(
       ebook: .init(
-        epub: .init(edition: edition, format: .ebook(.epub)),
-        mobi: .init(edition: edition, format: .ebook(.mobi)),
-        pdf: .init(edition: edition, format: .ebook(.pdf)),
-        speech: .init(edition: edition, format: .ebook(.speech)),
-        app: .init(edition: edition, format: .ebook(.app))
+        epub: downloadableFile(format: .ebook(.epub)),
+        mobi: downloadableFile(format: .ebook(.mobi)),
+        pdf: downloadableFile(format: .ebook(.pdf)),
+        speech: downloadableFile(format: .ebook(.speech)),
+        app: downloadableFile(format: .ebook(.app))
       ),
       paperback: .init(
         interior: .init(interiors.removeFirst()) + interiors,

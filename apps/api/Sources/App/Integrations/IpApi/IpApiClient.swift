@@ -2,7 +2,7 @@ import Foundation
 import XHttp
 
 enum IpApi {
-  struct Response: Decodable, Equatable {
+  struct Response: Decodable, Equatable, Sendable {
     var ip: String?
     var city: String?
     var region: String?
@@ -40,14 +40,14 @@ enum IpApi {
     }
   }
 
-  struct Client {
+  struct Client: Sendable {
     var getIpData = getIpData(ipAddress:)
   }
 }
 
 // implementation
 
-private func getIpData(ipAddress: String) async throws -> IpApi.Response {
+@Sendable private func getIpData(ipAddress: String) async throws -> IpApi.Response {
   try await HTTP.get(
     "https://ipapi.co/\(ipAddress)/json/?key=\(Env.LOCATION_API_KEY)",
     decoding: IpApi.Response.self,

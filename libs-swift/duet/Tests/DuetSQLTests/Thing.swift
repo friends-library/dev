@@ -1,7 +1,7 @@
 import DuetSQL
 import Tagged
 
-final class Thing: Codable {
+struct Thing: Codable {
   enum CustomEnum: String, Codable {
     case foo
     case bar
@@ -21,7 +21,7 @@ final class Thing: Codable {
   var deletedAt: Date?
 
   init(
-    id: Id = .init(),
+    id: Id = .init(UUID()),
     string: String = "foo",
     version: String = "1.0.0",
     int: Int = 123,

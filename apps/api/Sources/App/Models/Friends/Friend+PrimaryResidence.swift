@@ -1,15 +1,15 @@
 import Foundation
 
-extension Friend {
-  var primaryResidence: FriendResidence? {
-    var primary: FriendResidence?
-    for residence in residences.require() {
+extension Friend.Joined {
+  var primaryResidence: FriendResidence.Joined? {
+    var primary: FriendResidence.Joined?
+    for residence in residences {
       guard let current = primary else {
         primary = residence
         continue
       }
-      let currentTotal = totalAdultYears(current.durations.require(), born)
-      let nextTotal = totalAdultYears(residence.durations.require(), born)
+      let currentTotal = totalAdultYears(current.durations, model.born)
+      let nextTotal = totalAdultYears(residence.durations, model.born)
       if nextTotal > currentTotal {
         primary = residence
       }

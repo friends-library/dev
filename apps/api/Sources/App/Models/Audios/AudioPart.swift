@@ -3,7 +3,7 @@ import NonEmpty
 import Tagged
 import TaggedTime
 
-final class AudioPart: Codable {
+struct AudioPart: Codable, Sendable {
   var id: Id
   var audioId: Audio.Id
   var title: String
@@ -14,8 +14,6 @@ final class AudioPart: Codable {
   var mp3SizeLq: Bytes
   var createdAt = Current.date()
   var updatedAt = Current.date()
-
-  var audio = Parent<Audio>.notLoaded
 
   var isPublished: Bool {
     // detect intermediate state between when we have created the audio part row

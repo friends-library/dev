@@ -11,7 +11,7 @@ struct AudioQualities<T: PairNestable>: PairNestable {
 }
 
 struct DocumentPage: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct Input: PairInput {
     var lang: Lang
@@ -117,27 +117,29 @@ struct DocumentPage: Pair {
 extension DocumentPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    async let allDocuments = Document.query().all()
-    async let matchingDocuments = Document.query()
-      .where(.slug == input.documentSlug)
-      .all()
-
-    let numTotalBooks = try await allDocuments
+    let publishedDocs = try await Document.Joined.all()
       .filter(\.hasNonDraftEdition)
-      .filter { $0.lang == input.lang }
-      .count
+      .filter { $0.friend.lang == input.lang }
 
-    let document = try await matchingDocuments
-      .first { $0.lang == input.lang && $0.friend.require().slug == input.friendSlug }
+    let document = publishedDocs.first {
+      $0.slug == input.documentSlug && $0.friend.slug == input.friendSlug
+    }
 
     guard let document else {
       throw Abort(.notFound)
     }
 
+    let rows = try await Current.db.customQuery(
+      DocumentDownloads.self,
+      withBindings: document.editions.map { .uuid($0.id) }
+    )
+    assert(rows.count == 1)
+    let numDownloads = rows.first?.total ?? 0
+
     return try .init(
       document,
-      downloads: [document.urlPath: try await document.numDownloads()],
-      numTotalBooks: numTotalBooks,
+      downloads: [document.urlPath: numDownloads],
+      numTotalBooks: publishedDocs.count,
       in: context
     )
   }
@@ -145,19 +147,19 @@ extension DocumentPage: Resolver {
 
 extension DocumentPage.Output {
   init(
-    _ document: Document,
+    _ document: Document.Joined,
     downloads: [String: Int],
     numTotalBooks: Int,
     in context: AuthedContext
   ) throws {
-    let friend = document.friend.require()
-    let editions = document.editions.require()
+    let friend = document.friend
+    let editions = document.editions
     let primaryEdition = try expect(document.primaryEdition)
-    let primaryEditionImpression = try expect(primaryEdition.impression.require())
-    let isbn = try expect(primaryEdition.isbn.require())
+    let primaryEditionImpression = try expect(primaryEdition.impression)
+    let isbn = try expect(primaryEdition.isbn)
 
     var audiobook: DocumentPage.PrimaryEdition.Audiobook?
-    if let audio = primaryEdition.audio.require() {
+    if let audio = primaryEdition.audio {
       audiobook = .init(
         isIncomplete: audio.isIncomplete,
         reader: audio.reader,
@@ -180,7 +182,7 @@ extension DocumentPage.Output {
           hq: audio.files.podcast.hq.logUrl.absoluteString
         ),
         podcastImageUrl: primaryEdition.images.square.w1400.url.absoluteString,
-        parts: audio.parts.require()
+        parts: audio.parts
           .sorted(by: { $0.order < $1.order })
           .map { part in
             .init(
@@ -217,11 +219,11 @@ extension DocumentPage.Output {
         isCompilation: friend.isCompilations,
         ogImageUrl: primaryEdition.images.threeD.w700.url.absoluteString,
         editions: try editions.filter { !$0.isDraft }.map { edition in
-          let impression = try expect(edition.impression.require())
+          let impression = try expect(edition.impression)
           return .init(
             id: edition.id,
             type: edition.type,
-            isbn: try expect(edition.isbn.require()).code,
+            isbn: try expect(edition.isbn).code,
             printSize: impression.paperbackSize,
             numPages: impression.paperbackVolumes,
             loggedDownloadUrls: .init(
@@ -232,7 +234,7 @@ extension DocumentPage.Output {
             )
           )
         },
-        alternateLanguageDoc: document.altLanguageDocument.require().map {
+        alternateLanguageDoc: document.altLanguageDocument.map {
           .init(friendSlug: friend.slug, slug: $0.slug)
         },
         primaryEdition: .init(
@@ -240,11 +242,11 @@ extension DocumentPage.Output {
           printSize: primaryEditionImpression.paperbackSize,
           paperbackVolumes: primaryEditionImpression.paperbackVolumes,
           isbn: isbn.code,
-          numChapters: primaryEdition.chapters.require().count,
+          numChapters: primaryEdition.chapters.count,
           audiobook: audiobook
         )
       ),
-      otherBooksByFriend: try friend.documents.require().filter(\.hasNonDraftEdition)
+      otherBooksByFriend: try friend.documents.filter(\.hasNonDraftEdition)
         .filter { $0.slug != document.slug }
         .map { otherDoc in
           let edition = try expect(otherDoc.primaryEdition)
@@ -253,9 +255,9 @@ extension DocumentPage.Output {
             slug: otherDoc.slug,
             editionType: edition.type,
             description: otherDoc.partialDescription,
-            paperbackVolumes: try expect(edition.impression.require()).paperbackVolumes,
-            isbn: try expect(edition.isbn.require()).code,
-            audioDuration: (edition.audio.require()).map(\.humanDurationClock),
+            paperbackVolumes: try expect(edition.impression).paperbackVolumes,
+            isbn: try expect(edition.isbn).code,
+            audioDuration: edition.audio.map(\.humanDurationClock),
             htmlShortTitle: otherDoc.htmlShortTitle,
             documentSlug: otherDoc.slug,
             createdAt: otherDoc.createdAt
@@ -278,8 +280,24 @@ func expect<T>(_ value: T?, file: StaticString = #file, line: UInt = #line) thro
   return value
 }
 
-extension Document {
+extension Document.Joined {
   var urlPath: String {
-    "\(friend.require().slug)/\(slug)"
+    "\(friend.slug)/\(model.slug)"
   }
+}
+
+private struct DocumentDownloads: CustomQueryable {
+  static func query(numBindings: Int) -> String {
+    let bindings = (1 ... numBindings).map { "$\($0)" }.joined(separator: ", ")
+    return """
+      SELECT SUM(document_downloads) AS total
+      FROM (
+        SELECT COUNT(*)::INTEGER AS document_downloads
+        FROM \(Download.tableName)
+        WHERE \(Download.columnName(.editionId)) IN (\(bindings))
+      ) AS subquery;
+    """
+  }
+
+  let total: Int
 }

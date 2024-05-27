@@ -5,7 +5,6 @@ import XCTest
 @testable import App
 
 final class LuluTests: XCTestCase {
-
   func testPrices() throws {
     let cases: [(PrintSize, NonEmpty<[Int]>, Cents<Int>)] = [
       (.s, .init(10), 214),

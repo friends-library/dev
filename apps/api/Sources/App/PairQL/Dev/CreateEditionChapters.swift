@@ -1,7 +1,7 @@
 import PairQL
 
 struct CreateEditionChapters: Pair {
-  static var auth: Scope = .mutateEntities
+  static let auth: Scope = .mutateEntities
 
   struct CreateEditionChapterInput: PairInput {
     let editionId: Edition.Id
@@ -25,7 +25,7 @@ extension CreateEditionChapters: Resolver {
 }
 
 extension EditionChapter {
-  convenience init(input: CreateEditionChapters.CreateEditionChapterInput) {
+  init(input: CreateEditionChapters.CreateEditionChapterInput) {
     self.init(
       editionId: input.editionId,
       order: input.order,

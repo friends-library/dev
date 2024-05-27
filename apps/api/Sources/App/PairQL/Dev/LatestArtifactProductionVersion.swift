@@ -1,7 +1,7 @@
 import PairQL
 
 struct LatestArtifactProductionVersion: Pair {
-  static var auth: Scope = .queryArtifactProductionVersions
+  static let auth: Scope = .queryArtifactProductionVersions
 
   struct Output: PairOutput {
     var version: String

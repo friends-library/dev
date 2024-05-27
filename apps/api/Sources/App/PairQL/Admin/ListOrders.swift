@@ -3,7 +3,7 @@ import PairQL
 import TaggedMoney
 
 struct ListOrders: Pair {
-  static var auth: Scope = .queryOrders
+  static let auth: Scope = .queryOrders
 
   struct OrderOutput: PairOutput {
     let id: Order.Id

@@ -2,7 +2,7 @@ import Foundation
 import PairQL
 
 struct AudiobooksPage: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = Lang
 
@@ -29,16 +29,16 @@ struct AudiobooksPage: Pair {
 extension AudiobooksPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let audiobooks = try await Audio.query().all()
+    let audiobooks = try await Audio.Joined.all()
     return try audiobooks.compactMap { audiobook in
-      let edition = audiobook.edition.require()
-      let document = edition.document.require()
-      let friend = document.friend.require()
-      let parts = audiobook.parts.require()
+      let edition = audiobook.edition
+      let document = edition.document
+      let friend = document.friend
+      let parts = audiobook.parts
       guard friend.lang == input,
             !edition.isDraft,
             !parts.isEmpty,
-            edition.impression.require() != nil else {
+            edition.impression != nil else {
         return nil
       }
       return .init(
@@ -46,7 +46,7 @@ extension AudiobooksPage: Resolver {
         title: document.title,
         htmlShortTitle: document.htmlShortTitle,
         editionType: edition.type,
-        isbn: try expect(edition.isbn.require()).code,
+        isbn: try expect(edition.isbn).code,
         isCompilation: friend.isCompilations,
         friendName: friend.name,
         friendSlug: friend.slug,

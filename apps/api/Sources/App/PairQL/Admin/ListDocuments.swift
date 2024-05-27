@@ -1,7 +1,7 @@
 import PairQL
 
 struct ListDocuments: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct DocumentOutput: PairOutput {
     let id: Document.Id
@@ -17,13 +17,12 @@ struct ListDocuments: Pair {
 extension ListDocuments: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let documents = try await Document.query().all()
-    return try await documents.concurrentMap { document in
-      let friend = try await document.friend()
-      return .init(
+    let documents = try await Document.Joined.all()
+    return documents.map { document in
+      .init(
         id: document.id,
         title: document.title,
-        friend: .init(model: friend)
+        friend: .init(model: document.friend.model)
       )
     }
   }

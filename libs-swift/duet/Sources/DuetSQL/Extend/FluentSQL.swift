@@ -13,36 +13,36 @@ public extension SQLQueryString {
   }
 
   mutating func appendInterpolation(uuid: UUID) {
-    appendInterpolation(raw: uuid.uuidString)
+    appendInterpolation(unsafeRaw: uuid.uuidString)
   }
 
   mutating func appendInterpolation<M: DuetSQL.Model>(table model: M.Type) {
-    appendInterpolation(raw: model.tableName)
+    appendInterpolation(unsafeRaw: model.tableName)
   }
 
   mutating func appendInterpolation(escaping string: String) {
-    appendInterpolation(raw: string.replacingOccurrences(of: "'", with: "''"))
+    appendInterpolation(unsafeRaw: string.replacingOccurrences(of: "'", with: "''"))
   }
 
   mutating func appendInterpolation(col: FieldKey) {
-    appendInterpolation(raw: col.description)
+    appendInterpolation(unsafeRaw: col.description)
   }
 
   mutating func appendInterpolation(col: String) {
-    appendInterpolation(raw: col)
+    appendInterpolation(unsafeRaw: col)
   }
 
   mutating func appendInterpolation(timestamp date: Date) {
-    appendInterpolation(raw: date.postgresTimestampString)
+    appendInterpolation(unsafeRaw: date.postgresTimestampString)
   }
 
   mutating func appendInterpolation(nullable: String?) {
     if let string = nullable {
-      appendInterpolation(raw: "'")
-      appendInterpolation(raw: string.replacingOccurrences(of: "'", with: "''"))
-      appendInterpolation(raw: "'")
+      appendInterpolation(unsafeRaw: "'")
+      appendInterpolation(unsafeRaw: string.replacingOccurrences(of: "'", with: "''"))
+      appendInterpolation(unsafeRaw: "'")
     } else {
-      appendInterpolation(raw: "NULL")
+      appendInterpolation(unsafeRaw: "NULL")
     }
   }
 
@@ -50,7 +50,7 @@ public extension SQLQueryString {
     if let string = nullable {
       appendInterpolation(literal: string)
     } else {
-      appendInterpolation(raw: "NULL")
+      appendInterpolation(unsafeRaw: "NULL")
     }
   }
 }

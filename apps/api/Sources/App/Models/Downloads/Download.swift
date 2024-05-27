@@ -1,6 +1,6 @@
 import DuetSQL
 
-final class Download: Codable {
+struct Download: Codable, Sendable {
   var id: Id
   var editionId: Edition.Id
   var format: Format
@@ -21,10 +21,6 @@ final class Download: Codable {
   var latitude: String?
   var longitude: String?
   var createdAt = Current.date()
-
-  var edition = Parent<Edition>.notLoaded
-
-  var isValid: Bool { true }
 
   init(
     id: Id = .init(),
@@ -72,12 +68,12 @@ final class Download: Codable {
 // extensions
 
 extension Download {
-  enum AudioQuality: String, Codable, CaseIterable {
+  enum AudioQuality: String, Codable, CaseIterable, Sendable {
     case lq
     case hq
   }
 
-  enum Format: String, Codable, CaseIterable {
+  enum Format: String, Codable, CaseIterable, Sendable {
     case epub
     case mobi
     case webPdf
@@ -89,7 +85,7 @@ extension Download {
     case appEbook
   }
 
-  enum DownloadSource: String, Codable, CaseIterable {
+  enum DownloadSource: String, Codable, CaseIterable, Sendable {
     case website
     case podcast
     case app

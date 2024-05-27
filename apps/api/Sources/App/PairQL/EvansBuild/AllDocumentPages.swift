@@ -2,7 +2,7 @@ import DuetSQL
 import PairQL
 
 struct AllDocumentPages: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
   typealias Input = Lang
   typealias Output = [String: DocumentPage.Output]
 }
@@ -10,22 +10,19 @@ struct AllDocumentPages: Pair {
 extension AllDocumentPages: Resolver {
   static func resolve(with lang: Lang, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    async let allDocuments = Document.query().all()
-
-    let langDocuments = try await allDocuments
-      .filter(\.hasNonDraftEdition)
-      .filter { $0.lang == lang }
+    let documents = try await Document.Joined.all()
+      .filter { $0.friend.lang == lang && $0.hasNonDraftEdition }
 
     let downloads = try await Current.db.customQuery(
       AllDocumentDownloads.self,
       withBindings: [.enum(lang), .null]
     )
 
-    return try langDocuments.reduce(into: [:]) { result, document in
+    return try documents.reduce(into: [:]) { result, document in
       result[document.urlPath] = try DocumentPage.Output(
         document,
         downloads: downloads.urlPathDict,
-        numTotalBooks: langDocuments.count,
+        numTotalBooks: documents.count,
         in: context
       )
     }

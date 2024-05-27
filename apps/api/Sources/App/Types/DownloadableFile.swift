@@ -1,7 +1,14 @@
+import DuetSQL
+import NonEmpty
 import Vapor
 import XCore
 
-struct DownloadableFile: Encodable {
+struct DownloadableFile {
+  var format: Format
+  var editionId: Edition.Id
+  var edition: Edition.DirectoryPathData
+  var documentFilename: String
+
   enum Format: Equatable, Encodable {
     enum Ebook: String, Codable, CaseIterable, Equatable {
       case epub
@@ -33,15 +40,14 @@ struct DownloadableFile: Encodable {
     case paperback(type: Paperback, volumeIndex: Int?)
   }
 
-  let edition: Edition
-  let format: Format
-
   var sourceUrl: URL {
     switch format {
     case .ebook, .paperback, .audio(.mp3), .audio(.m4b), .audio(.mp3s):
       return URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(sourcePath)")!
     case .audio(.podcast):
-      let siteUrl = edition.lang == .en ? Env.WEBSITE_URL_EN : Env.WEBSITE_URL_ES
+      let siteUrl = edition.document.friend.lang == .en
+        ? Env.WEBSITE_URL_EN
+        : Env.WEBSITE_URL_ES
       return URL(string: "\(siteUrl)/\(sourcePath)")!
     }
   }
@@ -64,35 +70,39 @@ struct DownloadableFile: Encodable {
     URL(string: "\(Env.SELF_URL)/\(logPath)")!
   }
 
+  var editionFilename: String {
+    "\(documentFilename)--\(edition.type)"
+  }
+
   var filename: String {
     switch format {
     case .ebook(.epub):
-      return "\(edition.filename).epub"
+      return "\(editionFilename).epub"
     case .ebook(.mobi):
-      return "\(edition.filename).mobi"
+      return "\(editionFilename).mobi"
     case .ebook(.pdf):
-      return "\(edition.filename).pdf"
+      return "\(editionFilename).pdf"
     case .ebook(.speech):
-      return "\(edition.filename).html"
+      return "\(editionFilename).html"
     case .ebook(.app):
-      return "\(edition.filename)--(app-ebook).html"
+      return "\(editionFilename)--(app-ebook).html"
     case .paperback(.interior, let index):
-      return "\(edition.filename)--(print)\(index |> volumeFilenameSuffix).pdf"
+      return "\(editionFilename)--(print)\(index |> volumeFilenameSuffix).pdf"
     case .paperback(.cover, let index):
-      return "\(edition.filename)--cover\(index |> volumeFilenameSuffix).pdf"
+      return "\(editionFilename)--cover\(index |> volumeFilenameSuffix).pdf"
     case .audio(.m4b(let quality)):
-      return "\(edition.document.require().filename)\(quality |> qualityFilenameSuffix).m4b"
+      return "\(documentFilename)\(quality |> qualityFilenameSuffix).m4b"
     case .audio(.mp3s(let quality)):
-      return "\(edition.document.require().filename)--mp3s\(quality |> qualityFilenameSuffix).zip"
+      return "\(documentFilename)--mp3s\(quality |> qualityFilenameSuffix).zip"
     case .audio(.mp3(let quality, let index)):
-      return "\(edition.document.require().filename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
+      return "\(documentFilename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
     case .audio(.podcast):
       return "podcast.rss"
     }
   }
 
   var logPath: String {
-    let id = edition.id.lowercased
+    let id = editionId.lowercased
     switch format {
     case .ebook(.epub):
       return "download/\(id)/ebook/epub"
@@ -125,7 +135,6 @@ struct DownloadableFile: Encodable {
 extension DownloadableFile {
   init(logPath: String) async throws {
     var segments = logPath.split(separator: "/")
-
     guard !segments.isEmpty, segments.removeFirst() == "download" else {
       throw ParseLogPathError.missingLeadingDownload(logPath)
     }
@@ -138,41 +147,44 @@ extension DownloadableFile {
       throw ParseLogPathError.invalidEditionId(logPath)
     }
 
-    guard let edition = try? await Current.db.find(Edition.Id(rawValue: editionUuid)) else {
+    guard let rows = try? await Current.db.customQuery(
+      DownloadData.self,
+      withBindings: [.uuid(editionUuid)]
+    ), let data = rows.first else {
       throw ParseLogPathError.editionNotFound(logPath)
     }
 
     switch segments.joined(separator: "/") {
     case "ebook/epub":
-      self = .init(edition: edition, format: .ebook(.epub))
+      self = .init(data, format: .ebook(.epub))
     case "ebook/mobi":
-      self = .init(edition: edition, format: .ebook(.mobi))
+      self = .init(data, format: .ebook(.mobi))
     case "ebook/pdf":
-      self = .init(edition: edition, format: .ebook(.pdf))
+      self = .init(data, format: .ebook(.pdf))
     case "ebook/speech":
-      self = .init(edition: edition, format: .ebook(.speech))
+      self = .init(data, format: .ebook(.speech))
     case "ebook/app":
-      self = .init(edition: edition, format: .ebook(.app))
+      self = .init(data, format: .ebook(.app))
     case "paperback/interior":
-      self = .init(edition: edition, format: .paperback(type: .interior, volumeIndex: nil))
+      self = .init(data, format: .paperback(type: .interior, volumeIndex: nil))
     case "paperback/cover":
-      self = .init(edition: edition, format: .paperback(type: .cover, volumeIndex: nil))
+      self = .init(data, format: .paperback(type: .cover, volumeIndex: nil))
     case "audio/podcast/hq/podcast.rss":
-      self = .init(edition: edition, format: .audio(.podcast(.high)))
+      self = .init(data, format: .audio(.podcast(.high)))
     case "audio/podcast/lq/podcast.rss":
-      self = .init(edition: edition, format: .audio(.podcast(.low)))
+      self = .init(data, format: .audio(.podcast(.low)))
     case "audio/m4b/hq":
-      self = .init(edition: edition, format: .audio(.m4b(.high)))
+      self = .init(data, format: .audio(.m4b(.high)))
     case "audio/m4b/lq":
-      self = .init(edition: edition, format: .audio(.m4b(.low)))
+      self = .init(data, format: .audio(.m4b(.low)))
     case "audio/mp3s/hq":
-      self = .init(edition: edition, format: .audio(.mp3s(.high)))
+      self = .init(data, format: .audio(.mp3s(.high)))
     case "audio/mp3s/lq":
-      self = .init(edition: edition, format: .audio(.mp3s(.low)))
+      self = .init(data, format: .audio(.mp3s(.low)))
     case "audio/mp3/hq":
-      self = .init(edition: edition, format: .audio(.mp3(quality: .high, multipartIndex: nil)))
+      self = .init(data, format: .audio(.mp3(quality: .high, multipartIndex: nil)))
     case "audio/mp3/lq":
-      self = .init(edition: edition, format: .audio(.mp3(quality: .low, multipartIndex: nil)))
+      self = .init(data, format: .audio(.mp3(quality: .low, multipartIndex: nil)))
     default:
       guard segments.count >= 3 else {
         throw ParseLogPathError.invalid(logPath)
@@ -184,30 +196,27 @@ extension DownloadableFile {
 
       switch (first, second) {
       case ("paperback", "interior"):
-        guard let index = third |> toIndex, validatePaperbackVolume(edition, index) else {
+        guard let index = third |> toIndex,
+              validatePaperbackVolume(data.paperbackVolumes, index) else {
           throw ParseLogPathError.invalidPaperbackVolume(logPath)
         }
-        self = .init(edition: edition, format: .paperback(type: .interior, volumeIndex: index))
+        self = .init(data, format: .paperback(type: .interior, volumeIndex: index))
       case ("paperback", "cover"):
-        guard let index = third |> toIndex else {
+        guard let index = third |> toIndex,
+              validatePaperbackVolume(data.paperbackVolumes, index) else {
           throw ParseLogPathError.invalidPaperbackVolume(logPath)
         }
-        self = .init(edition: edition, format: .paperback(type: .cover, volumeIndex: index))
+        self = .init(data, format: .paperback(type: .cover, volumeIndex: index))
       case ("audio", "mp3"):
-        guard let index = third |> toIndex, validateMp3Part(edition, index) else {
+        guard let index = third |> toIndex,
+              validateMp3Part(data.numAudioParts, index) else {
           throw ParseLogPathError.invalidMp3Part(logPath)
         }
         switch segments.first {
         case "hq":
-          self = .init(
-            edition: edition,
-            format: .audio(.mp3(quality: .high, multipartIndex: index))
-          )
+          self = .init(data, format: .audio(.mp3(quality: .high, multipartIndex: index)))
         case "lq":
-          self = .init(
-            edition: edition,
-            format: .audio(.mp3(quality: .low, multipartIndex: index))
-          )
+          self = .init(data, format: .audio(.mp3(quality: .low, multipartIndex: index)))
         default:
           throw ParseLogPathError.invalidMp3Part(logPath)
         }
@@ -215,6 +224,22 @@ extension DownloadableFile {
         throw ParseLogPathError.invalid(logPath)
       }
     }
+  }
+
+  private init(_ data: DownloadData, format: DownloadableFile.Format) {
+    let edition = Edition.DirectoryPathData(
+      document: .init(
+        friend: .init(lang: .en, slug: data.friendSlug),
+        slug: data.documentSlug
+      ),
+      type: data.editionType
+    )
+    self.init(
+      format: format,
+      editionId: data.editionId,
+      edition: edition,
+      documentFilename: data.documentFilename
+    )
   }
 
   enum ParseLogPathError: Error, LocalizedError {
@@ -249,18 +274,15 @@ extension DownloadableFile {
 
 // helpers
 
-private func validatePaperbackVolume(_ edition: Edition, _ index: Int) -> Bool {
-  guard let impression = edition.impression.require() else {
-    return false
-  }
-  return index >= 0 && index < impression.paperbackVolumes.count
+private func validatePaperbackVolume(
+  _ volumes: NonEmpty<[Int]>,
+  _ index: Int
+) -> Bool {
+  index >= 0 && index < volumes.count
 }
 
-private func validateMp3Part(_ edition: Edition, _ index: Int) -> Bool {
-  guard let audio = edition.audio.require() else {
-    return false
-  }
-  return index >= 0 && index < audio.parts.require().count
+private func validateMp3Part(_ numAudioParts: Int, _ index: Int) -> Bool {
+  index >= 0 && index < numAudioParts
 }
 
 private func toIndex(_ segment: String.SubSequence) -> Int? {
@@ -408,4 +430,53 @@ extension DownloadableFile.Format {
       return .downloads
     }
   }
+}
+
+private struct DownloadData: CustomQueryable {
+  static func query(numBindings: Int) -> String {
+    """
+      SELECT
+        e.id as edition_id,
+        d.id AS document_id,
+        d.\(Document.columnName(.filename)) AS document_filename,
+        d.\(Document.columnName(.slug)) AS document_slug,
+        e.\(Edition.columnName(.type)) AS edition_type,
+        f.\(Friend.columnName(.lang)),
+        f.\(Friend.columnName(.slug)) AS friend_slug,
+        i.\(EditionImpression.columnName(.paperbackVolumes)),
+        COUNT(ap.\(AudioPart.columnName(.audioId)))::INTEGER AS num_audio_parts
+      FROM
+        \(Edition.tableName) e
+      JOIN
+        \(Document.tableName) d ON e.\(Edition.columnName(.documentId)) = d.id
+      JOIN
+        \(Friend.tableName) f ON d.\(Document.columnName(.friendId)) = f.id
+      JOIN
+        \(EditionImpression.tableName) i ON e.id = i.\(EditionImpression.columnName(.editionId))
+      LEFT JOIN
+        \(Audio.tableName) a ON e.id = a.\(Audio.columnName(.editionId))
+      LEFT JOIN
+        \(AudioPart.tableName) ap ON a.id = ap.\(AudioPart.columnName(.audioId))
+      WHERE
+        e.id = $1
+      GROUP BY
+        e.id,
+        d.id,
+        d.\(Document.columnName(.filename)),
+        e.\(Edition.columnName(.type)),
+        f.\(Friend.columnName(.slug)),
+        i.\(EditionImpression.columnName(.paperbackVolumes)),
+        f.\(Friend.columnName(.lang));
+    """
+  }
+
+  var lang: Lang
+  var friendSlug: String
+  var editionId: Edition.Id
+  var documentId: Document.Id
+  var documentFilename: String
+  var documentSlug: String
+  var editionType: EditionType
+  var paperbackVolumes: NonEmpty<[Int]>
+  var numAudioParts: Int
 }

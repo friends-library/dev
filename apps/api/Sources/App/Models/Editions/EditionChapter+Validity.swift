@@ -1,5 +1,5 @@
 extension EditionChapter {
-  var isValid: Bool {
+  func isValid() async -> Bool {
     if order < 1 || order > 300 {
       return false
     }

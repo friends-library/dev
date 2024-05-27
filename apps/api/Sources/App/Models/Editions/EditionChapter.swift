@@ -1,6 +1,6 @@
 import Duet
 
-final class EditionChapter: Codable {
+struct EditionChapter: Codable, Sendable {
   var id: Id
   var editionId: Edition.Id
   var order: Int
@@ -11,8 +11,6 @@ final class EditionChapter: Codable {
   var nonSequenceTitle: String?
   var createdAt = Current.date()
   var updatedAt = Current.date()
-
-  var edition = Parent<Edition>.notLoaded
 
   var slug: String {
     "chapter-\(order)"

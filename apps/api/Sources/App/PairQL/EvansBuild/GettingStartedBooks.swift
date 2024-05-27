@@ -12,7 +12,7 @@ struct SelectedDocuments: PairInput {
 }
 
 struct GettingStartedBooks: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = SelectedDocuments
 
@@ -40,14 +40,16 @@ extension GettingStartedBooks: Resolver {
 
     let documents = try await input.resolve()
 
-    return try documents.map { document in
-      let friend = try expect(document.friend.require())
+    return try await documents.concurrentMap { document in
+      let friend = document.friend
       let edition = try expect(document.primaryEdition)
+      let audio = edition.audio
+      let isbn = try expect(edition.isbn)
       return .init(
         title: document.title,
         slug: document.slug,
         editionType: edition.type,
-        isbn: try expect(edition.isbn.require()).code,
+        isbn: isbn.code,
         customCss: nil,
         customHtml: nil,
         isCompilation: friend.isCompilations,
@@ -55,24 +57,23 @@ extension GettingStartedBooks: Resolver {
         friendSlug: friend.slug,
         friendGender: friend.gender,
         htmlShortTitle: document.htmlShortTitle,
-        hasAudio: edition.audio.require() != nil
+        hasAudio: audio != nil
       )
     }
   }
 }
 
 extension SelectedDocuments {
-  func resolve() async throws -> [Document] {
-    let allDocuments = try await Document.query()
-      .where(.slug |=| slugs.map { .string($0.documentSlug) })
-      .all()
+  func resolve() async throws -> [Document.Joined] {
+    let docSlugs = slugs.map(\.documentSlug)
+    let allDocuments = try await Document.Joined.all()
+      .filter { docSlugs.contains($0.slug) }
 
-    var documents: [Document] = []
+    var documents: [Document.Joined] = []
     for slug in slugs {
-      let matchedDocument = allDocuments.filter { document in
-        guard document.slug == slug.documentSlug else { return false }
-        let friend = document.friend.require()
-        return friend.slug == slug.friendSlug && friend.lang == lang
+      let matchedDocument = allDocuments.filter { doc in
+        guard doc.slug == slug.documentSlug else { return false }
+        return doc.friend.slug == slug.friendSlug && doc.friend.lang == lang
       }.first
       documents.append(try expect(matchedDocument))
     }

@@ -3,11 +3,15 @@ import Vapor
 
 public struct VerifyCloudAssets: AsyncScheduledJob {
   public func run(context: QueueContext) async throws {
-    let editionImpressions = try await Current.db.query(EditionImpression.self).all()
-    let audios = try await Current.db.query(Audio.self).all()
-    let audioParts = try await Current.db.query(AudioPart.self).all()
+    let editionImpressions = try await EditionImpression.Joined.all()
+    let audios = try await Audio.Joined.all()
+    let audioParts = audios.flatMap(\.parts)
 
-    let allUrls = editionImpressions.flatMap(\.files.all).map(\.sourceUrl)
+    let impressionFiles = editionImpressions
+      .map { $0.files.all.map(\.sourceUrl) }
+      .flatMap { $0 }
+
+    let allUrls = impressionFiles
       + audios.flatMap(\.files.all).map(\.sourceUrl)
       + audioParts.flatMap(\.mp3File.all).map(\.sourceUrl)
 
@@ -28,9 +32,10 @@ public struct VerifyCloudAssets: AsyncScheduledJob {
 
   func verify(chunk uris: [URI], in context: QueueContext) async throws -> [String] {
     try await withThrowingTaskGroup(of: String?.self, returning: [String].self) { group in
+      let client = context.application.client
       for uri in uris {
         group.addTask {
-          let response = try await context.application.client.send(.HEAD, to: uri)
+          let response = try await client.send(.HEAD, to: uri)
           return response.status != .ok ? "missing cloud asset: \(uri)" : nil
         }
       }

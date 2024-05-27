@@ -1,6 +1,6 @@
 import Duet
 
-final class FriendQuote: Codable {
+struct FriendQuote: Codable, Sendable {
   var id: Id
   var friendId: Friend.Id
   var source: String
@@ -9,12 +9,6 @@ final class FriendQuote: Codable {
   var context: String?
   var createdAt = Current.date()
   var updatedAt = Current.date()
-
-  var friend = Parent<Friend>.notLoaded
-
-  var isValid: Bool {
-    source.firstLetterIsUppercase && text.firstLetterIsUppercase && order > 0
-  }
 
   init(
     id: Id = .init(),
@@ -30,5 +24,13 @@ final class FriendQuote: Codable {
     self.text = text
     self.order = order
     self.context = context
+  }
+}
+
+// extensions
+
+extension FriendQuote {
+  func isValid() async -> Bool {
+    source.firstLetterIsUppercase && text.firstLetterIsUppercase && order > 0
   }
 }

@@ -24,7 +24,7 @@ struct BackfillLocationData: AsyncMigration {
     assert(patternIds.count == uniquePatternIds.count)
 
     for update in data.updates {
-      for target in update.targets {
+      for var target in update.targets {
         assert(target.ip == update.pattern.ip)
         target.city = update.pattern.city
         target.region = update.pattern.region

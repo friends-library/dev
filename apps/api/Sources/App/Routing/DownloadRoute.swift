@@ -4,7 +4,7 @@ import XCore
 import XSlack
 
 enum DownloadRoute: RouteHandler {
-  static func handler(_ request: Request) async throws -> Response {
+  @Sendable static func handler(_ request: Request) async throws -> Response {
     struct RefererQuery: Content { let referer: String? }
     let query = try? request.query.decode(RefererQuery.self)
     var path = request.url.path
@@ -72,19 +72,19 @@ enum DownloadRoute: RouteHandler {
         let dupe = try? await Current.db.query(Download.self)
           .where(.ip == .string(ipAddress))
           .where(.format == .enum(Download.Format.podcast))
-          .where(.editionId == file.edition.id)
+          .where(.editionId == file.editionId)
           .first()
 
         if dupe != nil {
           await slackDebug(
-            "Duplicate podcast download, edition: `\(file.edition.id.lowercased)`, ip: `\(ipAddress)`"
+            "Duplicate podcast download, edition: `\(file.editionId.lowercased)`, ip: `\(ipAddress)`"
           )
           return
         }
       }
 
-      let download = Download(
-        editionId: file.edition.id,
+      var download = Download(
+        editionId: file.editionId,
         format: downloadFormat,
         source: source,
         isMobile: device.isMobile,
@@ -130,7 +130,15 @@ enum DownloadRoute: RouteHandler {
 
 // private helpers
 
-private var lastLocation: IpApi.Response?
+private actor LastLocation {
+  var value: IpApi.Response?
+
+  func update(_ newValue: IpApi.Response?) {
+    value = newValue
+  }
+}
+
+private let lastLocation = LastLocation()
 
 private func slackDownload(
   file: DownloadableFile,
@@ -138,10 +146,15 @@ private func slackDownload(
   device: UserAgentDeviceData,
   referrer: String?
 ) async {
-  let document = file.edition.document.require()
-  let friend = document.friend.require()
-  let duplicatesLastLocation = location != nil && location == lastLocation
-  lastLocation = location
+  guard let edition = try? await Edition.Joined.find(file.editionId) else {
+    await slackError("Failed to fetch edition for download: \(file.editionId)")
+    return
+  }
+  let document = edition.document
+  let friend = document.friend
+  let lastLoc = await lastLocation.value
+  let duplicatesLastLocation = location != nil && location == lastLoc
+  await lastLocation.update(location)
 
   var refererLink = ""
   if let referrer = referrer, let refererUrl = URL(string: referrer) {
@@ -155,8 +168,8 @@ private func slackDownload(
   }
 
   var duplicateLocation = ""
-  if duplicatesLastLocation, lastLocation?.compactSummary.isEmpty == false {
-    duplicateLocation = "\nLocation: _(same as prev)_ \(lastLocation?.compactSummary ?? "")"
+  if duplicatesLastLocation, lastLoc?.compactSummary.isEmpty == false {
+    duplicateLocation = "\nLocation: _(same as prev)_ \(lastLoc?.compactSummary ?? "")"
   }
 
   var blocks: [Slack.Message.Content.Block] = [
@@ -169,13 +182,13 @@ private func slackDownload(
       Device: _\(device.slackSummary)_\(refererLink)\(duplicateLocation)
       """,
       accessory: .image(
-        url: file.edition.images.square.w450.url,
+        url: edition.images.square.w450.url,
         altText: "Image of \(document.title)"
       )
     ),
   ]
 
-  if let location = location, !location.slashedSummary.isEmpty, !duplicatesLastLocation {
+  if let location, !location.slashedSummary.isEmpty, !duplicatesLastLocation {
     var accessory: Slack.Message.Content.Block?
     if let countryCode = countryCodes[location.countryName ?? ""] {
       accessory = .image(
@@ -215,7 +228,7 @@ private func slackDownload(
 
   await Current.slackClient.send(slack)
 
-  // TODO: better long-term fix, but need to get back under Slack rate limit
+  // TODO: long-term slack rate limit fix
   // if let location = location,
   //    location.slashedSummary.isEmpty,
   //    location.ip?.starts(with: "192.168") != true {

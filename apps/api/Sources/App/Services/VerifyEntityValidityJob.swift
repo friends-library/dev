@@ -32,7 +32,7 @@ public struct VerifyEntityValidityJob: AsyncScheduledJob {
 func checkModelsValidity<M: ApiModel>(_ Model: M.Type, _ name: String) async throws {
   let models = try await Current.db.query(Model).all()
   for model in models {
-    if !model.isValid {
+    if await model.isValid() == false {
       await slackError("\(name) `\(model.id.uuidString.lowercased())` found in invalid state")
     }
   }

@@ -1,18 +1,13 @@
 import DuetSQL
 import TaggedMoney
 
-final class OrderItem: Codable {
+struct OrderItem: Codable, Sendable {
   var id: Id
   var orderId: Order.Id
   var editionId: Edition.Id
   var quantity: Int
   var unitPrice: Cents<Int>
   var createdAt = Current.date()
-
-  var order = Parent<Order>.notLoaded
-  var edition = Parent<Edition>.notLoaded
-
-  var isValid: Bool { true }
 
   init(
     id: Id = .init(),
@@ -26,17 +21,5 @@ final class OrderItem: Codable {
     self.editionId = editionId
     self.quantity = quantity
     self.unitPrice = unitPrice
-  }
-}
-
-// loaders
-
-extension OrderItem {
-  func edition() async throws -> Edition {
-    try await edition.useLoaded(or: {
-      try await Edition.query()
-        .where(.id == editionId)
-        .first()
-    })
   }
 }

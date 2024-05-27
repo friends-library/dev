@@ -1,7 +1,7 @@
 import PairQL
 
 struct GetAudios: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct AudioPart: PairNestable {
     var id: App.AudioPart.Id
@@ -57,13 +57,9 @@ struct GetAudios: Pair {
 extension GetAudios: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let audios = try await App.Audio.query().all()
-    return try await audios.concurrentMap { audio in
-      async let parts = audio.parts()
-      async let edition = audio.edition()
-      let document = try await edition.document()
-      let friend = try await document.friend()
-      return .init(
+    let audios = try await App.Audio.Joined.all()
+    return audios.map { audio in
+      .init(
         id: audio.id,
         isIncomplete: audio.isIncomplete,
         m4bSizeHq: audio.m4bSizeHq.rawValue,
@@ -71,7 +67,7 @@ extension GetAudios: NoInputResolver {
         mp3ZipSizeHq: audio.mp3ZipSizeHq.rawValue,
         mp3ZipSizeLq: audio.mp3ZipSizeLq.rawValue,
         reader: audio.reader,
-        parts: try await parts.map { part in
+        parts: audio.parts.map { part in
           .init(
             id: part.id,
             chapters: Array(part.chapters),
@@ -83,25 +79,25 @@ extension GetAudios: NoInputResolver {
           )
         },
         edition: .init(
-          id: try await edition.id,
-          path: try await edition.directoryPath,
-          type: try await edition.type,
-          coverImagePath: try await edition.images.square.w1400.path
+          id: audio.edition.id,
+          path: audio.edition.directoryPath,
+          type: audio.edition.type,
+          coverImagePath: audio.edition.images.square.w1400.path
         ),
         document: .init(
-          filename: document.filename,
-          title: document.title,
-          slug: document.slug,
-          description: document.description,
-          path: document.directoryPath,
-          tags: []
+          filename: audio.edition.document.filename,
+          title: audio.edition.document.title,
+          slug: audio.edition.document.slug,
+          description: audio.edition.document.description,
+          path: audio.edition.document.directoryPath,
+          tags: audio.edition.document.tags
         ),
         friend: .init(
-          lang: friend.lang,
-          name: friend.name,
-          slug: friend.slug,
-          alphabeticalName: friend.alphabeticalName,
-          isCompilations: friend.isCompilations
+          lang: audio.edition.document.friend.lang,
+          name: audio.edition.document.friend.name,
+          slug: audio.edition.document.friend.slug,
+          alphabeticalName: audio.edition.document.friend.alphabeticalName,
+          isCompilations: audio.edition.document.friend.isCompilations
         )
       )
     }

@@ -3,7 +3,7 @@ import PairQL
 import TaggedTime
 
 struct CreateEntity: Pair {
-  static var auth: Scope = .queryTokens
+  static let auth: Scope = .queryTokens
   typealias Input = AdminRoute.Upsert
 }
 
@@ -63,7 +63,7 @@ extension CreateEntity: Resolver {
       )
 
     case .edition(let input):
-      let isbn: Isbn
+      var isbn: Isbn
       do {
         isbn = try await Isbn.query().where(.isNull(.editionId)).first()
       } catch {
@@ -80,8 +80,10 @@ extension CreateEntity: Resolver {
         paperbackOverrideSize: input.paperbackOverrideSize
       )
       isbn.editionId = edition.id
+      guard await edition.isValid() else { throw ModelError.invalidEntity }
+      try await edition.create()
       try await isbn.save()
-      model = edition
+      return .success
 
     case .friend(let input):
       model = Friend(
@@ -146,7 +148,7 @@ extension CreateEntity: Resolver {
       )
     }
 
-    guard model.isValid else {
+    guard await model.isValid() else {
       throw ModelError.invalidEntity
     }
 

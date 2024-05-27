@@ -1,14 +1,10 @@
 import Duet
 
-final class DocumentTag: Codable {
+struct DocumentTag: Codable, Sendable {
   var id: Id
   var documentId: Document.Id
   var type: TagType
   var createdAt = Current.date()
-
-  var document = Parent<Document>.notLoaded
-
-  var isValid: Bool { true }
 
   init(id: Id = .init(), documentId: Document.Id, type: TagType) {
     self.id = id
@@ -20,7 +16,7 @@ final class DocumentTag: Codable {
 // extensions
 
 extension DocumentTag {
-  enum TagType: String, Codable, CaseIterable {
+  enum TagType: String, Codable, CaseIterable, Sendable {
     case journal
     case letters
     case exhortation

@@ -1,3 +1,4 @@
+import DuetSQL
 import Foundation
 
 @testable import App
@@ -6,7 +7,7 @@ extension Environment {
   static let mock = Environment(
     uuid: { .mock },
     date: { Date(timeIntervalSince1970: 0) },
-    db: MockClient(),
+    db: ThrowingClient(),
     logger: .null,
     slackClient: .mock,
     luluClient: .mock,

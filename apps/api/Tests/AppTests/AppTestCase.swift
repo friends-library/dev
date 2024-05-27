@@ -1,3 +1,4 @@
+import ConcurrencyExtras
 import FluentSQL
 import Vapor
 import XCTest
@@ -7,6 +8,8 @@ import XSendGrid
 @testable import DuetSQL
 
 class AppTestCase: XCTestCase {
+  static var migrated = false
+
   struct Sent {
     var slacks: [FlpSlack.Message] = []
     var emails: [SendGrid.Email] = []
@@ -20,16 +23,18 @@ class AppTestCase: XCTestCase {
   }
 
   override static func setUp() {
+    app = Application(.testing)
     Current = .mock
     Current.uuid = { UUID() }
-    app = Application(.testing)
-    Current.logger = .null
-    try! app.autoRevert().wait()
-    try! app.autoMigrate().wait()
     try! Configure.app(app)
-    app.logger = .null
+    Current.db = FlushingDbClient(app.db as! SQLDatabase)
     Current.logger = .null
-    Current.db = MockClient()
+    app.logger = .null
+    if !migrated {
+      try! app.autoRevert().wait()
+      try! app.autoMigrate().wait()
+      migrated = true
+    }
   }
 
   override static func tearDown() {
@@ -38,15 +43,8 @@ class AppTestCase: XCTestCase {
   }
 
   override func setUp() {
-    let existingDb = Current.db
-    Current = .mock
     Current.uuid = { UUID() }
     Current.date = { Date() }
-    if ProcessInfo.processInfo.environment["TEST_WITH_POSTGRES"] != nil {
-      Current.db = LiveDatabase(db: app.db as! SQLDatabase)
-    } else {
-      Current.db = existingDb
-    }
     Current.slackClient.send = { [self] in sent.slacks.append($0) }
     Current.sendGridClient.send = { [self] in sent.emails.append($0) }
   }
@@ -54,11 +52,13 @@ class AppTestCase: XCTestCase {
 
 func mockUUIDs() -> (UUID, UUID, UUID) {
   let uuids = (UUID(), UUID(), UUID())
-  var array = [uuids.0, uuids.1, uuids.2]
+  let array = LockIsolated([uuids.0, uuids.1, uuids.2])
 
-  UUID.new = {
-    guard !array.isEmpty else { return UUID() }
-    return array.removeFirst()
+  Current.uuid = {
+    array.withValue { array in
+      guard !array.isEmpty else { return UUID() }
+      return array.removeFirst()
+    }
   }
 
   return uuids
@@ -69,11 +69,13 @@ public extension String {
 }
 
 public extension Int {
-  static var random: Int { Int.random(in: 1_000_000_000 ... 9_999_999_999) }
+  // postgres ints are Int32, so keep max below Int32.max
+  static var random: Int { Int.random(in: 1_000_000 ... 9_999_999) }
 }
 
 public extension Int64 {
-  static var random: Int64 { Int64.random(in: 1_000_000_000 ... 9_999_999_999) }
+  // postgres ints are Int32, so keep max below Int32.max
+  static var random: Int64 { Int64.random(in: 1_000_000 ... 9_999_999) }
 }
 
 func sync(
@@ -100,3 +102,13 @@ func sync(
     fatalError("Unexpected result waiting for \(exp.description)")
   }
 }
+
+#if DEBUG && os(macOS)
+  import Darwin
+
+  func eprint(_ items: Any...) {
+    let s = items.map { "\($0)" }.joined(separator: " ")
+    fputs(s + "\n", stderr)
+    fflush(stderr)
+  }
+#endif

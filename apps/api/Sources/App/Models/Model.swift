@@ -32,41 +32,15 @@ enum ModelError: Error {
 }
 
 protocol ApiModel: Model, Equatable {
-  var isValid: Bool { get }
+  func isValid() async -> Bool
 }
 
-extension Children {
-  func require(file: StaticString = #file, line: UInt = #line) -> [C] {
-    guard let models = try? models else {
-      invariant("Required children [\(C.self)] not loaded at \(file):\(line)")
-    }
-    return models
+extension ApiModel {
+  func isValid() async -> Bool {
+    true
   }
 }
 
-extension Parent {
-  func require(file: StaticString = #file, line: UInt = #line) -> P {
-    guard let model = try? model else {
-      invariant("Required parent \(P.self) not loaded at \(file):\(line)")
-    }
-    return model
-  }
-}
-
-extension OptionalParent {
-  func require(file: StaticString = #file, line: UInt = #line) -> P? {
-    guard case .loaded(let model) = self else {
-      invariant("Required optional parent \(P.self) not loaded at \(file):\(line)")
-    }
-    return model
-  }
-}
-
-extension OptionalChild {
-  func require(file: StaticString = #file, line: UInt = #line) -> C? {
-    guard case .loaded(let model) = self else {
-      invariant("Required optional child \(C.self) not loaded at \(file):\(line)")
-    }
-    return model
-  }
+protocol DirectoryPathable {
+  var directoryPath: String { get }
 }

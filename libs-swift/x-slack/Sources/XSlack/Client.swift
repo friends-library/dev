@@ -1,17 +1,18 @@
 import XHttp
 
 public extension Slack {
-  struct Client {
+  struct Client: Sendable {
     public var send = send(_:token:)
 
     public init() {}
 
-    public init(send: @escaping (Slack.Message, String) async -> String?) {
+    public init(send: @Sendable @escaping (Slack.Message, String) async -> String?) {
       self.send = send
     }
   }
 }
 
+@Sendable
 private func send(_ slack: Slack.Message, token: String) async -> String? {
   var slack = slack
 
@@ -47,6 +48,6 @@ private struct SendResponse: Decodable {
 // extensions
 
 public extension Slack.Client {
-  static var live: Slack.Client = .init(send: send(_:token:))
-  static var mock: Slack.Client = .init(send: { _, _ in nil })
+  static let live: Slack.Client = .init(send: send(_:token:))
+  static let mock: Slack.Client = .init(send: { _, _ in nil })
 }

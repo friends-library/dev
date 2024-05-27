@@ -8,8 +8,8 @@ extension SendGrid.EmailAddress {
 }
 
 extension SendGrid.Client {
-  struct SlackErrorLogging {
-    var send: (SendGrid.Email) async throws -> Void
+  struct SlackErrorLogging: Sendable {
+    var send: @Sendable (SendGrid.Email) async throws -> Void
   }
 }
 

@@ -1,21 +1,12 @@
 import Duet
 
-final class RelatedDocument: Codable {
+struct RelatedDocument: Codable, Sendable {
   var id: Id
   var description: String
   var documentId: Document.Id
   var parentDocumentId: Document.Id
   var createdAt = Current.date()
   var updatedAt = Current.date()
-
-  var document = Parent<Document>.notLoaded
-  var parentDocument = Parent<Document>.notLoaded
-
-  var isValid: Bool {
-    description.count >= 85
-      && description.count <= 450
-      && !description.containsUnpresentableSubstring
-  }
 
   init(
     id: Id = .init(),
@@ -27,5 +18,15 @@ final class RelatedDocument: Codable {
     self.description = description
     self.documentId = documentId
     self.parentDocumentId = parentDocumentId
+  }
+}
+
+// extensions
+
+extension RelatedDocument {
+  func isValid() async -> Bool {
+    description.count >= 85
+      && description.count <= 450
+      && !description.containsUnpresentableSubstring
   }
 }

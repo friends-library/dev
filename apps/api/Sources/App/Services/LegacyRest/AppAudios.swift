@@ -1,7 +1,6 @@
 import Vapor
 
 extension LegacyRest {
-
   static func appAudios(lang: Lang) async throws -> Response {
     let data: Data
     if let cachedData = await cachedData.getLegacyAppAudios(lang: lang) {
@@ -19,24 +18,15 @@ extension LegacyRest {
   }
 
   private static func queryData(lang: Lang) async throws -> Data {
-    let friends: [Friend] = try await Current.db.query(Friend.self)
-      .all()
-      .filter { $0.lang == lang }
-
-    let documents: [Document] = try friends
-      .flatMap { try $0.documents.models }
-      .filter(\.hasNonDraftEdition)
-
-    let editions: [Edition] = try documents
-      .flatMap { try $0.editions.models }
-      .filter { try $0.impression.model != nil && !$0.isDraft }
-
-    let audios: [AppAudio] = try editions
-      .compactMap { try $0.audio.model }
-      .filter(\.isPublished)
-      .map(toAppAudio)
-
-    return try JSONEncoder().encode(audios)
+    let audios = try await Audio.Joined.all()
+      .filter { audio in
+        audio.edition.document.friend.lang == lang
+          && audio.edition.document.hasNonDraftEdition
+          && !audio.edition.isDraft
+          && audio.edition.impression != nil
+          && audio.isPublished
+      }
+    return try JSONEncoder().encode(audios.map(toAppAudio))
   }
 }
 
@@ -64,11 +54,11 @@ private struct AppAudio: Codable {
   let parts: [Part]
 }
 
-private func toAppAudio(_ audio: Audio) -> AppAudio {
-  let edition = audio.edition.require()
-  let document = edition.document.require()
-  let friend = document.friend.require()
-  let parts = audio.parts.require()
+private func toAppAudio(_ audio: Audio.Joined) -> AppAudio {
+  let edition = audio.edition
+  let document = edition.document
+  let friend = document.friend
+  let parts = audio.parts
   return .init(
     id: "\(document.id.lowercased)--\(edition.type)",
     date: audio.createdAt.isoString,

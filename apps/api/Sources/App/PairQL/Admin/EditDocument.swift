@@ -1,8 +1,9 @@
+import DuetSQL
 import PairQL
 import TaggedTime
 
 struct EditDocument: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = Document.Id
 
@@ -88,9 +89,12 @@ struct EditDocument: Pair {
 // resolver
 
 extension EditDocument: Resolver {
-  static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
+  static func resolve(
+    with documentId: Document.Id,
+    in context: AuthedContext
+  ) async throws -> Output {
     try context.verify(Self.auth)
-    let document = try await Document.find(input)
+    let document = try await Document.Joined.find(documentId)
     return try await .init(
       document: .init(model: document),
       selectableDocuments: .load()
@@ -101,11 +105,13 @@ extension EditDocument: Resolver {
 // extensions
 
 extension EditDocument.EditDocumentOutput {
-  init(model document: Document) async throws {
-    async let friend = document.friend()
-    async let editions = document.editions()
-    async let tags = document.tags()
-    async let relatedDocuments = document.relatedDocuments()
+  init(model document: Document.Joined) async throws {
+    let friend = document.friend
+    let editions = document.editions
+    let relatedDocuments = document.relatedDocuments
+    let tags = try await DocumentTag.query()
+      .where(.documentId == document.id)
+      .all()
 
     id = document.id
     altLanguageId = document.altLanguageId
@@ -119,18 +125,14 @@ extension EditDocument.EditDocumentOutput {
     partialDescription = document.partialDescription
     featuredDescription = document.featuredDescription
 
-    self.friend = .init(
-      id: try await friend.id,
-      name: try await friend.name,
-      lang: try await friend.lang
-    )
+    self.friend = .init(id: friend.id, name: friend.name, lang: friend.lang)
 
-    self.editions = try await editions.concurrentMap { edition in
-      async let isbn = edition.isbn()
-      async let audio = edition.audio()
+    self.editions = editions.map { edition in
+      let isbn = edition.isbn
+      let audio = edition.audio
       var audioOutput: EditDocument.EditAudio?
-      if let audio = try await audio {
-        let parts = try await audio.parts()
+      if let audio {
+        let parts = audio.parts
         audioOutput = .init(
           id: audio.id,
           editionId: audio.editionId,
@@ -161,14 +163,14 @@ extension EditDocument.EditDocumentOutput {
         paperbackSplits: edition.paperbackSplits.map { Array($0) },
         paperbackOverrideSize: edition.paperbackOverrideSize,
         editor: edition.editor,
-        isbn: try await isbn?.code.rawValue,
+        isbn: isbn?.code.rawValue,
         isDraft: edition.isDraft,
         audio: audioOutput
       )
     }
 
-    self.tags = try await tags.map { .init(id: $0.id, documentId: $0.documentId, type: $0.type) }
-    self.relatedDocuments = try await relatedDocuments.map { relatedDoc in
+    self.tags = tags.map { .init(id: $0.id, documentId: $0.documentId, type: $0.type) }
+    self.relatedDocuments = relatedDocuments.map { relatedDoc in
       .init(
         id: relatedDoc.id,
         documentId: relatedDoc.documentId,
@@ -176,6 +178,6 @@ extension EditDocument.EditDocumentOutput {
         description: relatedDoc.description
       )
     }
-    friendId = try await friend.id
+    friendId = friend.id
   }
 }

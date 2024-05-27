@@ -16,7 +16,7 @@ enum CodegenRoute: RouteHandler {
     var pairs: [String: Pair]
   }
 
-  static func handler(_ request: Request) async throws -> Response {
+  @Sendable static func handler(_ request: Request) async throws -> Response {
     switch request.parameters.get("domain") {
     case "dev":
       return try await CodegenRoute.Dev.handler(request)

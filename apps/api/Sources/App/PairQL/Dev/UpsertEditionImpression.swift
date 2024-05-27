@@ -1,7 +1,7 @@
 import PairQL
 
 struct UpsertEditionImpression: Pair {
-  static var auth: Scope = .mutateEntities
+  static let auth: Scope = .mutateEntities
 
   struct Input: PairInput {
     let id: EditionImpression.Id
@@ -28,10 +28,9 @@ extension UpsertEditionImpression: Resolver {
       publishedRevision: input.publishedRevision,
       productionToolchainRevision: input.productionToolchainRevision
     )
-    guard impression.isValid else { throw ModelError.invalidEntity }
+    guard await impression.isValid() else { throw ModelError.invalidEntity }
     try await impression.upsert()
-    // pull fresh from db, so that we reload entity cache to resolve cloud files
-    let loaded = try await EditionImpression.find(input.id)
-    return .init(id: loaded.id, cloudFiles: .init(model: loaded))
+    let joined = try await EditionImpression.Joined.find(input.id)
+    return .init(id: impression.id, cloudFiles: .init(files: joined.files))
   }
 }

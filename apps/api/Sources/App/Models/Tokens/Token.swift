@@ -1,18 +1,19 @@
 import DuetSQL
 import Tagged
 
-final class Token: Codable {
+struct Token: Codable, Sendable {
   var id: Id
   var value: Value
   var description: String
   var uses: Int?
   var createdAt = Current.date()
 
-  var scopes = Children<TokenScope>.notLoaded
-
-  var isValid: Bool { true }
-
-  init(id: Id = .init(), value: Value = .init(), description: String, uses: Int? = nil) {
+  init(
+    id: Id = .init(),
+    value: Value = .init(),
+    description: String,
+    uses: Int? = nil
+  ) {
     self.id = id
     self.value = value
     self.description = description
@@ -24,14 +25,10 @@ final class Token: Codable {
 
 extension Token {
   typealias Value = Tagged<(Token, value: ()), UUID>
-}
 
-extension Token {
   func scopes() async throws -> [TokenScope] {
-    try await scopes.useLoaded(or: {
-      try await TokenScope.query()
-        .where(.tokenId == id)
-        .all()
-    })
+    try await TokenScope.query()
+      .where(.tokenId == id)
+      .all()
   }
 }

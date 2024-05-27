@@ -3,7 +3,7 @@ import Foundation
 import PairQL
 
 struct PublishedFriendSlugs: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
   typealias Input = Lang
   typealias Output = [String]
 }
@@ -11,9 +11,8 @@ struct PublishedFriendSlugs: Pair {
 extension PublishedFriendSlugs: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let allFriends = try await Friend.query()
-      .where(.lang == input)
-      .all()
-    return allFriends.filter(\.hasNonDraftDocument).map(\.slug)
+    return try await Friend.Joined.all()
+      .filter { $0.lang == input && $0.hasNonDraftDocument }
+      .map(\.slug)
   }
 }

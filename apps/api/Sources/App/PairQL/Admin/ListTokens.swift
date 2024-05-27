@@ -3,7 +3,7 @@ import PairQL
 import TaggedMoney
 
 struct ListTokens: Pair {
-  static var auth: Scope = .queryTokens
+  static let auth: Scope = .queryTokens
 
   typealias Output = [EditToken.Output]
 }

@@ -17,6 +17,6 @@ struct CreateArtifactProductionVersions: Migration {
 
   func revert(on database: Database) -> Future<Void> {
     Current.logger.info("Running migration: CreateArtifactProductionVersions DOWN")
-    return database.schema(FreeOrderRequest.M6.tableName).delete()
+    return database.schema(ArtifactProductionVersion.M8.tableName).delete()
   }
 }

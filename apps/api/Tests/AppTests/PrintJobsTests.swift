@@ -36,7 +36,7 @@ final class PrintJobsTests: AppTestCase {
   }
 
   func testCreatePrintJob() async throws {
-    var payload: Lulu.Api.CreatePrintJobBody!
+    nonisolated(unsafe) var payload: Lulu.Api.CreatePrintJobBody!
 
     Current.luluClient.createPrintJob = {
       payload = $0
@@ -45,7 +45,7 @@ final class PrintJobsTests: AppTestCase {
 
     let entities = await Entities.create()
     let order = Order.random
-    let item = OrderItem.random
+    var item = OrderItem.random
     item.orderId = order.id
     item.editionId = entities.edition.id
     try await Current.db.create(order)
@@ -77,7 +77,7 @@ final class PrintJobsTests: AppTestCase {
   }
 
   func testCreatePrintJobWithFauxVolumes() async throws {
-    var payload: Lulu.Api.CreatePrintJobBody!
+    nonisolated(unsafe) var payload: Lulu.Api.CreatePrintJobBody!
 
     Current.luluClient.createPrintJob = {
       payload = $0
@@ -85,11 +85,11 @@ final class PrintJobsTests: AppTestCase {
     }
 
     let entities = await Entities.create {
-      $0.editionImpression.paperbackVolumes = .init(123)
-      $0.editionImpression.paperbackVolumes.append(234)
+      $0.editionImpression.paperbackVolumes = .init(123, 234)
     }
+
     let order = Order.random
-    let item = OrderItem.random
+    var item = OrderItem.random
     item.orderId = order.id
     item.editionId = entities.edition.id
     try await Current.db.create(order)

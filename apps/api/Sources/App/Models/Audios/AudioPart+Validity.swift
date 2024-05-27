@@ -1,5 +1,5 @@
 extension AudioPart {
-  var isValid: Bool {
+  func isValid() async -> Bool {
     // while recording sewel chapter by chapter, we have a 25 second
     // "note to the listener" which is special cased, because it is so small
     let isTempNoteToListener = title == "Nota para el oyente"

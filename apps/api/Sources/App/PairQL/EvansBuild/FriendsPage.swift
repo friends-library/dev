@@ -3,7 +3,7 @@ import Foundation
 import PairQL
 
 struct FriendsPage: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = Lang
 
@@ -29,10 +29,11 @@ struct FriendsPage: Pair {
 extension FriendsPage: Resolver {
   static func resolve(with lang: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let friends = try await Friend.query().where(.lang == lang).all()
-    return try await friends.concurrentMap { friend -> FriendOutput? in
+    let friends = try await Friend.Joined.all()
+      .filter { $0.lang == lang }
+    return friends.map { friend -> FriendOutput? in
       guard !friend.isCompilations else { return nil }
-      let documents = try await friend.documents()
+      let documents = friend.documents
       let numBooks = documents.filter(\.hasNonDraftEdition).count
       guard numBooks > 0 else { return nil }
       guard let residence = friend.primaryResidence else { return nil }

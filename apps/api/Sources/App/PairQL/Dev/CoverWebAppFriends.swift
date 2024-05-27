@@ -2,7 +2,7 @@ import NonEmpty
 import PairQL
 
 struct CoverWebAppFriends: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct FriendOuput: PairOutput {
     let name: String
@@ -36,36 +36,29 @@ struct CoverWebAppFriends: Pair {
 
 extension CoverWebAppFriends: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    let friends = try await Friend.query().all()
-    return try await friends.concurrentMap { friend in
+    let friends = try await Friend.Joined.all()
+    return friends.map { friend in
       .init(
         name: friend.name,
         alphabeticalName: friend.alphabeticalName,
         description: friend.description,
-        documents: try await (try await friend.documents()).concurrentMap { doc in
+        documents: friend.documents.map { document in
           .init(
-            lang: friend.lang,
-            title: doc.title,
-            isCompilation: friend.isCompilations,
-            directoryPath: doc.directoryPath,
-            description: doc.description,
-            editions: try await (try await doc.editions()).concurrentMap { edition in
-              let isbn = try await edition.isbn()
-              let impression = try await edition.impression()
-              var audioPartTitles: [String]?
-              if let audio = try await edition.audio() {
-                let parts = try await audio.parts()
-                audioPartTitles = parts.map(\.title)
-              }
-              return .init(
+            lang: document.friend.lang,
+            title: document.title,
+            isCompilation: document.friend.isCompilations,
+            directoryPath: document.directoryPath,
+            description: document.description,
+            editions: document.editions.map { edition in
+              .init(
                 id: edition.id,
                 path: edition.directoryPath,
                 isDraft: edition.isDraft,
                 type: edition.type,
-                pages: impression.map(\.paperbackVolumes),
-                size: impression?.paperbackSize,
-                isbn: isbn?.code,
-                audioPartTitles: audioPartTitles
+                pages: edition.impression.map(\.paperbackVolumes),
+                size: edition.impression?.paperbackSize,
+                isbn: edition.isbn?.code,
+                audioPartTitles: edition.audio.map { $0.parts.map(\.title) }
               )
             }
           )

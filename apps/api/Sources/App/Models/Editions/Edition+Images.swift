@@ -70,10 +70,12 @@ extension Edition {
     let square: Square
     let threeD: ThreeD
   }
+}
 
-  var images: Images {
+extension Edition.Joined {
+  var images: Edition.Images {
     let path = "\(directoryPath)/images"
-    return Images(
+    return Edition.Images(
       square: .init(
         w45: squareImage(45, path),
         w90: squareImage(90, path),

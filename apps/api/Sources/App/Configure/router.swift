@@ -24,5 +24,5 @@ public extension Configure {
 }
 
 protocol RouteHandler {
-  static func handler(_ request: Request) async throws -> Response
+  @Sendable static func handler(_ request: Request) async throws -> Response
 }

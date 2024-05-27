@@ -1,28 +1,23 @@
+// import ConcurrencyExtras
 import DuetSQL
 import Vapor
 import XCTest
+import XExpect
 
 @testable import App
 
 final class DownloadableFileTests: AppTestCase {
-  var entities: Entities?
-  var impression: EditionImpression { entities!.editionImpression }
-  var edition: Edition { entities!.edition }
   var cloudUrl: String { Env.CLOUD_STORAGE_BUCKET_URL }
   var selfUrl: String { Env.SELF_URL }
   var websiteUrl: String { Env.WEBSITE_URL_EN }
 
-  override func setUp() {
-    super.setUp()
-    guard entities == nil else { return }
-    sync { [self] in
-      try await Current.db.deleteAll(Download.self)
-      try await Current.db.deleteAll(Friend.self, force: true)
-      entities = await Entities.create {
-        $0.friend.lang = .en
-        $0.edition.type = .updated
-        $0.document.filename = "Journal"
-      }
+  func getEntities() async throws -> Entities {
+    try await Current.db.deleteAll(Download.self)
+    try await Current.db.deleteAll(Friend.self, force: true)
+    return await Entities.create {
+      $0.friend.lang = .en
+      $0.edition.type = .updated
+      $0.document.filename = "Journal"
     }
   }
 
@@ -31,7 +26,7 @@ final class DownloadableFileTests: AppTestCase {
     ip: String,
     city: String? = nil
   ) -> Download {
-    let download = Download.random
+    var download = Download.random
     download.editionId = editionId
     download.format = .podcast
     download.ip = ip
@@ -41,10 +36,10 @@ final class DownloadableFileTests: AppTestCase {
 
   func testFindDuplicatePodcastDownloads() async throws {
     let d1 = podcastDownload(ip: "1.2.3.4")
-    let d2 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- DUPE, same ed.id and ip
+    var d2 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- DUPE, same ed.id and ip
     let d3 = podcastDownload(ip: "1.2.3.4") // <-- not dupe, new ed.id
     let d4 = podcastDownload(d1.editionId, ip: "1.2.3.5") // <-- not dupe, new ip
-    let d5 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- another DUPE
+    var d5 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- another DUPE
 
     d2.createdAt = Date(timeIntervalSince1970: 500)
     d5.createdAt = Date(timeIntervalSince1970: 100) // <-- older than other dupes
@@ -54,9 +49,9 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testBackfillLocationData() {
-    let d1 = podcastDownload(ip: "1.2.3.4", city: "San Francisco")
+    var d1 = podcastDownload(ip: "1.2.3.4", city: "San Francisco")
     let d2 = podcastDownload(ip: "1.2.3.4", city: nil)
-    let d3 = podcastDownload(ip: "1.2.3.4", city: "Atlanta")
+    var d3 = podcastDownload(ip: "1.2.3.4", city: "Atlanta")
     let d4 = podcastDownload(ip: "5.5.5.5", city: nil) // <-- still missing
 
     // we have two patterns for 1.2.3.4, d3 is newer, it should be used
@@ -73,6 +68,8 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testPodcastAgentsIdentifiedAsPodcast() async throws {
+    try await Current.db.deleteAll(Download.self)
+    let entities = try await getEntities()
     let userAgents = [
       "lol podcasts",
       "Apple Podcasts",
@@ -84,7 +81,7 @@ final class DownloadableFileTests: AppTestCase {
       "stitcher more stuff",
     ]
     for userAgent in userAgents {
-      let file = DownloadableFile(edition: edition, format: .ebook(.epub))
+      let file = entities.edition.downloadableFile(format: .ebook(.epub))
       let res = try await DownloadRoute.logAndRedirect(file: file, userAgent: userAgent)
       let download = try await Current.db.query(Download.self)
         .where(.userAgent == .string(userAgent))
@@ -95,9 +92,9 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testBotDownload() async throws {
-    Current.userAgentParser = .bot
+    let entities = try await getEntities()
     let botUa = "GoogleBot"
-    let file = DownloadableFile(edition: edition, format: .ebook(.epub))
+    let file = entities.edition.downloadableFile(format: .ebook(.epub))
     let res = try await DownloadRoute.logAndRedirect(file: file, userAgent: botUa)
     let downloads = try await Current.db.query(Download.self)
       .where(.userAgent == .string("GoogleBot"))
@@ -108,10 +105,11 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testDownloadHappyPathNoLocationFound() async throws {
+    let entities = try await getEntities()
     Current.ipApiClient.getIpData = { _ in throw "whoops" }
     let userAgent = "FriendsLibrary".random
     let device = Current.userAgentParser.parse(userAgent)
-    let file = DownloadableFile(edition: edition, format: .ebook(.epub))
+    let file = entities.edition.downloadableFile(format: .ebook(.epub))
 
     let res = try await DownloadRoute.logAndRedirect(
       file: file,
@@ -124,7 +122,7 @@ final class DownloadableFileTests: AppTestCase {
       .where(.userAgent == .string(userAgent))
       .first()
 
-    XCTAssertEqual(inserted.editionId, file.edition.id)
+    XCTAssertEqual(inserted.editionId, entities.edition.id)
     XCTAssertEqual(inserted.format, .epub)
     XCTAssertEqual(inserted.source, .app)
     XCTAssertEqual(inserted.isMobile, device?.isMobile)
@@ -139,6 +137,7 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testDownloadHappyPathLocationFound() async throws {
+    let entities = try await getEntities()
     Current.ipApiClient.getIpData = { ip in
       XCTAssertEqual(ip, "1.2.3.4")
       return .init(
@@ -153,10 +152,8 @@ final class DownloadableFileTests: AppTestCase {
     }
 
     let userAgent = "Netscape 3.0".random
-    let file = DownloadableFile(
-      edition: edition,
-      format: .audio(.mp3(quality: .high, multipartIndex: 3))
-    )
+    let file = entities.edition
+      .downloadableFile(format: .audio(.mp3(quality: .high, multipartIndex: 3)))
 
     _ = try await DownloadRoute.logAndRedirect(
       file: file,
@@ -180,22 +177,24 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testAppUaIsNotCountedAsBot() async throws {
+    let entities = try await getEntities()
     let userAgent = "FriendsLibrary GoogleBot".random
-    let file = DownloadableFile(edition: edition, format: .ebook(.epub))
+    let file = entities.edition.downloadableFile(format: .ebook(.epub))
+
     _ = try await DownloadRoute.logAndRedirect(file: file, userAgent: userAgent)
 
     let inserted = try await Current.db.query(Download.self)
       .where(.userAgent == .string(userAgent))
       .first()
 
-    XCTAssertEqual(inserted.editionId, edition.id)
+    XCTAssertEqual(inserted.editionId, entities.edition.id)
   }
 
   func testDuplicatePodcastDownloadsAreNotLogged() async throws {
-    let edition = await Entities.create().edition
+    let entities = await Entities.create()
 
     try await Current.db.create(Download(
-      editionId: edition.id,
+      editionId: entities.edition.id,
       format: .podcast,
       source: .podcast,
       isMobile: false,
@@ -203,19 +202,23 @@ final class DownloadableFileTests: AppTestCase {
     ))
 
     let beforeDupe = try await Current.db.query(Download.self)
-      .where(.editionId == edition.id)
+      .where(.editionId == entities.edition.id)
       .where(.ip == "1.2.3.4")
       .all()
 
     XCTAssertEqual(beforeDupe.count, 1)
     XCTAssertEqual(beforeDupe.first?.format, .podcast)
 
-    let file = DownloadableFile(edition: edition, format: .audio(.podcast(.high)))
+    let file = entities.edition.downloadableFile(format: .audio(.podcast(.high)))
 
-    _ = try await DownloadRoute.logAndRedirect(file: file, userAgent: "", ipAddress: "1.2.3.4")
+    _ = try await DownloadRoute.logAndRedirect(
+      file: file,
+      userAgent: "",
+      ipAddress: "1.2.3.4"
+    )
 
     let afterDupe = try await Current.db.query(Download.self)
-      .where(.editionId == edition.id)
+      .where(.editionId == entities.edition.id)
       .where(.ip == "1.2.3.4")
       .all()
 
@@ -224,6 +227,7 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testInitFromLogPath() async throws {
+    let entities = try await getEntities()
     let tests: [(String, DownloadableFile.Format)] = [
       ("ebook/epub", .ebook(.epub)),
       ("ebook/mobi", .ebook(.mobi)),
@@ -247,14 +251,15 @@ final class DownloadableFileTests: AppTestCase {
     ]
 
     for (pathEnd, format) in tests {
-      let logPath = "download/\(edition.id.lowercased)/\(pathEnd)"
+      let logPath = "download/\(entities.edition.id.lowercased)/\(pathEnd)"
       let downloadable = try await DownloadableFile(logPath: logPath)
-      XCTAssertEqual(edition, downloadable.edition)
+      XCTAssertEqual(entities.edition.id, downloadable.editionId)
       XCTAssertEqual(format, downloadable.format)
     }
   }
 
-  func testLogPaths() {
+  func testLogPaths() async throws {
+    let entities = try await getEntities()
     let tests: [(DownloadableFile.Format, String)] = [
       (.ebook(.epub), "ebook/epub"),
       (.ebook(.mobi), "ebook/mobi"),
@@ -278,19 +283,22 @@ final class DownloadableFileTests: AppTestCase {
     ]
 
     for (format, pathEnd) in tests {
-      let downloadable = DownloadableFile(edition: edition, format: format)
-      XCTAssertEqual(downloadable.logPath, "download/\(edition.id.lowercased)/\(pathEnd)")
+      let downloadable = entities.edition.downloadableFile(format: format)
+      XCTAssertEqual(downloadable.logPath, "download/\(entities.edition.id.lowercased)/\(pathEnd)")
       XCTAssertEqual(downloadable.logUrl.absoluteString, "\(selfUrl)/\(downloadable.logPath)")
     }
   }
 
-  func testSourcePath() {
-    let epub = DownloadableFile(edition: edition, format: .ebook(.epub))
-    XCTAssertEqual(epub.sourcePath, "\(edition.directoryPath)/Journal--updated.epub")
+  func testSourcePath() async throws {
+    let entities = try await getEntities()
+    let epub = entities.edition.downloadableFile(format: .ebook(.epub))
+    expect(epub.sourcePath).toEqual("\(entities.edition.directoryPath)/Journal--updated.epub")
   }
 
-  func testPodcastsSpecialSourcePathsUrls() {
-    let id = edition.id.lowercased
+  func testPodcastsSpecialSourcePathsUrls() async throws {
+    let entities = try await getEntities()
+    let id = entities.edition.id.lowercased
+    let edition = entities.edition
     let tests: [(DownloadableFile.Format, String, String, String, String)] = [
       (
         .audio(.podcast(.high)),
@@ -309,7 +317,7 @@ final class DownloadableFileTests: AppTestCase {
     ]
 
     for (format, logPath, logUrl, sourcePath, sourceUrl) in tests {
-      let downloadable = DownloadableFile(edition: edition, format: format)
+      let downloadable = entities.edition.downloadableFile(format: format)
       XCTAssertEqual(downloadable.logPath, logPath)
       XCTAssertEqual(downloadable.logUrl.absoluteString, logUrl)
       XCTAssertEqual(downloadable.sourcePath, sourcePath)
@@ -317,7 +325,9 @@ final class DownloadableFileTests: AppTestCase {
     }
   }
 
-  func testFilenamesAndUrls() {
+  func testFilenamesAndUrls() async throws {
+    let entities = try await getEntities()
+    let edition = entities.edition
     let tests: [(DownloadableFile.Format, String)] = [
       (.ebook(.epub), "Journal--updated.epub"),
       (.ebook(.mobi), "Journal--updated.mobi"),
@@ -340,7 +350,7 @@ final class DownloadableFileTests: AppTestCase {
     ]
 
     for (format, expectedFilename) in tests {
-      let downloadable = DownloadableFile(edition: edition, format: format)
+      let downloadable = entities.edition.downloadableFile(format: format)
       XCTAssertEqual(downloadable.filename, expectedFilename)
       XCTAssertEqual(
         downloadable.sourceUrl.absoluteString,

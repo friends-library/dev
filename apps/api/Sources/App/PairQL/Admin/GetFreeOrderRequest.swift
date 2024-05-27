@@ -3,7 +3,7 @@ import PairQL
 import TaggedMoney
 
 struct GetFreeOrderRequest: Pair {
-  static var auth: Scope = .queryOrders
+  static let auth: Scope = .queryOrders
 
   typealias Input = FreeOrderRequest.Id
 

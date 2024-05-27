@@ -3,7 +3,7 @@ import Foundation
 import PairQL
 
 struct DeleteEntities: Pair {
-  static var auth: Scope = .mutateEntities
+  static let auth: Scope = .mutateEntities
 
   enum Input: PairInput {
     case editionImpression(id: EditionImpression.Id)

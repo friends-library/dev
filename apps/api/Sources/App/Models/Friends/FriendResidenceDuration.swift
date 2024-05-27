@@ -1,17 +1,11 @@
 import Duet
 
-final class FriendResidenceDuration: Codable {
+struct FriendResidenceDuration: Codable, Sendable {
   var id: Id
   var friendResidenceId: FriendResidence.Id
   var start: Int
   var end: Int
   var createdAt = Current.date()
-
-  var residence = Parent<FriendResidence>.notLoaded
-
-  var isValid: Bool {
-    start.isValidEarlyQuakerYear && end.isValidEarlyQuakerYear && start <= end
-  }
 
   init(
     id: Id = .init(),
@@ -23,5 +17,13 @@ final class FriendResidenceDuration: Codable {
     self.friendResidenceId = friendResidenceId
     self.start = start
     self.end = end
+  }
+}
+
+// extensions
+
+extension FriendResidenceDuration {
+  func isValid() async -> Bool {
+    start.isValidEarlyQuakerYear && end.isValidEarlyQuakerYear && start <= end
   }
 }

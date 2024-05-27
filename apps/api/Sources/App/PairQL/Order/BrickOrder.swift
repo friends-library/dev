@@ -37,7 +37,7 @@ extension BrickOrder: Resolver {
     }
     if let rawId = input.orderId, let orderId = UUID(uuidString: rawId) {
       do {
-        let order = try await Current.db.find(Order.Id(rawValue: orderId))
+        var order = try await Current.db.find(Order.Id(rawValue: orderId))
         order.printJobStatus = .bricked
         try await Current.db.update(order)
         await slackError("Updated order `\(rawId)` to printJobStatus `.bricked`")

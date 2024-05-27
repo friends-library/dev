@@ -1,6 +1,6 @@
 import DuetSQL
 
-final class Document: Codable {
+struct Document: Codable, Sendable {
   var id: Id
   var friendId: Friend.Id
   var altLanguageId: Id?
@@ -17,31 +17,6 @@ final class Document: Codable {
   var updatedAt = Current.date()
   var deletedAt: Date? = nil
 
-  var friend = Parent<Friend>.notLoaded
-  var editions = Children<Edition>.notLoaded
-  var altLanguageDocument = OptionalParent<Document>.notLoaded
-  var relatedDocuments = Children<RelatedDocument>.notLoaded
-  var tags = Children<DocumentTag>.notLoaded
-
-  var lang: Lang {
-    friend.require().lang
-  }
-
-  var primaryEdition: Edition? {
-    let allEditions = editions.require().filter { $0.isDraft == false }
-    return allEditions.first { $0.type == .updated } ??
-      allEditions.first { $0.type == .modernized } ??
-      allEditions.first
-  }
-
-  var hasNonDraftEdition: Bool {
-    editions.require().first { $0.isDraft == false } != nil
-  }
-
-  var directoryPath: String {
-    "\(friend.require().directoryPath)/\(slug)"
-  }
-
   var htmlTitle: String {
     Asciidoc.htmlTitle(title)
   }
@@ -52,10 +27,6 @@ final class Document: Codable {
 
   var utf8ShortTitle: String {
     Asciidoc.utf8ShortTitle(title)
-  }
-
-  var trimmedUtf8ShortTitle: String {
-    Asciidoc.trimmedUtf8ShortDocumentTitle(title, lang: friend.require().lang)
   }
 
   init(
@@ -87,73 +58,40 @@ final class Document: Codable {
   }
 }
 
-// loaders
+// extensions
 
 extension Document {
-  func friend() async throws -> Friend {
-    try await friend.useLoaded(or: {
-      try await Friend.query()
-        .where(.id == friendId)
-        .first()
-    })
-  }
+  struct DirectoryPathData: DirectoryPathable {
+    var friend: Friend.DirectoryPathData
+    var slug: String
 
-  func editions() async throws -> [Edition] {
-    try await editions.useLoaded(or: {
-      try await Edition.query()
-        .where(.documentId == id)
-        .all()
-    })
-  }
-
-  func tags() async throws -> [DocumentTag] {
-    try await tags.useLoaded(or: {
-      try await DocumentTag.query()
-        .where(.documentId == id)
-        .all()
-    })
-  }
-
-  func relatedDocuments() async throws -> [RelatedDocument] {
-    try await relatedDocuments.useLoaded(or: {
-      try await RelatedDocument.query()
-        .where(.parentDocumentId == id)
-        .all()
-    })
-  }
-
-  func altLanguageDocument() async throws -> Document? {
-    try await altLanguageDocument.useLoaded(or: {
-      guard let altLanguageId = altLanguageId else { return nil }
-      return try await Document.query()
-        .where(.id == altLanguageId)
-        .first()
-    })
-  }
-
-  func numDownloads() async throws -> Int {
-    let editions = try await editions()
-    let rows = try await Current.db.customQuery(
-      DocumentDownloads.self,
-      withBindings: editions.map { .uuid($0.id) }
-    )
-    assert(rows.count == 1)
-    return rows.first?.total ?? 0
+    var directoryPath: String {
+      "\(friend.directoryPath)/\(slug)"
+    }
   }
 }
 
-private struct DocumentDownloads: CustomQueryable {
-  static func query(numBindings: Int) -> String {
-    let bindings = (1 ... numBindings).map { "$\($0)" }.joined(separator: ", ")
-    return """
-      SELECT SUM(document_downloads) AS total
-      FROM (
-        SELECT COUNT(*)::INTEGER AS document_downloads
-        FROM \(Download.tableName)
-        WHERE \(Download.columnName(.editionId)) IN (\(bindings))
-      ) AS subquery;
-    """
+extension Document.Joined {
+  var hasNonDraftEdition: Bool {
+    editions.contains { !$0.isDraft }
   }
 
-  let total: Int
+  var primaryEdition: Edition.Joined? {
+    let allEditions = editions.filter { $0.isDraft == false }
+    return allEditions.first { $0.type == .updated } ??
+      allEditions.first { $0.type == .modernized } ??
+      allEditions.first
+  }
+
+  var directoryPathData: Document.DirectoryPathData {
+    .init(friend: friend.directoryPathData, slug: model.slug)
+  }
+
+  var directoryPath: String {
+    directoryPathData.directoryPath
+  }
+
+  var trimmedUtf8ShortTitle: String {
+    Asciidoc.trimmedUtf8ShortDocumentTitle(model.title, lang: friend.lang)
+  }
 }

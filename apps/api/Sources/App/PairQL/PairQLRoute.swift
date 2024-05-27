@@ -28,40 +28,40 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
     }
   }
 
-  static let router = OneOf {
+  nonisolated(unsafe) static let router = OneOf {
     Route(.case(PairQLRoute.dev)) {
-      Method.post
+      Method("POST")
       Path { "dev" }
       DevRoute.router
     }
     Route(.case(PairQLRoute.admin)) {
-      Method.post
+      Method("POST")
       Path { "admin" }
       AdminRoute.router
     }
     Route(.case(PairQLRoute.order)) {
-      Method.post
+      Method("POST")
       Path { "order" }
       OrderRoute.router
     }
     Route(.case(PairQLRoute.evans)) {
-      Method.post
+      Method("POST")
       Path { "evans" }
       EvansRoute.router
     }
     Route(.case(PairQLRoute.evansBuild)) {
-      Method.post
+      Method("POST")
       Path { "evans-build" }
       EvansBuildRoute.router
     }
     Route(.case(PairQLRoute.native)) {
-      Method.post
+      Method("POST")
       Path { "native" }
       NativeRoute.router
     }
-  }
+  }.eraseToAnyParserPrinter()
 
-  static func handler(_ request: Request) async throws -> Response {
+  @Sendable static func handler(_ request: Request) async throws -> Response {
     guard var requestData = URLRequestData(request: request),
           requestData.path.removeFirst() == "pairql" else {
       throw Abort(.badRequest)

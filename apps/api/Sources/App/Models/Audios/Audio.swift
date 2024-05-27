@@ -1,7 +1,7 @@
 import DuetSQL
 import Tagged
 
-final class Audio: Codable {
+struct Audio: Codable, Sendable {
   var id: Id
   var editionId: Edition.Id
   var reader: String
@@ -12,27 +12,6 @@ final class Audio: Codable {
   var m4bSizeLq: Bytes
   var createdAt = Current.date()
   var updatedAt = Current.date()
-
-  var edition = Parent<Edition>.notLoaded
-  var parts = Children<AudioPart>.notLoaded
-
-  var lang: Lang {
-    edition.require().lang
-  }
-
-  var humanDurationClock: String {
-    AudioUtil.humanDuration(partDurations: parts.require().map(\.duration), style: .clock)
-  }
-
-  var humanDurationAbbrev: String {
-    AudioUtil.humanDuration(partDurations: parts.require().map(\.duration), style: .abbrev(lang))
-  }
-
-  var isPublished: Bool {
-    // detect intermediate state between when we have created the audio
-    // row in the database and when the cli app finishes processing all the parts
-    m4bSizeHq != 0 && parts.require().filter(\.isPublished).count > 0
-  }
 
   init(
     id: Id = .init(),
@@ -57,20 +36,21 @@ final class Audio: Codable {
 
 // extensions
 
-extension Audio {
-  func parts() async throws -> [AudioPart] {
-    try await parts.useLoaded(or: {
-      try await AudioPart.query()
-        .where(.audioId == id)
-        .all()
-    })
+extension Audio.Joined {
+  var isPublished: Bool {
+    // detect intermediate state between when we have created the audio
+    // row in the database and when the cli app finishes processing all the parts
+    model.m4bSizeHq != 0 && parts.filter(\.isPublished).count > 0
   }
 
-  func edition() async throws -> Edition {
-    try await edition.useLoaded(or: {
-      try await Edition.query()
-        .where(.id == editionId)
-        .first()
-    })
+  var humanDurationClock: String {
+    AudioUtil.humanDuration(partDurations: parts.map(\.duration), style: .clock)
+  }
+
+  var humanDurationAbbrev: String {
+    AudioUtil.humanDuration(
+      partDurations: parts.map(\.duration),
+      style: .abbrev(edition.document.friend.lang)
+    )
   }
 }

@@ -3,35 +3,20 @@ import NonEmpty
 import TaggedMoney
 
 enum PrintJobs {
-
   static func create(_ order: Order) async throws -> Lulu.Api.PrintJob {
-    let orderItems: [OrderItem]
-    if case .loaded(let items) = order.items {
-      orderItems = items
-    } else {
-      orderItems = try await Current.db.query(OrderItem.self)
-        .where(.orderId == order.id)
-        .all()
-      order.items = .loaded(orderItems)
-    }
+    let orderItems = try await OrderItem.query()
+      .where(.orderId == order.id)
+      .all()
 
-    for item in orderItems {
-      item.order = .loaded(order)
-      if case .notLoaded = item.edition {
-        let edition = try await Current.db.find(item.editionId)
-        item.edition = .loaded(edition)
-      }
-    }
-
-    let lineItems = try orderItems.flatMap { item -> [Lulu.Api.CreatePrintJobBody.LineItem] in
-      let edition = item.edition.require()
-      guard let impression = edition.impression.require() else {
+    let lineItems = try await orderItems.concurrentMap { item in
+      let edition = try await Edition.Joined.find(item.editionId)
+      guard let impression = edition.impression else {
         throw Error.unexpectedMissingEditionImpression(order.id, edition.id)
       }
       return impression.paperbackVolumes.enumerated().map { index, pages in
         let titleSuffix = impression.paperbackVolumes.count > 1 ? ", vol. \(index + 1)" : ""
-        return .init(
-          title: edition.document.require().title + titleSuffix,
+        return Lulu.Api.CreatePrintJobBody.LineItem(
+          title: edition.document.title + titleSuffix,
           cover: impression.files.paperback.cover[index].sourceUrl.absoluteString,
           interior: impression.files.paperback.interior[index].sourceUrl.absoluteString,
           podPackageId: Lulu.podPackageId(
@@ -41,7 +26,7 @@ enum PrintJobs {
           quantity: item.quantity
         )
       }
-    }
+    }.flatMap { $0 }
 
     let payload = Lulu.Api.CreatePrintJobBody(
       shippingLevel: order.shippingLevel.lulu,

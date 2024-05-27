@@ -15,5 +15,11 @@ extension Tagged: TypeScriptAliased {
   }
 }
 
+public extension Tagged where RawValue == UUID {
+  init() {
+    self.init(rawValue: Current.uuid())
+  }
+}
+
 extension Tagged: PairInput where RawValue: Codable & Equatable {}
-extension Tagged: PairOutput where RawValue: Codable & Equatable {}
+extension Tagged: PairOutput where RawValue == UUID {}

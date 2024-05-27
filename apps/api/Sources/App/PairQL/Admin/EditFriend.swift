@@ -2,7 +2,7 @@ import Foundation
 import PairQL
 
 struct EditFriend: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = Friend.Id
 
@@ -51,12 +51,9 @@ struct EditFriend: Pair {
 }
 
 extension EditFriend: Resolver {
-  static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
+  static func resolve(with friendId: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let friend = try await Friend.find(input)
-    async let documents = friend.documents()
-    async let residences = friend.residences()
-    async let quotes = friend.quotes()
+    let friend = try await Friend.Joined.find(friendId)
     return .init(
       friend: .init(
         id: friend.id,
@@ -68,8 +65,8 @@ extension EditFriend: Resolver {
         died: friend.died,
         description: friend.description,
         published: friend.published,
-        residences: try await residences.concurrentMap { residence in
-          let durations = try await residence.durations()
+        residences: friend.residences.map { residence in
+          let durations = residence.durations
           return .init(
             id: residence.id,
             friendId: residence.friendId,
@@ -83,10 +80,10 @@ extension EditFriend: Resolver {
             ) }
           )
         },
-        quotes: try await quotes.map {
+        quotes: friend.quotes.map {
           .init(id: $0.id, friendId: $0.friendId, source: $0.source, text: $0.text, order: $0.order)
         },
-        documents: try await documents.concurrentMap { try await .init(model: $0) }
+        documents: try await friend.documents.concurrentMap { try await .init(model: $0) }
       ),
       selectableDocuments: try await .load()
     )

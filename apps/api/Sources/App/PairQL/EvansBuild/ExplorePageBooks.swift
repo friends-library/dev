@@ -4,7 +4,7 @@ import NonEmpty
 import PairQL
 
 struct ExplorePageBooks: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
   typealias Input = Lang
 
   struct Book: PairOutput {
@@ -56,19 +56,20 @@ struct ExplorePageBooks: Pair {
 extension ExplorePageBooks: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let langDocuments = try await Document.query().all()
+
+    let documents = try await Document.Joined.all()
       .filter(\.hasNonDraftEdition)
-      .filter { $0.friend.require().lang == input }
+      .filter { $0.friend.lang == input }
       .sorted(by: {
-        $0.primaryEdition?.impression.require()?.createdAt ?? .distantPast
-          > $1.primaryEdition?.impression.require()?.createdAt ?? .distantPast
+        $0.primaryEdition?.impression?.createdAt ?? .distantPast
+          > $1.primaryEdition?.impression?.createdAt ?? .distantPast
       })
 
-    return try langDocuments.enumerated().map { i, document in
-      let friend = document.friend.require()
+    return try documents.enumerated().map { i, document in
+      let friend = document.friend
       let primaryEdition = try expect(document.primaryEdition)
-      let impression = try expect(primaryEdition.impression.require())
-      let editions = document.editions.require()
+      let impression = try expect(primaryEdition.impression)
+      let editions = document.editions
       return .init(
         slug: document.slug,
         title: document.title,
@@ -76,9 +77,9 @@ extension ExplorePageBooks: Resolver {
         // reduces the size of the nextjs props significantly
         shortDescription: i < 4 ? document.partialDescription : "",
         isCompilation: friend.isCompilations,
-        hasAudio: primaryEdition.audio.require() !== nil,
+        hasAudio: primaryEdition.audio != nil,
         publishedYear: document.published,
-        tags: document.tags.require().map(\.type),
+        tags: document.tags,
         htmlShortTitle: document.htmlShortTitle,
         friendGender: friend.gender,
         friendName: friend.name,
@@ -86,17 +87,17 @@ extension ExplorePageBooks: Resolver {
         friendBorn: friend.born,
         friendDied: friend.died,
         editions: try editions.map { edition in
-          .init(isbn: try expect(edition.isbn.require()).code, type: edition.type)
+          .init(isbn: try expect(edition.isbn).code, type: edition.type)
         },
         primaryEdition: .init(
-          isbn: try expect(primaryEdition.isbn.require()).code,
+          isbn: try expect(primaryEdition.isbn).code,
           type: primaryEdition.type,
           paperbackVolumes: impression.paperbackVolumes
         ),
         friendPrimaryResidence: friend.primaryResidence.map { residence in
           .init(
             region: residence.region,
-            durations: residence.durations.require().map {
+            durations: residence.durations.map {
               .init(start: $0.start, end: $0.end)
             }
           )

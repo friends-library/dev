@@ -1,7 +1,6 @@
 import Vapor
 
 extension LegacyRest {
-
   static func appEditions(lang: Lang) async throws -> Response {
     Current.logger.info("Serving app editions, lang=\(lang)")
     let data: Data
@@ -20,12 +19,12 @@ extension LegacyRest {
   }
 
   private static func queryData(lang: Lang) async throws -> Data {
-    let editions = try await Current.db.query(Friend.self).all()
+    let editions = try await Friend.Joined.all()
       .filter { $0.lang == lang }
-      .flatMap { try $0.documents.models }
+      .flatMap(\.documents)
       .filter(\.hasNonDraftEdition)
-      .flatMap { try $0.editions.models }
-      .filter { try $0.impression.model != nil && !$0.isDraft }
+      .flatMap(\.editions)
+      .filter { $0.impression != nil && !$0.isDraft }
       .map(toAppEdition)
     return try JSONEncoder().encode(editions)
   }
@@ -109,11 +108,11 @@ private struct AppEdition: Codable {
   let chapters: [Chapter]
 }
 
-private func toAppEdition(_ edition: Edition) -> AppEdition {
-  let document = edition.document.require()
-  let friend = document.friend.require()
-  let impression = edition.impression.require()!
-  let audio = edition.audio.require()
+private func toAppEdition(_ edition: Edition.Joined) -> AppEdition {
+  let document = edition.document
+  let friend = document.friend
+  let impression = edition.impression!
+  let audio = edition.audio
   return .init(
     id: "\(document.id.lowercased)--\(edition.type)",
     lang: friend.lang,
@@ -138,12 +137,12 @@ private func toAppEdition(_ edition: Edition) -> AppEdition {
       directDownloadUrl: impression.files.ebook.app.sourceUrl.absoluteString,
       numPages: impression.paperbackVolumes.reduce(0, +)
     ),
-    isMostModernized: document.primaryEdition! == edition,
+    isMostModernized: document.primaryEdition!.id == edition.id,
     audio: audio?.isPublished == true ? .init(
       reader: audio!.reader,
-      totalDuration: audio!.parts.require().map(\.duration).reduce(0, +).rawValue,
+      totalDuration: audio!.parts.map(\.duration).reduce(0, +).rawValue,
       publishedDate: audio!.createdAt.isoString,
-      parts: audio!.parts.require()
+      parts: audio!.parts
         .filter(\.isPublished)
         .sorted { $0.order < $1.order }
         .enumerated()
@@ -167,7 +166,7 @@ private func toAppEdition(_ edition: Edition) -> AppEdition {
       threeD: edition.images.threeD.all
         .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) }
     ),
-    chapters: edition.chapters.require().sorted { $0.order < $1.order }.enumerated()
+    chapters: edition.chapters.sorted { $0.order < $1.order }.enumerated()
       .map { index, chapter in .init(
         index: index,
         id: chapter.htmlId,

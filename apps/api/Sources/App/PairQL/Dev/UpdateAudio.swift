@@ -1,7 +1,7 @@
 import PairQL
 
 struct UpdateAudio: Pair {
-  static var auth: Scope = .mutateEntities
+  static let auth: Scope = .mutateEntities
 
   struct Input: PairInput {
     let id: Audio.Id
@@ -18,7 +18,7 @@ struct UpdateAudio: Pair {
 extension UpdateAudio: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let audio = try await Audio.find(input.id)
+    var audio = try await Audio.find(input.id)
     audio.editionId = input.editionId
     audio.reader = input.reader
     audio.isIncomplete = input.isIncomplete
@@ -26,7 +26,7 @@ extension UpdateAudio: Resolver {
     audio.mp3ZipSizeLq = input.mp3ZipSizeLq
     audio.m4bSizeHq = input.m4bSizeHq
     audio.m4bSizeLq = input.m4bSizeLq
-    guard audio.isValid else { throw ModelError.invalidEntity }
+    guard await audio.isValid() else { throw ModelError.invalidEntity }
     try await audio.save()
     return .success
   }

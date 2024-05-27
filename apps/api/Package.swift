@@ -5,13 +5,14 @@ let package = Package(
   name: "api",
   platforms: [.macOS(.v12)],
   dependencies: [
-    .github("vapor/vapor@4.67.4"),
-    .github("vapor/fluent@4.4.0"),
-    .github("vapor/fluent-postgres-driver@2.2.2"),
+    .github("vapor/vapor@4.93.0"),
+    .github("vapor/fluent@4.9.0"),
+    .github("vapor/fluent-postgres-driver@2.8.0"),
     .github("m-barthelemy/vapor-queues-fluent-driver@1.2.0"),
     .github("jaredh159/swift-tagged@0.8.2"),
     .github("pointfreeco/swift-nonempty@0.5.0"),
-    .github("pointfreeco/vapor-routing@0.1.2"),
+    .github("pointfreeco/vapor-routing@0.1.3"),
+    .github("pointfreeco/swift-concurrency-extras@1.1.0"),
     .github("kylehughes/RomanNumeralKit@1.0.0"),
     .github("JohnSundell/ShellOut@2.0.0"),
     .github("onevcat/Rainbow@4.0.1"),
@@ -50,6 +51,11 @@ let package = Package(
         "ShellOut",
       ],
       swiftSettings: [
+        .unsafeFlags([
+          "-Xfrontend", "-warn-concurrency",
+          "-Xfrontend", "-enable-actor-data-race-checks",
+          "-Xfrontend", "-warnings-as-errors",
+        ]),
         .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),
       ]
     ),
@@ -63,6 +69,7 @@ let package = Package(
         .product(name: "XSendGrid", package: "x-sendgrid"),
         .product(name: "XExpect", package: "x-expect"),
         .product(name: "XCTVapor", package: "vapor"),
+        .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras"),
       ]
     ),
   ]

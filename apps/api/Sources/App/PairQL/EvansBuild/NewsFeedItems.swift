@@ -3,7 +3,7 @@ import Foundation
 import PairQL
 
 struct NewsFeedItems: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = Lang
 
@@ -33,15 +33,14 @@ extension NewsFeedItems: Resolver {
     try context.verify(Self.auth)
     var items: [NewsFeedItem] = []
 
-    let impressions = try await EditionImpression.query()
-      .limit(24)
-      .orderBy(.createdAt, .desc)
-      .all()
+    let impressions = try await EditionImpression.Joined.all()
+      .sorted(by: { $0.createdAt > $1.createdAt })
+      .prefix(24)
 
     for impression in impressions {
-      let edition = impression.edition.require()
-      let document = edition.document.require()
-      let friend = document.friend.require()
+      let edition = impression.edition
+      let document = edition.document
+      let friend = document.friend
       guard !edition.isDraft,
             !document.incomplete,
             edition.id == document.primaryEdition?.id,
@@ -57,15 +56,14 @@ extension NewsFeedItems: Resolver {
       ))
     }
 
-    let audiobooks = try await Audio.query()
-      .limit(24)
-      .orderBy(.createdAt, .desc)
-      .all()
+    let audiobooks = try await Audio.Joined.all()
+      .sorted(by: { $0.createdAt > $1.createdAt })
+      .prefix(24)
 
     for audiobook in audiobooks {
-      let edition = audiobook.edition.require()
-      let document = edition.document.require()
-      let friend = document.friend.require()
+      let edition = audiobook.edition
+      let document = edition.document
+      let friend = document.friend
       guard !edition.isDraft,
             !document.incomplete,
             edition.id == document.primaryEdition?.id,
@@ -82,22 +80,19 @@ extension NewsFeedItems: Resolver {
     }
 
     if lang == .en {
-      let documents = try await Document.query()
-        .where(.not(.isNull(.altLanguageId)))
-        .where(.incomplete == false)
-        .orderBy(.createdAt, .desc)
-        .all()
-        .filter { $0.friend.require().lang == .es }
-        .filter(\.hasNonDraftEdition)
+      let documents = try await Document.Joined.all()
+        .filter { $0.altLanguageId != nil && !$0.incomplete }
+        .filter { $0.friend.lang == .es && $0.hasNonDraftEdition }
+        .sorted(by: { $0.createdAt > $1.createdAt })
         .prefix(24)
 
       for document in documents {
         let edition = try expect(document.primaryEdition)
-        let impression = try expect(edition.impression.require())
-        let document = edition.document.require()
-        let altLangDoc = try expect(document.altLanguageDocument.require())
+        let impression = try expect(edition.impression)
+        let document = edition.document
+        let altLangDoc = try expect(document.altLanguageDocument)
         guard !edition.isDraft, !document.incomplete else { continue }
-        let friend = document.friend.require()
+        let friend = document.friend
         items.append(.init(
           kind: .spanishTranslation(
             isCompilation: friend.isCompilations,

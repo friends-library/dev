@@ -2,9 +2,10 @@ import DuetSQL
 import Foundation
 import NonEmpty
 import PairQL
+import Vapor
 
 struct FriendPage: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct Input: PairInput {
     var slug: String
@@ -86,10 +87,12 @@ struct FriendPage: Pair {
 extension FriendPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let friend = try await Friend.query()
-      .where(.lang == input.lang)
-      .where(.slug == input.slug)
-      .first()
+    let friend = try await Friend.Joined.all()
+      .first { $0.lang == input.lang && $0.slug == input.slug }
+
+    guard let friend else {
+      throw Abort(.notFound)
+    }
 
     let downloads = try await Current.db.customQuery(
       AllDocumentDownloads.self,
@@ -103,8 +106,8 @@ extension FriendPage: Resolver {
 // extensions
 
 extension FriendPage.Output {
-  init(_ friend: Friend, downloads: [String: Int], in context: AuthedContext) throws {
-    let documents = friend.documents.require().filter(\.hasNonDraftEdition)
+  init(_ friend: Friend.Joined, downloads: [String: Int], in context: AuthedContext) throws {
+    let documents = friend.documents.filter(\.hasNonDraftEdition)
     guard !documents.isEmpty else {
       throw context.error(
         id: "0e8ded83",
@@ -114,12 +117,12 @@ extension FriendPage.Output {
     }
 
     let relatedDocs = documents
-      .flatMap { $0.relatedDocuments.require() }
-      .map { ($0, $0.document.require()) }
+      .flatMap(\.relatedDocuments)
+      .map { ($0, $0.document) }
       .filter(\.1.hasNonDraftEdition)
 
-    let quotes = friend.quotes.require()
-    let residences = friend.residences.require()
+    let quotes = friend.quotes
+    let residences = friend.residences
     guard friend.isCompilations || !residences.isEmpty else {
       throw context.error(
         id: "01c3e020",
@@ -137,10 +140,9 @@ extension FriendPage.Output {
       gender: friend.gender,
       isCompilations: friend.isCompilations,
       documents: try documents.map { document in
-        let editions = document.editions.require()
         let primaryEdition = try expect(document.primaryEdition)
-        let impression = try expect(primaryEdition.impression.require())
-        let isbn = try expect(primaryEdition.isbn.require())
+        let impression = try expect(primaryEdition.impression)
+        let isbn = try expect(primaryEdition.isbn)
         return .init(
           id: document.id,
           title: document.title,
@@ -148,28 +150,27 @@ extension FriendPage.Output {
           shortDescription: document.partialDescription,
           slug: document.slug,
           numDownloads: downloads[document.urlPath] ?? 0,
-          tags: document.tags.require().map(\.type),
-          hasAudio: primaryEdition.audio.require() != nil,
+          tags: document.tags,
+          hasAudio: primaryEdition.audio != nil,
           primaryEdition: .init(
             isbn: isbn.code,
             numPages: impression.paperbackVolumes,
             size: impression.paperbackSize,
             type: primaryEdition.type
           ),
-          editionTypes: editions.map(\.type)
+          editionTypes: document.editions.map(\.type)
         )
       },
       residences: residences.map { residence in
-        let durations = residence.durations.require()
-        return .init(
+        .init(
           city: residence.city,
           region: residence.region,
-          durations: durations.map { .init(start: $0.start, end: $0.end) }
+          durations: residence.durations.map { .init(start: $0.start, end: $0.end) }
         )
       },
       quotes: quotes.map { .init(text: $0.text, source: $0.source) },
       relatedDocuments: try relatedDocs.map { related, doc in
-        let friend = doc.friend.require()
+        let friend = doc.friend
         let edition = try expect(doc.primaryEdition)
         return .init(
           title: doc.title,
@@ -181,8 +182,8 @@ extension FriendPage.Output {
           friendSlug: friend.slug,
           friendGender: friend.gender,
           editionType: edition.type,
-          paperbackVolumes: try expect(edition.impression.require()).paperbackVolumes,
-          isbn: try expect(edition.isbn.require()).code,
+          paperbackVolumes: try expect(edition.impression).paperbackVolumes,
+          isbn: try expect(edition.isbn).code,
           createdAt: doc.createdAt
         )
       }

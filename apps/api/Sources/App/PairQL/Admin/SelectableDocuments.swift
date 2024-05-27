@@ -1,7 +1,7 @@
 import PairQL
 
 struct SelectableDocuments: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct SelectableDocument: PairOutput {
     let id: Document.Id
@@ -26,14 +26,13 @@ extension SelectableDocuments: NoInputResolver {
 
 extension Array where Element == SelectableDocuments.SelectableDocument {
   static func load() async throws -> Self {
-    let documents = try await Document.query().all()
-    return try await documents.concurrentMap { doc in
-      let friend = try await doc.friend()
-      return .init(
-        id: doc.id,
-        title: doc.title,
-        lang: friend.lang,
-        friendAlphabeticalName: friend.alphabeticalName
+    let documents = try await Document.Joined.all()
+    return documents.map { document in
+      .init(
+        id: document.id,
+        title: document.title,
+        lang: document.friend.lang,
+        friendAlphabeticalName: document.friend.alphabeticalName
       )
     }
   }

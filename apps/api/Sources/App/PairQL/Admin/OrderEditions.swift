@@ -4,7 +4,7 @@ import PairQL
 import TaggedMoney
 
 struct OrderEditions: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   struct OrderEdition: PairOutput {
     let id: Edition.Id
@@ -26,22 +26,22 @@ struct OrderEditions: Pair {
 extension OrderEditions: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let editions = try await Edition.query()
-      .where(.isDraft == false)
-      .all()
-    return try await editions.concurrentMap { edition in
-      guard let impression = try await edition.impression() else {
+    let editions = try await Edition.Joined.all()
+      .filter { !$0.isDraft }
+    return try await editions.concurrentMap { edition -> OrderEdition? in
+      guard let impression = edition.impression else {
         return nil
       }
-      let document = try await edition.document()
-      let friend = try await document.friend()
       return .init(
         id: edition.id,
         type: edition.type,
-        title: document.title,
-        shortTitle: document.trimmedUtf8ShortTitle,
-        author: friend.name,
-        lang: friend.lang,
+        title: edition.document.title,
+        shortTitle: Asciidoc.trimmedUtf8ShortDocumentTitle(
+          edition.document.title,
+          lang: edition.document.friend.lang
+        ),
+        author: edition.document.friend.name,
+        lang: edition.document.friend.lang,
         priceInCents: impression.paperbackPrice,
         paperbackSize: impression.paperbackSize,
         paperbackVolumes: impression.paperbackVolumes,

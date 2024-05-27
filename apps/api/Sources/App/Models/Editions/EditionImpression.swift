@@ -1,8 +1,8 @@
-import Duet
+import DuetSQL
 import NonEmpty
 import TaggedMoney
 
-final class EditionImpression: Codable {
+struct EditionImpression: Codable, Sendable {
   var id: Id
   var editionId: Edition.Id
   var adocLength: Int
@@ -11,8 +11,6 @@ final class EditionImpression: Codable {
   var publishedRevision: GitCommitSha
   var productionToolchainRevision: GitCommitSha
   var createdAt = Current.date()
-
-  var edition = Parent<Edition>.notLoaded
 
   var paperbackSize: PrintSize {
     paperbackSizeVariant.printSize

@@ -1,7 +1,7 @@
 import Duet
 import Foundation
 
-public protocol Model: Duet.Identifiable, Codable {
+public protocol Model: Duet.Identifiable, Codable, Sendable {
   associatedtype ColumnName: CodingKey, Hashable, CaseIterable
   static func columnName(_ column: ColumnName) -> String
   static var tableName: String { get }

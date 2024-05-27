@@ -29,10 +29,10 @@ public struct LiveClient: Client {
       where: M.column("id") == .id(model),
       returning: .all
     )
-    let models = try await SQL.execute(prepared, on: sql)
+    let model = try await SQL.execute(prepared, on: sql)
       .compactMap { try $0.decode(M.self) }
       .first()
-    return models
+    return model
   }
 
   @discardableResult

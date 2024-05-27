@@ -2,7 +2,7 @@ import NonEmpty
 import PairQL
 
 struct HomepageFeaturedBooks: Pair {
-  static var auth: Scope = .queryEntities
+  static let auth: Scope = .queryEntities
 
   typealias Input = SelectedDocuments
 
@@ -31,19 +31,18 @@ extension HomepageFeaturedBooks: Resolver {
     let documents = try await input.resolve()
 
     return try documents.map { document in
-      let friend = try expect(document.friend.require())
       let edition = try expect(document.primaryEdition)
       return .init(
-        isbn: try expect(edition.isbn.require()).code,
+        isbn: try expect(edition.isbn).code,
         title: document.title,
         htmlShortTitle: document.htmlShortTitle,
-        paperbackVolumes: try expect(edition.impression.require()).paperbackVolumes,
+        paperbackVolumes: try expect(edition.impression).paperbackVolumes,
         customCss: nil,
         customHtml: nil,
-        isCompilation: friend.isCompilations,
-        friendName: friend.name,
-        friendSlug: friend.slug,
-        friendGender: friend.gender,
+        isCompilation: document.friend.isCompilations,
+        friendName: document.friend.name,
+        friendSlug: document.friend.slug,
+        friendGender: document.friend.gender,
         documentSlug: document.slug,
         featuredDescription: try expect(document.featuredDescription)
       )

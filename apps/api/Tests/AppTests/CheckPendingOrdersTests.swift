@@ -8,7 +8,7 @@ import XCTest
 final class CheckPendingOrdersTests: AppTestCase {
 
   func testCheckPendingOrdersHappyPath() async throws {
-    let order = Order.mock
+    var order = Order.mock
     order.printJobStatus = .pending
     order.printJobId = 33
     _ = try await Current.db.query(Order.self).delete()
@@ -44,7 +44,7 @@ final class CheckPendingOrdersTests: AppTestCase {
 
   func testSlackLogsErrorIfOrderMissingPrintJobId() async throws {
     _ = try await Current.db.query(Order.self).delete()
-    let order = Order.mock
+    var order = Order.mock
     order.printJobStatus = .pending
     order.printJobId = nil // <-- should never happen
     try await Current.db.create(order)
@@ -59,7 +59,7 @@ final class CheckPendingOrdersTests: AppTestCase {
 
   func testRejectedPrintJobUpdatedAndSlacked() async throws {
     _ = try await Current.db.query(Order.self).delete()
-    let order = Order.mock
+    var order = Order.mock
     order.printJobStatus = .pending
     order.printJobId = 33
     try await Current.db.create(order)

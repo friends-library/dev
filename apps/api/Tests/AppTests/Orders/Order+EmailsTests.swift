@@ -1,22 +1,23 @@
 import Duet
 import Foundation
 import XCTest
+import XExpect
 
 @testable import App
 
 final class OrderEmailsTests: AppTestCase {
-
   func mockOrder(lang: Lang) async -> (Order, String) {
-    let order = Order.random
+    var order = Order.empty
     order.lang = lang
     order.email = "foo@bar.com"
     order.addressName = "Bob Villa"
     let entities = await Entities.create()
-    let item = OrderItem.mock
+    var item = OrderItem.mock
     item.quantity = 1
     item.orderId = order.id
     item.editionId = entities.edition.id
-    connect(order, \.items, to: [item], \.order)
+    try! await order.create()
+    try! await item.create()
     return (order, entities.document.title)
   }
 
@@ -28,7 +29,7 @@ final class OrderEmailsTests: AppTestCase {
     XCTAssertEqual("[,] Friends Library Order Shipped", email.subject)
     XCTAssertTrue(email.text.hasPrefix("Bob,"))
     XCTAssertTrue(email.text.contains("(\(order.id.lowercased))"))
-    XCTAssertTrue(email.text.contains("* (1) \(docTitle)"))
+    expect(email.text).toContain("* (1) \(docTitle)")
     XCTAssertTrue(email.text.contains("/track/123"))
   }
 
@@ -48,9 +49,9 @@ final class OrderEmailsTests: AppTestCase {
   }
 
   func testFallbacks() async throws {
-    let (enOrder, _) = await mockOrder(lang: .en)
+    var (enOrder, _) = await mockOrder(lang: .en)
     enOrder.addressName = ""
-    let (esOrder, _) = await mockOrder(lang: .es)
+    var (esOrder, _) = await mockOrder(lang: .es)
     esOrder.addressName = ""
     let enEmail = try await EmailBuilder.orderShipped(enOrder, trackingUrl: nil)
     let esEmail = try await EmailBuilder.orderShipped(esOrder, trackingUrl: nil)

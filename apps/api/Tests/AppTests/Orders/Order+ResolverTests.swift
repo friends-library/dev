@@ -1,3 +1,4 @@
+import ConcurrencyExtras
 import XCTest
 import XExpect
 
@@ -12,7 +13,7 @@ final class OrderResolverTests: AppTestCase {
   func orderSetup() async throws -> (CreateOrder.Input, OrderItem) {
     let entities = await Entities.create()
     let order = Order.random
-    let item = OrderItem.random
+    var item = OrderItem.random
     item.orderId = order.id
     item.editionId = entities.edition.id
 
@@ -125,20 +126,20 @@ final class OrderResolverTests: AppTestCase {
   }
 
   func testBrickOrder() async throws {
-    let order = Order.random
+    var order = Order.random
     order.printJobStatus = .presubmit
     order.paymentId = .init(rawValue: "stripe_pi_id")
     try await Current.db.create(order)
 
-    var refundedPaymentIntentId: String?
+    let refundedPaymentIntentId = ActorIsolated<String?>(nil)
     Current.stripeClient.createRefund = { pi, _ in
-      refundedPaymentIntentId = pi
+      await refundedPaymentIntentId.setValue(pi)
       return .init(id: "pi_refund_id")
     }
 
-    var canceledPaymentId: String?
+    let canceledPaymentId = ActorIsolated<String?>(nil)
     Current.stripeClient.cancelPaymentIntent = { pi, _ in
-      canceledPaymentId = pi
+      await canceledPaymentId.setValue(pi)
       return .init(id: pi, clientSecret: "")
     }
 
@@ -155,8 +156,9 @@ final class OrderResolverTests: AppTestCase {
 
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .bricked)
-    XCTAssertEqual(refundedPaymentIntentId, "stripe_pi_id")
-    XCTAssertEqual(canceledPaymentId, "stripe_pi_id")
+    await refundedPaymentIntentId.withValue { XCTAssertEqual($0, "stripe_pi_id") }
+    await canceledPaymentId.withValue { XCTAssertEqual($0, "stripe_pi_id") }
+
     let orderId = order.id.lowercased
     XCTAssertEqual(
       sent.slacks,

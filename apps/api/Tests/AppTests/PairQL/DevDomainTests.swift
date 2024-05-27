@@ -32,13 +32,12 @@ final class DevDomainTests: AppTestCase {
   }
 
   func testUpsertEditionImpressionCanImmediatelyResolveCloudFiles() async throws {
-    let edition = (await Entities.create()).edition
-    let newId = EditionImpression.Id()
+    let entities = await Entities.create()
 
     let output = try await UpsertEditionImpression.resolve(
       with: .init(
-        id: newId,
-        editionId: edition.id,
+        id: entities.editionImpression.id,
+        editionId: entities.edition.id,
         adocLength: 3333,
         paperbackSizeVariant: .xl,
         paperbackVolumes: [233],
@@ -47,25 +46,25 @@ final class DevDomainTests: AppTestCase {
       ),
       in: .authed
     )
-
-    expect(output.id).toEqual(newId)
+    expect(output.id).toEqual(entities.editionImpression.id)
+    let fetched = try await EditionImpression.find(entities.editionImpression.id)
+    expect(fetched.adocLength).toEqual(3333)
   }
 }
 
 extension Token {
-  static func allScopes() async -> Token {
+  static func allScopes() async -> [TokenScope] {
     let token = try! await Token.create(.init(description: "@testing"))
     let scope = try! await TokenScope.create(.init(tokenId: token.id, scope: .all))
-    token.scopes = .loaded([scope])
-    return token
+    return [scope]
   }
 }
 
 extension AuthedContext {
   static var authed: Self {
     get async {
-      let token = await Token.allScopes()
-      return .init(requestId: UUID().uuidString, scopes: token.scopes.require())
+      let scopes = await Token.allScopes()
+      return .init(requestId: UUID().lowercased, scopes: scopes)
     }
   }
 }

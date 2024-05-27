@@ -1,5 +1,5 @@
 extension Audio {
-  var isValid: Bool {
+  func isValid() async -> Bool {
     if reader.isEmpty {
       logInvalid("reader is empty")
       return false
@@ -36,8 +36,8 @@ extension Audio {
     }
 
     // test for sequential parts, when loaded
-    if case .loaded(let parts) = parts {
-      let sorted = parts.sorted { $0.order < $1.order }
+    if let joined = try? await joined() {
+      let sorted = joined.parts.sorted { $0.order < $1.order }
       var prev = 0
       for part in sorted {
         if part.order != prev + 1 {

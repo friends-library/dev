@@ -14,15 +14,11 @@ enum Scope: String, Codable, CaseIterable, Equatable {
   case mutateTokens
 }
 
-final class TokenScope: Codable {
+struct TokenScope: Codable, Sendable {
   var id: Id
   var scope: Scope
   var tokenId: Token.Id
   var createdAt = Current.date()
-
-  var token = Parent<Token>.notLoaded
-
-  var isValid: Bool { true }
 
   init(id: Id = .init(), tokenId: Token.Id, scope: Scope) {
     self.id = id

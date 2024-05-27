@@ -3,8 +3,7 @@ import FluentSQL
 import XCore
 
 public enum SQL {
-
-  public enum OrderDirection {
+  public enum OrderDirection: Sendable {
     case asc
     case desc
 
@@ -18,7 +17,7 @@ public enum SQL {
     }
   }
 
-  public struct Order<M: Model> {
+  public struct Order<M: Model>: Sendable {
     let column: M.ColumnName
     let direction: OrderDirection
 
@@ -188,46 +187,65 @@ public enum SQL {
     _ statement: PreparedStatement,
     on db: SQLDatabase
   ) async throws -> [SQLRow] {
-    if #available(macOS 12, *) {
-      // e.g. SELECT statements with no WHERE clause have
-      // no bindings, and so can't be sent as a pg prepared statement
-      if statement.bindings.isEmpty {
-        if LOG_SQL {
-          print("\n```SQL\n\(statement.query)\n```")
-        }
-        return try await db.raw("\(raw: statement.query)").all()
+    // e.g. SELECT statements with no WHERE clause have
+    // no bindings, and so can't be sent as a pg prepared statement
+    if statement.bindings.isEmpty {
+      if LOG_SQL {
+        print("\n```SQL\n\(statement.query)\n```")
       }
-
-      let types = statement.bindings.map(\.typeName).list
-      let params = statement.bindings.map(\.param).list
-      let key = [statement.query, types].joined()
-      let name: String
-
-      if let previouslyInsertedName = await prepared.get(key) {
-        name = previouslyInsertedName
-      } else {
-        let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
-        name = "plan_\(id)"
-        let insertPrepareSql = """
-        PREPARE \(name)(\(types)) AS
-        \(statement.query)
-        """
-
-        if LOG_SQL {
-          print("\n```SQL\n\(insertPrepareSql)\n```")
-        }
-
-        await prepared.set(name, forKey: key)
-        _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
+      do {
+        return try await db.raw("\(unsafeRaw: statement.query)").all()
+      } catch {
+        #if DEBUG && !canImport(XCTest)
+          print("Error executing SQL (no bindings): \(String(reflecting: error))")
+          print("Query: \(statement.query)")
+        #endif
+        throw error
       }
+    }
+
+    let types = statement.bindings.map(\.typeName).list
+    let params = statement.bindings.map(\.param).list
+    let key = [statement.query, types].joined()
+    let name: String
+
+    if let previouslyInsertedName = await PreparedStatements.shared.get(key) {
+      name = previouslyInsertedName
+    } else {
+      let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+      name = "plan_\(id)"
+      let insertPrepareSql = """
+      PREPARE \(name)(\(types)) AS
+      \(statement.query)
+      """
 
       if LOG_SQL {
-        print("\n```SQL\n\(unPrepare(statement: statement))\n```")
+        print("\n```SQL\n\(insertPrepareSql)\n```")
       }
 
-      return try await db.raw("\(raw: "EXECUTE \(name)(\(params))")").all()
-    } else {
-      fatalError("SQL.execute() is not available on this platform")
+      await PreparedStatements.shared.set(name, forKey: key)
+      do {
+        _ = try await db.raw("\(unsafeRaw: insertPrepareSql)").all().get()
+      } catch {
+        #if DEBUG && !canImport(XCTest)
+          print("Error preparing SQL: \(String(reflecting: error))")
+          print("Query: \(statement.query)")
+        #endif
+        throw error
+      }
+    }
+
+    if LOG_SQL {
+      print("\n```SQL\n\(unPrepare(statement: statement))\n```")
+    }
+
+    do {
+      return try await db.raw("\(unsafeRaw: "EXECUTE \(name)(\(params))")").all()
+    } catch {
+      #if DEBUG && !canImport(XCTest)
+        print("Error executing prepared SQL: \(String(reflecting: error))")
+      #endif
+      throw error
     }
   }
 
@@ -243,7 +261,7 @@ public enum SQL {
   }
 
   public static func resetPreparedStatements() async {
-    await prepared.reset()
+    await PreparedStatements.shared.reset()
   }
 }
 
@@ -274,7 +292,9 @@ private extension Optional where Wrapped == Int {
   }
 }
 
-private actor PreparedStatements {
+@globalActor private actor PreparedStatements {
+  static let shared = PreparedStatements()
+
   var statements: [String: String] = [:]
 
   func get(_ key: String) -> String? {
@@ -289,8 +309,6 @@ private actor PreparedStatements {
     statements = [:]
   }
 }
-
-private var prepared = PreparedStatements()
 
 private func unPrepare(statement: SQL.PreparedStatement) -> String {
   var sql = statement.query

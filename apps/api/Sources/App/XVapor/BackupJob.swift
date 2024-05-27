@@ -1,17 +1,17 @@
 import Queues
 import Vapor
 
-public struct BackupJob: AsyncScheduledJob {
+public struct BackupJob: AsyncScheduledJob, Sendable {
   let dbName: String
   let pgDumpPath: String
   let excludeDataFromTables: [String]
-  let handler: (Data) async throws -> Void
+  let handler: @Sendable (Data) async throws -> Void
 
   public init(
     dbName: String,
     pgDumpPath: String,
     excludeDataFromTables: [String] = [],
-    handler: @escaping (Data) async throws -> Void
+    handler: @Sendable @escaping (Data) async throws -> Void
   ) {
     self.dbName = dbName
     self.pgDumpPath = pgDumpPath
@@ -20,15 +20,7 @@ public struct BackupJob: AsyncScheduledJob {
   }
 
   public func run(context: QueueContext) async throws {
-    if #available(macOS 12, *) {
-      try await handler(backupFileData)
-    }
-  }
-
-  public func run(context: QueueContext) -> EventLoopFuture<Void> {
-    let promise = context.eventLoop.makePromise(of: Void.self)
-    promise.completeWithTask { try await run(context: context) }
-    return promise.futureResult
+    try await handler(backupFileData)
   }
 
   private var backupFileData: Data {

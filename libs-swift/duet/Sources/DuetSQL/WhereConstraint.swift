@@ -1,6 +1,6 @@
 public extension SQL {
 
-  enum WhereConstraint<M: Model>: Equatable {
+  enum WhereConstraint<M: Model>: Equatable, Sendable {
     case equals(M.ColumnName, Postgres.Data)
     case lessThan(M.ColumnName, Postgres.Data)
     case greaterThan(M.ColumnName, Postgres.Data)
@@ -14,7 +14,7 @@ public extension SQL {
     indirect case and(WhereConstraint<M>, WhereConstraint<M>)
     indirect case not(WhereConstraint<M>)
 
-    func isSatisfied(by model: M) -> Bool {
+    public func isSatisfied(by model: M) -> Bool {
       switch self {
       case .not(let constraint):
         return !constraint.isSatisfied(by: model)
