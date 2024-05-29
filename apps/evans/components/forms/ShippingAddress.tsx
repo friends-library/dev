@@ -103,8 +103,10 @@ const ShippingAddress: React.FC<Props> = ({
       />
       <Input
         wrapClassName="md:order-2"
-        invalidMsg={t`City is required`}
-        valid={!cityBlurred || city.trim().length > 0}
+        invalidMsg={
+          city.trim() === `` ? t`City is required` : t`Must be less than 30 characters`
+        }
+        valid={!cityBlurred || (city.trim().length > 0 && city.length < 30)}
         onChange={(val) => setCity(val)}
         onFocus={() => setCityBlurred(false)}
         onBlur={() => setCityBlurred(true)}
