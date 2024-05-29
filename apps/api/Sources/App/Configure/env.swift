@@ -93,6 +93,7 @@ extension Vapor.Environment {
   static let PARSE_USERAGENT_BIN = get("PARSE_USERAGENT_BIN")!
   static let NODE_BIN = get("NODE_BIN")!
   static let LOCATION_API_KEY = get("LOCATION_API_KEY")!
+  static let DEEPL_API_KEY = get("DEEPL_API_KEY")!
   static let MAPBOX_API_KEY = get("MAPBOX_API_KEY")!
   static let SELF_URL = get("SELF_URL")!
   static let WEBSITE_URL_EN = get("WEBSITE_URL_EN")!
