@@ -46,7 +46,7 @@ extension Lulu.Api.Client {
   try await HTTP.get(
     "\(Env.LULU_API_ENDPOINT)/print-jobs/\(id)/status/",
     decoding: Lulu.Api.PrintJob.Status.self,
-    auth: .bearer(try await luluToken.get()),
+    auth: .bearer(try await Lulu.Api.Client.ReusableToken.shared.get()),
     keyDecodingStrategy: .convertFromSnakeCase
   )
 }
@@ -58,7 +58,7 @@ extension Lulu.Api.Client {
   return try await HTTP.get(
     "\(Env.LULU_API_ENDPOINT)/print-jobs/\(query)",
     decoding: Lulu.Api.ListPrintJobsResponse.self,
-    auth: .bearer(try await luluToken.get()),
+    auth: .bearer(try await Lulu.Api.Client.ReusableToken.shared.get()),
     keyDecodingStrategy: .convertFromSnakeCase
   ).results
 }
@@ -96,7 +96,7 @@ private func postJson<Body: Encodable, Response: Decodable>(
     body,
     to: "\(Env.LULU_API_ENDPOINT)/\(path)",
     decoding: Response.self,
-    auth: .bearer(try await luluToken.get()),
+    auth: .bearer(try await Lulu.Api.Client.ReusableToken.shared.get()),
     keyEncodingStrategy: .convertToSnakeCase,
     keyDecodingStrategy: .convertFromSnakeCase
   )
