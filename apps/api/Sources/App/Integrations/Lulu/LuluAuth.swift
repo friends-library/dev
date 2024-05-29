@@ -6,13 +6,21 @@ import XHttp
 #endif
 
 extension Lulu.Api.Client {
+  @globalActor
   actor ReusableToken {
-    var token: (value: String, expiration: Date)?
+    static let shared = ReusableToken()
 
-    func get() async throws -> String {
-      if let token = token, token.expiration > Current.date() {
+    private var token: (value: String, expiration: Date)?
+    private var requestInFlight = false
+
+    public func get() async throws -> String {
+      if let token, token.expiration > Current.date() {
         return token.value
+      } else if requestInFlight {
+        try? await Task.sleep(nanoseconds: 150_000_000)
+        return try await get()
       }
+      requestInFlight = true
       let creds = try await HTTP.postFormUrlencoded(
         ["grant_type": "client_credentials"],
         to: "\(Env.LULU_API_ENDPOINT)/auth/realms/glasstree/protocol/openid-connect/token",
@@ -20,13 +28,12 @@ extension Lulu.Api.Client {
         auth: .basic(Env.LULU_CLIENT_KEY, Env.LULU_CLIENT_SECRET),
         keyDecodingStrategy: .convertFromSnakeCase
       )
+      requestInFlight = false
       token = (
         value: creds.accessToken,
-        expiration: Date().addingTimeInterval(creds.expiresIn)
+        expiration: Current.date().addingTimeInterval(creds.expiresIn - 5.0)
       )
       return creds.accessToken
     }
   }
 }
-
-let luluToken = Lulu.Api.Client.ReusableToken()
