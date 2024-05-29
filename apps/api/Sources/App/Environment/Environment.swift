@@ -9,6 +9,7 @@ import XStripe
     let uuid: @Sendable () -> UUID = { UUID() }
     let date: @Sendable () -> Date = { Date() }
     var db: DuetSQL.Client = ThrowingClient()
+    let deeplClient: DeepL.Client = .live
     var logger = Logger(label: "api.friendslibrary")
     let slackClient: FlpSlack.Client = .init()
     let luluClient: Lulu.Api.Client = .live
@@ -22,6 +23,7 @@ import XStripe
     var uuid: @Sendable () -> UUID = { UUID() }
     var date: @Sendable () -> Date = { Date() }
     var db: DuetSQL.Client = ThrowingClient()
+    var deeplClient: DeepL.Client = .live
     var logger = Logger(label: "api.friendslibrary")
     var slackClient: FlpSlack.Client = .init()
     var luluClient: Lulu.Api.Client = .live

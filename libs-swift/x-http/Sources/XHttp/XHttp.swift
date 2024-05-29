@@ -223,6 +223,11 @@ private func data(for request: URLRequest) async throws -> (Data, URLResponse) {
         continuation.resume(throwing: HttpError.missingDataOrResponse)
         return
       }
+      #if DEBUG
+        if ProcessInfo.processInfo.environment["XHTTP_DEBUG_RESPONSE"] != nil {
+          print("XHTTP RESPONSE BODY:\n```\n\(String(data: data, encoding: .utf8)!)\n```\n")
+        }
+      #endif
       continuation.resume(returning: (data, response))
     }.resume()
   }
