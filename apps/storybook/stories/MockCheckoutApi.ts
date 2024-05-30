@@ -29,7 +29,7 @@ export default class MockCheckoutApi extends CheckoutApi {
     }
     const defaultResponse: ExploratoryMetadata = {
       status: `success`,
-      data: {
+      metadata: {
         shippingLevel: `mail`,
         fees: 0,
         taxes: 0,

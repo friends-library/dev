@@ -19,7 +19,9 @@ interface Props {
   onBack(): unknown;
   stored?: Partial<AddressWithEmail>;
   throbbing?: boolean;
-  error?: boolean;
+  error?:
+    | { case: `shipping_not_possible` }
+    | { case: `shipping_address_error`; message: string };
 }
 
 const Delivery: React.FC<Props> = ({
@@ -36,7 +38,10 @@ const Delivery: React.FC<Props> = ({
       <Header>{t`Delivery`}</Header>
       {!error && <NoProfit className="hidden md:block" />}
       <Progress step="Delivery" />
-      {error && <ShippingError />}
+      {error && error.case === `shipping_not_possible` && <ShippingImpossibleError />}
+      {error && error.case === `shipping_address_error` && (
+        <ErrorMsg>{error.message}</ErrorMsg>
+      )}
       <form
         className="mt-8 relative"
         onSubmit={(e) => {
@@ -68,7 +73,7 @@ const Delivery: React.FC<Props> = ({
 
 export default Delivery;
 
-const ShippingError: React.FC = () => (
+const ShippingImpossibleError: React.FC = () => (
   <ErrorMsg>
     <Dual.Frag>
       <>

@@ -1,5 +1,13 @@
 // auto-generated, do not edit
 
+export interface ExploratoryMetadata {
+  shippingLevel: ShippingLevel;
+  shipping: number;
+  taxes: number;
+  fees: number;
+  creditCardFeeOffset: number;
+}
+
 export interface ShippingAddress {
   name: string;
   street: string;
@@ -9,3 +17,12 @@ export interface ShippingAddress {
   zip: string;
   country: string;
 }
+
+export type ShippingLevel =
+  | 'mail'
+  | 'priorityMail'
+  | 'groundHd'
+  | 'groundBus'
+  | 'ground'
+  | 'expedited'
+  | 'express';

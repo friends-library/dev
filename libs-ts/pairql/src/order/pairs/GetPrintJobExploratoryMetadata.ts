@@ -1,5 +1,5 @@
 // auto-generated, do not edit
-import type { ShippingAddress } from '../shared';
+import type { ExploratoryMetadata, ShippingAddress } from '../shared';
 
 export namespace GetPrintJobExploratoryMetadata {
   export interface Input {
@@ -10,20 +10,19 @@ export namespace GetPrintJobExploratoryMetadata {
     }>;
     email: string;
     address: ShippingAddress;
+    lang: 'en' | 'es';
   }
 
-  export interface Output {
-    shippingLevel:
-      | 'mail'
-      | 'priorityMail'
-      | 'groundHd'
-      | 'groundBus'
-      | 'ground'
-      | 'expedited'
-      | 'express';
-    shipping: number;
-    taxes: number;
-    fees: number;
-    creditCardFeeOffset: number;
-  }
+  export type Output =
+    | {
+        case: 'success';
+        metadata: ExploratoryMetadata;
+      }
+    | {
+        case: 'shippingAddressError';
+        message: string;
+      }
+    | {
+        case: 'shippingNotPossible';
+      };
 }

@@ -1,4 +1,5 @@
 // auto-generated, do not edit
+import type { ShippingLevel } from '../shared';
 
 export namespace CreateOrder {
   export interface Input {
@@ -11,14 +12,7 @@ export namespace CreateOrder {
     fees: number;
     ccFeeOffset: number;
     shipping: number;
-    shippingLevel:
-      | 'mail'
-      | 'priorityMail'
-      | 'groundHd'
-      | 'groundBus'
-      | 'ground'
-      | 'expedited'
-      | 'express';
+    shippingLevel: ShippingLevel;
     email: string;
     addressName: string;
     addressStreet: string;

@@ -39,6 +39,12 @@ extension Lulu.Api {
     let shippingOption: ShippingOptionLevel
   }
 
+  enum PrintJobCostCalculationsResult {
+    case success(PrintJobCostCalculationsResponse)
+    case notPossibleForShippingLevel
+    case shippingAddressError(String)
+  }
+
   struct PrintJobCostCalculationsResponse: Decodable {
     struct Cost: Decodable {
       var totalCostExclTax: String

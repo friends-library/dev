@@ -253,3 +253,55 @@ extension NewsFeedItems.NewsFeedItem.Kind {
     }
   }
 }
+
+extension GetPrintJobExploratoryMetadata.Output {
+  private struct _NamedCase: Codable {
+    var `case`: String
+    static func extract(from decoder: Decoder) throws -> String {
+      let container = try decoder.singleValueContainer()
+      return try container.decode(_NamedCase.self).case
+    }
+  }
+
+  private struct _TypeScriptDecodeError: Error {
+    var message: String
+  }
+
+  private struct _CaseSuccess: Codable {
+    var `case` = "success"
+    var metadata: PrintJobs.ExploratoryMetadata
+  }
+
+  private struct _CaseShippingAddressError: Codable {
+    var `case` = "shippingAddressError"
+    var message: String
+  }
+
+  func encode(to encoder: Encoder) throws {
+    switch self {
+    case .success(let metadata):
+      try _CaseSuccess(metadata: metadata).encode(to: encoder)
+    case .shippingAddressError(let unflat):
+      try _CaseShippingAddressError(message: unflat.message).encode(to: encoder)
+    case .shippingNotPossible:
+      try _NamedCase(case: "shippingNotPossible").encode(to: encoder)
+    }
+  }
+
+  init(from decoder: Decoder) throws {
+    let caseName = try _NamedCase.extract(from: decoder)
+    let container = try decoder.singleValueContainer()
+    switch caseName {
+    case "success":
+      let value = try container.decode(_CaseSuccess.self)
+      self = .success(metadata: value.metadata)
+    case "shippingAddressError":
+      let value = try container.decode(_CaseShippingAddressError.self)
+      self = .shippingAddressError(.init(message: value.message))
+    case "shippingNotPossible":
+      self = .shippingNotPossible
+    default:
+      throw _TypeScriptDecodeError(message: "Unexpected case name: `\(caseName)`")
+    }
+  }
+}

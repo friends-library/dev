@@ -1,4 +1,5 @@
 import OrderClient, { type T } from '@friends-library/pairql/order';
+import { LANG } from '@/lib/env';
 
 export default class CheckoutApi {
   private client: OrderClient;
@@ -37,30 +38,29 @@ export default class CheckoutApi {
     items: T.GetPrintJobExploratoryMetadata.Input['items'],
     address: T.ShippingAddress & { email: string },
   ): Promise<
-    | { status: `success`; data: T.GetPrintJobExploratoryMetadata.Output }
+    | { status: `success`; metadata: T.ExploratoryMetadata }
+    | { status: `shipping_address_error`; message: string }
     | { status: `shipping_not_possible` }
     | { status: `error` }
   > {
-    const result = await this.client.getPrintJobExploratoryMetadata({
+    const reqResult = await this.client.getPrintJobExploratoryMetadata({
       items,
       address,
       email: address.email,
+      lang: LANG,
     });
-    switch (result.isSuccess) {
-      case true:
-        return { status: `success`, data: result.unwrap() };
-      case false: {
-        const error = JSON.stringify(result.error);
-        if (
-          error.includes(`not possible`) ||
-          error.includes(`noExploratoryMetadataRetrieved`)
-        ) {
+    if (reqResult.isSuccess) {
+      const result = reqResult.unwrap();
+      switch (result.case) {
+        case `success`:
+          return { status: `success`, metadata: result.metadata };
+        case `shippingAddressError`:
+          return { status: `shipping_address_error`, message: result.message };
+        case `shippingNotPossible`:
           return { status: `shipping_not_possible` };
-        } else {
-          return { status: `error` };
-        }
       }
     }
+    return { status: `error` };
   }
 
   public async createOrder(

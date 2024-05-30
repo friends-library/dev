@@ -110,8 +110,23 @@ export const Confirmation_ = () => (
 
 export const Delivery_ = () => <Delivery onBack={() => {}} onSubmit={() => {}} />;
 
-export const DeliveryError = () => (
-  <Delivery error onBack={() => {}} onSubmit={() => {}} />
+export const DeliveryImpossible = () => (
+  <Delivery
+    error={{ case: `shipping_not_possible` }}
+    onBack={() => {}}
+    onSubmit={() => {}}
+  />
+);
+
+export const ShippingAddressError = () => (
+  <Delivery
+    error={{
+      case: `shipping_address_error`,
+      message: `Invalid name, no one named "Richard" may order books from Friends Library`,
+    }}
+    onBack={() => {}}
+    onSubmit={() => {}}
+  />
 );
 
 export const DeliveryThrobbing = () => (

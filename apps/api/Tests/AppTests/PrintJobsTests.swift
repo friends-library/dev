@@ -4,25 +4,29 @@ import XExpect
 @testable import App
 
 final class PrintJobsTests: AppTestCase {
-
   func testQueryExploratoryMetadata() async throws {
     let responses = Responses([
       .init(shipping: "9.99", tax: "3.33", total: "19.12", fee: "1.50"),
       .init(shipping: "10.99", tax: "4.33", total: "20.12", fee: "1.50"),
     ])
 
-    Current.luluClient.createPrintJobCostCalculation = { _, _, _ in
-      await responses.next()
+    Current.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
+      .success(await responses.next())
     }
 
-    var output = try await GetPrintJobExploratoryMetadata.resolve(
+    let result = try await GetPrintJobExploratoryMetadata.resolve(
       with: .init(
         items: [.init(volumes: .init(55), printSize: .m, quantity: 1)],
         email: "foo@bar",
-        address: .mock
+        address: .mock,
+        lang: .en
       ),
       in: .mock
     )
+
+    guard case .success(var output) = result else {
+      return XCTFail("Expected success, got \(result)")
+    }
 
     output.shippingLevel = .mail // not testing, dependent on order of .allCases
 
@@ -138,14 +142,19 @@ final class PrintJobsTests: AppTestCase {
       .init(shipping: "10.99", tax: "4.33", total: "20.12", fee: "1.50"),
     ])
 
-    Current.luluClient.createPrintJobCostCalculation = { _, _, _ in
-      await responses.next()
+    Current.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
+      .success(await responses.next())
     }
 
-    let meta = try await PrintJobs.getExploratoryMetadata(
+    let result = try await PrintJobs.getExploratoryMetadata(
       for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
-      shippedTo: .mock, email: "bob@email.com"
+      shippedTo: .mock, email: "bob@email.com", lang: .en
     )
+
+    guard case .success(let meta) = result else {
+      return XCTFail("Expected success, got \(result)")
+    }
+
     XCTAssertEqual(meta.creditCardFeeOffset, 88)
     XCTAssertEqual(meta.shipping, 999)
     XCTAssertEqual(meta.taxes, 333)
@@ -163,14 +172,18 @@ final class PrintJobsTests: AppTestCase {
       .init(shipping: "46.44", tax: "6.46", total: "114.05", fee: "3.00"), // express
     ])
 
-    Current.luluClient.createPrintJobCostCalculation = { _, _, _ in
-      await responses.next()
+    Current.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
+      .success(await responses.next())
     }
 
     let meta = try await PrintJobs.getExploratoryMetadata(
       for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
-      shippedTo: .mock, email: ""
+      shippedTo: .mock, email: "", lang: .en
     )
+
+    guard case .success(let meta) = meta else {
+      return XCTFail("Expected success, got \(meta)")
+    }
 
     XCTAssertEqual(meta.shipping, 1094)
   }
