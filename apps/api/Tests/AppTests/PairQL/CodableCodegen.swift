@@ -20,10 +20,12 @@ struct ApiTypeScriptEnumsCodableGenerator: AggregateCodeGenerator {
         (DeleteEntities.Input.self, false),
         (AdminRoute.Upsert.self, false),
         (NewsFeedItems.NewsFeedItem.Kind.self, false),
+        (GetPrintJobExploratoryMetadata.Output.self, false),
       ],
       imports: [
         "Tagged": "Tagged",
         "TaggedTime": "TaggedTime",
+        "TaggedMoney": "TaggedMoney",
       ],
       replacements: [
         "Foundation.UUID": "UUID",

@@ -7,9 +7,14 @@ struct GetPrintJobExploratoryMetadata: Pair {
     var items: [PrintJobs.ExploratoryItem]
     var email: EmailAddress
     var address: ShippingAddress
+    var lang: Lang
   }
 
-  typealias Output = PrintJobs.ExploratoryMetadata
+  enum Output: PairOutput {
+    case success(metadata: PrintJobs.ExploratoryMetadata)
+    case shippingAddressError(PrintJobs.ShippingAddressError)
+    case shippingNotPossible
+  }
 }
 
 // resolver
@@ -17,7 +22,7 @@ struct GetPrintJobExploratoryMetadata: Pair {
 extension GetPrintJobExploratoryMetadata: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     do {
-      return try await PrintJobs.getExploratoryMetadata(
+      switch try await PrintJobs.getExploratoryMetadata(
         for: input.items,
         // codable decode skips initializer normalizing `state` to abbrev
         shippedTo: ShippingAddress(
@@ -29,14 +34,16 @@ extension GetPrintJobExploratoryMetadata: Resolver {
           zip: input.address.zip,
           country: input.address.country
         ),
-        email: input.email
-      )
+        email: input.email,
+        lang: input.lang
+      ) {
+      case .success(let metadata):
+        return .success(metadata: metadata)
+      case .failure(let error):
+        return .shippingAddressError(error)
+      }
     } catch PrintJobs.Error.noExploratoryMetadataRetrieved {
-      throw context.error(
-        id: "53b04a22",
-        type: .notFound,
-        detail: "Error.noExploratoryMetadataRetrieved: shipping not possible"
-      )
+      return .shippingNotPossible
     } catch {
       throw error
     }
@@ -44,3 +51,4 @@ extension GetPrintJobExploratoryMetadata: Resolver {
 }
 
 extension PrintJobs.ExploratoryMetadata: PairOutput {}
+extension PrintJobs.ShippingAddressError: PairOutput {}

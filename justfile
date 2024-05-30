@@ -29,8 +29,8 @@ bundle-actions:
 
 # code quality
 
-check:
-  @just nx-run-many lint,format-check,typecheck,test,build,compile
+check: typecheck
+  @just nx-run-many lint,format-check,test,build,compile
 
 test:
   @just nx-run-many test

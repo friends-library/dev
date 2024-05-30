@@ -52,19 +52,25 @@ enum PrintJobs {
     var creditCardFeeOffset: Cents<Int>
   }
 
+  struct ShippingAddressError: Codable, Sendable, Equatable, Swift.Error {
+    var message: String
+  }
+
   static func getExploratoryMetadata(
     for items: [ExploratoryItem],
     shippedTo address: ShippingAddress,
-    email: EmailAddress
-  ) async throws -> ExploratoryMetadata {
+    email: EmailAddress,
+    lang: Lang
+  ) async throws -> Result<ExploratoryMetadata, ShippingAddressError> {
     try await withThrowingTaskGroup(of: (
-      Lulu.Api.PrintJobCostCalculationsResponse?,
+      Lulu.Api.PrintJobCostCalculationsResult?,
       Order.ShippingLevel
-    ).self) { group -> ExploratoryMetadata in
+    ).self) { group -> Result<ExploratoryMetadata, ShippingAddressError> in
       for level in Order.ShippingLevel.allCases {
         group.addTask {
           do {
-            let output = try await Current.luluClient.createPrintJobCostCalculation(
+            let result = try await Current.luluClient.createPrintJobCostCalculation(
+              lang,
               address.lulu,
               level.lulu,
               items.flatMap { item in
@@ -77,31 +83,28 @@ enum PrintJobs {
                 }
               }
             )
-            return (output, level)
+            return (result, level)
           } catch {
-            let errorString = String(describing: error)
-            if !errorString.contains("No shipping option found") {
-              await slackError("""
-                Unexpected error from print job ExploratoryMetadata:
+            await slackError("""
+              Unexpected error from print job ExploratoryMetadata:
 
-                ```
-                \(errorString)
-                ```
+              ```
+              \(String(describing: error))
+              ```
 
-                Items:
+              Items:
 
-                ```
-                "\(JSON.encode(items, .pretty) ?? String(describing: items))"
-                ```
+              ```
+              "\(JSON.encode(items, .pretty) ?? String(describing: items))"
+              ```
 
-                Address:
+              Address:
 
-                ```
-                email: \(email)
-                "\(JSON.encode(address, .pretty) ?? String(describing: address))"
-                ```
-              """)
-            }
+              ```
+              email: \(email)
+              "\(JSON.encode(address, .pretty) ?? String(describing: address))"
+              ```
+            """)
             return (nil, level)
           }
         }
@@ -109,8 +112,13 @@ enum PrintJobs {
 
       var results: [(Lulu.Api.PrintJobCostCalculationsResponse, Order.ShippingLevel)] = []
       for try await (res, level) in group {
-        if let res {
+        switch res {
+        case .success(let res):
           results.append((res, level))
+        case .shippingAddressError(let message):
+          return .failure(ShippingAddressError(message: message))
+        case .notPossibleForShippingLevel, nil:
+          break
         }
       }
 
@@ -129,13 +137,13 @@ enum PrintJobs {
         throw Error.noExploratoryMetadataRetrieved
       }
 
-      return try ExploratoryMetadata(
+      return .success(try ExploratoryMetadata(
         shippingLevel: level,
         shipping: toCents(cheapest.shippingCost.totalCostExclTax),
         taxes: toCents(cheapest.totalTax),
         fees: toCents(cheapest.fulfillmentCost.totalCostExclTax),
         creditCardFeeOffset: creditCardFeeOffset(toCents(cheapest.totalCostInclTax))
-      )
+      ))
     }
   }
 

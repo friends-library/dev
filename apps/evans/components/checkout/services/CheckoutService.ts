@@ -14,11 +14,12 @@ import { LANG } from '../../../lib/env';
  */
 export default class CheckoutService {
   private stripeError?: string;
+  private shippingError?: string;
   public token = ``;
   public orderId = ``;
   public paymentIntentId = ``;
   public paymentIntentClientSecret = ``;
-  public shippingLevel: T.GetPrintJobExploratoryMetadata.Output['shippingLevel'] = `mail`;
+  public shippingLevel: T.ShippingLevel = `mail`;
   public metadata = {
     fees: 0,
     shipping: 0,
@@ -53,14 +54,17 @@ export default class CheckoutService {
     switch (result.status) {
       case `success`:
         this.cart.address.unusable = false;
-        this.shippingLevel = result.data.shippingLevel;
+        this.shippingLevel = result.metadata.shippingLevel;
         this.metadata = {
-          fees: result.data.fees,
-          shipping: result.data.shipping,
-          taxes: result.data.taxes,
-          ccFeeOffset: result.data.creditCardFeeOffset,
+          fees: result.metadata.fees,
+          shipping: result.metadata.shipping,
+          taxes: result.metadata.taxes,
+          ccFeeOffset: result.metadata.creditCardFeeOffset,
         };
         return;
+      case `shipping_address_error`:
+        this.shippingError = result.message;
+        return `shipping_address_error`;
       case `shipping_not_possible`:
         this.cart.address.unusable = true;
         return `shipping_not_possible`;
@@ -121,6 +125,16 @@ export default class CheckoutService {
   public popStripeError(): string | undefined {
     const error = this.stripeError;
     delete this.stripeError;
+    return error;
+  }
+
+  public peekShippingError(): string | undefined {
+    return this.shippingError;
+  }
+
+  public popShippingError(): string | undefined {
+    const error = this.shippingError;
+    delete this.shippingError;
     return error;
   }
 

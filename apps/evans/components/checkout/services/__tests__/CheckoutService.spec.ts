@@ -22,7 +22,7 @@ describe(`CheckoutService()`, () => {
   describe(`.getExploratoryMetadata()`, () => {
     function successResponse(
       input: Partial<{
-        shippingLevel: T.GetPrintJobExploratoryMetadata.Output['shippingLevel'];
+        shippingLevel: T.ShippingLevel;
         shippingInCents: number;
         taxesInCents: number;
         feesInCents: number;
@@ -31,7 +31,7 @@ describe(`CheckoutService()`, () => {
     ): ReturnType<InstanceType<typeof CheckoutApi>['getExploratoryMetadata']> {
       return Promise.resolve({
         status: `success`,
-        data: {
+        metadata: {
           shippingLevel: input.shippingLevel ?? `mail`,
           shipping: input.shippingInCents ?? 399,
           taxes: input.taxesInCents ?? 0,

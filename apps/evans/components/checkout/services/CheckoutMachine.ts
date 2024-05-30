@@ -10,15 +10,22 @@ const states = {
   },
 
   delivery: {
-    next: `calculateFees`,
+    async next(this: CheckoutMachine) {
+      this.service.popShippingError();
+      await this.transitionTo(`calculateFees`);
+    },
     back: `cart`,
   },
 
   calculateFees: {
     onEnter: `Service.getExploratoryMetadata`,
     success: `createPaymentIntent`,
-    failure(this: CheckoutMachine, err: 'shipping_not_possible' | string) {
-      this.transitionTo(err === `shipping_not_possible` ? `delivery` : `brickSession`);
+    failure(this: CheckoutMachine, err: string) {
+      this.transitionTo(
+        err === `shipping_not_possible` || this.service.peekShippingError()
+          ? `delivery`
+          : `brickSession`,
+      );
     },
   },
 

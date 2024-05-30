@@ -46,12 +46,19 @@ const CheckoutFlow: React.FC<Props> = ({ machine }) => {
       );
     case `delivery`:
     case `calculateFees`:
-    case `createPaymentIntent`:
+    case `createPaymentIntent`: {
+      const shippingError = machine.service.peekShippingError();
       return (
         <Delivery
           throbbing={state !== `delivery`}
           onBack={() => machine.dispatch(`back`)}
-          error={!!cart.address?.unusable}
+          error={
+            cart.address?.unusable
+              ? { case: `shipping_not_possible` }
+              : shippingError
+              ? { case: `shipping_address_error`, message: shippingError }
+              : undefined
+          }
           stored={{ ...cart.address, ...(cart.email ? { email: cart.email } : {}) }}
           onSubmit={(data) => {
             const { email, ...address } = data;
@@ -61,6 +68,7 @@ const CheckoutFlow: React.FC<Props> = ({ machine }) => {
           }}
         />
       );
+    }
     case `payment`:
     case `chargeCreditCard`:
     case `createOrder`:

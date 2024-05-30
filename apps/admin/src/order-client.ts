@@ -18,17 +18,24 @@ export async function createOrder(
   email: string,
   requestId: UUID,
 ): Promise<UUID | Error> {
-  const metaRes = await client.getPrintJobExploratoryMetadata({
+  const metaRequestResult = await client.getPrintJobExploratoryMetadata({
     address,
     email,
     items,
+    lang: `en`,
   });
-  if (!metaRes.isSuccess) {
-    return Error(`Error getting print job metadata: ${metaRes.error}`);
+
+  if (!metaRequestResult.isSuccess) {
+    return Error(`Error getting print job metadata: ${metaRequestResult.error}`);
+  }
+  const metaResult = metaRequestResult.unwrap();
+  if (metaResult.case === `shippingNotPossible`) {
+    return Error(`Shipping not possible`);
+  } else if (metaResult.case === `shippingAddressError`) {
+    return Error(`Shipping address error: ${metaResult.message}`);
   }
 
-  const { shipping, taxes, fees, shippingLevel } = metaRes.unwrap();
-
+  const { shipping, taxes, fees, shippingLevel } = metaResult.metadata;
   const totalCents = price.subtotal(items) + shipping + taxes + fees;
   const total = price.formatted(totalCents);
   if (!confirm(`Grand total (w/ shipping and taxes) is ${total}. Proceed?`)) {
@@ -74,15 +81,24 @@ export async function createOrder(
 export async function isAddressValid(
   address: T.ShippingAddress,
 ): Promise<Error | undefined> {
-  const metadataResult = await client.getPrintJobExploratoryMetadata({
+  const requestResult = await client.getPrintJobExploratoryMetadata({
     address,
     email: `you@example.com`,
     items: [{ volumes: [100], printSize: `m`, quantity: 1 }],
+    lang: `en`,
   });
-  if (!metadataResult.isSuccess) {
+  if (!requestResult.isSuccess) {
     return Error(
-      `Error getting print job metadata: ${JSON.stringify(metadataResult.error)}`,
+      `Error getting print job metadata: ${JSON.stringify(requestResult.error)}`,
     );
   }
-  return undefined;
+  const metadataResult = requestResult.unwrap();
+  switch (metadataResult.case) {
+    case `shippingNotPossible`:
+      return Error(`Shipping not possible`);
+    case `shippingAddressError`:
+      return Error(`Shipping address error: ${metadataResult.message}`);
+    case `success`:
+      return undefined;
+  }
 }
