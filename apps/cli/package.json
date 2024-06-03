@@ -30,6 +30,7 @@
     "@friends-library/parser": "workspace:*",
     "@friends-library/slack": "workspace:*",
     "@friends-library/types": "workspace:*",
+    "@img/sharp-darwin-arm64": "0.33.4",
     "@types/glob": "^7.1.3",
     "chalk": "^2.4.1",
     "cross-fetch": "^3.1.5",
