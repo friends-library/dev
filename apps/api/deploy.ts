@@ -83,8 +83,13 @@ exec(`ssh ${HOST} "pm2 delete ${PM2_PREV_NAME}"`);
 
 function inApiDirWithOutput(cmd: string): void {
   process.stdout.write(`\n`);
-  spawnSync(`ssh`, [HOST, `cd ${API_DIR} && ${cmd}`], { stdio: `inherit` });
+  const result = spawnSync(`ssh`, [HOST, `cd ${API_DIR} && ${cmd}`], {
+    stdio: `inherit`,
+  });
   process.stdout.write(`\n`);
+  if (result.status !== 0) {
+    process.exit(result.status || 1);
+  }
 }
 
 function inApiDir(cmd: string): void {
