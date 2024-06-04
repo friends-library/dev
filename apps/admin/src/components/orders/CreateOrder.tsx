@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import type { OrderAddress, OrderItem } from '../../types';
+import type { SelectableEdition } from './SelectBook';
 import EmptyWell from '../EmptyWell';
 import PillButton from '../PillButton';
 import TextInput from '../TextInput';
@@ -20,7 +21,8 @@ import Button from '../Button';
 import InfoMessage from '../InfoMessage';
 import { isAddressValid, createOrder, type T } from '../../order-client';
 import api from '../../api-client';
-import SelectBook from './SelectBook';
+import FullscreenLoading from '../FullscreenLoading';
+import SelectBook, { editionSearchString } from './SelectBook';
 
 const CreateOrder: React.FC = () => {
   const [selectingBook, setSelectingBook] = useState(false);
@@ -31,6 +33,7 @@ const CreateOrder: React.FC = () => {
   const [email, setEmail] = useState(``);
   const [requestId, setRequestId] = useState(``);
   const [address, setAddress] = useState<T.ShippingAddress>(emptyAddress());
+  const [editions, setEditions] = useState<SelectableEdition[] | null>(null);
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -48,10 +51,24 @@ const CreateOrder: React.FC = () => {
     });
   }, []);
 
-  if (selectingBook) {
+  useEffect(() => {
+    api.orderEditions().then((editions) => {
+      setEditions(
+        editions.unwrap().map((edition) => ({
+          ...edition,
+          searchString: editionSearchString(edition),
+        })),
+      );
+    });
+  }, []);
+
+  if (selectingBook && !editions) {
+    return <FullscreenLoading />;
+  } else if (selectingBook && editions) {
     return (
       <Constrained to={`w-[550px]`}>
         <SelectBook
+          editions={editions}
           onCancel={() => setSelectingBook(false)}
           onSelect={(item) => {
             setItems([...items, item]);
