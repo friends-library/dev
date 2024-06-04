@@ -3,16 +3,14 @@ import cx from 'classnames';
 import { v4 as uuid } from 'uuid';
 import { XCircleIcon } from '@heroicons/react/solid';
 import type { OrderItem } from '../../types';
-import { useQuery } from '../../lib/query';
-import api, { type T } from '../../api-client';
+import { type T } from '../../api-client';
 
-interface ContainerProps {
+export type SelectableEdition = T.OrderEditions.Output[number] & { searchString: string };
+
+type Props = {
   onCancel: () => unknown;
   onSelect: (item: OrderItem) => unknown;
-}
-
-type Props = ContainerProps & {
-  editions: Array<T.OrderEditions.Output[number] & { searchString: string }>;
+  editions: SelectableEdition[];
 };
 
 export const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) => {
@@ -46,6 +44,7 @@ export const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) =>
       </div>
       <div className="mt-1">
         <input
+          autoFocus
           type="text"
           className="shadow-sm focus:ring-flprimary-500 focus:border-flprimary-500 block w-full sm:text-sm border-gray-300 rounded-md placeholder-gray-300"
           placeholder="e.g: No Cross No Crown, Hugh Turford, La Senda Antigua ..."
@@ -117,23 +116,9 @@ export const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) =>
   );
 };
 
-// container
+export default SelectBook;
 
-const SelectBookContainer: React.FC<ContainerProps> = ({ onCancel, onSelect }) => {
-  const query = useQuery(() => api.orderEditions());
-  if (!query.isResolved) {
-    return query.unresolvedElement;
-  }
-  const editions = query.data.map((edition) => ({
-    ...edition,
-    searchString: editionSearchString(edition),
-  }));
-  return <SelectBook onCancel={onCancel} onSelect={onSelect} editions={editions} />;
-};
-
-export default SelectBookContainer;
-
-function editionSearchString(edition: T.OrderEditions.Output[number]): string {
+export function editionSearchString(edition: T.OrderEditions.Output[number]): string {
   return [
     edition.title,
     edition.author,
