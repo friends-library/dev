@@ -229,7 +229,7 @@ extension DownloadableFile {
   private init(_ data: DownloadData, format: DownloadableFile.Format) {
     let edition = Edition.DirectoryPathData(
       document: .init(
-        friend: .init(lang: .en, slug: data.friendSlug),
+        friend: .init(lang: data.lang, slug: data.friendSlug),
         slug: data.documentSlug
       ),
       type: data.editionType
