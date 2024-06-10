@@ -5,7 +5,6 @@ import XSlack
 extension FlpSlack {
   struct Client: Sendable {
     var send = send(_:)
-    var sendSync = sendSync(_:)
   }
 }
 
@@ -24,24 +23,4 @@ extension FlpSlack {
   if let errMsg = await Slack.Client().send(slack.message, slack.channel.token) {
     Current.logger.error("Failed to send slack, error=\(errMsg)")
   }
-}
-
-#if os(Linux)
-  extension DispatchSemaphore: @unchecked Sendable {}
-#endif
-
-@Sendable private func sendSync(_ slack: FlpSlack.Message) {
-  let semaphore = DispatchSemaphore(value: 0)
-  Task {
-    await send(slack)
-    semaphore.signal()
-  }
-  // this appears to deadlock if we have only one cpu/thread...
-  _ = semaphore.wait(timeout: .now() + 3)
-}
-
-// extensions
-
-extension FlpSlack.Client {
-  static let mock = FlpSlack.Client(send: { _ in }, sendSync: { _ in })
 }

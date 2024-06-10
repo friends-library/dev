@@ -42,8 +42,3 @@ nonisolated(unsafe) var Current = Environment()
 extension UUID {
   static let mock = UUID("DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFDEAD")!
 }
-
-func invariant(_ msg: String) -> Never {
-  Current.slackClient.sendSync(.error(msg))
-  fatalError(msg)
-}
