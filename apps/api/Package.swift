@@ -45,6 +45,7 @@ let package = Package(
         .product(name: "XSendGrid", package: "x-sendgrid"),
         .product(name: "XStripe", package: "x-stripe"),
         .product(name: "XSlack", package: "x-slack"),
+        .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras"),
         .product(name: "QueuesFluentDriver", package: "vapor-queues-fluent-driver"),
         "RomanNumeralKit",
         "Rainbow",
