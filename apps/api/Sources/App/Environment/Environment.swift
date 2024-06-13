@@ -11,7 +11,7 @@ import XStripe
     var db: DuetSQL.Client = ThrowingClient()
     let deeplClient: DeepL.Client = .live
     var logger = Logger(label: "api.friendslibrary")
-    let slackClient: FlpSlack.Client = .init()
+    let slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
     let luluClient: Lulu.Api.Client = .live
     let sendGridClient: SendGrid.Client.SlackErrorLogging = .live
     let stripeClient = Stripe.Client()
@@ -25,7 +25,7 @@ import XStripe
     var db: DuetSQL.Client = ThrowingClient()
     var deeplClient: DeepL.Client = .live
     var logger = Logger(label: "api.friendslibrary")
-    var slackClient: FlpSlack.Client = .init()
+    var slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
     var luluClient: Lulu.Api.Client = .live
     var sendGridClient: SendGrid.Client.SlackErrorLogging = .live
     var stripeClient = Stripe.Client()

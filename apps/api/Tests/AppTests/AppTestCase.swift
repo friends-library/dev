@@ -45,7 +45,7 @@ class AppTestCase: XCTestCase {
   override func setUp() {
     Current.uuid = { UUID() }
     Current.date = { Date() }
-    Current.slackClient.send = { [self] in sent.slacks.append($0) }
+    Current.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }
     Current.sendGridClient.send = { [self] in sent.emails.append($0) }
   }
 }
