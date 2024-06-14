@@ -11,6 +11,7 @@ import XStripe
     var db: DuetSQL.Client = ThrowingClient()
     let deeplClient: DeepL.Client = .live
     var logger = Logger(label: "api.friendslibrary")
+    let randomNumberGenerator: () -> any RandomNumberGenerator = { SystemRandomNumberGenerator() }
     let slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
     let luluClient: Lulu.Api.Client = .live
     let sendGridClient: SendGrid.Client.SlackErrorLogging = .live
@@ -25,6 +26,7 @@ import XStripe
     var db: DuetSQL.Client = ThrowingClient()
     var deeplClient: DeepL.Client = .live
     var logger = Logger(label: "api.friendslibrary")
+    var randomNumberGenerator: () -> any RandomNumberGenerator = { SystemRandomNumberGenerator() }
     var slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
     var luluClient: Lulu.Api.Client = .live
     var sendGridClient: SendGrid.Client.SlackErrorLogging = .live

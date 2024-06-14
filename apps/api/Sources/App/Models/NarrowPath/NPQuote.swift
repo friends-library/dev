@@ -7,9 +7,9 @@ final class NPQuote: Codable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
   var quote: String
-  var authorId: UUID? = nil
+  var authorId: Friend.Id? = nil
   var authorName: String
-  var documentId: UUID? = nil
+  var documentId: Document.Id? = nil
 
   var isValid: Bool { true }
 
@@ -18,9 +18,9 @@ final class NPQuote: Codable {
     lang: Lang,
     isFriend: Bool,
     quote: String,
-    authorId: UUID?,
+    authorId: Friend.Id?,
     authorName: String,
-    documentId: UUID?
+    documentId: Document.Id?
   ) {
     self.id = id
     self.lang = lang
