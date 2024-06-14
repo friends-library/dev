@@ -7,6 +7,7 @@ import Vapor
 enum EvansRoute: PairRoute {
   case logJsError(LogJsError.Input)
   case submitContactForm(SubmitContactForm.Input)
+  case subscribeToNarrowPath(SubscribeToNarrowPath.Input)
 
   nonisolated(unsafe) static let router = OneOf {
     Route(/Self.logJsError) {
@@ -16,6 +17,10 @@ enum EvansRoute: PairRoute {
     Route(/Self.submitContactForm) {
       Operation(SubmitContactForm.self)
       Body(.input(SubmitContactForm.self))
+    }
+    Route(/Self.subscribeToNarrowPath) {
+      Operation(SubscribeToNarrowPath.self)
+      Body(.input(SubscribeToNarrowPath.self))
     }
   }
 }
@@ -28,6 +33,9 @@ extension EvansRoute: RouteResponder {
       return try respond(with: output)
     case .submitContactForm(let input):
       let output = try await SubmitContactForm.resolve(with: input, in: context)
+      return try respond(with: output)
+    case .subscribeToNarrowPath(let input):
+      let output = try await SubscribeToNarrowPath.resolve(with: input, in: context)
       return try respond(with: output)
     }
   }
