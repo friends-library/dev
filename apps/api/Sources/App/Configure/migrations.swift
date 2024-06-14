@@ -37,5 +37,6 @@ extension Configure {
     app.migrations.add(SeedTokens())
     app.migrations.add(RemoveSoundcloud())
     app.migrations.add(CreateNativeAppErrors())
+    app.migrations.add(NarrowPath())
   }
 }
