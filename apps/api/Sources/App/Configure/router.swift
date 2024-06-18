@@ -14,6 +14,16 @@ public extension Configure {
       use: CodegenRoute.handler(_:)
     )
 
+    app.get(
+      "confirm-email", ":language", ":token",
+      use: ConfirmEmailRoute.handler(_:)
+    )
+
+    app.get(
+      "unsubscribe", ":language", ":id",
+      use: UnsubscribeRoute.handler(_:)
+    )
+
     app.on(
       .POST,
       "pairql", ":domain", ":operation",

@@ -17,7 +17,6 @@ struct SubscribeToNarrowPath: Pair {
 extension SubscribeToNarrowPath: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     let token = Current.uuid()
-
     try await NPSubscriber(
       token: token,
       mixedQuotes: input.mixedQuotes,
@@ -26,11 +25,11 @@ extension SubscribeToNarrowPath: Resolver {
     ).create()
 
     let confirmUrl = "\(Env.SELF_URL)/confirm-email/\(input.lang)/\(token.lowercased)"
-    try await Current.sendGridClient.send(.init(
-      to: .init(email: input.email.rawValue),
-      from: .friendsLibrary,
+    await Current.postmarkClient.send(.init(
+      to: input.email.rawValue,
+      from: EmailBuilder.fromAddress(lang: input.lang),
       subject: "Please confirm your email address",
-      html: "<a href=\"\(confirmUrl)\">Click here</a>"
+      htmlBody: "<a href=\"\(confirmUrl)\">Click here</a>"
     ))
 
     return .success

@@ -18,7 +18,7 @@ final class EvansDomainTests: AppTestCase {
 
     expect(output).toEqual(.success)
     expect(sent.emails.count).toEqual(1)
-    expect(sent.emails[0].text).toContain("confirm-email/en/\(token.lowercased)")
+    expect(sent.emails[0].body).toContain("confirm-email/en/\(token.lowercased)")
 
     let subscriber = try await NPSubscriber.query()
       .where(.email == email)
@@ -26,5 +26,37 @@ final class EvansDomainTests: AppTestCase {
 
     expect(subscriber.email).toEqual(email)
     expect(subscriber.pendingConfirmationToken).toEqual(token)
+
+    try await app.test(.GET, "confirm-email/en/\(token.lowercased)") { res in
+      let retrieved = try await NPSubscriber.find(subscriber.id)
+      expect(retrieved.pendingConfirmationToken).toBeNil()
+      expect(res.status).toEqual(.temporaryRedirect)
+      expect(res.headers.first(name: .location))
+        .toEqual("\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/success")
+    }
+
+    try await app.test(.GET, "unsubscribe/en/\(subscriber.id.lowercased)") { res in
+      let retrieved = try? await NPSubscriber.find(subscriber.id)
+      expect(retrieved).toBeNil()
+      expect(res.status).toEqual(.temporaryRedirect)
+      expect(res.headers.first(name: .location))
+        .toEqual("\(Env.WEBSITE_URL_EN)/narrow-path/unsubscribe/success")
+    }
+  }
+
+  func testInvalidTokenRedirectsToFailurePage() async throws {
+    try app.test(.GET, "confirm-email/es/ham-sandwich") { res in
+      expect(res.status).toEqual(.temporaryRedirect)
+      expect(res.headers.first(name: .location))
+        .toEqual("\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-email/fallo")
+    }
+  }
+
+  func testTokenNotFoundError() async throws {
+    try app.test(.GET, "confirm-email/en/\(UUID())") { res in
+      expect(res.status).toEqual(.temporaryRedirect)
+      expect(res.headers.first(name: .location))
+        .toEqual("\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/failure")
+    }
   }
 }
