@@ -25,27 +25,24 @@ final class OrderEmailsTests: AppTestCase {
     let (order, docTitle) = await mockOrder(lang: .en)
     let email = try await EmailBuilder.orderShipped(order, trackingUrl: "/track/123")
 
-    XCTAssertEqual(email.from, .init(email: "noreply@friendslibrary.com", name: "Friends Library"))
+    XCTAssertEqual(email.from, "Friends Library <info@friendslibrary.com>")
     XCTAssertEqual("[,] Friends Library Order Shipped", email.subject)
-    XCTAssertTrue(email.text.hasPrefix("Bob,"))
-    XCTAssertTrue(email.text.contains("(\(order.id.lowercased))"))
-    expect(email.text).toContain("* (1) \(docTitle)")
-    XCTAssertTrue(email.text.contains("/track/123"))
+    XCTAssertTrue(email.body.hasPrefix("Bob,"))
+    XCTAssertTrue(email.body.contains("(\(order.id.lowercased))"))
+    expect(email.body).toContain("* (1) \(docTitle)")
+    XCTAssertTrue(email.body.contains("/track/123"))
   }
 
   func testSpanishShippedEmail() async throws {
     let (order, docTitle) = await mockOrder(lang: .es)
     let email = try await EmailBuilder.orderShipped(order, trackingUrl: "/track/123")
 
-    XCTAssertEqual(
-      email.from,
-      .init(email: "noreply@bibliotecadelosamigos.org", name: "Biblioteca de los Amigos")
-    )
+    XCTAssertEqual(email.from, "Biblioteca de los Amigos <info@bibliotecadelosamigos.org>")
     XCTAssertEqual("[,] Pedido Enviado – Biblioteca de Amigos", email.subject)
-    XCTAssertTrue(email.text.hasPrefix("Bob,"))
-    XCTAssertTrue(email.text.contains("(\(order.id.lowercased))"))
-    XCTAssertTrue(email.text.contains("* (1) \(docTitle)"))
-    XCTAssertTrue(email.text.contains("/track/123"))
+    XCTAssertTrue(email.body.hasPrefix("Bob,"))
+    XCTAssertTrue(email.body.contains("(\(order.id.lowercased))"))
+    XCTAssertTrue(email.body.contains("* (1) \(docTitle)"))
+    XCTAssertTrue(email.body.contains("/track/123"))
   }
 
   func testFallbacks() async throws {
@@ -55,9 +52,9 @@ final class OrderEmailsTests: AppTestCase {
     esOrder.addressName = ""
     let enEmail = try await EmailBuilder.orderShipped(enOrder, trackingUrl: nil)
     let esEmail = try await EmailBuilder.orderShipped(esOrder, trackingUrl: nil)
-    XCTAssertTrue(enEmail.text.hasPrefix("Hello!"))
-    XCTAssertTrue(esEmail.text.hasPrefix("¡Hola!"))
-    XCTAssertTrue(enEmail.text.contains("<em>Sorry, not available</em>"))
-    XCTAssertTrue(esEmail.text.contains("<em>Lo sentimos, no disponible</em>"))
+    XCTAssertTrue(enEmail.body.hasPrefix("Hello!"))
+    XCTAssertTrue(esEmail.body.hasPrefix("¡Hola!"))
+    XCTAssertTrue(enEmail.body.contains("(Sorry, not available)"))
+    XCTAssertTrue(esEmail.body.contains("(Lo sentimos, no disponible)"))
   }
 }

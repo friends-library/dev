@@ -1,5 +1,5 @@
 import PairQL
-import XSendGrid
+import XPostmark
 
 struct CreateFreeOrderRequest: Pair {
   struct Input: PairInput {
@@ -46,11 +46,11 @@ extension CreateFreeOrderRequest: Resolver {
 private func sendFreeOrderRequestNotifications(for order: FreeOrderRequest) async throws {
   let id = order.id.rawValue.uuidString.lowercased()
   if let emailTo = Env.get("FREE_ORDER_REQUEST_EMAIL_RECIPIENT") {
-    let email = SendGrid.Email(
-      to: .init(email: emailTo),
-      from: .friendsLibrary,
+    let email = XPostmark.Email(
+      to: emailTo,
+      from: "info@friendslibrary.com",
       subject: "[,] Free Book Request - \(id)",
-      html:
+      htmlBody:
       """
       \(entry("Name", order.name))
       \(entry("Email", order.email.rawValue))
@@ -72,7 +72,7 @@ private func sendFreeOrderRequestNotifications(for order: FreeOrderRequest) asyn
       </a>
       """
     )
-    try await Current.sendGridClient.send(email)
+    await Current.postmarkClient.send(email)
   }
 
   if Env.mode == .prod {

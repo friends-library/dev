@@ -79,7 +79,7 @@ extension Vapor.Environment {
 
 extension Vapor.Environment {
   static let PG_DUMP_PATH = get("PG_DUMP_PATH")!
-  static let SENDGRID_API_KEY = get("SENDGRID_API_KEY")!
+  static let POSTMARK_API_KEY = get("POSTMARK_API_KEY")!
   static let SLACK_API_TOKEN_WORKSPACE_MAIN = get("SLACK_API_TOKEN_WORKSPACE_MAIN")!
   static let SLACK_API_TOKEN_WORKSPACE_BOT = get("SLACK_API_TOKEN_WORKSPACE_BOT")!
   static let DATABASE_NAME = get("DATABASE_NAME")!

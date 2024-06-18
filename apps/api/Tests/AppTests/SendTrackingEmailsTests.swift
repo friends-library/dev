@@ -32,8 +32,8 @@ final class SendTrackingEmailsTests: AppTestCase {
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .shipped)
     XCTAssertEqual(sent.emails.count, 1)
-    XCTAssertEqual(sent.emails.first?.firstRecipient.email, "foo@bar.com")
-    XCTAssert(sent.emails.first?.text.contains("/track/me") == true)
+    XCTAssertEqual(sent.emails.first?.to, "foo@bar.com")
+    XCTAssert(sent.emails.first?.body.contains("/track/me") == true)
     XCTAssertEqual(sent.slacks, [.order("Order \(order.id.lowercased) shipped")])
   }
 

@@ -9,9 +9,9 @@ extension Environment {
     date: { Date(timeIntervalSince1970: 0) },
     db: ThrowingClient(),
     logger: .null,
+    postmarkClient: .mock,
     slackClient: RateLimitedSlackClient { _ in },
     luluClient: .mock,
-    sendGridClient: .mock,
     stripeClient: .mock,
     ipApiClient: .mock,
     userAgentParser: .mock

@@ -1,29 +1,29 @@
 import DuetSQL
 import XCore
-import XSendGrid
+import XPostmark
 
 extension EmailBuilder {
-  static func orderShipped(_ order: Order, trackingUrl: String?) async throws -> SendGrid.Email {
-    SendGrid.Email(
-      to: .init(email: order.email.rawValue, name: order.addressName),
+  static func orderShipped(_ order: Order, trackingUrl: String?) async throws -> XPostmark.Email {
+    XPostmark.Email(
+      to: order.email.rawValue,
       from: fromAddress(lang: order.lang),
       subject: order.lang == .en
         ? "[,] Friends Library Order Shipped"
         : "[,] Pedido Enviado – Biblioteca de Amigos",
-      text: order.lang == .en
+      textBody: order.lang == .en
         ? try await shippedBodyEn(for: order, trackingUrl: trackingUrl)
         : try await shippedBodyEs(for: order, trackingUrl: trackingUrl)
     )
   }
 
-  static func orderConfirmation(_ order: Order) async throws -> SendGrid.Email {
-    SendGrid.Email(
-      to: .init(email: order.email.rawValue, name: order.addressName),
+  static func orderConfirmation(_ order: Order) async throws -> XPostmark.Email {
+    XPostmark.Email(
+      to: order.email.rawValue,
       from: fromAddress(lang: order.lang),
       subject: order.lang == .en
         ? "[,] Friends Library Order Confirmation"
         : "[,] Confirmación de Pedido – Biblioteca de Amigos",
-      text: order.lang == .en
+      textBody: order.lang == .en
         ? try await confirmationBodyEn(for: order)
         : try await confirmationBodyEs(for: order)
     )
@@ -69,7 +69,7 @@ private func shippedBodyEs(for order: Order, trackingUrl: String?) async throws 
 
   Puedes usar el enlace a continuación para rastrear tu paquete:
 
-  \(trackingUrl ?? "<em>Lo sentimos, no disponible</em>")
+  \(trackingUrl ?? "(Lo sentimos, no disponible)")
 
   ¡Por favor no dudes en hacernos saber si tienes alguna pregunta!
 
@@ -87,7 +87,7 @@ private func shippedBodyEn(for order: Order, trackingUrl: String?) async throws 
 
   To track your package, you can use the below link:
 
-  \(trackingUrl ?? "<em>Sorry, not available</em>")
+  \(trackingUrl ?? "(Sorry, not available)")
 
   Please don't hesitate to let us know if you have any questions!
 
