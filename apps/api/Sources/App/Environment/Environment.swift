@@ -1,7 +1,7 @@
 import DuetSQL
 import Foundation
 import Vapor
-import XSendGrid
+import XPostmark
 import XStripe
 
 #if !DEBUG
@@ -11,9 +11,9 @@ import XStripe
     var db: DuetSQL.Client = ThrowingClient()
     let deeplClient: DeepL.Client = .live
     var logger = Logger(label: "api.friendslibrary")
+    var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
     let slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
     let luluClient: Lulu.Api.Client = .live
-    let sendGridClient: SendGrid.Client.SlackErrorLogging = .live
     let stripeClient = Stripe.Client()
     let ipApiClient = IpApi.Client()
     let userAgentParser: UserAgentParser = .live
@@ -25,9 +25,9 @@ import XStripe
     var db: DuetSQL.Client = ThrowingClient()
     var deeplClient: DeepL.Client = .live
     var logger = Logger(label: "api.friendslibrary")
+    var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
     var slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
     var luluClient: Lulu.Api.Client = .live
-    var sendGridClient: SendGrid.Client.SlackErrorLogging = .live
     var stripeClient = Stripe.Client()
     var ipApiClient = IpApi.Client()
     var userAgentParser: UserAgentParser = .live

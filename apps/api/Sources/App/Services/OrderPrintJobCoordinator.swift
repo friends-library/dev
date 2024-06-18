@@ -138,7 +138,7 @@ private func sendOrderShippedEmail(_ order: Order, _ printJob: Lulu.Api.PrintJob
   do {
     let trackingUrl = printJob.lineItems.compactMap { $0.trackingUrls?.first }.first
     let email = try await EmailBuilder.orderShipped(order, trackingUrl: trackingUrl)
-    try await Current.sendGridClient.send(email)
+    await Current.postmarkClient.send(email)
   } catch {
     await slackError("Error sending order shipped email for order \(order.id): \(error)")
   }

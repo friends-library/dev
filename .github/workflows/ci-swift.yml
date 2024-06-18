@@ -17,8 +17,8 @@ jobs:
         run: cd libs-swift/x-http && swift build
       - name: build x-kit
         run: cd libs-swift/x-kit && swift build
-      - name: build x-sendgrid
-        run: cd libs-swift/x-sendgrid && swift build
+      - name: build x-postmark
+        run: cd libs-swift/x-postmark && swift build
       - name: build x-slack
         run: cd libs-swift/x-slack && swift build
       - name: build x-stripe
@@ -84,7 +84,7 @@ env:
   DATABASE_PASSWORD: vapor_password
   TEST_DATABASE_NAME: vapor_database
   PG_DUMP_PATH: not-real
-  SENDGRID_API_KEY: not-real
+  POSTMARK_API_KEY: not-real
   SLACK_API_TOKEN_WORKSPACE_MAIN: not-real
   SLACK_API_TOKEN_WORKSPACE_BOT: not-real
   CLOUD_STORAGE_BUCKET_URL: /not-real

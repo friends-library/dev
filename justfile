@@ -64,7 +64,7 @@ nx-reset:
 	@pnpm exec nx reset
 
 test-typescript:
-  @pnpm exec nx run-many --targets=test --exclude=duet,x-http,x-kit,x-sendgrid,x-slack,x-stripe,api,ts-interop,x-expect
+  @pnpm exec nx run-many --targets=test --exclude=duet,x-http,x-kit,postmark,x-slack,x-stripe,api,ts-interop,x-expect
 
 clean: nx-reset
   @rm -rf apps/admin/node_modules/.vite

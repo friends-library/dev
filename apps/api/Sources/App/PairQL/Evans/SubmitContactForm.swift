@@ -1,6 +1,6 @@
 import PairQL
 import XCore
-import XSendGrid
+import XPostmark
 
 struct SubmitContactForm: Pair {
   struct Input: PairInput {
@@ -21,12 +21,12 @@ struct SubmitContactForm: Pair {
 
 extension SubmitContactForm: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
-    try await Current.sendGridClient.send(SendGrid.Email(
+    await Current.postmarkClient.send(XPostmark.Email(
       to: input |> emailTo,
       from: EmailBuilder.fromAddress(lang: input.lang),
-      replyTo: .init(email: input.email, name: input.name),
+      replyTo: input.email,
       subject: input.lang |> subject,
-      text: input |> emailBody
+      textBody: input |> emailBody
     ))
     await slackInfo(
       """
@@ -51,9 +51,9 @@ private func emailBody(_ input: SubmitContactForm.Input) -> String {
   return lines.joined(separator: "\n")
 }
 
-private func emailTo(_ input: SubmitContactForm.Input) -> SendGrid.EmailAddress {
-  let jared = SendGrid.EmailAddress(email: Env.JARED_CONTACT_FORM_EMAIL)
-  let jason = SendGrid.EmailAddress(email: Env.JASON_CONTACT_FORM_EMAIL)
+private func emailTo(_ input: SubmitContactForm.Input) -> String {
+  let jared = Env.JARED_CONTACT_FORM_EMAIL
+  let jason = Env.JASON_CONTACT_FORM_EMAIL
 
   if input.lang == .es || input.message.lowercased().contains("jason") {
     return jason

@@ -2,7 +2,7 @@ import ConcurrencyExtras
 import FluentSQL
 import Vapor
 import XCTest
-import XSendGrid
+import XPostmark
 
 @testable import App
 @testable import DuetSQL
@@ -12,7 +12,7 @@ class AppTestCase: XCTestCase {
 
   struct Sent {
     var slacks: [FlpSlack.Message] = []
-    var emails: [SendGrid.Email] = []
+    var emails: [XPostmark.Email] = []
   }
 
   static var app: Application!
@@ -46,7 +46,7 @@ class AppTestCase: XCTestCase {
     Current.uuid = { UUID() }
     Current.date = { Date() }
     Current.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }
-    Current.sendGridClient.send = { [self] in sent.emails.append($0) }
+    Current.postmarkClient.send = { [self] in sent.emails.append($0) }
   }
 }
 
