@@ -3,6 +3,7 @@ import Vapor
 import XCore
 import XSlack
 
+// TODO: maybe remove if postmark handles unsubscribes
 enum UnsubscribeRoute: RouteHandler {
   @Sendable static func handler(_ request: Request) async throws -> Response {
     let langString = request.parameters.get("language")

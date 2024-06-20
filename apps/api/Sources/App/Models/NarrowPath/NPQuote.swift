@@ -3,29 +3,27 @@ import Foundation
 struct NPQuote: Codable, Sendable {
   var id: Id
   var lang: Lang
-  var isFriend: Bool
   var quote: String
-  var authorId: Friend.Id? = nil
-  var authorName: String
+  var friendId: Friend.Id? = nil
   var documentId: Document.Id? = nil
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
+  var isFriend: Bool {
+    friendId != nil
+  }
+
   init(
     id: Id = .init(),
     lang: Lang,
-    isFriend: Bool,
     quote: String,
-    authorId: Friend.Id?,
-    authorName: String,
-    documentId: Document.Id?
+    friendId: Friend.Id? = nil,
+    documentId: Document.Id? = nil
   ) {
     self.id = id
     self.lang = lang
-    self.isFriend = isFriend
     self.quote = quote
-    self.authorId = authorId
-    self.authorName = authorName
+    self.friendId = friendId
     self.documentId = documentId
   }
 }

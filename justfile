@@ -30,7 +30,7 @@ bundle-actions:
 # code quality
 
 check: typecheck
-  @just nx-run-many lint,format-check,test,build,compile
+  @CI=true just nx-run-many lint,format-check,test,build,compile
 
 test:
   @just nx-run-many test
