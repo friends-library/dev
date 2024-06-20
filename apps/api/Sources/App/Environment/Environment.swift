@@ -12,6 +12,8 @@ import XStripe
     let deeplClient: DeepL.Client = .live
     var logger = Logger(label: "api.friendslibrary")
     var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
+    let randomNumberGenerator: @Sendable ()
+      -> any RandomNumberGenerator = { SystemRandomNumberGenerator() }
     let slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
     let luluClient: Lulu.Api.Client = .live
     let stripeClient = Stripe.Client()
@@ -26,6 +28,8 @@ import XStripe
     var deeplClient: DeepL.Client = .live
     var logger = Logger(label: "api.friendslibrary")
     var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
+    var randomNumberGenerator: @Sendable ()
+      -> any RandomNumberGenerator = { SystemRandomNumberGenerator() }
     var slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
     var luluClient: Lulu.Api.Client = .live
     var stripeClient = Stripe.Client()
@@ -38,7 +42,3 @@ import XStripe
 // and they are mutated only synchronously during bootstrapping
 // before the app starts serving requests
 nonisolated(unsafe) var Current = Environment()
-
-extension UUID {
-  static let mock = UUID("DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFDEAD")!
-}

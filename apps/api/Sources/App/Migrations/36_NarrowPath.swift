@@ -19,11 +19,9 @@ struct NarrowPath: AsyncMigration {
     try await database.schema(NPQuote.M37.tableName)
       .id()
       .field(NPQuote.M37.lang, lang, .required)
-      .field(NPQuote.M37.isFriend, .bool, .required)
       .field(NPQuote.M37.quote, .string, .required)
-      .field(NPQuote.M37.authorName, .string, .required)
       .field(
-        NPQuote.M37.authorId,
+        NPQuote.M37.friendId,
         .uuid,
         .references(Friend.M11.tableName, .id, onDelete: .setNull)
       )
@@ -70,10 +68,8 @@ extension NPQuote {
     static let tableName = "np_quotes"
     static let id = FieldKey("id")
     static let lang = FieldKey("lang")
-    static let isFriend = FieldKey("is_friend")
     static let quote = FieldKey("quote")
-    static let authorId = FieldKey("author_id")
-    static let authorName = FieldKey("author_name")
+    static let friendId = FieldKey("friend_id")
     static let documentId = FieldKey("document_id")
   }
 }

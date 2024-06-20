@@ -1,6 +1,5 @@
 import PairQL
 import XCore
-import XSendGrid
 
 struct SubscribeToNarrowPath: Pair {
   struct Input: PairInput {

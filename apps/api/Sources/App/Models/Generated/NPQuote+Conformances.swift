@@ -6,10 +6,8 @@ extension NPQuote: ApiModel {
     [
       .id: .id(self),
       .lang: .enum(lang),
-      .isFriend: .bool(isFriend),
       .quote: .string(quote),
-      .authorId: .uuid(authorId),
-      .authorName: .string(authorName),
+      .friendId: .uuid(friendId),
       .documentId: .uuid(documentId),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
@@ -24,24 +22,20 @@ extension NPQuote: Model {
 
   func postgresData(for column: ColumnName) -> DuetSQL.Postgres.Data {
     switch column {
-    case .createdAt:
-      return .date(createdAt)
-    case .updatedAt:
-      return .date(updatedAt)
     case .id:
       return .id(self)
     case .lang:
       return .enum(lang)
-    case .isFriend:
-      return .bool(isFriend)
     case .quote:
       return .string(quote)
-    case .authorId:
-      return .uuid(authorId)
-    case .authorName:
-      return .string(authorName)
+    case .friendId:
+      return .uuid(friendId)
     case .documentId:
       return .uuid(documentId)
+    case .createdAt:
+      return .date(createdAt)
+    case .updatedAt:
+      return .date(updatedAt)
     }
   }
 }
@@ -54,10 +48,8 @@ extension NPQuote {
     case createdAt
     case updatedAt
     case lang
-    case isFriend
     case quote
-    case authorId
-    case authorName
+    case friendId
     case documentId
   }
 }
