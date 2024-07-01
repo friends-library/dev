@@ -207,14 +207,17 @@ function removeMarkdownFormatting(md: string): string {
 }
 
 function sanitizeMdParagraph(paragraph: string): string {
-  return paragraph
-    .split(`\n`)
-    .filter((l) => !l.match(/^<\/?Lead>/))
-    .join(` `)
-    .replace(/<AudioPlayer(.*)\n\/>$/gms, ``)
-    .replace(/ {2,}/g, ` `)
-    .replace(/^- /, ``)
-    .trim();
+  return (
+    paragraph
+      .split(`\n`)
+      .filter((l) => !l.match(/^<\/?Lead>/))
+      .join(` `)
+      // @ts-ignore - TS 5.5 / pnpm / monorepo ???
+      .replace(/<AudioPlayer(.*)\n\/>$/gms, ``)
+      .replace(/ {2,}/g, ` `)
+      .replace(/^- /, ``)
+      .trim()
+  );
 }
 
 function whatQuakersBelievedRecords(): Record<string, string | null>[] {
