@@ -74,12 +74,15 @@ export function getTestCases<T>(
         return { title, expected: prettify(expectedOutput), dpc };
       })
       // isolate (only tests)
-      .reduce((acc, testCase) => {
-        if (testCase.title.includes(`(only)`)) {
-          return [testCase];
-        }
-        return [...acc, testCase];
-      }, [] as Array<{ title: string; expected: string; dpc: DocPrecursor }>)
+      .reduce(
+        (acc, testCase) => {
+          if (testCase.title.includes(`(only)`)) {
+            return [testCase];
+          }
+          return [...acc, testCase];
+        },
+        [] as Array<{ title: string; expected: string; dpc: DocPrecursor }>,
+      )
       .map((testCase) => [
         testCase.title,
         testCase.expected,

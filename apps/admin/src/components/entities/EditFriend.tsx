@@ -263,7 +263,8 @@ export const EditFriend: React.FC<Props> = ({
                 type: `replace_value`,
                 at: `documents[${index}].${path}`,
                 with: value,
-              })}
+              })
+            }
             deleteItem={(subpath) =>
               dispatch({
                 type: `delete_item`,

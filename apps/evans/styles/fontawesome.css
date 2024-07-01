@@ -1,7 +1,8 @@
 @font-face {
   font-family: 'FontAwesome';
   src: url('https://netdna.bootstrapcdn.com/font-awesome/4.5.0/fonts/fontawesome-webfont.eot?v=4.5.0');
-  src: url('https://netdna.bootstrapcdn.com/font-awesome/4.5.0/fonts/fontawesome-webfont.eot?#iefix&v=4.5.0')
+  src:
+    url('https://netdna.bootstrapcdn.com/font-awesome/4.5.0/fonts/fontawesome-webfont.eot?#iefix&v=4.5.0')
       format('embedded-opentype'),
     url('https://netdna.bootstrapcdn.com/font-awesome/4.5.0/fonts/fontawesome-webfont.woff2?v=4.5.0')
       format('woff2'),

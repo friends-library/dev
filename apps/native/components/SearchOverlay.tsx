@@ -65,8 +65,8 @@ const SearchOverlay: React.FC<Props> = ({
               {results.length > 50
                 ? t`First ${50} Results`
                 : results.length === 1
-                ? t`1 Result`
-                : t`${results.length} Results`}
+                  ? t`1 Result`
+                  : t`${results.length} Results`}
               :
             </Sans>
           </View>

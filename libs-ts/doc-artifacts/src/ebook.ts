@@ -20,16 +20,21 @@ export async function writeEbookManifest(
   const zip = new Zip();
   const promises: Promise<any>[] = [];
 
-  Object.keys(manifest).forEach((path) => {
-    const formatted = format(path, manifest[path]);
-    zip.file(path, formatted);
-    promises.push(
-      fs.outputFile(
-        `${SRC_DIR}/${path}`,
-        formatted,
-        path.endsWith(`.png`) ? `binary` : undefined,
-      ),
-    );
+  Object.keys(manifest).forEach(async (path) => {
+    try {
+      const formatted = await format(path, manifest[path]);
+      zip.file(path, formatted);
+      promises.push(
+        fs.outputFile(
+          `${SRC_DIR}/${path}`,
+          formatted,
+          path.endsWith(`.png`) ? `binary` : undefined,
+        ),
+      );
+    } catch (error) {
+      red(`Error formatting source code at ${path}`);
+      process.exit(1);
+    }
   });
 
   const binary = zip.generate({ base64: false, compression: `DEFLATE` });

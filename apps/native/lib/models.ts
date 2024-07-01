@@ -93,7 +93,10 @@ export class AudioPartEntity
   extends EditionEntity
   implements StateKey, TrackId, EditionEntityInterface
 {
-  public constructor(editionId: EditionId, private partIndex: number) {
+  public constructor(
+    editionId: EditionId,
+    private partIndex: number,
+  ) {
     super(editionId);
   }
 
@@ -146,7 +149,10 @@ export class SquareCoverImageEntity
     );
   }
 
-  public constructor(editionId: EditionId, public readonly size: SquareCoverImageSize) {
+  public constructor(
+    editionId: EditionId,
+    public readonly size: SquareCoverImageSize,
+  ) {
     super(editionId);
   }
 
@@ -173,7 +179,10 @@ export class ThreeDCoverImageEntity
     );
   }
 
-  public constructor(editionId: EditionId, public readonly size: ThreeDCoverImageWidth) {
+  public constructor(
+    editionId: EditionId,
+    public readonly size: ThreeDCoverImageWidth,
+  ) {
     super(editionId);
   }
 

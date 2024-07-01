@@ -54,8 +54,8 @@ const ReadFooter: React.FC<Props> = ({
               colorScheme === `white`
                 ? tw.color(`flmaroon`)
                 : colorScheme === `sepia`
-                ? tw.color(`ebookcolorscheme-sepiaaccent`)
-                : tw.color(`ebookcolorscheme-blackaccent`)
+                  ? tw.color(`ebookcolorscheme-sepiaaccent`)
+                  : tw.color(`ebookcolorscheme-blackaccent`)
             }
           />
         </View>

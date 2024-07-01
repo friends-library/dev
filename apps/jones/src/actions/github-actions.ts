@@ -149,10 +149,13 @@ export function checkout(task: Task): ReduxThunk {
         const repoSlug = await gh.getRepoSlug(task.repoId);
         const parentCommit = await gh.getHeadSha(repoSlug, `master`);
         const fileArray = await gh.getAdocFiles(repoSlug, parentCommit);
-        const files = fileArray.reduce((acc, file) => {
-          acc[file.path] = file;
-          return acc;
-        }, {} as Record<string, gh.GitFile>);
+        const files = fileArray.reduce(
+          (acc, file) => {
+            acc[file.path] = file;
+            return acc;
+          },
+          {} as Record<string, gh.GitFile>,
+        );
         const docResponse = await window.fetch(`/.netlify/functions/get-documents`);
         const allDocumentTitles: Record<string, string> = await docResponse.json();
         const documentTitles = Object.entries(allDocumentTitles).reduce<

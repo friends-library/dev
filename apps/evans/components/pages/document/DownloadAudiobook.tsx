@@ -138,8 +138,8 @@ const DownloadLinks: React.FC<Props> = ({
               {downloading
                 ? t`Downloading`
                 : isSingleAudio
-                ? t`Download mp3 File`
-                : t`Download mp3 Files as Zip`}
+                  ? t`Download mp3 File`
+                  : t`Download mp3 Files as Zip`}
               {` `}-{` `}
               <span className="text-flprimary">
                 ({formatFilesize(mp3ZipFilesize[quality])})
