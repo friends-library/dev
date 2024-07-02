@@ -48,11 +48,41 @@ final class SendNarrowPathTests: AppTestCase {
     expect(action).toEqual(.reset(.es))
   }
 
-  let enFriendId1 = NPQuote(id: 1, lang: .en, quote: "en-f-1", friendId: .init())
-  let enFriendId2 = NPQuote(id: 2, lang: .en, quote: "en-f-2", friendId: .init())
-  let enOtherId3 = NPQuote(id: 3, lang: .en, quote: "en-o-3", friendId: nil)
-  let esFriendId4 = NPQuote(id: 4, lang: .es, quote: "es-f-4", friendId: .init())
-  let esOtherId5 = NPQuote(id: 5, lang: .es, quote: "es-o-5", friendId: nil)
+  let enFriendId1 = NPQuote(
+    id: 1,
+    lang: .en,
+    isFriend: true,
+    quote: "en-f-1",
+    friendId: .init()
+  )
+  let enFriendId2 = NPQuote(
+    id: 2,
+    lang: .en,
+    isFriend: true,
+    quote: "en-f-2",
+    friendId: .init()
+  )
+  let enOtherId3 = NPQuote(
+    id: 3,
+    lang: .en,
+    isFriend: false,
+    quote: "en-o-3",
+    friendId: nil
+  )
+  let esFriendId4 = NPQuote(
+    id: 4,
+    lang: .es,
+    isFriend: true,
+    quote: "es-f-4",
+    friendId: .init()
+  )
+  let esOtherId5 = NPQuote(
+    id: 5,
+    lang: .es,
+    isFriend: false,
+    quote: "es-o-5",
+    friendId: nil
+  )
 }
 
 func stableRng(seed: UInt64 = 0) -> any RandomNumberGenerator {

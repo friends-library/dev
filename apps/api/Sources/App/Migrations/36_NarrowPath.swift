@@ -20,6 +20,8 @@ struct NarrowPath: AsyncMigration {
       .id()
       .field(NPQuote.M37.lang, lang, .required)
       .field(NPQuote.M37.quote, .string, .required)
+      .field(NPQuote.M37.isFriend, .bool, .required)
+      .field(NPQuote.M37.authorName, .string)
       .field(
         NPQuote.M37.friendId,
         .uuid,
@@ -68,6 +70,8 @@ extension NPQuote {
     static let tableName = "np_quotes"
     static let id = FieldKey("id")
     static let lang = FieldKey("lang")
+    static let isFriend = FieldKey("is_friend")
+    static let authorName = FieldKey("author_name")
     static let quote = FieldKey("quote")
     static let friendId = FieldKey("friend_id")
     static let documentId = FieldKey("document_id")

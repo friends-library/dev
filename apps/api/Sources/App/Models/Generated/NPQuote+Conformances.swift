@@ -6,6 +6,8 @@ extension NPQuote: ApiModel {
     [
       .id: .id(self),
       .lang: .enum(lang),
+      .isFriend: .bool(isFriend),
+      .authorName: .string(authorName),
       .quote: .string(quote),
       .friendId: .uuid(friendId),
       .documentId: .uuid(documentId),
@@ -26,6 +28,10 @@ extension NPQuote: Model {
       return .id(self)
     case .lang:
       return .enum(lang)
+    case .isFriend:
+      return .bool(isFriend)
+    case .authorName:
+      return .string(authorName)
     case .quote:
       return .string(quote)
     case .friendId:
@@ -45,11 +51,13 @@ extension NPQuote {
 
   enum CodingKeys: String, CodingKey, CaseIterable {
     case id
-    case createdAt
-    case updatedAt
     case lang
+    case isFriend
+    case authorName
     case quote
     case friendId
     case documentId
+    case createdAt
+    case updatedAt
   }
 }
