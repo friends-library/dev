@@ -15,6 +15,15 @@ extension Lang {
       return .init(identifier: "es_ES")
     }
   }
+
+  var website: String {
+    switch self {
+    case .en:
+      return Env.WEBSITE_URL_EN
+    case .es:
+      return Env.WEBSITE_URL_ES
+    }
+  }
 }
 
 enum EditionType: String, Codable, CaseIterable, Sendable {

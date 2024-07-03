@@ -51,36 +51,36 @@ final class SendNarrowPathTests: AppTestCase {
   let enFriendId1 = NPQuote(
     id: 1,
     lang: .en,
-    isFriend: true,
     quote: "en-f-1",
+    isFriend: true,
     friendId: .init()
   )
   let enFriendId2 = NPQuote(
     id: 2,
     lang: .en,
-    isFriend: true,
     quote: "en-f-2",
+    isFriend: true,
     friendId: .init()
   )
   let enOtherId3 = NPQuote(
     id: 3,
     lang: .en,
-    isFriend: false,
     quote: "en-o-3",
+    isFriend: false,
     friendId: nil
   )
   let esFriendId4 = NPQuote(
     id: 4,
     lang: .es,
-    isFriend: true,
     quote: "es-f-4",
+    isFriend: true,
     friendId: .init()
   )
   let esOtherId5 = NPQuote(
     id: 5,
     lang: .es,
-    isFriend: false,
     quote: "es-o-5",
+    isFriend: false,
     friendId: nil
   )
 }

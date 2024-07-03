@@ -23,6 +23,8 @@ class AppTestCase: XCTestCase {
   }
 
   override static func setUp() {
+    setenv("WEBSITE_URL_EN", "https://friendslibrary.com", 1)
+    setenv("WEBSITE_URL_ES", "https://bibliotecadelosamigos.org", 1)
     app = Application(.testing)
     Current = .mock
     Current.uuid = { UUID() }
