@@ -40,7 +40,20 @@ extension NPQuote {
       return false
     } else if quote.isEmpty {
       return false
+    } else if quote.contains("\n\n") {
+      return false
+    } else if quote.hasPrefix("\n") {
+      return false
+    } else if quote.hasSuffix("\n") {
+      return false
+    } else if quote.filter({ $0 == "_" }).count % 2 != 0 {
+      // uneven number of underscores, invalid markdown -> html
+      return false
+    } else if quote.contains("*") {
+      // we are only supporting italics now
+      return false
+    } else {
+      return true
     }
-    return true
   }
 }

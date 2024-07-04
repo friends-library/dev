@@ -4,6 +4,20 @@ import XExpect
 @testable import App
 
 final class NarrowPathEmailTests: AppTestCase {
+  func testQuoteConversions() async throws {
+    var markdown = "foo _bar_\nbaz"
+    var quote = NPQuote(lang: .en, quote: markdown, authorName: "")
+    var email = try await quote.email()
+    expect(email.postmarkModel["text_quote"]).toEqual("foo bar\n\nbaz")
+    expect(email.postmarkModel["html_quote"]).toEqual("<p>foo <em>bar</em></p><p>baz</p>")
+
+    markdown = "foo bar baz"
+    quote = NPQuote(lang: .en, quote: markdown, authorName: "")
+    email = try await quote.email()
+    expect(email.postmarkModel["text_quote"]).toEqual("foo bar baz")
+    expect(email.postmarkModel["html_quote"]).toEqual("<p>foo bar baz</p>")
+  }
+
   func testNonFriend() async throws {
     let quote = NPQuote(lang: .en, quote: "", authorName: "William Law")
     let email = try await quote.email()
