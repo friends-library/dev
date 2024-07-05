@@ -4,6 +4,7 @@ import Vapor
 public extension Configure {
   static func jobs(_ app: Application) throws {
     guard Env.mode == .prod else { return }
+
     // since we're not using redis, only have one core (currently)
     // and are just doing very low frequency tasks, throttle way down
     app.queues.configuration.workerCount = 1

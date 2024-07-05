@@ -1,16 +1,34 @@
 import Foundation
+import XPostmark
 
-struct NPEmail {
+struct NPEmail: Equatable, Sendable {
+  struct Document: Equatable {
+    var htmlName: String
+    var textName: String
+    var url: String
+  }
+
+  var quoteId: NPQuote.Id
   var lang: Lang
   var date: Date
   var htmlQuote: String
   var textQuote: String
-  var document: (name: String, url: String)?
+  var document: Document?
   var authorName: String
   var authorUrl: String?
 }
 
 extension NPEmail {
+  func template(to recipient: String) -> TemplateEmail {
+    .init(
+      to: recipient,
+      from: fromAddress,
+      templateAlias: "narrow-path",
+      templateModel: postmarkModel,
+      messageStream: "narrow-path-\(lang)"
+    )
+  }
+
   var postmarkModel: [String: String] {
     [
       "subject": subject,
@@ -20,18 +38,29 @@ extension NPEmail {
       "text_cite": textCite,
       "date": dateString,
       "website_name": websiteName,
-      "footer_blurb": footerBlurb,
+      "html_footer_blurb": htmlFooterBlurb,
+      "text_footer_blurb": textFooterBlurb,
+      "lang": lang.rawValue,
     ]
+  }
+
+  private var fromAddress: String {
+    switch lang {
+    case .en:
+      return "narrow-path@friendslibrary.com"
+    case .es:
+      return "camino-estrecho@bibliotecadelosamigos.org"
+    }
   }
 
   private var textCite: String {
     switch (authorUrl, document) {
     case (nil, nil):
-      return "— \(authorName)"
-    case (_, .some(let (docName, docUrl))):
-      return "— \(authorName), \(docName)\n\n\(docUrl)"
+      return "- \(authorName)"
+    case (_, .some(let doc)):
+      return "- \(authorName), \(doc.textName)\n\n\(doc.url)"
     case (.some(let friendUrl), nil):
-      return "— \(authorName)\n\n\(friendUrl)"
+      return "- \(authorName)\n\n\(friendUrl)"
     }
   }
 
@@ -49,8 +78,8 @@ extension NPEmail {
     if let authorUrl {
       cite = "<a href=\"\(authorUrl)\">\(cite)</a>"
     }
-    if let (docName, docUrl) = document {
-      cite += "\n<br />\n<a href=\"\(docUrl)\">\(docName)</a>"
+    if let document {
+      cite += "\n<br />\n<a href=\"\(document.url)\">\(document.htmlName)</a>"
     }
     return cite
   }
@@ -64,13 +93,21 @@ extension NPEmail {
     }
   }
 
-  private var footerBlurb: String {
+  private var htmlFooterBlurb: String {
     switch lang {
     case .en:
       return "Find free ebooks, audiobooks and more from early Quakers at <a href=\"https://www.friendslibrary.com\">www.friendslibrary.com</a>."
     case .es:
-      // TODO: real translation, no offense copilot
-      return "Encuentra libros electrónicos, audiolibros y más de los primeros Cuáqueros en <a href=\"https://www.bibliotecadelosamigos.org\">www.bibliotecadelosamigos.org</a>."
+      return "Puedes encontrar libros electrónicos y audiolibros gratuitos de los primeros Cuáqueros en <a href=\"https://www.bibliotecadelosamigos.org\">www.bibliotecadelosamigos.org</a>."
+    }
+  }
+
+  private var textFooterBlurb: String {
+    switch lang {
+    case .en:
+      return "Find free ebooks, audiobooks and more from early Quakers at https://friendslibrary.com"
+    case .es:
+      return "Puedes encontrar libros electrónicos y audiolibros gratuitos de los primeros Cuáqueros en https://bibliotecadelosamigos.org"
     }
   }
 

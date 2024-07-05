@@ -21,7 +21,7 @@ final class NarrowPathEmailTests: AppTestCase {
   func testNonFriend() async throws {
     let quote = NPQuote(lang: .en, quote: "", authorName: "William Law")
     let email = try await quote.email()
-    expect(email.postmarkModel["text_cite"]).toEqual("— William Law")
+    expect(email.postmarkModel["text_cite"]).toEqual("- William Law")
     expect(email.postmarkModel["html_cite"]).toEqual("&mdash;William Law")
   }
 
@@ -30,7 +30,7 @@ final class NarrowPathEmailTests: AppTestCase {
     let quote = NPQuote(lang: .en, quote: "", authorName: nil, friendId: friend.id)
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
-    — Thomas Kite
+    - Thomas Kite
 
     https://friendslibrary.com/friend/thomas-kite
     """)
@@ -41,18 +41,22 @@ final class NarrowPathEmailTests: AppTestCase {
 
   func testFriendWithDoc() async throws {
     let friend = try await friend("George Fox", "george-fox")
-    let doc = try await document("The Journal of George Fox", "journal", friend.id)
+    let doc = try await document(
+      "The Journal of George Fox -- Volume 1", // <-- asciidoc-ish title will be modifiedkj
+      "journal",
+      friend.id
+    )
     let quote = NPQuote(lang: .en, quote: "", friendId: friend.id, documentId: doc.id)
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
-    — George Fox, The Journal of George Fox
+    - George Fox, The Journal of George Fox – Vol. I
 
     https://friendslibrary.com/george-fox/journal
     """)
     expect(email.postmarkModel["html_cite"]).toEqual("""
     <a href="https://friendslibrary.com/friend/george-fox">&mdash;George Fox</a>
     <br />
-    <a href="https://friendslibrary.com/george-fox/journal">The Journal of George Fox</a>
+    <a href="https://friendslibrary.com/george-fox/journal">The Journal of George Fox &#8212; Vol.&#160;I</a>
     """)
   }
 
@@ -68,7 +72,7 @@ final class NarrowPathEmailTests: AppTestCase {
     )
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
-    — Thomas Greer, Letters of Thomas Kendall
+    - Thomas Greer, Letters of Thomas Kendall
 
     https://friendslibrary.com/thomas-kendall/letters
     """)
@@ -91,7 +95,7 @@ final class NarrowPathEmailTests: AppTestCase {
     )
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
-    — Liz Hooton, Piety Promoted
+    - Liz Hooton, Piety Promoted
 
     https://friendslibrary.com/compilations/piety-promoted
     """)
@@ -107,7 +111,7 @@ final class NarrowPathEmailTests: AppTestCase {
     let quote = NPQuote(lang: .es, quote: "", authorName: nil, friendId: friend.id)
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
-    — Ann Branson
+    - Ann Branson
 
     https://bibliotecadelosamigos.org/amiga/ann-branson
     """)
@@ -122,7 +126,7 @@ final class NarrowPathEmailTests: AppTestCase {
     let quote = NPQuote(lang: .en, quote: "", friendId: friend.id, documentId: doc.id)
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
-    — Job Scott, Pearlos de Deepos
+    - Job Scott, Pearlos de Deepos
 
     https://friendslibrary.com/job-scott/pearlo
     """)
@@ -145,7 +149,7 @@ final class NarrowPathEmailTests: AppTestCase {
     )
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
-    — Mary Lamley, Memoirs of John Banks
+    - Mary Lamley, Memoirs of John Banks
 
     https://bibliotecadelosamigos.org/john-banks/memoirs
     """)
@@ -168,7 +172,7 @@ final class NarrowPathEmailTests: AppTestCase {
     )
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
-    — Liz Rodriquez, Piety Promotedo
+    - Liz Rodriquez, Piety Promotedo
 
     https://bibliotecadelosamigos.org/compilaciones/piety-promotedo
     """)

@@ -49,7 +49,7 @@ extension NPQuote {
     } else if quote.filter({ $0 == "_" }).count % 2 != 0 {
       // uneven number of underscores, invalid markdown -> html
       return false
-    } else if quote.contains("*") {
+   } else if quote.contains("*") {
       // we are only supporting italics now
       return false
     } else {

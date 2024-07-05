@@ -1,7 +1,7 @@
 import Foundation
 import XHttp
 
-public struct TemplateEmail {
+public struct TemplateEmail: Equatable {
   public var to: String
   public var from: String
   public var templateAlias: String

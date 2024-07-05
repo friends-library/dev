@@ -1,6 +1,7 @@
 extension NPQuote {
   func email() async throws -> NPEmail {
     var email = NPEmail(
+      quoteId: id,
       lang: lang,
       date: Current.date(),
       htmlQuote: htmlQuote,
@@ -17,8 +18,9 @@ extension NPQuote {
 
     if let documentId {
       let document = try await Document.Joined.find(documentId)
-      email.document = (
-        name: document.title,
+      email.document = .init(
+        htmlName: Asciidoc.htmlShortTitle(document.title),
+        textName: Asciidoc.utf8ShortTitle(document.title),
         url: "\(lang.website)/\(document.urlPath)"
       )
     }

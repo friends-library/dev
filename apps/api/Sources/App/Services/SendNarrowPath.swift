@@ -1,26 +1,80 @@
 import DuetSQL
 import Queues
 import Vapor
+import XPostmark
+
+extension SendNarrowPath {
+  struct Group: Equatable {
+    var recipients: [String]
+    var quote: NPQuote
+  }
+
+  enum Action: Equatable {
+    case reset(Lang)
+    case send([Group])
+  }
+}
 
 public struct SendNarrowPath: AsyncScheduledJob {
   public func run(context: QueueContext) async throws {
+    try await exec()
+  }
+
+  public func exec() async throws {
     let sentQuotes = try await NPSentQuote.query().all()
     let allQuotes = try await NPQuote.query().all()
-    let action = determineAction(sentQuotes: sentQuotes, allQuotes: allQuotes)
+    let subscribers = try await NPSubscriber.query().all()
+    let action = determineAction(
+      sentQuotes: sentQuotes,
+      allQuotes: allQuotes,
+      subscribers: subscribers
+    )
     switch action {
     case .reset(let lang):
       try await NPSentQuote.query()
         .where(.quoteId |=| allQuotes.filter { $0.lang == lang }.map(\.id))
         .delete()
-      return try await run(context: context)
-    case .send(let enFriend, let enMixed, let esFriend, let esMixed):
-      print(enFriend, enMixed, esFriend, esMixed)
+      return try await exec()
+    case .send(let groups):
+      try await send(groups)
     }
+  }
+
+  func send(_ groups: [Group]) async throws {
+    var emails: [TemplateEmail] = []
+    var sentQuotes: Set<NPQuote.Id> = []
+    for group in groups {
+      sentQuotes.insert(group.quote.id)
+      let email = try await group.quote.email()
+      for address in group.recipients {
+        emails.append(email.template(to: address))
+      }
+    }
+
+    if emails.count > 300 {
+      await slackError("SendNarrowPath: Approaching Postmark 10k/mo price tier limit")
+    }
+
+    if emails.count > 450 {
+      await slackError("SendNarrowPath: approaching batch send limit \(emails.count)/500")
+    }
+
+    switch await Current.postmarkClient.sendTemplateEmailBatch(emails) {
+    case .success(let messageErrors):
+      for messageError in messageErrors {
+        await slackError("SendNarrowPath message error: \(messageError)")
+      }
+    case .failure(let batchError):
+      await slackError("SendNarrowPath batch error: \(batchError)")
+    }
+
+    try await NPSentQuote.create(sentQuotes.map { .init(quoteId: $0) })
   }
 
   func determineAction(
     sentQuotes: [NPSentQuote],
-    allQuotes: [NPQuote]
+    allQuotes: [NPQuote],
+    subscribers: [NPSubscriber]
   ) -> SendNarrowPath.Action {
     let unsentQuotes = allQuotes.filter { quote in
       !sentQuotes.contains {
@@ -49,23 +103,26 @@ public struct SendNarrowPath: AsyncScheduledJob {
       esFriendQuote = random(from: spanishUnsentQuotes, mixed: false)
     }
 
-    return .send(
-      enFriend: enFriendQuote.id,
-      enMixed: enMixedQuote.id,
-      esFriend: esFriendQuote.id,
-      esMixed: esMixedQuote.id
-    )
-  }
-}
+    let esFriendSubscribers = subscribers.filter {
+      $0.lang == .es && $0.confirmed && !$0.mixedQuotes
+    }
+    let esMixedSubscribers = subscribers.filter {
+      $0.lang == .es && $0.confirmed && $0.mixedQuotes
+    }
+    let enFriendSubscribers = subscribers.filter {
+      $0.lang == .en && $0.confirmed && !$0.mixedQuotes
+    }
+    let enMixedSubscribers = subscribers.filter {
+      $0.lang == .en && $0.confirmed && $0.mixedQuotes
+    }
 
-extension SendNarrowPath {
-  enum Action: Equatable {
-    case reset(Lang)
-    case send(
-      enFriend: NPQuote.Id,
-      enMixed: NPQuote.Id,
-      esFriend: NPQuote.Id,
-      esMixed: NPQuote.Id
+    return .send(
+      [
+        .init(recipients: enFriendSubscribers.map(\.email), quote: enFriendQuote),
+        .init(recipients: enMixedSubscribers.map(\.email), quote: enMixedQuote),
+        .init(recipients: esFriendSubscribers.map(\.email), quote: esFriendQuote),
+        .init(recipients: esMixedSubscribers.map(\.email), quote: esMixedQuote),
+      ]
     )
   }
 }

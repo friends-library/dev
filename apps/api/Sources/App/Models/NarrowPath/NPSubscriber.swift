@@ -15,7 +15,7 @@ struct NPSubscriber: Codable, Sendable {
 
   init(
     id: Id = .init(),
-    token: UUID = Current.uuid(),
+    token: UUID? = Current.uuid(),
     mixedQuotes: Bool = false,
     email: String,
     lang: Lang
