@@ -34,7 +34,7 @@
     "really-small-events": "^1.1.0",
     "tailwindcss": "3.3.1",
     "tiny-invariant": "1.3.1",
-    "typescript": "5.4.2"
+    "typescript": "5.5.2"
   },
   "devDependencies": {
     "@friends-library/cover-component": "workspace:*",

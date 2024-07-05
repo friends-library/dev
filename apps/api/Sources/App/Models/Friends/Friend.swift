@@ -58,6 +58,19 @@ extension Friend {
     var lang: Lang
     var slug: String
   }
+
+  var urlPath: String {
+    switch (lang, gender) {
+    case (_, .mixed):
+      return slug // compilations
+    case (.en, _):
+      return "friend/\(slug)"
+    case (.es, .male):
+      return "amigo/\(slug)"
+    case (.es, .female):
+      return "amiga/\(slug)"
+    }
+  }
 }
 
 extension Friend.DirectoryPathData: DirectoryPathable {

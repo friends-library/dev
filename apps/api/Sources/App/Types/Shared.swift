@@ -1,8 +1,29 @@
+import Foundation
 import Tagged
 
 enum Lang: String, Codable, CaseIterable, Sendable {
   case en
   case es
+}
+
+extension Lang {
+  var locale: Locale {
+    switch self {
+    case .en:
+      return .init(identifier: "en_US")
+    case .es:
+      return .init(identifier: "es_ES")
+    }
+  }
+
+  var website: String {
+    switch self {
+    case .en:
+      return Env.WEBSITE_URL_EN
+    case .es:
+      return Env.WEBSITE_URL_ES
+    }
+  }
 }
 
 enum EditionType: String, Codable, CaseIterable, Sendable {

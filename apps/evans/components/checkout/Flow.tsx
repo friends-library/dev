@@ -56,8 +56,8 @@ const CheckoutFlow: React.FC<Props> = ({ machine }) => {
             cart.address?.unusable
               ? { case: `shipping_not_possible` }
               : shippingError
-              ? { case: `shipping_address_error`, message: shippingError }
-              : undefined
+                ? { case: `shipping_address_error`, message: shippingError }
+                : undefined
           }
           stored={{ ...cart.address, ...(cart.email ? { email: cart.email } : {}) }}
           onSubmit={(data) => {

@@ -16,7 +16,6 @@
     "epub-check": "^0.3.0",
     "fs-extra": "^9.0.1",
     "node-zip": "^1.1.1",
-    "prettier": "2.8.3",
     "x-chalk": "^1.0.1"
   },
   "devDependencies": {

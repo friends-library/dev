@@ -79,6 +79,7 @@ function ensureRoman(str: string): string {
 
 export function getHtmlFragments(html: string): Record<string, string> {
   const fragments: Record<string, string> = {};
+  // @ts-ignore - TS 5.5 / pnpm / monorepo ???
   const regex = /(?:^|\n)<(div|p|h\d).+?\n<\/\1>/gs;
   let match: RegExpExecArray | null = null;
   while ((match = regex.exec(html))) {

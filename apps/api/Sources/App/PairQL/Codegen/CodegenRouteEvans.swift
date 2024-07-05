@@ -9,6 +9,7 @@ extension CodegenRoute.Evans: CodegenRouteHandler {
     [
       LogJsError.self,
       SubmitContactForm.self,
+      SubscribeToNarrowPath.self,
     ]
   }
 }

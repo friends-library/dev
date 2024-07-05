@@ -1,5 +1,5 @@
 {
-  "root": "x-postmark",
+  "root": "libs-swift/x-postmark",
   "projectType": "library",
   "targets": {
     "build": {

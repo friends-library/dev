@@ -51,11 +51,14 @@ let package = Package(
         "Rainbow",
         "ShellOut",
       ],
+      exclude: [
+        "Models/NarrowPath/NarrowPathEmail.html",
+        "Models/NarrowPath/NarrowPathEmailTemplate.html",
+      ],
       swiftSettings: [
         .unsafeFlags([
           "-Xfrontend", "-warn-concurrency",
           "-Xfrontend", "-enable-actor-data-race-checks",
-          "-Xfrontend", "-warnings-as-errors",
         ]),
         .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),
       ]
@@ -74,6 +77,12 @@ let package = Package(
     ),
   ]
 )
+
+if ProcessInfo.processInfo.environment["CI"] != nil {
+  package.targets[0].swiftSettings?.append(
+    .unsafeFlags(["-Xfrontend", "-warnings-as-errors"])
+  )
+}
 
 // helpers
 

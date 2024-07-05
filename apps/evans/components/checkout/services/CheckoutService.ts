@@ -27,7 +27,10 @@ export default class CheckoutService {
     ccFeeOffset: 0,
   };
 
-  public constructor(public cart: Cart, private api: CheckoutApi) {}
+  public constructor(
+    public cart: Cart,
+    private api: CheckoutApi,
+  ) {}
 
   public brickOrder(stateHistory: string[]): void {
     this.api.brickOrder(stateHistory, this.orderId, this.paymentIntentId);

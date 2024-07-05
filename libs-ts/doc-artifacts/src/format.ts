@@ -2,10 +2,10 @@ import prettier from 'prettier';
 import env from '@friends-library/env';
 import { red } from 'x-chalk';
 
-export default function format(
+export default async function format(
   path: string,
   code: string | Buffer | undefined,
-): string | Buffer {
+): Promise<string | Buffer> {
   if (code === undefined) {
     throw new Error(`Unexpected missing source code at \`${path}\``);
   }
@@ -17,12 +17,12 @@ export default function format(
   try {
     let formatted = code;
     if (path.endsWith(`.html`) || path.endsWith(`.xhtml`)) {
-      formatted = prettier.format(formatted, {
+      formatted = await prettier.format(formatted, {
         parser: `html`,
         htmlWhitespaceSensitivity: `strict`,
       });
     } else if (path.endsWith(`.css`)) {
-      formatted = prettier.format(formatted, { parser: `css` });
+      formatted = await prettier.format(formatted, { parser: `css` });
       formatted = formatted
         .replace(/^};$/gm, `}`)
         .replace(/@page: ([^ ]+)\{/gm, `@page:$1 {`);

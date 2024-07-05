@@ -1,6 +1,7 @@
 .DS_Store
 *.swp
 .next/
+.nx/
 .vscode/
 node_modules/
 audios/

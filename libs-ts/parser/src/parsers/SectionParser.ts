@@ -5,7 +5,10 @@ import Node from '../nodes/AstNode';
 import BlockParser from './BlockParser';
 
 export default class SectionParser {
-  public constructor(private p: Parser, public level: number) {}
+  public constructor(
+    private p: Parser,
+    public level: number,
+  ) {}
 
   public parse(parent: AstNode): AstNode {
     const context = this.p.parseContext();
