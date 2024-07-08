@@ -93,7 +93,7 @@ final class RateLimitedSlackClientTests: AppTestCase {
     Current.date = { Date(timeIntervalSince1970: 86401) }
     await client.send(.init(text: "msg 28", channel: .info))
     await expect(sent.value).toEqual([
-      "Sent `17/27` attempted slacks on `\(dayString)` (info)",
+      "Sent `17/27` attempted slacks on `\(dayString)` (debug)",
       "msg 28 (info)",
     ])
   }

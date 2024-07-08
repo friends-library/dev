@@ -44,7 +44,7 @@ struct RateLimitedSlackClient: Sendable {
     // new day
     case .some(let day) where day != today:
       let msg = "Sent `\(state.numSent)/\(state.numAttempted)` attempted slacks on `\(day)`"
-      await execSend(.info(msg)) // TODO: change to debug after observing a while
+      await execSend(.debug(msg))
       state = .init(currentDay: today)
       await execSend(slack)
 
