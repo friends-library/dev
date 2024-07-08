@@ -16,7 +16,7 @@ public extension Configure {
     app.queues.schedule(VerifyConsistentChapterHeadingsJob()).daily().at(8, 0)
     app.queues.schedule(VerifyEntityValidityJob()).daily().at(8, 15)
     app.queues.schedule(VerifyCloudAssets()).weekly().on(.friday).at(6, 30)
-    app.queues.schedule(SendNarrowPath()).daily().at(6, 30)
+    app.queues.schedule(SendNarrowPath()).daily().at(5, 00)
 
     try app.queues.startScheduledJobs()
   }
