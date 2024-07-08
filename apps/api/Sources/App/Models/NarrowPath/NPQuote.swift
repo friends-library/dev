@@ -33,10 +33,12 @@ struct NPQuote: Codable, Sendable {
 // extensions
 
 extension NPQuote {
-  var isValid: Bool {
+  func isValid() async -> Bool {
     if friendId != nil, !isFriend {
       return false
     } else if !isFriend, authorName == nil {
+      return false
+    } else if friendId != nil, authorName != nil {
       return false
     } else if quote.isEmpty {
       return false
