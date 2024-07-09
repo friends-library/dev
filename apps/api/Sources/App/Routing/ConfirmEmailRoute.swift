@@ -22,6 +22,17 @@ enum ConfirmEmailRoute: RouteHandler {
       return .npRedirect(.confirmEmailFailure, lang)
     }
 
+    // send them a narrow path, so they can ensure it didn't go to spam
+    // and add our sending address to their contact list
+    let quote = try await NPQuote.query()
+      .where(.lang == subscriber.lang)
+      .where(.isFriend == true)
+      .first()
+
+    let email = try await quote.email()
+    let template = email.template(to: subscriber.email)
+    await Current.postmarkClient.sendTemplateEmail(template)
+
     return .npRedirect(.confirmEmailSuccess, lang)
   }
 }

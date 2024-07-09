@@ -4,8 +4,12 @@ import XExpect
 
 @testable import App
 
-final class EvansDomainTests: AppTestCase {
+final class SubscribeToNarrowPathTests: AppTestCase {
   func testEnglishSubscribingHappyPath() async throws {
+    var quote = NPQuote.mock
+    quote.lang = .en
+    try await quote.create()
+
     let token = UUID()
     Current.uuid = { token }
 
@@ -34,10 +38,19 @@ final class EvansDomainTests: AppTestCase {
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
         .toEqual("\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/success")
+
+      expect(sent.templateEmails.count).toEqual(1)
+      expect(sent.templateEmails[0].to).toEqual(email)
+      expect(sent.templateEmails[0].templateAlias).toEqual("narrow-path")
+      expect(sent.templateEmails[0].messageStream).toEqual("narrow-path-en")
     }
   }
 
   func testSpanishSubscribingHappyPath() async throws {
+    var quote = NPQuote.mock
+    quote.lang = .es
+    try await quote.create()
+
     let token = UUID()
     Current.uuid = { token }
 
@@ -66,6 +79,11 @@ final class EvansDomainTests: AppTestCase {
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
         .toEqual("\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-email/exito")
+
+      expect(sent.templateEmails.count).toEqual(1)
+      expect(sent.templateEmails[0].to).toEqual(email)
+      expect(sent.templateEmails[0].templateAlias).toEqual("narrow-path")
+      expect(sent.templateEmails[0].messageStream).toEqual("narrow-path-es")
     }
   }
 

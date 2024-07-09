@@ -13,6 +13,7 @@ class AppTestCase: XCTestCase {
   struct Sent {
     var slacks: [FlpSlack.Message] = []
     var emails: [XPostmark.Email] = []
+    var templateEmails: [XPostmark.TemplateEmail] = []
   }
 
   static var app: Application!
@@ -49,6 +50,11 @@ class AppTestCase: XCTestCase {
     Current.date = { Date() }
     Current.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }
     Current.postmarkClient.send = { [self] in sent.emails.append($0) }
+    Current.postmarkClient.sendTemplateEmail = { [self] in sent.templateEmails.append($0) }
+    Current.postmarkClient.sendTemplateEmailBatch = { [self] in
+      sent.templateEmails.append(contentsOf: $0)
+      return .success([])
+    }
   }
 }
 
