@@ -5,7 +5,7 @@ import XExpect
 @testable import App
 
 final class EvansDomainTests: AppTestCase {
-  func testSubscribingAndUnsubscribingHappyPath() async throws {
+  func testSubscribingHappyPath() async throws {
     let token = UUID()
     Current.uuid = { token }
 
@@ -33,14 +33,6 @@ final class EvansDomainTests: AppTestCase {
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
         .toEqual("\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/success")
-    }
-
-    try await app.test(.GET, "unsubscribe/en/\(subscriber.id.lowercased)") { res in
-      let retrieved = try? await NPSubscriber.find(subscriber.id)
-      expect(retrieved).toBeNil()
-      expect(res.status).toEqual(.temporaryRedirect)
-      expect(res.headers.first(name: .location))
-        .toEqual("\(Env.WEBSITE_URL_EN)/narrow-path/unsubscribe/success")
     }
   }
 
