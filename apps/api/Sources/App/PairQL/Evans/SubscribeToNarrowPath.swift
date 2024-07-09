@@ -23,14 +23,35 @@ extension SubscribeToNarrowPath: Resolver {
       lang: input.lang
     ).create()
 
-    let confirmUrl = "\(Env.SELF_URL)/confirm-email/\(input.lang)/\(token.lowercased)"
-    await Current.postmarkClient.send(.init(
-      to: input.email.rawValue,
-      from: EmailBuilder.fromAddress(lang: input.lang),
-      subject: "Please confirm your email address",
-      htmlBody: "<a href=\"\(confirmUrl)\">Click here</a>"
-    ))
+    switch input.lang {
+    case .en:
+      try await sendEnglishConfirm(to: input.email, confirming: token)
+    case .es:
+      try await sendSpanishConfirm(to: input.email, confirming: token)
+    }
 
     return .success
   }
+}
+
+// helpers
+
+func sendEnglishConfirm(to email: EmailAddress, confirming token: UUID) async throws {
+  let confirmUrl = "\(Env.SELF_URL)/confirm-email/en/\(token.lowercased)"
+  await Current.postmarkClient.send(.init(
+    to: email.rawValue,
+    from: EmailBuilder.fromAddress(lang: .en),
+    subject: "Action Required: Confirm your email",
+    htmlBody: "Thanks for signing up to receive the Narrow Path daily emails! Please confirm your email address by <a href=\"\(confirmUrl)\">clicking here</a>."
+  ))
+}
+
+func sendSpanishConfirm(to email: EmailAddress, confirming token: UUID) async throws {
+  let confirmUrl = "\(Env.SELF_URL)/confirm-email/es/\(token.lowercased)"
+  await Current.postmarkClient.send(.init(
+    to: email.rawValue,
+    from: EmailBuilder.fromAddress(lang: .es),
+    subject: "Action Required: Confirm your email",
+    htmlBody: "Thanks for signing up to receive the Narrow Path daily emails! Please confirm your email address by <a href=\"\(confirmUrl)\">clicking here</a>."
+  ))
 }

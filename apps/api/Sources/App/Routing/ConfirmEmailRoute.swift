@@ -1,12 +1,10 @@
 import DuetSQL
 import Vapor
-import XCore
-import XSlack
 
 enum ConfirmEmailRoute: RouteHandler {
   @Sendable static func handler(_ request: Request) async throws -> Response {
     let langString = request.parameters.get("language")
-    let lang: Lang = langString == "en" ? .en : .es
+    let lang: Lang = langString == "es" ? .es : .en
 
     guard let tokenString = request.parameters.get("token"),
           let token = UUID(uuidString: tokenString),
