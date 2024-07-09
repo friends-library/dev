@@ -18,6 +18,12 @@ extension SendNarrowPath {
 public struct SendNarrowPath: AsyncScheduledJob {
   public func run(context: QueueContext) async throws {
     try await exec()
+
+    // delete unconfirmed subscribers after 3 days
+    try await NPSubscriber.query()
+      .where(.not(.isNull(.pendingConfirmationToken)))
+      .where(.createdAt < Current.date().advanced(by: .days(-3)))
+      .delete()
   }
 
   public func exec() async throws {

@@ -19,6 +19,7 @@ public struct VerifyEntityValidityJob: AsyncScheduledJob {
       try await checkModelsValidity(FriendResidenceDuration.self, "FriendResidenceDuration")
       try await checkModelsValidity(Isbn.self, "Isbn")
       try await checkModelsValidity(RelatedDocument.self, "RelatedDocument")
+      try await checkModelsValidity(NPQuote.self, "NPQuote")
       try await verifyAltLanguageDocumentsPaired()
       await slackDebug("Finished running `VerifyEntityValidityJob`")
     } catch {
@@ -30,7 +31,7 @@ public struct VerifyEntityValidityJob: AsyncScheduledJob {
 // helpers
 
 func checkModelsValidity<M: ApiModel>(_ Model: M.Type, _ name: String) async throws {
-  let models = try await Current.db.query(Model).all()
+  let models = try await Model.query().all()
   for model in models {
     if await model.isValid() == false {
       await slackError("\(name) `\(model.id.uuidString.lowercased())` found in invalid state")

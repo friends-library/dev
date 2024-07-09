@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,7 +11,7 @@
         height: 100%;
         margin: 0;
         -webkit-text-size-adjust: none;
-        font-size: 18px;
+        font-size: 17px;
         padding: 0;
       }
 
@@ -20,7 +20,12 @@
       }
 
       .font-sans {
-        font-family: system-ui, -apple-system, 'Helvetica Neue', Arial, 'Noto Sans',
+        font-family:
+          system-ui,
+          -apple-system,
+          'Helvetica Neue',
+          Arial,
+          'Noto Sans',
           sans-serif;
       }
 
@@ -32,32 +37,48 @@
         text-align: center;
         font-size: 1.4em;
         letter-spacing: 0.1em;
-        padding: 0.5em 1.25em 1em 1.25em;
         border-bottom: 1px solid currentColor;
         margin: 0 1em 1.25em 1em;
       }
 
+      .en .date {
+        padding: 0.5em 1.25em 1em 1.25em;
+      }
+
+      .es .date {
+        padding: 0.5em 0.5em 1em 0.5em;
+      }
+
       @media screen and (min-width: 500px) {
-        .date {
+        .en .date {
           margin: 0 2em 1.25em 2em !important;
         }
       }
 
       @media screen and (min-width: 600px) {
-        .date {
+        .en .date {
           margin: 0 3em 1.25em 3em !important;
+        }
+        .es .date {
+          margin: 0 1.5em 1.25em 1.5em !important;
         }
       }
 
       @media screen and (min-width: 700px) {
-        .date {
+        .en .date {
           margin: 0 4em 1.25em 4em !important;
+        }
+        .es .date {
+          margin: 0 2.5em 1.25em 2.5em !important;
         }
       }
 
       @media screen and (min-width: 800px) {
-        .date {
+        .en .date {
           margin: 0 5em 1.25em 5em !important;
+        }
+        .es .date {
+          margin: 0 4em 1.25em 4em !important;
         }
         .quote {
           text-align: justify;
@@ -65,7 +86,7 @@
       }
 
       .quote {
-        line-height: 1.75em;
+        line-height: 1.65em;
       }
 
       .cite {
@@ -74,6 +95,11 @@
 
       .cite a {
         text-decoration: none;
+      }
+
+      .cite a.doc {
+        font-style: italic;
+        line-height: 1.25em;
       }
 
       .footer {
@@ -100,34 +126,17 @@
       }
     </style>
   </head>
-  <body>
+  <body class="{{ lang }}">
     <div class="content-wrap">
-      <div class="date font-sans">June 25</div>
+      <div class="date font-sans">{{ date }}</div>
       <div class="quote font-serif">
-        <p>
-          I wish you to be serious and weighty in your attention to the concerns of the
-          immortal part. It is no new thing for those who sincerely desire to serve and
-          love the Lord to be tried with wanderings of mind, and the intrusion of
-          unprofitable thoughts, even when sitting in religious meetings. But look
-          steadily to the Lord, and cry unto Him, and in his own time He will send
-          deliverance. Remember, to bear the cross is the way to win the crown. It is
-          worthwhile to suffer many trials here, if they may but be sanctified to us, and
-          work out for us, when the trials of time are over, an exceeding and eternal
-          weight of glory.
-        </p>
-        <p class="cite">
-          <a href="https://www.friendslibrary.com/friend/thomas-kite"
-            >&mdash;Thomas Kite</a
-          >
-        </p>
+        {{{ html_quote }}}
+        <p class="cite">{{{ html_cite }}}</p>
       </div>
     </div>
     <div class="footer">
-      <p class="logo font-serif">[,] Friends Library</p>
-      <p class="footer-blurb font-sans">
-        Find free ebooks, audiobooks and more from early Quakers at
-        <a href="https://www.friendslibrary.com">www.friendslibrary.com</a>.
-      </p>
+      <p class="logo font-serif">[,] {{ website_name }}</p>
+      <p class="footer-blurb font-sans">{{{ html_footer_blurb }}}</p>
       <div class="unsubscribe">{{{ pm:unsubscribe }}}</div>
     </div>
   </body>

@@ -51,10 +51,7 @@ let package = Package(
         "Rainbow",
         "ShellOut",
       ],
-      exclude: [
-        "Models/NarrowPath/NarrowPathEmail.html",
-        "Models/NarrowPath/NarrowPathEmailTemplate.html",
-      ],
+      exclude: ["Models/NarrowPath/NarrowPathEmail.html"],
       swiftSettings: [
         .unsafeFlags([
           "-Xfrontend", "-warn-concurrency",

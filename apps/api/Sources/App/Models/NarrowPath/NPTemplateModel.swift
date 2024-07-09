@@ -79,7 +79,7 @@ extension NPEmail {
       cite = "<a href=\"\(authorUrl)\">\(cite)</a>"
     }
     if let document {
-      cite += "\n<br />\n<a href=\"\(document.url)\">\(document.htmlName)</a>"
+      cite += "\n<br />\n<a class=\"doc\" href=\"\(document.url)\">\(document.htmlName)</a>"
     }
     return cite
   }
