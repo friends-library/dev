@@ -56,7 +56,7 @@ final class NarrowPathEmailTests: AppTestCase {
     expect(email.postmarkModel["html_cite"]).toEqual("""
     <a href="https://friendslibrary.com/friend/george-fox">&mdash;George Fox</a>
     <br />
-    <a href="https://friendslibrary.com/george-fox/journal">The Journal of George Fox &#8212; Vol.&#160;I</a>
+    <a class="doc" href="https://friendslibrary.com/george-fox/journal">The Journal of George Fox &#8212; Vol.&#160;I</a>
     """)
   }
 
@@ -79,7 +79,7 @@ final class NarrowPathEmailTests: AppTestCase {
     expect(email.postmarkModel["html_cite"]).toEqual("""
     &mdash;Thomas Greer
     <br />
-    <a href="https://friendslibrary.com/thomas-kendall/letters">Letters of Thomas Kendall</a>
+    <a class="doc" href="https://friendslibrary.com/thomas-kendall/letters">Letters of Thomas Kendall</a>
     """)
   }
 
@@ -102,7 +102,7 @@ final class NarrowPathEmailTests: AppTestCase {
     expect(email.postmarkModel["html_cite"]).toEqual("""
     &mdash;Liz Hooton
     <br />
-    <a href="https://friendslibrary.com/compilations/piety-promoted">Piety Promoted</a>
+    <a class="doc" href="https://friendslibrary.com/compilations/piety-promoted">Piety Promoted</a>
     """)
   }
 
@@ -133,7 +133,7 @@ final class NarrowPathEmailTests: AppTestCase {
     expect(email.postmarkModel["html_cite"]).toEqual("""
     <a href="https://friendslibrary.com/amigo/job-scott">&mdash;Job Scott</a>
     <br />
-    <a href="https://friendslibrary.com/job-scott/pearlo">Pearlos de Deepos</a>
+    <a class="doc" href="https://friendslibrary.com/job-scott/pearlo">Pearlos de Deepos</a>
     """)
   }
 
@@ -156,7 +156,7 @@ final class NarrowPathEmailTests: AppTestCase {
     expect(email.postmarkModel["html_cite"]).toEqual("""
     &mdash;Mary Lamley
     <br />
-    <a href="https://bibliotecadelosamigos.org/john-banks/memoirs">Memoirs of John Banks</a>
+    <a class="doc" href="https://bibliotecadelosamigos.org/john-banks/memoirs">Memoirs of John Banks</a>
     """)
   }
 
@@ -179,7 +179,7 @@ final class NarrowPathEmailTests: AppTestCase {
     expect(email.postmarkModel["html_cite"]).toEqual("""
     &mdash;Liz Rodriquez
     <br />
-    <a href="https://bibliotecadelosamigos.org/compilaciones/piety-promotedo">Piety Promotedo</a>
+    <a class="doc" href="https://bibliotecadelosamigos.org/compilaciones/piety-promotedo">Piety Promotedo</a>
     """)
   }
 }
