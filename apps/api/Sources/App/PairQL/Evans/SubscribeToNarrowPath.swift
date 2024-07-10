@@ -1,4 +1,6 @@
+import DuetSQL
 import PairQL
+import Vapor
 import XCore
 
 struct SubscribeToNarrowPath: Pair {
@@ -15,6 +17,15 @@ struct SubscribeToNarrowPath: Pair {
 
 extension SubscribeToNarrowPath: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
+    let existing = try? await NPSubscriber.query()
+      .where(.email == input.email.rawValue.lowercased())
+      .where(.lang == input.lang)
+      .first()
+    if existing != nil {
+      await slackError("NP subscribe duplicate email error: `\(input.email)`")
+      throw Abort(.badRequest, reason: "Email already subscribed")
+    }
+
     let token = Current.uuid()
     try await NPSubscriber(
       token: token,
