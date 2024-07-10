@@ -33,6 +33,7 @@ enum ConfirmEmailRoute: RouteHandler {
     let template = email.template(to: subscriber.email)
     await Current.postmarkClient.sendTemplateEmail(template)
 
+    await slackInfo("NP Subscriber confirmed: `\(subscriber.email)`")
     return .npRedirect(.confirmEmailSuccess, lang)
   }
 }

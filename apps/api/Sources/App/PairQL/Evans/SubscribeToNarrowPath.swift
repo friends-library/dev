@@ -19,9 +19,18 @@ extension SubscribeToNarrowPath: Resolver {
     try await NPSubscriber(
       token: token,
       mixedQuotes: input.mixedQuotes,
-      email: input.email.rawValue,
+      email: input.email.rawValue.lowercased(),
       lang: input.lang
     ).create()
+
+    await slackInfo(
+      """
+      *New Narrow Path subscriber:*
+      _Email:_ \(input.email.rawValue.lowercased())
+      _Language:_ \(input.lang == .en ? "English" : "Spanish")
+      _Mixed quotes:_ \(input.mixedQuotes ? "yes" : "no")
+      """
+    )
 
     switch input.lang {
     case .en:
