@@ -39,6 +39,19 @@ final class NarrowPathEmailTests: AppTestCase {
     """)
   }
 
+  func testJasonLinkedToHenderBlog() async throws {
+    let quote = NPQuote(lang: .en, quote: "", authorName: "Jason Henderson", friendId: nil)
+    let email = try await quote.email()
+    expect(email.postmarkModel["text_cite"]).toEqual("""
+    - Jason Henderson
+
+    https://hender.blog
+    """)
+    expect(email.postmarkModel["html_cite"]).toEqual("""
+    <a href="https://hender.blog">&mdash;Jason Henderson</a>
+    """)
+  }
+
   func testFriendWithDoc() async throws {
     let friend = try await friend("George Fox", "george-fox")
     let doc = try await document(
