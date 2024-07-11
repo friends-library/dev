@@ -136,6 +136,7 @@ final class SendNarrowPathTests: AppTestCase {
           "website_name": "Friends Library",
           "html_footer_blurb": "Find free ebooks, audiobooks and more from early Quakers at <a href=\"https://www.friendslibrary.com\">www.friendslibrary.com</a>.",
           "text_footer_blurb": "Find free ebooks, audiobooks and more from early Quakers at https://friendslibrary.com",
+          "unsubscribe_text": "Unsubscribe",
         ],
         messageStream: "narrow-path-en"
       ),
@@ -154,6 +155,7 @@ final class SendNarrowPathTests: AppTestCase {
           "website_name": "Biblioteca de los Amigos",
           "html_footer_blurb": "Puedes encontrar libros electrónicos y audiolibros gratuitos de los primeros Cuáqueros en <a href=\"https://www.bibliotecadelosamigos.org\">www.bibliotecadelosamigos.org</a>.",
           "text_footer_blurb": "Puedes encontrar libros electrónicos y audiolibros gratuitos de los primeros Cuáqueros en https://bibliotecadelosamigos.org",
+          "unsubscribe_text": "Cancelar suscripción",
         ],
         messageStream: "narrow-path-es"
       ),

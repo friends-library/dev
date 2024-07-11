@@ -78,7 +78,7 @@ final class SubscribeToNarrowPathTests: AppTestCase {
       expect(retrieved.pendingConfirmationToken).toBeNil()
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
-        .toEqual("\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-email/exito")
+        .toEqual("\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-correo/exito")
 
       expect(sent.templateEmails.count).toEqual(1)
       expect(sent.templateEmails[0].to).toEqual(email)
@@ -91,7 +91,7 @@ final class SubscribeToNarrowPathTests: AppTestCase {
     try app.test(.GET, "confirm-email/es/ham-sandwich") { res in
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
-        .toEqual("\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-email/fallo")
+        .toEqual("\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-correo/fallo")
     }
   }
 

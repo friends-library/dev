@@ -19,7 +19,6 @@ const HeroBlock: React.FC = () => {
           rel="preload"
           as="image"
           imageSrcSet={`${TreeRootsSm.src} 700w, ${TreeRootsLg.src} 1200w`}
-          // @ts-ignore
           fetchPriority="high"
         />
       </Head>
@@ -75,8 +74,6 @@ const TreeRootsBg: React.FC<{ children: React.ReactNode; className: string }> = 
       alt=""
       decoding="async"
       fetchPriority="high"
-      // @ts-ignore
-      fetchpriority="high"
       role="presentation"
       style={{
         objectFit: `cover`,

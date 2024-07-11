@@ -3,7 +3,7 @@ import { CheckIcon, XIcon } from 'lucide-react';
 import { t } from '@friends-library/locale';
 import NextBgImage from 'next-bg-image';
 import Link from 'next/link';
-import Dual from '../core/Dual';
+import Dual from '@/components/core/Dual';
 import NarrowPathImg from '@/public/images/narrow-path.jpg';
 
 interface Props {
@@ -22,7 +22,12 @@ const ConfirmationPage: React.FC<Props> = ({ result }) => (
   >
     <section className="px-4 sm:px-16 lg:px-20 py-12 sm:py-36 flex items-center justify-center relative overflow-hidden">
       <div className="flex flex-col items-center gap-4">
-        <div className="flex flex-col md:flex-row items-center gap-5">
+        <div
+          className={cx(
+            `flex items-center gap-5`,
+            result === `success` && `flex-col en:md:flex-row es:xl:flex-row`,
+          )}
+        >
           <div
             className={cx(
               `w-12 h-12 rounded-full flex justify-center items-center relative relative`,
@@ -43,12 +48,12 @@ const ConfirmationPage: React.FC<Props> = ({ result }) => (
             {result === `success` ? (
               <Dual.Frag>
                 <>Email confirmed</>
-                <>Email confirmido!</>
+                <>Correo electrónico confirmado</>
               </Dual.Frag>
             ) : (
               <Dual.Frag>
                 <>Whoops!</>
-                <>Email confirmido!</>
+                <>¡Ups!</>
               </Dual.Frag>
             )}
           </h1>
@@ -66,7 +71,15 @@ const ConfirmationPage: React.FC<Props> = ({ result }) => (
                 {` `}
                 to your contacts to make sure you don’t miss any future emails.
               </>
-              <>TODO</>
+              <>
+                Tu primer correo electrónico del Camino Estrecho debería llegar en unos
+                minutos. Tómate un momento para asegurarte de que no esté en tu bandeja de
+                SPAM, y considera la posibilidad de añadir la dirección{` `}
+                <span className="whitespace-nowrap border-b border-dotted border-white/50">
+                  camino-estrecho@bibliotecadelosamigos.org
+                </span>
+                {` `}a tus contactos para no perderte ningún correo en el futuro.
+              </>
             </Dual.Frag>
           ) : (
             <Dual.Frag>
@@ -78,7 +91,15 @@ const ConfirmationPage: React.FC<Props> = ({ result }) => (
                 </Link>
                 .
               </>
-              <>Email confirmido!</>
+              <>
+                Lo sentimos, algo ha salido mal y no hemos podido confirmar tu dirección
+                de correo electrónico. Vuelve a intentarlo y, si el problema persiste,
+                {` `}
+                <Link href={t`/contact`} className="underline">
+                  ponte en contacto con nosotros
+                </Link>
+                .
+              </>
             </Dual.Frag>
           )}
         </p>

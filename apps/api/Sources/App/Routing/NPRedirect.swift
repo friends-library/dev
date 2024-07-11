@@ -34,11 +34,10 @@ extension NPRedirect {
       return "\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/success"
     case (.en, .confirmEmailFailure):
       return "\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/failure"
-    // TODO: real translations
     case (.es, .confirmEmailSuccess):
-      return "\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-email/exito"
+      return "\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-correo/exito"
     case (.es, .confirmEmailFailure):
-      return "\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-email/fallo"
+      return "\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-correo/fallo"
     }
   }
 }

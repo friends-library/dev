@@ -71,7 +71,7 @@ func sendSpanishConfirm(to email: EmailAddress, confirming token: UUID) async th
   await Current.postmarkClient.send(.init(
     to: email.rawValue,
     from: EmailBuilder.fromAddress(lang: .es),
-    subject: "Action Required: Confirm your email",
-    htmlBody: "Thanks for signing up to receive the Narrow Path daily emails! Please confirm your email address by <a href=\"\(confirmUrl)\">clicking here</a>."
+    subject: "Acción requerida: Confirma tu correo electrónico",
+    htmlBody: "Gracias por registrarte para recibir los correos electrónicos del Camino Estrecho. Confirma tu dirección de correo electrónico haciendo <a href=\"\(confirmUrl)\">clic aquí</a>."
   ))
 }

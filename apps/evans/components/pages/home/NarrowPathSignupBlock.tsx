@@ -6,6 +6,7 @@ import EvansClient from '@friends-library/pairql/evans';
 import NextBgImage from 'next-bg-image';
 import { LANG } from '@/lib/env';
 import Heading from '@/components/core/Heading';
+import Dual from '@/components/core/Dual';
 import NarrowPathImg from '@/public/images/narrow-path.jpg';
 
 type Status = `idle` | `loading` | `success` | `error`;
@@ -27,12 +28,23 @@ const NarrowPathSignupBlock: React.FC = () => {
       ]}
     >
       <Heading darkBg className="text-white">
-        The Narrow Path
+        <Dual.Frag>
+          <>The Narrow Path</>
+          <>El Camino Estrecho</>
+        </Dual.Frag>
       </Heading>
       <div className="max-w-[500px]">
         <p className="body-text text-white text-xl leading-8 text-center mt-4 mb-12 sm:mb-20">
-          Enter your email address to receive an edifying daily quote from an early Quaker
-          delivered right to your inbox.
+          <Dual.Frag>
+            <>
+              Enter your email address to receive an edifying daily quote from an early
+              Quaker delivered right to your inbox.
+            </>
+            <>
+              Introduce tu dirección de correo electrónico para recibir diariamente una
+              cita edificante de uno de los primeros Cuáqueros.
+            </>
+          </Dual.Frag>
         </p>
         <div className="relative w-full flex flex-col items-center">
           <Messages status={status} />
@@ -57,8 +69,8 @@ const NarrowPathSignupBlock: React.FC = () => {
           >
             <div className="flex items-center shadow-2xl">
               <input
-                className="text-2xl font-[Arial] antialiased transition-colors px-6 py-4 rounded-l-lg [@media(max-width:420px)]:w-[280px] w-[320px] sm:w-[400px] outline-none bg-white/70 focus:bg-white/100 placeholder-slate-100/50 focus:placeholder-slate-300"
-                placeholder="Your email address"
+                className="text-2xl font-[Arial] antialiased transition-colors px-6 py-4 rounded-l-lg [@media(max-width:420px)]:w-[280px] w-[320px] sm:w-[400px] es:sm:w-[460px] outline-none bg-white/70 focus:bg-white/100 placeholder-slate-100/50 focus:placeholder-slate-300"
+                placeholder={LANG === `en` ? `Your email address` : `Correo electrónico`}
                 value={emailAddress}
                 onChange={(e) => setEmailAddress(e.target.value)}
                 required
@@ -110,7 +122,13 @@ const NarrowPathSignupBlock: React.FC = () => {
                   mixedQuotes && `!text-white`,
                 )}
               >
-                Include occasional quotes from like-minded non-Quakers
+                <Dual.Frag>
+                  <>Include occasional quotes from like-minded non-Quakers</>
+                  <>
+                    Incluye citas ocasionales de autores similares a los primeros
+                    Cuáqueros
+                  </>
+                </Dual.Frag>
               </span>
             </div>
           </form>
@@ -133,7 +151,10 @@ const Messages: React.FC<{ status: Status }> = ({ status }) => (
       )}
     >
       <span className="text-lg sm:text-xl text-red-800 leading-3 sm:leading-4">
-        Sorry, something went wrong. Please try again.
+        <Dual.Frag>
+          <>Sorry, something went wrong. Please try again.</>
+          <>Lo sentimos, algo ha salido mal. Por favor, inténtalo de nuevo.</>
+        </Dual.Frag>
       </span>
     </div>
     <div
@@ -145,7 +166,10 @@ const Messages: React.FC<{ status: Status }> = ({ status }) => (
       )}
     >
       <span className="text-lg sm:text-xl text-green-800 leading-3 sm:leading-4">
-        Check your email for a confirmation link!
+        <Dual.Frag>
+          <>Check your email for a confirmation link!</>
+          <>¡Has recibido un enlace de confirmación, revisa tu correo!</>
+        </Dual.Frag>
       </span>
     </div>
   </>

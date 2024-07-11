@@ -1,3 +1,4 @@
+import plugin from 'tailwindcss/plugin';
 import type { Config } from 'tailwindcss';
 import type { Lang } from '@friends-library/types';
 import * as c from './color';
@@ -74,7 +75,12 @@ export default function tailwindPreset(lang: Lang = `en`): Omit<Config, 'content
       `visited`,
       `disabled`,
     ],
-    plugins: [],
+    plugins: [
+      plugin(({ addVariant }) => {
+        addVariant(`en`, `html[lang=en] &`);
+        addVariant(`es`, `html[lang=es] &`);
+      }),
+    ],
   };
 }
 
