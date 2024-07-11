@@ -25,6 +25,10 @@ extension NPQuote {
       )
     }
 
+    if authorName == "Jason Henderson" {
+      email.authorUrl = "https://hender.blog"
+    }
+
     return email
   }
 

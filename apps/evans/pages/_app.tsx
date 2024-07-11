@@ -8,7 +8,7 @@ import Footer from '@/components/chrome/Footer';
 const App: React.FC<AppProps> = ({ Component, pageProps }) => (
   <Chrome>
     <div className="pt-[70px] min-h-screen flex flex-col">
-      <main>
+      <main className="grow flex flex-col">
         <Component {...pageProps} />
       </main>
       <Footer />

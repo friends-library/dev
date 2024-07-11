@@ -52,6 +52,14 @@ const nextConfig = {
           source: `/contactanos`,
           destination: `/contact`,
         },
+        {
+          source: `/camino-estrecho/confirmar-correo/exito`,
+          destination: `/narrow-path/confirm-email/success`,
+        },
+        {
+          source: `/camino-estrecho/confirmar-correo/fallo`,
+          destination: `/narrow-path/confirm-email/failure`,
+        },
       ],
     };
   },

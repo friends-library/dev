@@ -11,6 +11,7 @@ import WhoWereTheQuakersBlock from '@/components/pages/home/WhoWereTheQuakersBlo
 import FormatsBlock from '@/components/pages/home/FormatsBlock';
 import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
 import NewsFeedBlock from '@/components/pages/home/news-feed/NewsFeedBlock';
+import NarrowPathSignupBlock from '@/components/pages/home/NarrowPathSignupBlock';
 import { LANG } from '@/lib/env';
 import Seo, { pageMetaDesc } from '@/components/core/Seo';
 import * as custom from '@/lib/ssg/custom-code';
@@ -53,6 +54,7 @@ const Home: React.FC<Props> = ({ featuredBooks, newsFeedItems, numTotalBooks }) 
     <NewsFeedBlock items={newsFeedItems} />
     <FeaturedBooksBlock books={featuredBooks} />
     <GettingStartedBlock />
+    <NarrowPathSignupBlock />
     <WhoWereTheQuakersBlock />
     <FormatsBlock />
     <ExploreBooksBlock numTotalBooks={numTotalBooks} />

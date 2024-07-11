@@ -124,6 +124,12 @@
       .unsubscribe {
         margin-top: 0.25em;
       }
+
+      .unsubscribe a {
+        color: #a8aaaf;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 12px;
+      }
     </style>
   </head>
   <body class="{{ lang }}">
@@ -137,7 +143,9 @@
     <div class="footer">
       <p class="logo font-serif">[,] {{ website_name }}</p>
       <p class="footer-blurb font-sans">{{{ html_footer_blurb }}}</p>
-      <div class="unsubscribe">{{{ pm:unsubscribe }}}</div>
+      <div class="unsubscribe">
+        <a href="{{{ pm:unsubscribe }}}" target="_blank">{{ unsubscribe_text }}</a>
+      </div>
     </div>
   </body>
 </html>

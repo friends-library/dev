@@ -41,6 +41,7 @@ extension NPEmail {
       "html_footer_blurb": htmlFooterBlurb,
       "text_footer_blurb": textFooterBlurb,
       "lang": lang.rawValue,
+      "unsubscribe_text": unsubscribe,
     ]
   }
 
@@ -120,5 +121,14 @@ extension NPEmail {
       formatter.setLocalizedDateFormatFromTemplate("MMMM d")
     }
     return formatter.string(from: date)
+  }
+
+  private var unsubscribe: String {
+    switch lang {
+    case .en:
+      return "Unsubscribe"
+    case .es:
+      return "Cancelar suscripción"
+    }
   }
 }

@@ -1,4 +1,6 @@
+import DuetSQL
 import PairQL
+import Vapor
 import XCore
 
 struct SubscribeToNarrowPath: Pair {
@@ -15,22 +17,61 @@ struct SubscribeToNarrowPath: Pair {
 
 extension SubscribeToNarrowPath: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
+    let existing = try? await NPSubscriber.query()
+      .where(.email == input.email.rawValue.lowercased())
+      .where(.lang == input.lang)
+      .first()
+    if existing != nil {
+      await slackError("NP subscribe duplicate email error: `\(input.email)`")
+      throw Abort(.badRequest, reason: "Email already subscribed")
+    }
+
     let token = Current.uuid()
     try await NPSubscriber(
       token: token,
       mixedQuotes: input.mixedQuotes,
-      email: input.email.rawValue,
+      email: input.email.rawValue.lowercased(),
       lang: input.lang
     ).create()
 
-    let confirmUrl = "\(Env.SELF_URL)/confirm-email/\(input.lang)/\(token.lowercased)"
-    await Current.postmarkClient.send(.init(
-      to: input.email.rawValue,
-      from: EmailBuilder.fromAddress(lang: input.lang),
-      subject: "Please confirm your email address",
-      htmlBody: "<a href=\"\(confirmUrl)\">Click here</a>"
-    ))
+    await slackInfo(
+      """
+      *New Narrow Path subscriber:*
+      _Email:_ \(input.email.rawValue.lowercased())
+      _Language:_ \(input.lang == .en ? "English" : "Spanish")
+      _Mixed quotes:_ \(input.mixedQuotes ? "yes" : "no")
+      """
+    )
+
+    switch input.lang {
+    case .en:
+      try await sendEnglishConfirm(to: input.email, confirming: token)
+    case .es:
+      try await sendSpanishConfirm(to: input.email, confirming: token)
+    }
 
     return .success
   }
+}
+
+// helpers
+
+func sendEnglishConfirm(to email: EmailAddress, confirming token: UUID) async throws {
+  let confirmUrl = "\(Env.SELF_URL)/confirm-email/en/\(token.lowercased)"
+  await Current.postmarkClient.send(.init(
+    to: email.rawValue,
+    from: EmailBuilder.fromAddress(lang: .en),
+    subject: "Action Required: Confirm your email",
+    htmlBody: "Thanks for signing up to receive the Narrow Path daily emails! Please confirm your email address by <a href=\"\(confirmUrl)\">clicking here</a>."
+  ))
+}
+
+func sendSpanishConfirm(to email: EmailAddress, confirming token: UUID) async throws {
+  let confirmUrl = "\(Env.SELF_URL)/confirm-email/es/\(token.lowercased)"
+  await Current.postmarkClient.send(.init(
+    to: email.rawValue,
+    from: EmailBuilder.fromAddress(lang: .es),
+    subject: "Acción requerida: Confirma tu correo electrónico",
+    htmlBody: "Gracias por registrarte para recibir los correos electrónicos del Camino Estrecho. Confirma tu dirección de correo electrónico haciendo <a href=\"\(confirmUrl)\">clic aquí</a>."
+  ))
 }

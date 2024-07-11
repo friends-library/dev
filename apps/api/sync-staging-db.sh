@@ -21,6 +21,7 @@ pg_dump \
   --exclude-table-data free_order_requests \
   --exclude-table-data tokens \
   --exclude-table-data token_scopes \
+  --exclude-table-data np_subscribers \
   > ~/prod-to-staging.sql \
   && echo "✅ Dumped prod db for staging overwrite..." &&
 pm2 stop /^staging_/ > /dev/null \

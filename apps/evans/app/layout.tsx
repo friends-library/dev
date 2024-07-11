@@ -14,7 +14,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <body>
       <Chrome>
         <div className="pt-[70px] min-h-screen flex flex-col">
-          <main>{children}</main>
+          <main className="grow flex flex-col">{children}</main>
           <Footer />
         </div>
       </Chrome>
