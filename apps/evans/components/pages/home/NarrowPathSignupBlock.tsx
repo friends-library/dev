@@ -6,7 +6,7 @@ import EvansClient from '@friends-library/pairql/evans';
 import NextBgImage from 'next-bg-image';
 import { LANG } from '@/lib/env';
 import Heading from '@/components/core/Heading';
-import BgImage from '@/public/images/narrow-path.jpg';
+import NarrowPathImg from '@/public/images/narrow-path.jpg';
 
 type Status = `idle` | `loading` | `success` | `error`;
 
@@ -18,10 +18,13 @@ const NarrowPathSignupBlock: React.FC = () => {
   return (
     <NextBgImage
       lazyLoad
-      minImageWidth={1280}
+      minImageWidth={2600}
       position="0 0"
       className="px-10 sm:px-16 py-20 sm:py-28 md:px-32 flex flex-col items-center justify-center"
-      src={[`radial-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.855) 55%)`, BgImage]}
+      src={[
+        `radial-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.855) 55%)`,
+        { ...NarrowPathImg, optimize: false },
+      ]}
     >
       <Heading darkBg className="text-white">
         The Narrow Path

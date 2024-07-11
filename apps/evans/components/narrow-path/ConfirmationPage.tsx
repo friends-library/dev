@@ -4,7 +4,7 @@ import { t } from '@friends-library/locale';
 import NextBgImage from 'next-bg-image';
 import Link from 'next/link';
 import Dual from '../core/Dual';
-import BgImage from '@/public/images/narrow-path.jpg';
+import NarrowPathImg from '@/public/images/narrow-path.jpg';
 
 interface Props {
   result: 'success' | 'failure';
@@ -13,10 +13,12 @@ interface Props {
 const ConfirmationPage: React.FC<Props> = ({ result }) => (
   <NextBgImage
     eager
-    minImageWidth={1920}
-    position="0px 0px"
+    minImageWidth={2600}
     className="px-4 sm:px-12 py-20 sm:py-28 md:px-24 flex flex-col items-center justify-center grow"
-    src={[`radial-gradient(rgba(0, 0, 0, 0.525), rgba(0, 0, 0, 0.885) 55%)`, BgImage]}
+    src={[
+      `radial-gradient(rgba(0, 0, 0, 0.525), rgba(0, 0, 0, 0.885) 55%)`,
+      { ...NarrowPathImg, optimize: false },
+    ]}
   >
     <section className="px-4 sm:px-16 lg:px-20 py-12 sm:py-36 flex items-center justify-center relative overflow-hidden">
       <div className="flex flex-col items-center gap-4">

@@ -511,8 +511,8 @@ importers:
         specifier: 14.1.4
         version: 14.1.4(@babel/core@7.24.4)(@opentelemetry/api@1.7.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       next-bg-image:
-        specifier: 0.3.0-beta1
-        version: 0.3.0-beta1(next@14.1.4(@opentelemetry/api@1.7.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: 0.4.0-alpha.1
+        version: 0.4.0-alpha.1(next@14.1.4(@opentelemetry/api@1.7.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       postcss:
         specifier: 8.4.21
         version: 8.4.21
@@ -11278,8 +11278,8 @@ packages:
     resolution: {integrity: sha512-RAQ51glVTzTGNmEXbmfMH1L27JQ2UItTrt35Ba8Uh/qIGaHBjJBxqk36/5qHRLFIGJiyeC6mFYKTi7iVgWbgdw==}
     engines: {node: ^14.16.0 || >=16.0.0}
 
-  next-bg-image@0.3.0-beta1:
-    resolution: {integrity: sha512-TwYtgsFTWEEKJJbLdSiLKr4W8uNdAKJ+BSjBGCtCHXBZ+qO3Ra1rDBlJa+GC74hwh+FbOQq5Bk/Vb9f8vVwG9w==}
+  next-bg-image@0.4.0-alpha.1:
+    resolution: {integrity: sha512-A7IDu7hAsQ2QSmO90LyT76ErcFBvJK6QfnP18pM1VdTCeqpohO2fZP0KvQ2PDWVYauI9zXYcEomIL4NDD1g6VA==}
     peerDependencies:
       next: '>=13.0.0'
       react: '>=18.0.0'
@@ -29180,7 +29180,7 @@ snapshots:
       p-wait-for: 4.1.0
       qs: 6.11.0
 
-  next-bg-image@0.3.0-beta1(next@14.1.4(@opentelemetry/api@1.7.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  next-bg-image@0.4.0-alpha.1(next@14.1.4(@opentelemetry/api@1.7.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       next: 14.1.4(@babel/core@7.24.4)(@opentelemetry/api@1.7.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react: 18.2.0
