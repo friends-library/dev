@@ -2,7 +2,7 @@
   command = "pnpm run dev"
 
 [build]
-  command = "pnpm run build"
+  command = "mv ../../libs-ts/adoc-lint/src/character-name{.browser,}.ts && pnpm run build"
   publish = "dist/"
   functions = "src/functions"
 
