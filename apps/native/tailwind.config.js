@@ -6,6 +6,9 @@ const { tailwindPreset } = require(`@friends-library/theme`);
 // in the app, so we can just manually switch on languages then
 const preset = { ...tailwindPreset(`en`) };
 
+// required because twrnc throws on plugin.addVariant, causing crash
+preset.plugins = [];
+
 preset.theme.screens = {
   // @see https://www.ios-resolution.com/
   tween: `477px`, // 1px larger than largest iPhone
