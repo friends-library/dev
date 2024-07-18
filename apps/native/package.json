@@ -37,7 +37,7 @@
     "react-native-gesture-handler": "2.9.0",
     "react-native-gradle-plugin": "0.71.15",
     "react-native-home-indicator": "0.2.7",
-    "react-native-orientation-locker": "1.5.0",
+    "react-native-orientation-locker": "1.7.0",
     "react-native-popover-view": "5.1.7",
     "react-native-reanimated": "3.0.0",
     "react-native-safe-area-context": "3.4.1",
