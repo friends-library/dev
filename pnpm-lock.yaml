@@ -871,8 +871,8 @@ importers:
         specifier: 0.2.7
         version: 0.2.7(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))
       react-native-orientation-locker:
-        specifier: 1.5.0
-        version: 1.5.0(react-native-windows@0.72.20(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))(react@18.2.0))(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))(react@18.2.0)
+        specifier: 1.7.0
+        version: 1.7.0(react-native-windows@0.72.20(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))(react@18.2.0))(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))(react@18.2.0)
       react-native-popover-view:
         specifier: 5.1.7
         version: 5.1.7
@@ -12501,12 +12501,15 @@ packages:
     peerDependencies:
       react-native: '>=0.42.0'
 
-  react-native-orientation-locker@1.5.0:
-    resolution: {integrity: sha512-4XOCGmNN4BXg5JUFjUuXpsfhPJmbA3LkQilJO1ed+6vL97teTdG2w5IEevKiqL9/hPjeWE8YYtX/YW+yp53hkg==}
+  react-native-orientation-locker@1.7.0:
+    resolution: {integrity: sha512-2PhG4UyRJktb3KCTISStuu8/q+Q3q3oPesGg9DhdY0b6Cu/ZzxkCvkbJte2TPWRYkS0JpClimvqVaonulGvDrA==}
     peerDependencies:
       react: '>=16.13.1'
       react-native: '>=0.63.2'
       react-native-windows: '>=0.63.3'
+    peerDependenciesMeta:
+      react-native-windows:
+        optional: true
 
   react-native-popover-view@5.1.7:
     resolution: {integrity: sha512-Xa+zKYp9x62UNezT8o9SnqQaBQEHdGwGHZnFnA2bsXLneVRvvlBopNwMNj+p7N65qnPf3mmzWj+57ThtM1qFuw==}
@@ -14903,12 +14906,14 @@ snapshots:
   '@azure/abort-controller@1.1.0':
     dependencies:
       tslib: 2.5.0
+    optional: true
 
   '@azure/core-auth@1.5.0':
     dependencies:
       '@azure/abort-controller': 1.1.0
       '@azure/core-util': 1.2.0
       tslib: 2.5.0
+    optional: true
 
   '@azure/core-rest-pipeline@1.10.1':
     dependencies:
@@ -14924,19 +14929,23 @@ snapshots:
       uuid: 8.3.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   '@azure/core-tracing@1.0.1':
     dependencies:
       tslib: 2.5.0
+    optional: true
 
   '@azure/core-util@1.2.0':
     dependencies:
       '@azure/abort-controller': 1.1.0
       tslib: 2.5.0
+    optional: true
 
   '@azure/logger@1.0.4':
     dependencies:
       tslib: 2.5.0
+    optional: true
 
   '@azure/opentelemetry-instrumentation-azure-sdk@1.0.0-beta.5':
     dependencies:
@@ -14948,6 +14957,7 @@ snapshots:
       tslib: 2.5.0
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   '@babel/code-frame@7.18.6':
     dependencies:
@@ -18538,7 +18548,8 @@ snapshots:
       '@types/react': 18.2.75
       react: 18.2.0
 
-  '@microsoft/applicationinsights-web-snippet@1.0.1': {}
+  '@microsoft/applicationinsights-web-snippet@1.0.1':
+    optional: true
 
   '@mischnic/json-sourcemap@0.1.0':
     dependencies:
@@ -19280,12 +19291,14 @@ snapshots:
     dependencies:
       '@octokit/openapi-types': 16.0.0
 
-  '@opentelemetry/api@1.7.0': {}
+  '@opentelemetry/api@1.7.0':
+    optional: true
 
   '@opentelemetry/core@1.18.1(@opentelemetry/api@1.7.0)':
     dependencies:
       '@opentelemetry/api': 1.7.0
       '@opentelemetry/semantic-conventions': 1.18.1
+    optional: true
 
   '@opentelemetry/instrumentation@0.41.2(@opentelemetry/api@1.7.0)':
     dependencies:
@@ -19297,12 +19310,14 @@ snapshots:
       shimmer: 1.2.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   '@opentelemetry/resources@1.18.1(@opentelemetry/api@1.7.0)':
     dependencies:
       '@opentelemetry/api': 1.7.0
       '@opentelemetry/core': 1.18.1(@opentelemetry/api@1.7.0)
       '@opentelemetry/semantic-conventions': 1.18.1
+    optional: true
 
   '@opentelemetry/sdk-trace-base@1.18.1(@opentelemetry/api@1.7.0)':
     dependencies:
@@ -19310,8 +19325,10 @@ snapshots:
       '@opentelemetry/core': 1.18.1(@opentelemetry/api@1.7.0)
       '@opentelemetry/resources': 1.18.1(@opentelemetry/api@1.7.0)
       '@opentelemetry/semantic-conventions': 1.18.1
+    optional: true
 
-  '@opentelemetry/semantic-conventions@1.18.1': {}
+  '@opentelemetry/semantic-conventions@1.18.1':
+    optional: true
 
   '@parcel/bundler-default@2.8.3(@parcel/core@2.8.3)':
     dependencies:
@@ -19899,6 +19916,7 @@ snapshots:
       prompts: 2.4.2
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   '@react-native-community/cli-config@10.1.1':
     dependencies:
@@ -19921,6 +19939,7 @@ snapshots:
       joi: 17.8.3
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   '@react-native-community/cli-debugger-ui@10.0.0':
     dependencies:
@@ -19933,6 +19952,7 @@ snapshots:
       serve-static: 1.15.0
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   '@react-native-community/cli-doctor@10.2.5':
     dependencies:
@@ -19977,6 +19997,7 @@ snapshots:
       yaml: 2.3.4
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   '@react-native-community/cli-hermes@10.2.0':
     dependencies:
@@ -19997,6 +20018,7 @@ snapshots:
       ip: 1.1.8
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   '@react-native-community/cli-platform-android@10.2.0':
     dependencies:
@@ -20017,6 +20039,7 @@ snapshots:
       logkitty: 0.7.1
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   '@react-native-community/cli-platform-ios@10.2.0':
     dependencies:
@@ -20061,6 +20084,7 @@ snapshots:
       ora: 5.4.1
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   '@react-native-community/cli-plugin-metro@10.2.3(@babel/core@7.20.12)':
     dependencies:
@@ -20101,6 +20125,7 @@ snapshots:
       - encoding
       - supports-color
       - utf-8-validate
+    optional: true
 
   '@react-native-community/cli-server-api@10.1.1':
     dependencies:
@@ -20135,6 +20160,7 @@ snapshots:
       - encoding
       - supports-color
       - utf-8-validate
+    optional: true
 
   '@react-native-community/cli-tools@10.1.1':
     dependencies:
@@ -20163,6 +20189,7 @@ snapshots:
       shell-quote: 1.8.0
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   '@react-native-community/cli-types@10.0.0':
     dependencies:
@@ -20171,6 +20198,7 @@ snapshots:
   '@react-native-community/cli-types@11.3.7':
     dependencies:
       joi: 17.8.3
+    optional: true
 
   '@react-native-community/cli@10.2.4(@babel/core@7.20.12)':
     dependencies:
@@ -20223,6 +20251,7 @@ snapshots:
       - encoding
       - supports-color
       - utf-8-validate
+    optional: true
 
   '@react-native-community/masked-view@0.1.11(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))(react@18.2.0)':
     dependencies:
@@ -20260,6 +20289,7 @@ snapshots:
     transitivePeerDependencies:
       - applicationinsights-native-metrics
       - supports-color
+    optional: true
 
   '@react-native-windows/codegen@0.72.2(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))':
     dependencies:
@@ -20270,15 +20300,18 @@ snapshots:
       react-native: 0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0)
       source-map-support: 0.5.21
       yargs: 16.2.0
+    optional: true
 
   '@react-native-windows/find-repo-root@0.72.0':
     dependencies:
       '@react-native-windows/fs': 0.72.0
       find-up: 4.1.0
+    optional: true
 
   '@react-native-windows/fs@0.72.0':
     dependencies:
       graceful-fs: 4.2.11
+    optional: true
 
   '@react-native-windows/package-utils@0.72.0':
     dependencies:
@@ -20286,6 +20319,7 @@ snapshots:
       '@react-native-windows/fs': 0.72.0
       get-monorepo-packages: 1.2.0
       lodash: 4.17.21
+    optional: true
 
   '@react-native-windows/telemetry@0.72.1':
     dependencies:
@@ -20300,8 +20334,10 @@ snapshots:
     transitivePeerDependencies:
       - applicationinsights-native-metrics
       - supports-color
+    optional: true
 
-  '@react-native/assets-registry@0.72.0': {}
+  '@react-native/assets-registry@0.72.0':
+    optional: true
 
   '@react-native/assets@1.0.0': {}
 
@@ -20314,14 +20350,18 @@ snapshots:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
-  '@react-native/gradle-plugin@0.72.11': {}
+  '@react-native/gradle-plugin@0.72.11':
+    optional: true
 
-  '@react-native/js-polyfills@0.72.1': {}
+  '@react-native/js-polyfills@0.72.1':
+    optional: true
 
   '@react-native/normalize-color@2.1.0': {}
 
-  '@react-native/normalize-colors@0.72.0': {}
+  '@react-native/normalize-colors@0.72.0':
+    optional: true
 
   '@react-native/polyfills@2.0.0': {}
 
@@ -20330,6 +20370,7 @@ snapshots:
       invariant: 2.2.4
       nullthrows: 1.1.1
       react-native: 0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0)
+    optional: true
 
   '@react-navigation/core@5.16.1(react@18.2.0)':
     dependencies:
@@ -21270,7 +21311,8 @@ snapshots:
       mini-svg-data-uri: 1.4.4
       tailwindcss: 3.3.1(postcss@8.4.21)(ts-node@10.9.1(@types/node@18.15.11)(typescript@5.5.2))
 
-  '@tootallnate/once@2.0.0': {}
+  '@tootallnate/once@2.0.0':
+    optional: true
 
   '@trysound/sax@0.2.0': {}
 
@@ -21683,7 +21725,8 @@ snapshots:
     dependencies:
       '@types/node': 14.18.36
 
-  '@types/shimmer@1.0.5': {}
+  '@types/shimmer@1.0.5':
+    optional: true
 
   '@types/spark-md5@3.0.2': {}
 
@@ -22014,7 +22057,8 @@ snapshots:
       '@webassemblyjs/ast': 1.11.1
       '@xtuc/long': 4.2.2
 
-  '@xmldom/xmldom@0.7.13': {}
+  '@xmldom/xmldom@0.7.13':
+    optional: true
 
   '@xtuc/ieee754@1.2.0': {}
 
@@ -22277,6 +22321,7 @@ snapshots:
       diagnostic-channel-publishers: 1.0.7(diagnostic-channel@1.1.1)
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   aproba@2.0.0: {}
 
@@ -22475,6 +22520,7 @@ snapshots:
   async-hook-jl@1.7.6:
     dependencies:
       stack-chain: 1.3.7
+    optional: true
 
   async-limiter@1.0.1: {}
 
@@ -22482,6 +22528,7 @@ snapshots:
     dependencies:
       semver: 5.7.1
       shimmer: 1.2.1
+    optional: true
 
   async-sema@3.1.1: {}
 
@@ -22758,6 +22805,7 @@ snapshots:
       '@babel/plugin-syntax-flow': 7.23.3(@babel/core@7.20.12)
     transitivePeerDependencies:
       - '@babel/core'
+    optional: true
 
   babel-plugin-transform-flow-enums@0.0.2(@babel/core@7.24.4):
     dependencies:
@@ -23535,6 +23583,7 @@ snapshots:
       async-hook-jl: 1.7.6
       emitter-listener: 1.1.2
       semver: 5.7.1
+    optional: true
 
   clsx@1.2.1: {}
 
@@ -23750,6 +23799,7 @@ snapshots:
     dependencies:
       async-listener: 0.6.10
       emitter-listener: 1.1.2
+    optional: true
 
   convert-source-map@1.9.0: {}
 
@@ -24227,6 +24277,7 @@ snapshots:
       '@react-native/normalize-colors': 0.72.0
       invariant: 2.2.4
       prop-types: 15.8.1
+    optional: true
 
   deprecation@2.3.1: {}
 
@@ -24333,10 +24384,12 @@ snapshots:
   diagnostic-channel-publishers@1.0.7(diagnostic-channel@1.1.1):
     dependencies:
       diagnostic-channel: 1.1.1
+    optional: true
 
   diagnostic-channel@1.1.1:
     dependencies:
       semver: 7.6.2
+    optional: true
 
   didyoumean@1.2.2: {}
 
@@ -24492,6 +24545,7 @@ snapshots:
   emitter-listener@1.1.2:
     dependencies:
       shimmer: 1.2.1
+    optional: true
 
   emittery@0.13.1: {}
 
@@ -25079,6 +25133,7 @@ snapshots:
       onetime: 5.1.2
       signal-exit: 3.0.7
       strip-final-newline: 2.0.0
+    optional: true
 
   execa@5.1.1:
     dependencies:
@@ -25488,7 +25543,8 @@ snapshots:
 
   flatted@3.2.7: {}
 
-  flow-enums-runtime@0.0.5: {}
+  flow-enums-runtime@0.0.5:
+    optional: true
 
   flow-parser@0.185.2: {}
 
@@ -25699,6 +25755,7 @@ snapshots:
     dependencies:
       globby: 7.1.1
       load-json-file: 4.0.0
+    optional: true
 
   get-npm-tarball-url@2.0.3: {}
 
@@ -25868,6 +25925,7 @@ snapshots:
       ignore: 3.3.10
       pify: 3.0.0
       slash: 1.0.0
+    optional: true
 
   globby@9.2.0(supports-color@9.3.1):
     dependencies:
@@ -26229,6 +26287,7 @@ snapshots:
       debug: 4.3.4(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   http-proxy-middleware@2.0.6(@types/express@4.17.17)(debug@4.3.4):
     dependencies:
@@ -26276,7 +26335,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  human-signals@1.1.1: {}
+  human-signals@1.1.1:
+    optional: true
 
   human-signals@2.1.0: {}
 
@@ -26300,7 +26360,8 @@ snapshots:
 
   ieee754@1.2.1: {}
 
-  ignore@3.3.10: {}
+  ignore@3.3.10:
+    optional: true
 
   ignore@4.0.6: {}
 
@@ -26336,6 +26397,7 @@ snapshots:
       acorn-import-assertions: 1.9.0(acorn@8.11.2)
       cjs-module-lexer: 1.2.3
       module-details-from-path: 1.0.3
+    optional: true
 
   import-lazy@4.0.0: {}
 
@@ -26402,7 +26464,8 @@ snapshots:
       hasown: 2.0.2
       side-channel: 1.0.6
 
-  interpret@1.4.0: {}
+  interpret@1.4.0:
+    optional: true
 
   into-stream@3.1.0:
     dependencies:
@@ -26415,7 +26478,8 @@ snapshots:
 
   invert-kv@2.0.0: {}
 
-  invert-kv@3.0.1: {}
+  invert-kv@3.0.1:
+    optional: true
 
   io-ts@2.2.20(fp-ts@2.13.1):
     dependencies:
@@ -27458,6 +27522,7 @@ snapshots:
   lcid@3.1.1:
     dependencies:
       invert-kv: 3.0.1
+    optional: true
 
   leven@3.1.0: {}
 
@@ -27576,6 +27641,7 @@ snapshots:
       parse-json: 4.0.0
       pify: 3.0.0
       strip-bom: 3.0.0
+    optional: true
 
   loader-runner@4.3.0: {}
 
@@ -27675,6 +27741,7 @@ snapshots:
   log-symbols@2.2.0:
     dependencies:
       chalk: 2.4.2
+    optional: true
 
   log-symbols@4.1.0:
     dependencies:
@@ -27941,6 +28008,7 @@ snapshots:
       map-age-cleaner: 0.1.3
       mimic-fn: 2.1.0
       p-is-promise: 2.1.0
+    optional: true
 
   memfs@3.4.13:
     dependencies:
@@ -28293,6 +28361,7 @@ snapshots:
       react-refresh: 0.4.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   metro-react-native-babel-preset@0.76.8(@babel/core@7.24.4):
     dependencies:
@@ -28359,6 +28428,7 @@ snapshots:
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   metro-resolver@0.73.10:
     dependencies:
@@ -28937,7 +29007,8 @@ snapshots:
       ast-module-types: 3.0.0
       node-source-walk: 5.0.0
 
-  module-details-from-path@1.0.3: {}
+  module-details-from-path@1.0.3:
+    optional: true
 
   moize@6.1.5:
     dependencies:
@@ -28982,7 +29053,8 @@ snapshots:
       safe-buffer: 5.2.1
       uid-safe: 2.1.5
 
-  mustache@4.2.0: {}
+  mustache@4.2.0:
+    optional: true
 
   mute-stream@0.0.7: {}
 
@@ -29606,6 +29678,7 @@ snapshots:
       log-symbols: 2.2.0
       strip-ansi: 5.2.0
       wcwidth: 1.0.1
+    optional: true
 
   ora@5.3.0:
     dependencies:
@@ -29645,6 +29718,7 @@ snapshots:
       execa: 4.1.0
       lcid: 3.1.1
       mem: 5.1.1
+    optional: true
 
   os-name@3.1.0:
     dependencies:
@@ -30621,10 +30695,11 @@ snapshots:
     dependencies:
       react-native: 0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0)
 
-  react-native-orientation-locker@1.5.0(react-native-windows@0.72.20(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))(react@18.2.0))(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))(react@18.2.0):
+  react-native-orientation-locker@1.7.0(react-native-windows@0.72.20(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))(react@18.2.0))(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))(react@18.2.0):
     dependencies:
       react: 18.2.0
       react-native: 0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0)
+    optionalDependencies:
       react-native-windows: 0.72.20(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0))(react@18.2.0)
 
   react-native-popover-view@5.1.7:
@@ -30738,6 +30813,7 @@ snapshots:
       - encoding
       - supports-color
       - utf-8-validate
+    optional: true
 
   react-native@0.71.14(@babel/core@7.20.12)(@babel/preset-env@7.20.2(@babel/core@7.20.12))(react@18.2.0):
     dependencies:
@@ -30976,6 +31052,7 @@ snapshots:
   rechoir@0.6.2:
     dependencies:
       resolve: 1.22.8
+    optional: true
 
   redux-devtools-extension@2.13.9(redux@4.2.1):
     dependencies:
@@ -31157,6 +31234,7 @@ snapshots:
       resolve: 1.22.8
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   require-main-filename@1.0.1: {}
 
@@ -31342,6 +31420,7 @@ snapshots:
   scheduler@0.24.0-canary-efb381bbf-20230505:
     dependencies:
       loose-envify: 1.4.0
+    optional: true
 
   schema-utils@3.1.1:
     dependencies:
@@ -31552,8 +31631,10 @@ snapshots:
       glob: 7.2.3
       interpret: 1.4.0
       rechoir: 0.6.2
+    optional: true
 
-  shimmer@1.2.1: {}
+  shimmer@1.2.1:
+    optional: true
 
   side-channel@1.0.4:
     dependencies:
@@ -31602,7 +31683,8 @@ snapshots:
 
   sisteransi@1.0.5: {}
 
-  slash@1.0.0: {}
+  slash@1.0.0:
+    optional: true
 
   slash@2.0.0: {}
 
@@ -31734,7 +31816,8 @@ snapshots:
 
   stable@0.1.8: {}
 
-  stack-chain@1.3.7: {}
+  stack-chain@1.3.7:
+    optional: true
 
   stack-generator@2.0.10:
     dependencies:
@@ -32918,6 +33001,7 @@ snapshots:
     dependencies:
       execa: 1.0.0
       mem: 4.3.0
+    optional: true
 
   utf8@3.0.0: {}
 
@@ -33381,14 +33465,17 @@ snapshots:
   xml-formatter@2.6.1:
     dependencies:
       xml-parser-xo: 3.2.0
+    optional: true
 
-  xml-parser-xo@3.2.0: {}
+  xml-parser-xo@3.2.0:
+    optional: true
 
   xml-parser@1.2.1:
     dependencies:
       debug: 2.6.9(supports-color@9.3.1)
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   xml2js@0.4.19:
     dependencies:
@@ -33397,7 +33484,8 @@ snapshots:
 
   xmlbuilder@9.0.7: {}
 
-  xpath@0.0.27: {}
+  xpath@0.0.27:
+    optional: true
 
   xtend@4.0.2: {}
 
@@ -33415,7 +33503,8 @@ snapshots:
 
   yaml@1.10.2: {}
 
-  yaml@2.3.4: {}
+  yaml@2.3.4:
+    optional: true
 
   yargs-parser@11.1.1:
     dependencies:
