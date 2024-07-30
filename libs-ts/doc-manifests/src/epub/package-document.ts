@@ -118,7 +118,7 @@ export function manifestItems(
     });
   }
 
-  Object.keys(ebookFrontmatter(dpc, src, conf.subType)).forEach((slug) =>
+  Object.keys(ebookFrontmatter(dpc, src)).forEach((slug) =>
     items.set(slug, {
       href: `${slug}.xhtml`,
       'media-type': `application/xhtml+xml`,
@@ -133,7 +133,7 @@ export function spineItems(
   conf: EbookConfig,
   src: EbookSrcResult,
 ): string[] {
-  let items = Object.keys(ebookFrontmatter(dpc, src, conf.subType));
+  let items = Object.keys(ebookFrontmatter(dpc, src));
   items = items.concat(
     src.chapters.map((_, idx) => {
       return `chapter-${idx + 1}`;

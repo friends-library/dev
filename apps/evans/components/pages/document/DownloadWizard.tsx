@@ -3,14 +3,13 @@ import type { EditionType } from '@friends-library/types';
 import ChoiceWizard from './ChoiceWizard';
 import ChooseEdition from './ChooseEdition';
 import ChooseFormat from './ChooseFormat';
-import ChooseEbookType from './ChooseEbookType';
 import Downloading from './Downloading';
 
-export type DownloadType = 'pdf' | 'epub' | 'mobi' | 'speech';
+export type DownloadType = 'pdf' | 'epub' | 'speech';
 
 interface Props {
   editions: EditionType[];
-  onSelect: (edition: EditionType, type: DownloadType) => any;
+  onSelect(edition: EditionType, type: DownloadType): unknown;
   top?: number;
   left?: number;
 }
@@ -18,23 +17,16 @@ interface Props {
 const DownloadWizard: React.FC<Props> = ({ editions, onSelect, top, left }) => {
   const initialEdition = editions.length === 1 ? editions[0] : undefined;
   const [edition, setEdition] = useState<EditionType | undefined>(initialEdition);
-  const [format, setFormat] = useState<'ebook' | 'pdf' | 'speech' | undefined>();
-  const [eBookType, setEBookType] = useState<'epub' | 'mobi' | undefined>();
-  const selectionComplete = edition && format && (format !== `ebook` || eBookType);
+  const [format, setFormat] = useState<'epub' | 'pdf' | 'speech' | undefined>();
   const [downloaded, setDownloaded] = useState<boolean>(false);
+  const selectionComplete = edition && format;
 
   useEffect(() => {
     if (selectionComplete && !downloaded) {
       setDownloaded(true);
-      let type: DownloadType = `pdf`;
-      if (format && format !== `ebook`) {
-        type = format;
-      } else if (format === `ebook` && eBookType) {
-        type = eBookType;
-      }
-      onSelect(edition || `updated`, type);
+      onSelect(edition || `updated`, format);
     }
-  }, [edition, format, eBookType, downloaded, onSelect, selectionComplete]);
+  }, [edition, format, downloaded, onSelect, selectionComplete]);
 
   return (
     <ChoiceWizard top={top} left={left}>
@@ -42,9 +34,6 @@ const DownloadWizard: React.FC<Props> = ({ editions, onSelect, top, left }) => {
         <ChooseEdition editions={editions} onSelect={setEdition} />
       )}
       {edition && !format && <ChooseFormat onChoose={setFormat} />}
-      {edition && format && format !== `pdf` && format !== `speech` && !eBookType && (
-        <ChooseEbookType onChoose={setEBookType} />
-      )}
       {selectionComplete && <Downloading />}
     </ChoiceWizard>
   );

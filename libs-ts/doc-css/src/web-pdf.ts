@@ -5,7 +5,6 @@ export default function webPdfCss(config: { customCss?: string }): string {
     css.common,
     css.signedSections,
     css.tables,
-    css.notMobi7,
     css.pdfBase,
     css.pdfTypography,
     css.pdfHalfTitle,

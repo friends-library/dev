@@ -120,11 +120,9 @@ async function getTypeManifests(
       return manifest.speech(dpc);
     case `app-ebook`:
       return appEbookWithCss(dpc);
-    case `mobi`:
     case `epub`: {
       const conf: manifest.EbookConfig = {
         frontmatter: !argv.noFrontmatter,
-        subType: type,
         randomizeForLocalTesting: true,
       };
       return manifest[type](dpc, conf);
@@ -138,7 +136,6 @@ function makeFilename(dpc: DocPrecursor, type: ArtifactType): string {
   if (type === `paperback-cover`) suffix = `(cover)`;
   if (type === `web-pdf`) suffix = `(web)`;
   if (type === `app-ebook`) suffix = `(app-ebook)`;
-  if (type === `mobi`) suffix = `${Math.floor(Date.now() / 1000)}`;
   return [
     dpc.friendInitials.join(``),
     dpc.documentSlug,
@@ -152,7 +149,7 @@ function makeFilename(dpc: DocPrecursor, type: ArtifactType): string {
 
 function makeSrcPath(dpc: DocPrecursor, type: ArtifactType): string {
   let path = makeFilename(dpc, type);
-  if (type === `mobi` || type === `epub`) {
+  if (type === `epub`) {
     path += `/${type}`;
   }
   return path;

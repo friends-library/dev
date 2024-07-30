@@ -16,7 +16,6 @@ export default function paperbackInteriorCss(config: {
     css.common,
     css.signedSections,
     css.tables,
-    css.notMobi7,
     css.pdfBase,
     css.pdfPaging,
     css.pdfTypography,

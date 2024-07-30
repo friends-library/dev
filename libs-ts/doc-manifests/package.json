@@ -21,7 +21,6 @@
     "@friends-library/locale": "workspace:*",
     "@friends-library/lulu": "workspace:*",
     "@friends-library/types": "workspace:*",
-    "lodash.mapvalues": "^4.6.0",
     "lodash.pickby": "^4.6.0",
     "moment": "^2.29.0",
     "react": "18.2.0",
@@ -31,7 +30,6 @@
     "x-ts-utils": "^1.2.0"
   },
   "devDependencies": {
-    "@types/lodash.mapvalues": "^4.6.6",
     "@types/lodash.pickby": "^4.6.6",
     "@types/react": "18.2.75",
     "@types/react-dom": "18.2.24",

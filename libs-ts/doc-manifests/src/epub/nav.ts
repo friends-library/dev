@@ -62,7 +62,7 @@ export function tocItems({ lang }: DocPrecursor, src: EbookSrcResult): TocItem[]
   return items;
 }
 
-export function landmarks({ subType, frontmatter }: EbookConfig, lang: Lang): Landmark[] {
+export function landmarks({ frontmatter }: EbookConfig, lang: Lang): Landmark[] {
   const landmarkItems: Landmark[] = [];
 
   landmarkItems.push({
@@ -70,14 +70,6 @@ export function landmarks({ subType, frontmatter }: EbookConfig, lang: Lang): La
     href: `half-title.xhtml`,
     text: lang === `en` ? `Title page` : `Portada`,
   });
-
-  if (subType === `mobi`) {
-    landmarkItems.push({
-      type: `toc`,
-      href: `nav.xhtml`,
-      text: lang === `en` ? `Table of Contents` : `Índice`,
-    });
-  }
 
   landmarkItems.push({
     type: `bodymatter`,

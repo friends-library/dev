@@ -42,7 +42,6 @@ export interface Props {
     loggedDownloadUrls: {
       pdf: string;
       epub: string;
-      mobi: string;
       speech: string;
     };
   }>;

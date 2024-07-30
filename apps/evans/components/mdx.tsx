@@ -1,6 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import type { DetailedHTMLProps, HTMLAttributes } from 'react';
+import AppScreenshots from '@/components/pages/app/AppScreenshots';
+import AppStoreBadgeLinks from '@/components/pages/app/AppStoreBadgeLinks';
 import { type Api } from '@/lib/ssg/api-client';
 import { LANG } from '@/lib/env';
 import AudioPlayer from '@/components/core/AudioPlayer';
@@ -90,6 +92,8 @@ export const components = {
   ul: MdxUl,
   Lead: MdxLead,
   AudioPlayer,
+  AppScreenshots,
+  AppStoreBadgeLinks,
 };
 
 export function replacePlaceholders(

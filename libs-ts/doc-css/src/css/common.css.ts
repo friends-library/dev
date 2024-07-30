@@ -424,6 +424,23 @@ export default css`
     margin-top: 0.5em;
   }
 
+  .footnote .poetry {
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
+  }
+
+  .footnote .verse-stanza {
+    margin-bottom: 0;
+  }
+
+  .footnote .verse-stanza + .verse-stanza {
+    margin-top: 0.45em;
+  }
+
+  .footnote .verse-line {
+    line-height: 1.2em;
+  }
+
   h3 + .letter-heading {
     margin-top: 1em;
   }

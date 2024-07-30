@@ -15,7 +15,6 @@ export interface PaperbackCoverConfig {
 
 export interface EbookConfig {
   frontmatter: boolean;
-  subType: 'epub' | 'mobi';
   coverImg?: Buffer;
   randomizeForLocalTesting?: boolean;
 }

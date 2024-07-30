@@ -10,7 +10,6 @@ struct GetEditionImpression: Pair {
       var paperbackCover: [String]
       var paperbackInterior: [String]
       var epub: String
-      var mobi: String
       var pdf: String
       var speech: String
       var app: String
@@ -35,7 +34,6 @@ extension GetEditionImpression.Output.Files {
       paperbackCover: files.paperback.cover.map(\.sourcePath),
       paperbackInterior: files.paperback.interior.map(\.sourcePath),
       epub: files.ebook.epub.sourcePath,
-      mobi: files.ebook.mobi.sourcePath,
       pdf: files.ebook.pdf.sourcePath,
       speech: files.ebook.speech.sourcePath,
       app: files.ebook.app.sourcePath

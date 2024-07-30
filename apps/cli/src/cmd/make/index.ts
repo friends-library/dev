@@ -46,7 +46,7 @@ export const builder: CommandBuilder = function (yargs) {
     .option(`check`, {
       alias: `c`,
       type: `boolean`,
-      describe: `validate epub/mobi`,
+      describe: `validate epub`,
       default: false,
     })
     .option(`email`, {
@@ -81,21 +81,17 @@ export const builder: CommandBuilder = function (yargs) {
       coerce: (targets) => {
         return targets.reduce((acc: string[], target: string) => {
           switch (target) {
-            case `ebook`:
-              acc.push(`epub`, `mobi`);
-              break;
             case `pdf`:
               acc.push(`paperback-interior`, `web-pdf`);
               break;
             case `all`:
-              acc.push(`paperback-interior`, `web-pdf`, `epub`, `mobi`);
+              acc.push(`paperback-interior`, `web-pdf`, `epub`);
               break;
             case `pi`:
               acc.push(`paperback-interior`);
               break;
             case `speech`:
             case `epub`:
-            case `mobi`:
             case `web-pdf`:
             case `paperback-interior`:
             case `app-ebook`:

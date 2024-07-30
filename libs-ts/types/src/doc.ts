@@ -65,7 +65,6 @@ export const ARTIFACT_TYPES = [
   `paperback-cover`,
   `web-pdf`,
   `epub`,
-  `mobi`,
   `speech`,
   `app-ebook`,
 ] as const;

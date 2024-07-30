@@ -2,11 +2,10 @@ import type { ArtifactType } from '@friends-library/types';
 import type { PdfOptions, FileManifest, EbookOptions } from './types';
 import pdf from './pdf';
 import epub from './epub';
-import mobi from './mobi';
 import speech from './speech';
 import appEbook from './app-ebook';
 
-export { pdf, epub, mobi, speech, appEbook };
+export { pdf, epub, speech, appEbook };
 export { deleteNamespaceDir, dirs } from './dirs';
 export type { FileManifest };
 
@@ -23,8 +22,6 @@ export async function create(
     case `paperback-cover`:
     case `paperback-interior`:
       return pdf(manifest, filenameNoExt, options);
-    case `mobi`:
-      return mobi(manifest, filenameNoExt, options);
     case `epub`:
       return epub(manifest, filenameNoExt, options);
     case `app-ebook`:

@@ -230,7 +230,6 @@ final class DownloadableFileTests: AppTestCase {
     let entities = try await getEntities()
     let tests: [(String, DownloadableFile.Format)] = [
       ("ebook/epub", .ebook(.epub)),
-      ("ebook/mobi", .ebook(.mobi)),
       ("ebook/pdf", .ebook(.pdf)),
       ("ebook/speech", .ebook(.speech)),
       ("ebook/app", .ebook(.app)),
@@ -262,7 +261,6 @@ final class DownloadableFileTests: AppTestCase {
     let entities = try await getEntities()
     let tests: [(DownloadableFile.Format, String)] = [
       (.ebook(.epub), "ebook/epub"),
-      (.ebook(.mobi), "ebook/mobi"),
       (.ebook(.pdf), "ebook/pdf"),
       (.ebook(.speech), "ebook/speech"),
       (.ebook(.app), "ebook/app"),
@@ -330,7 +328,6 @@ final class DownloadableFileTests: AppTestCase {
     let edition = entities.edition
     let tests: [(DownloadableFile.Format, String)] = [
       (.ebook(.epub), "Journal--updated.epub"),
-      (.ebook(.mobi), "Journal--updated.mobi"),
       (.ebook(.pdf), "Journal--updated.pdf"),
       (.ebook(.speech), "Journal--updated.html"),
       (.ebook(.app), "Journal--updated--(app-ebook).html"),
