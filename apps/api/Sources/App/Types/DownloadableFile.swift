@@ -12,7 +12,6 @@ struct DownloadableFile {
   enum Format: Equatable, Encodable {
     enum Ebook: String, Codable, CaseIterable, Equatable {
       case epub
-      case mobi
       case pdf
       case speech
       case app
@@ -78,8 +77,6 @@ struct DownloadableFile {
     switch format {
     case .ebook(.epub):
       return "\(editionFilename).epub"
-    case .ebook(.mobi):
-      return "\(editionFilename).mobi"
     case .ebook(.pdf):
       return "\(editionFilename).pdf"
     case .ebook(.speech):
@@ -106,8 +103,6 @@ struct DownloadableFile {
     switch format {
     case .ebook(.epub):
       return "download/\(id)/ebook/epub"
-    case .ebook(.mobi):
-      return "download/\(id)/ebook/mobi"
     case .ebook(.pdf):
       return "download/\(id)/ebook/pdf"
     case .ebook(.speech):
@@ -157,8 +152,6 @@ extension DownloadableFile {
     switch segments.joined(separator: "/") {
     case "ebook/epub":
       self = .init(data, format: .ebook(.epub))
-    case "ebook/mobi":
-      self = .init(data, format: .ebook(.mobi))
     case "ebook/pdf":
       self = .init(data, format: .ebook(.pdf))
     case "ebook/speech":
@@ -337,8 +330,6 @@ extension DownloadableFile.Format {
     switch self {
     case .ebook(.epub):
       return "epub"
-    case .ebook(.mobi):
-      return "mobi"
     case .ebook(.pdf):
       return "web-pdf"
     case .ebook(.speech):
@@ -364,8 +355,6 @@ extension DownloadableFile.Format {
     switch self {
     case .ebook(.epub):
       return .epub
-    case .ebook(.mobi):
-      return .mobi
     case .ebook(.pdf):
       return .webPdf
     case .ebook(.speech):

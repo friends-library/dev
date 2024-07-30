@@ -12,7 +12,6 @@ export interface PendingUploads {
   ebook: {
     pdf: string;
     epub: string;
-    mobi: string;
     speech: string;
     app: string;
     appCss?: string;
@@ -26,7 +25,7 @@ export interface PendingUploads {
 export function emptyPendingUploads(): PendingUploads {
   return {
     paperback: { cover: [], interior: [] },
-    ebook: { pdf: ``, epub: ``, mobi: ``, speech: ``, app: `` },
+    ebook: { pdf: ``, epub: ``, speech: ``, app: `` },
     images: { square: [], threeD: [] },
   };
 }

@@ -4,7 +4,6 @@ import NonEmpty
 struct EditionImpressionFiles {
   struct Ebook {
     let epub: DownloadableFile
-    let mobi: DownloadableFile
     let pdf: DownloadableFile
     let speech: DownloadableFile
     let app: DownloadableFile
@@ -21,7 +20,6 @@ struct EditionImpressionFiles {
   var all: [DownloadableFile] {
     paperback.interior + paperback.cover + [
       ebook.epub,
-      ebook.mobi,
       ebook.pdf,
       ebook.speech,
       ebook.app,
@@ -58,7 +56,6 @@ extension EditionImpression.Joined {
     return EditionImpressionFiles(
       ebook: .init(
         epub: downloadableFile(format: .ebook(.epub)),
-        mobi: downloadableFile(format: .ebook(.mobi)),
         pdf: downloadableFile(format: .ebook(.pdf)),
         speech: downloadableFile(format: .ebook(.speech)),
         app: downloadableFile(format: .ebook(.app))

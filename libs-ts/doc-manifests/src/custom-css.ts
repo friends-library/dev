@@ -10,7 +10,7 @@ export function getCustomCss(
     cssChunks.push(customCss.pdf);
   }
 
-  if ([`epub`, `mobi`].includes(type) && customCss.ebook !== undefined) {
+  if (type === `epub` && customCss.ebook !== undefined) {
     cssChunks.push(customCss.ebook);
   }
 

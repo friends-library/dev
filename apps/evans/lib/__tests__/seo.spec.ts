@@ -11,7 +11,7 @@ describe(`bookPageMetaDesc()`, () => {
       true,
       `en`,
       true,
-      `Free complete ebook and audiobook of “TITIP”—a compilation written by early members of the Religious Society of Friends (Quakers). Download as MOBI, EPUB, PDF, listen to a Podcast, MP3s, M4B, or order a low-cost paperback. About TITIP`,
+      `Free complete ebook and audiobook of “TITIP”—a compilation written by early members of the Religious Society of Friends (Quakers). Download and read or listen for free, or order a low-cost paperback. About TITIP`,
     ],
     [
       `Compilaciones`,
@@ -20,7 +20,7 @@ describe(`bookPageMetaDesc()`, () => {
       true,
       `es`,
       true,
-      `Obtén de forma gratuita el libro electrónico completo y el audiolibro de “TITIP”—una compilación escrita por los primeros miembros de la Sociedad de Amigos (Cuáqueros). Descárgalo en formato MOBI, EPUB, PDF, escúchalo en Podcast, MP3, M4B, o pide un libro impreso. About TITIP`,
+      `Obtén de forma gratuita el libro electrónico completo y el audiolibro de “TITIP”—una compilación escrita por los primeros miembros de la Sociedad de Amigos (Cuáqueros). Descargar y leer o escuchar de forma gratuita, o pedir un libro impreso por un precio muy económico. About TITIP`,
     ],
     [
       `George Fox`,
@@ -29,7 +29,7 @@ describe(`bookPageMetaDesc()`, () => {
       true,
       `en`,
       false,
-      `Free complete ebook and audiobook of “Journal” by George Fox, an early member of the Religious Society of Friends (Quakers). Download as MOBI, EPUB, PDF, listen to a Podcast, MP3s, M4B, or order a low-cost paperback. About George`,
+      `Free complete ebook and audiobook of “Journal” by George Fox, an early member of the Religious Society of Friends (Quakers). Download and read or listen for free, or order a low-cost paperback. About George`,
     ],
     [
       `George Fox`,
@@ -38,7 +38,7 @@ describe(`bookPageMetaDesc()`, () => {
       false,
       `en`,
       false,
-      `Free complete ebook of “Journal” by George Fox, an early member of the Religious Society of Friends (Quakers). Download as MOBI, EPUB, PDF, or order a low-cost paperback. About George`,
+      `Free complete ebook of “Journal” by George Fox, an early member of the Religious Society of Friends (Quakers). Download and read for free, or order a low-cost paperback. About George`,
     ],
     [
       `George Fox`,
@@ -47,13 +47,22 @@ describe(`bookPageMetaDesc()`, () => {
       true,
       `es`,
       false,
-      `Obtén de forma gratuita el libro electrónico completo y el audiolibro de “Journal” escrito por George Fox, un antiguo miembro de la Sociedad de Amigos (Cuáqueros). Descárgalo en formato MOBI, EPUB, PDF, escúchalo en Podcast, MP3, M4B, o pide un libro impreso. About George`,
+      `Obtén de forma gratuita el libro electrónico completo y el audiolibro de “Journal” escrito por George Fox, un antiguo miembro de la Sociedad de Amigos (Cuáqueros). Descargar y leer o escuchar de forma gratuita, o pedir un libro impreso por un precio muy económico. About George`,
+    ],
+    [
+      `George Fox`,
+      `About George`,
+      `Journal`,
+      false,
+      `es`,
+      false,
+      `Obtén de forma gratuita el libro electrónico completo de “Journal” escrito por George Fox, un antiguo miembro de la Sociedad de Amigos (Cuáqueros). Descargar y leer gratis, o pedir un libro impreso por un precio muy económico. About George`,
     ],
   ];
   test.each(cases)(
     `should produce correct meta description`,
-    (author, desc, title, numAudio, lang, isComp, expected) => {
-      expect(bookPageMetaDesc(author, desc, title, numAudio, isComp, lang)).toBe(
+    (author, desc, title, hasAudio, lang, isComp, expected) => {
+      expect(bookPageMetaDesc(author, desc, title, hasAudio, isComp, lang)).toBe(
         expected,
       );
     },
@@ -69,7 +78,7 @@ describe(`friendPageMetaDesc()`, () => {
       1,
       false,
       `en`,
-      `Free ebook and audiobook by early Quaker writer George Fox: “Journal.” Download as MOBI, EPUB, PDF, listen to a Podcast, MP3s, M4B, or order a low-cost paperback. About George.`,
+      `Free ebook and audiobook by early Quaker writer George Fox: “Journal.” Download and read or listen for free, or order a low-cost paperback. About George.`,
     ],
     [
       `George Fox`,
@@ -78,7 +87,7 @@ describe(`friendPageMetaDesc()`, () => {
       0,
       false,
       `en`,
-      `Free ebook by early Quaker writer George Fox: “Journal.” Download as MOBI, EPUB, PDF, or order a low-cost paperback. About George.`,
+      `Free ebook by early Quaker writer George Fox: “Journal.” Download and read for free, or order a low-cost paperback. About George.`,
     ],
     [
       `George Fox`,
@@ -87,7 +96,7 @@ describe(`friendPageMetaDesc()`, () => {
       0,
       false,
       `en`,
-      `Free ebooks by early Quaker writer George Fox: “Journal,” “Epistles,” and “Excerpts.” Download as MOBI, EPUB, PDF, or order a low-cost paperback. About George.`,
+      `Free ebooks by early Quaker writer George Fox: “Journal,” “Epistles,” and “Excerpts.” Download and read for free, or order a low-cost paperback. About George.`,
     ],
     [
       `George Fox`,
@@ -96,7 +105,7 @@ describe(`friendPageMetaDesc()`, () => {
       2,
       false,
       `en`,
-      `Free ebooks and audiobooks by early Quaker writer George Fox: “Journal” and “Epistles.” Download as MOBI, EPUB, PDF, listen to a Podcast, MP3s, M4B, or order a low-cost paperback. About George.`,
+      `Free ebooks and audiobooks by early Quaker writer George Fox: “Journal” and “Epistles.” Download and read or listen for free, or order a low-cost paperback. About George.`,
     ],
     [
       `George Fox`,
@@ -105,7 +114,7 @@ describe(`friendPageMetaDesc()`, () => {
       1,
       false,
       `en`,
-      `Free ebooks and audiobook by early Quaker writer George Fox: “Journal” and “Epistles.” Download as MOBI, EPUB, PDF, listen to a Podcast, MP3s, M4B, or order a low-cost paperback. About George.`,
+      `Free ebooks and audiobook by early Quaker writer George Fox: “Journal” and “Epistles.” Download and read or listen for free, or order a low-cost paperback. About George.`,
     ],
     [
       `Compilations`,
@@ -114,7 +123,7 @@ describe(`friendPageMetaDesc()`, () => {
       1,
       true,
       `en`,
-      `Free ebooks and audiobook of “Journal” and “Epistles”—compilations written by early members of the Religious Society of Friends (Quakers). Download as MOBI, EPUB, PDF, listen to a Podcast, MP3s, M4B, or order a low-cost paperback. About George.`,
+      `Free ebooks and audiobook of “Journal” and “Epistles”—compilations written by early members of the Religious Society of Friends (Quakers). Download and read or listen for free, or order a low-cost paperback. About George.`,
     ],
     [
       `Compilations`,
@@ -123,7 +132,7 @@ describe(`friendPageMetaDesc()`, () => {
       1,
       true,
       `en`,
-      `Free ebook and audiobook of “TITIP”—a compilation written by early members of the Religious Society of Friends (Quakers). Download as MOBI, EPUB, PDF, listen to a Podcast, MP3s, M4B, or order a low-cost paperback. About TITIP.`,
+      `Free ebook and audiobook of “TITIP”—a compilation written by early members of the Religious Society of Friends (Quakers). Download and read or listen for free, or order a low-cost paperback. About TITIP.`,
     ],
     [
       `Compilations`,
@@ -132,7 +141,7 @@ describe(`friendPageMetaDesc()`, () => {
       1,
       true,
       `en`,
-      `Free ebooks and audiobook of “TITIP” and “PP v1”—compilations written by early members of the Religious Society of Friends (Quakers). Download as MOBI, EPUB, PDF, listen to a Podcast, MP3s, M4B, or order a low-cost paperback. About TITIP.`,
+      `Free ebooks and audiobook of “TITIP” and “PP v1”—compilations written by early members of the Religious Society of Friends (Quakers). Download and read or listen for free, or order a low-cost paperback. About TITIP.`,
     ],
     [
       `George Fox`,
@@ -141,7 +150,7 @@ describe(`friendPageMetaDesc()`, () => {
       1,
       false,
       `es`,
-      `Libros electrónicos y audiolibro gratuitos, escritos por George Fox, uno de los antiguos Cuáqueros: “Journal” y “Epistles.” Descargar como MOBI, EPUB, PDF, escuchar en Podcast, MP3s, M4B, o pedir un libro impreso. Hola George.`,
+      `Libros electrónicos y audiolibro gratuitos, escritos por George Fox, uno de los antiguos Cuáqueros: “Journal” y “Epistles.” Descargar y leer o escuchar de forma gratuita, o pedir un libro impreso por un precio muy económico. Hola George.`,
     ],
     [
       `Compilaciones`,
@@ -150,7 +159,7 @@ describe(`friendPageMetaDesc()`, () => {
       1,
       true,
       `es`,
-      `Libros electrónicos y audiolibro gratuitos de “La Verdad en lo Íntimo” y “El Pietoto Promotedo”—compilaciones escritas por los primeros miembros de la Sociedad de Amigos (Cuáqueros). Descargar como MOBI, EPUB, PDF, escuchar en Podcast, MP3s, M4B, o pedir un libro impreso. Hola Compilaciones.`,
+      `Libros electrónicos y audiolibro gratuitos de “La Verdad en lo Íntimo” y “El Pietoto Promotedo”—compilaciones escritas por los primeros miembros de la Sociedad de Amigos (Cuáqueros). Descargar y leer o escuchar de forma gratuita, o pedir un libro impreso por un precio muy económico. Hola Compilaciones.`,
     ],
     [
       `Compilaciones`,
@@ -159,7 +168,16 @@ describe(`friendPageMetaDesc()`, () => {
       1,
       true,
       `es`,
-      `Libro electrónico y audiolibro gratuitos de “La Verdad en lo Íntimo”—una compilación escrita por los primeros miembros de la Sociedad de Amigos (Cuáqueros). Descargar como MOBI, EPUB, PDF, escuchar en Podcast, MP3s, M4B, o pedir un libro impreso. Hola Compilaciones.`,
+      `Libro electrónico y audiolibro gratuitos de “La Verdad en lo Íntimo”—una compilación escrita por los primeros miembros de la Sociedad de Amigos (Cuáqueros). Descargar y leer o escuchar de forma gratuita, o pedir un libro impreso por un precio muy económico. Hola Compilaciones.`,
+    ],
+    [
+      `Compilaciones`,
+      `Hola Compilaciones.`,
+      [`La Verdad en lo Íntimo`],
+      0, // no audiobooks
+      true,
+      `es`,
+      `Libro electrónico gratuitos de “La Verdad en lo Íntimo”—una compilación escrita por los primeros miembros de la Sociedad de Amigos (Cuáqueros). Descargar y leer gratis, o pedir un libro impreso por un precio muy económico. Hola Compilaciones.`,
     ],
   ];
 

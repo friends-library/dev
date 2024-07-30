@@ -6,7 +6,6 @@ export interface EditionImpression {
     paperbackCover: string[];
     paperbackInterior: string[];
     epub: string;
-    mobi: string;
     pdf: string;
     speech: string;
     app: string;

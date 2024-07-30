@@ -16,11 +16,12 @@
   "dependencies": {
     "@friends-library/locale": "workspace:*",
     "@friends-library/parser": "workspace:*",
-    "@friends-library/types": "workspace:*"
+    "@friends-library/types": "workspace:*",
+    "uninstall": "0.0.0"
   },
   "devDependencies": {
+    "@prettier/sync": "0.5.2",
     "@types/prettier": "2.7.2",
-    "prettier": "2.8.3",
     "strip-indent": "^3.0.0"
   }
 }

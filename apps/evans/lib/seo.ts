@@ -59,10 +59,12 @@ export function bookPageMetaDesc(
       : false,
     EN ? `of the Religious Society of Friends (Quakers).` : false,
     ES && !comp ? `un antiguo miembro de la Sociedad de Amigos (Cuáqueros).` : false,
-    EN ? `Download as MOBI, EPUB, PDF,` : `Descárgalo en formato MOBI, EPUB, PDF,`,
-    EN && hasAudio ? `listen to a Podcast, MP3s, M4B,` : false,
-    ES && hasAudio ? `escúchalo en Podcast, MP3, M4B,` : false,
-    EN ? `or order a low-cost paperback.` : `o pide un libro impreso.`,
+    EN ? `Download and read ${hasAudio ? `or listen ` : ``}for free,` : false,
+    ES && hasAudio ? `Descargar y leer o escuchar de forma gratuita,` : false,
+    ES && !hasAudio ? `Descargar y leer gratis,` : false,
+    EN
+      ? `or order a low-cost paperback.`
+      : `o pedir un libro impreso por un precio muy económico.`,
     description,
   ]
     .filter(Boolean)
@@ -86,6 +88,7 @@ export function friendPageMetaDesc(
   const plural = quotedTitles.length > 1;
   const s = plural ? `s` : ``;
   const lastTitle = quotedTitles[quotedTitles.length - 1];
+  const hasAudio = numAudioBooks > 0;
   return [
     EN ? `Free ebook${s}` : `Libro${s} electrónico${s}`,
     EN && numAudioBooks ? `and audiobook${numAudioBooks > 1 ? `s` : ``}` : false,
@@ -109,11 +112,12 @@ export function friendPageMetaDesc(
     ES && comp
       ? `por los primeros miembros de la Sociedad de Amigos (Cuáqueros).`
       : false,
-    EN ? `Download as MOBI, EPUB, PDF,` : false,
-    ES ? `Descargar como MOBI, EPUB, PDF,` : false,
-    numAudioBooks > 0 && EN ? `listen to a Podcast, MP3s, M4B,` : false,
-    numAudioBooks > 0 && ES ? `escuchar en Podcast, MP3s, M4B,` : false,
-    EN ? `or order a low-cost paperback.` : `o pedir un libro impreso.`,
+    EN ? `Download and read ${hasAudio ? `or listen ` : ``}for free,` : false,
+    ES && hasAudio ? `Descargar y leer o escuchar de forma gratuita,` : false,
+    ES && !hasAudio ? `Descargar y leer gratis,` : false,
+    EN
+      ? `or order a low-cost paperback.`
+      : `o pedir un libro impreso por un precio muy económico.`,
     description,
   ]
     .filter(Boolean)
@@ -147,30 +151,30 @@ const replacements = {
 const PAGE_META_DESCS = {
   home:
     LANG === `en`
-      ? `Friends Library exists to freely share the writings of early members of the Religious Society of Friends (Quakers), believing that no other collection of Christian writings more accurately communicates or powerfully illustrates the soul-transforming power of the gospel of Jesus Christ. We have %NUM_BOOKS% books available for free download in multiple editions and digital formats (including PDF, MOBI, and EPUB), and a growing number of them are also recorded as audiobooks. Paperback copies are also available at very low cost.`
+      ? `Friends Library exists to freely share the writings of early members of the Religious Society of Friends (Quakers), believing that no other collection of Christian writings more accurately communicates or powerfully illustrates the soul-transforming power of the gospel of Jesus Christ. We have %NUM_BOOKS% books available for free download in multiple editions and digital formats, and a growing number of them are also recorded as audiobooks. Paperback copies are also available at very low cost.`
       : `La Biblioteca de los Amigos ha sido creada para compartir gratuitamente los escritos de los primeros miembros de la Sociedad de Amigos (Cuáqueros), ya que creemos que no existe ninguna otra colección de escritos cristianos que comunique con mayor precisión, o que ilustre con más pureza, el poder del evangelio de Jesucristo que transforma el alma. Actualmente tenemos %NUM_BOOKS% libros disponibles para descargarse gratuitamente en múltiples ediciones y formatos digitales, y un número creciente de estos libros están siendo grabados como audiolibros. Libros impresos también están disponibles por un precio muy económico.`,
   audiobooks:
     LANG === `en`
-      ? `Browse %NUM_AUDIOBOOKS% free audiobooks from early members of the Religious Society of Friends (Quakers). Download as a podcast, MP3s, or an M4B file – or listen online in your browser. All books are available in e-Book format as well for free download as EPUB, MOBI, or PDF, and paperback copies are also available at very low cost.`
-      : `Dale un vistazo a nuestros audiolibros gratuitos de los primeros miembros de la Sociedad Religiosa de Amigos (Cuáqueros). Puedes descargar el audio como un podcast, MP3, o un archivo M4B - o reproducirlo en línea desde tu navegador. También, los libros completos están disponibles para ser descargados gratuitamente en formatos digitales como EPUB, MOBI, PDF. Libros impresos también están disponibles por un precio muy económico.`,
+      ? `Browse %NUM_AUDIOBOOKS% free audiobooks from early members of the Religious Society of Friends (Quakers). Listen in our Android/iOS app, download as a podcast, MP3s, or an M4B file, or listen online from your browser. All books are also available to download and read for free in our app, as an ebook or PDF, or paperback copies are available at very low cost.`
+      : `Dale un vistazo a nuestros audiolibros gratuitos de los primeros miembros de la Sociedad Religiosa de Amigos (Cuáqueros). Puedes escuchar los audios en nuestra aplicación para Android y iOS, descargar el audio como un podcast, MP3, o un archivo M4B, o reproducirlo en línea desde tu navegador. También, los libros completos están disponibles para ser descargados gratuitamente en formatos digitales como EPUB o PDF. Libros impresos también están disponibles por un precio muy económico.`,
   contact:
     LANG === `en`
       ? `Got a question? — or are you having any sort of technical trouble with our books or website? Want to reach out for any other reason? We’d love to hear from you! You can expect to hear back within a day or two.`
       : `¿Tienes alguna pregunta? — ¿o estás teniendo algún tipo de problema técnico con nuestros libros o con el sitio? ¿Quieres ponerte en contacto por alguna otra razón? ¡Nos encantaría escucharte! Puedes contar con nuestra respuesta en un día o dos.`,
   explore:
     LANG === `en`
-      ? `Explore %NUM_BOOKS% books written by early members of the Religious Society of Friends (Quakers) – available for free download as EPUB, MOBI, PDF, and audiobooks. Browse %NUM_UPDATED_EDITIONS% updated editions, %NUM_AUDIOBOOKS% audiobooks, and recently added titles, or view books by geographic region or time period.`
-      : `Explora nuestros %NUM_BOOKS% libros escritos por los primeros miembros de la Sociedad de Amigos (Cuáqueros), disponibles de forma gratuita en formatos digitales EPUB, MOBI, PDF, y audiolibros. Puedes navegar por todos nuestros libros y audiolibros, o buscar libros en la categoría particular que más te interese.`,
+      ? `Explore %NUM_BOOKS% books written by early members of the Religious Society of Friends (Quakers) – available to download and read or listen for free. Browse %NUM_UPDATED_EDITIONS% updated editions, %NUM_AUDIOBOOKS% audiobooks, and recently added titles, or view books by geographic region or time period.`
+      : `Explora nuestros %NUM_BOOKS% libros escritos por los primeros miembros de la Sociedad de Amigos (Cuáqueros), disponibles de forma gratuita en formatos digitales EPUB, PDF, y audiolibros. Puedes navegar por todos nuestros libros y audiolibros, o buscar libros en la categoría particular que más te interese.`,
   app:
     LANG === `en`
       ? `The Friends Library Android and iOS (iPhone and iPad) apps allow users to freely and easily download and listen to all of the audiobooks available from this site. All audiobooks were written by early members of the Religious Society of Friends (Quakers).`
       : `La aplicación de la Biblioteca de los Amigos (disponible en iOS para Iphone y Ipad, y en Android), les permite a los usuarios descargar y escuchar de forma gratuita y sencilla todos los audiolibros de nuestro sitio. Todos estos audiolibros han sido escritos por los primeros miembros de la Sociedad Religiosa de Amigos (Cuáqueros)`,
   friends:
     LANG === `en`
-      ? `Friends Library currently contains books written by %NUM_FRIENDS% early members of the Religious Society of Friends (Quakers), and more authors are being added regularly. View all authors here, including William Penn, Isaac Penington, Robert Barclay, and George Fox. All books are available in their entirety for free download as EPUB, MOBI, PDF, and a growing number are available as audiobooks. Paperback copies are also available at very low cost.`
-      : `Actualmente la Biblioteca de Amigos contiene libros escritos por %NUM_FRIENDS% antiguos Amigos, y constantemente estamos añadiendo nuevos autores. Aquí puedes ver todos nuestros autores, incluyendo William Penn, Isaac Penington, Robert Barclay, y George Fox. Los libros completos están disponibles para ser descargados gratuitamente en formatos digitales como EPUB, MOBI, PDF, y algunos han sido grabados como audiolibros. Libros impresos también están disponibles por un precio muy económico.`,
+      ? `Friends Library currently contains books written by %NUM_FRIENDS% early members of the Religious Society of Friends (Quakers), and more authors are being added regularly. View all authors here, including William Penn, Isaac Penington, Robert Barclay, and George Fox. All books are freely available in their entirety in our Android/iOS app or to download as an ebook or PDF, and a growing number are also available as free audiobooks. Paperback copies are also available at very low cost.`
+      : `Actualmente la Biblioteca de Amigos contiene libros escritos por 114 miembros de la primitiva Sociedad Religiosa de los Amigos (Cuáqueros), y constantemente estamos añadiendo nuevos autores. Aquí puedes ver todos nuestros autores, incluyendo William Penn, Isaac Penington, Robert Barclay, y George Fox. Todos los libros pueden ser leídos gratuitamente en nuestra aplicación para Android y iOS, o descargados a tu dispositivo como eBook o PDF, y muchos han sido grabados como audiolibros. Libros impresos también están disponibles por un precio muy económico.`,
   'getting-started':
     LANG === `en`
-      ? `View hand-picked reading recommendations to help you get started with our %NUM_BOOKS% books written by early members of the Religious Society of Friends (Quakers). Recommendations come in four categories: History, Doctrine, Spiritual Life, and Journals. All books are available in their entirety for free download as EPUB, MOBI, PDF, and a growing number are available as audiobooks. Paperback copies are also available at very low cost.`
-      : `Hemos seleccionado algunos de nuestros libros favoritos de los antiguos miembros de la Sociedad de Amigos (Cuáqueros), y los hemos organizado en categorías para ayudarte a comenzar. Nuestras recomendaciones están organizadas en cuatro categorías: Historia, Doctrina, Vida Espiritual, y Biografía. Los libros completos están disponibles para ser descargados gratuitamente en formatos digitales como EPUB, MOBI, PDF, y algunos han sido grabados como audiolibros. Libros impresos también están disponibles por un precio muy económico.`,
+      ? `View hand-picked reading recommendations to help you get started with our %NUM_BOOKS% books written by early members of the Religious Society of Friends (Quakers). Recommendations come in four categories: History, Doctrine, Spiritual Life, and Journals. All books are freely available in their entirety in our Android/iOS app or to download as an ebook or PDF, and a growing number are also available as free audiobooks. Paperback copies are also available at very low cost.`
+      : `Hemos seleccionado algunos de nuestros libros favoritos de los primeros miembros de la Sociedad de Amigos (Cuáqueros), y los hemos organizado en categorías para ayudarte a comenzar. Nuestras recomendaciones están organizadas en cuatro categorías: Historia, Doctrina, Vida Espiritual, y Biografía. Todos los libros pueden ser leídos gratuitamente en nuestra aplicación para Android y iOS, o descargados a tu dispositivo como eBook o PDF, y muchos han sido grabados como audiolibros. Libros impresos también están disponibles por un precio muy económico.`,
 };

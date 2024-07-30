@@ -1,28 +1,15 @@
 import React from 'react';
-import Image from 'next/image';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
 import type { NextPage } from 'next';
 import { WhiteOverlay } from '@/pages/explore';
 import api from '@/lib/ssg/api-client';
-import * as AppBadges from '@/components/pages/app/AppBadges';
+import AppStoreBadgeLinks from '@/components/pages/app/AppStoreBadgeLinks';
+import AppScreenshots from '@/components/pages/app/AppScreenshots';
 import * as seo from '@/lib/seo';
 import Dual from '@/components/core/Dual';
 import BooksBgBlock from '@/components/core/BooksBgBlock';
 import { LANG } from '@/lib/env';
-
-import AppAudioList_en from '@/public/images/app/app-audio-list.en.jpg';
-import AppAudioList_es from '@/public/images/app/app-audio-list.es.jpg';
-import AppAudio_en from '@/public/images/app/app-audio.en.jpg';
-import AppAudio_es from '@/public/images/app/app-audio.es.jpg';
-import AppEbook_en from '@/public/images/app/app-ebook.en.jpg';
-import AppEbook_es from '@/public/images/app/app-ebook.es.jpg';
-import AppHome_en from '@/public/images/app/app-home.en.jpg';
-import AppHome_es from '@/public/images/app/app-home.es.jpg';
-import AppRead_en from '@/public/images/app/app-read.en.jpg';
-import AppRead_es from '@/public/images/app/app-read.es.jpg';
-import AppSplash_en from '@/public/images/app/app-splash.en.jpg';
-import AppSplash_es from '@/public/images/app/app-splash.es.jpg';
 
 interface PageData {
   numAudioBooks: number;
@@ -106,10 +93,7 @@ const AppPage: NextPage = async () => {
             dispositivo.
           </>
         </Dual.P>
-        <div className="max-w-xs sm:max-w-lg px-6 flex flex-col sm:flex-row space-y-6  sm:space-y-0 sm:space-x-8 items-center mb-10">
-          <AppBadges.Ios />
-          <AppBadges.Android />
-        </div>
+        <AppStoreBadgeLinks />
         <Dual.H3 className="text-flgray-900 text-2xl tracking-widest mb-6 mt-6">
           <>
             Easy to use <span className="underline inline-block pr-1">audiobooks</span>
@@ -144,42 +128,9 @@ const AppPage: NextPage = async () => {
             Wifi, y escucharlos luego a tu conveniencia, sin conexión de internet.
           </>
         </Dual.P>
-        <Dual.Div className="flex space-x-4 mb-10 justify-center">
-          <>
-            <Image
-              className="w-48"
-              src={AppSplash_en}
-              alt="Screenshot of Friends Library App splash screen"
-            />
-            <Image
-              className="w-48"
-              src={AppAudio_en}
-              alt="Screenshot of Friends Library App audiobook screen"
-            />
-            <Image
-              className="w-48"
-              src={AppAudioList_en}
-              alt="Screenshot of Friends Library App audiobooks screen"
-            />
-          </>
-          <>
-            <Image
-              className="w-48"
-              src={AppSplash_es}
-              alt="Captura de la pantalla de carga de la aplicación de la Biblioteca de Amigos"
-            />
-            <Image
-              className="w-48"
-              src={AppAudio_es}
-              alt="Captura de la pantalla  de audiolibro de la aplicación de la Biblioteca de  Amigos"
-            />
-            <Image
-              className="w-48"
-              src={AppAudioList_es}
-              alt="Captura de la pantalla  de audiolibros de la aplicación de la Biblioteca de  Amigos"
-            />
-          </>
-        </Dual.Div>
+
+        <AppScreenshots emphasizing="listen" />
+
         <Dual.H3 className="text-flgray-900 text-2xl tracking-widest mb-6">
           <>
             <span className="pr-1">...</span>or <span className="underline">read</span>
@@ -213,42 +164,8 @@ const AppPage: NextPage = async () => {
             sincronizará automáticamente en tu aplicación, así que siempre estarás al día.
           </>
         </Dual.P>
-        <Dual.Div className="flex space-x-4 mb-10 justify-center">
-          <>
-            <Image
-              className="w-48"
-              src={AppHome_en}
-              alt="Screenshot of Friends Library App home screen"
-            />
-            <Image
-              className="w-48"
-              src={AppRead_en}
-              alt="Screenshot of Friends Library App ebook screen"
-            />
-            <Image
-              className="w-48"
-              src={AppEbook_en}
-              alt="Screenshot of Friends Library App ebook reader screen"
-            />
-          </>
-          <>
-            <Image
-              className="w-48"
-              src={AppHome_es}
-              alt="Captura de la pantalla principal de la aplicación de la Biblioteca de  Amigos"
-            />
-            <Image
-              className="w-48"
-              src={AppRead_es}
-              alt="Captura de la pantalla de ebooks de la aplicación de la Biblioteca de  Amigos"
-            />
-            <Image
-              className="w-48"
-              src={AppEbook_es}
-              alt="Captura de la pantalla del lector de ebooks de la aplicación de la Biblioteca de  Amigos"
-            />
-          </>
-        </Dual.Div>
+
+        <AppScreenshots emphasizing="read" />
 
         <Dual.P className="body-text pb-12 max-w-screen-md leading-loose">
           <>

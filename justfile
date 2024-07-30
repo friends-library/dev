@@ -121,7 +121,8 @@ codegen: codegen-ts codegen-swift
 
 nuke-node-modules:
   @pnpm store prune
-  @find . -name "node_modules" -type d -prune -exec rm -rf {} + && pnpm i
+  @find . -name "node_modules" -type d -prune -exec rm -rf {} + && \
+    PUPPETEER_PRODUCT=firefox pnpm install
 
 [private]
 nx-run-many targets:

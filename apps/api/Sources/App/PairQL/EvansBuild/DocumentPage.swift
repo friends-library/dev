@@ -101,7 +101,6 @@ struct DocumentPage: Pair {
 
     struct LoggedDownloadUrls: PairNestable {
       var epub: String
-      var mobi: String
       var pdf: String
       var speech: String
     }
@@ -228,7 +227,6 @@ extension DocumentPage.Output {
             numPages: impression.paperbackVolumes,
             loggedDownloadUrls: .init(
               epub: impression.files.ebook.epub.logUrl.absoluteString,
-              mobi: impression.files.ebook.mobi.logUrl.absoluteString,
               pdf: impression.files.ebook.pdf.logUrl.absoluteString,
               speech: impression.files.ebook.speech.logUrl.absoluteString
             )

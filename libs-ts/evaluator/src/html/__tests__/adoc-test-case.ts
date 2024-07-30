@@ -1,5 +1,5 @@
 import fs from 'fs';
-import prettier from 'prettier';
+import prettier from '@prettier/sync';
 import stripIndent from 'strip-indent';
 import { genericDpc } from '@friends-library/types';
 import type { DocPrecursor } from '@friends-library/types';

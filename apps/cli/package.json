@@ -50,7 +50,7 @@
     "pdf-parse": "jaredh159/pdf-parse",
     "png-js": "^1.0.0",
     "pretty-ms": "^5.0.0",
-    "puppeteer": "^13.5.0",
+    "puppeteer": "^22.12.1",
     "qs": "^6.9.1",
     "serve": "^11.2.0",
     "sharp": "^0.33.0",

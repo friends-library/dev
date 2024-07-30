@@ -35,9 +35,12 @@ const FormatsBlock: React.FC = () => (
       <>
         On this site you will find many books available in multiple formats. Our desire is
         to make these precious writings as accessible as possible to today&rsquo;s seeker
-        of truth&mdash;therefore, each book has been converted to 3 digital formats: pdf,
-        mobi (for Kindle), and epub (all other e-readers including Apple Books). A growing
-        number of our books are also available{` `}
+        of truth&mdash;therefore, each book is available as an eBook (EPUB or PDF), or
+        accessed within our free{` `}
+        <Link href={t`/app`} className="subtle-link">
+          Android/iOS app
+        </Link>
+        . A growing number of our books are also available{` `}
         <Link href={t`/audiobooks`} className="subtle-link">
           as audiobooks
         </Link>
@@ -47,10 +50,12 @@ const FormatsBlock: React.FC = () => (
       <>
         En este sitio encontrarás muchos libros disponibles en múltiples formatos. Nuestro
         deseo es hacer que estos preciosos escritos sean lo más accesibles posible para el
-        buscador de la verdad de nuestro día—por lo tanto, cada libro ha sido convertido
-        en tres formatos digitales: PDF, MOBI (para Kindle), y EPUB (para todo el resto de
-        lectores electrónicos incluyendo “Libros” de Apple). Un número creciente de
-        nuestros libros también están disponibles{` `}
+        buscador de la verdad de nuestro día—así que, cada libro se puede descargar como
+        un libro electrónico (EPUB o PDF), o acceder dentro de nuestra{` `}
+        <Link href={t`/app`} className="subtle-link">
+          aplicación gratuita (para Android y iOS.)
+        </Link>
+        {` `}Muchos de nuestros libros también están disponibles{` `}
         <Link href={t`/audiobooks`} className="subtle-link">
           en audiolibros
         </Link>

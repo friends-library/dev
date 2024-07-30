@@ -6,5 +6,5 @@ export default async function epub(
   filenameNoExt: string,
   opts: EbookOptions,
 ): Promise<string> {
-  return await writeEbookManifest(manifest, filenameNoExt, opts, `epub`);
+  return await writeEbookManifest(manifest, filenameNoExt, opts);
 }

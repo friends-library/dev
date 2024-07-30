@@ -41,6 +41,7 @@ export async function screenshot(
     headless: true, // false to see what it's doing
     dumpio: false, // true to see verbose console stuff in terminal
     slowMo: undefined, // set to number like `500` to slow it down
+    timeout: 5000,
   });
   const page = await browser.newPage();
 

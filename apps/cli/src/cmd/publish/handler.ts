@@ -289,14 +289,9 @@ async function handleEbooks(
   const base = getFileId(dpc, `ebook`);
 
   logDebug(`Creating epub artifact...`);
-  const [epubMan = {}] = await manifest.epub(dpc, { ...config, subType: `epub` });
+  const [epubMan = {}] = await manifest.epub(dpc, { ...config });
   const epub = await artifacts.create(`epub`, epubMan, base, { ...opts, check: true });
   uploads.ebook.epub = epub;
-
-  logDebug(`Creating mobi artifact...`);
-  const [mobiMan = {}] = await manifest.mobi(dpc, { ...config, subType: `mobi` });
-  const mobi = await artifacts.create(`mobi`, mobiMan, base, { ...opts, check: false });
-  uploads.ebook.mobi = mobi;
 }
 
 function getFileId(dpc: DocPrecursor, ...additionalSegments: string[]): string {
@@ -408,7 +403,6 @@ async function uploadFiles(
 ): Promise<void> {
   const files = new Map<string, string>();
   files.set(uploads.ebook.epub, cloudPaths.epub);
-  files.set(uploads.ebook.mobi, cloudPaths.mobi);
   files.set(uploads.ebook.pdf, cloudPaths.pdf);
   files.set(uploads.ebook.speech, cloudPaths.speech);
   files.set(uploads.ebook.app, cloudPaths.app);

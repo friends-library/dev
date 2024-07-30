@@ -37,7 +37,6 @@ export const Default: Story = props({
       loggedDownloadUrls: {
         pdf: `/`,
         epub: `/`,
-        mobi: `/`,
         speech: `/`,
       },
     },

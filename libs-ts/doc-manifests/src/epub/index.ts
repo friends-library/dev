@@ -1,4 +1,4 @@
-import { mobi as mobiCss, epub as epubCss } from '@friends-library/doc-css';
+import { epub as epubCss } from '@friends-library/doc-css';
 import { evaluate } from '@friends-library/evaluator';
 import type { FileManifest } from '@friends-library/doc-artifacts';
 import type { DocPrecursor, Lang } from '@friends-library/types';
@@ -15,13 +15,13 @@ export default async function ebook(
   conf: EbookConfig,
 ): Promise<FileManifest[]> {
   const src = evaluate.toEbookSrcHtml(dpc);
-  const customCss = getCustomCss(dpc.customCode.css, conf.subType);
+  const customCss = getCustomCss(dpc.customCode.css, `epub`);
   const config = { customCss };
   return [
     {
       mimetype: `application/epub+zip`,
       'META-INF/container.xml': container(),
-      'OEBPS/style.css': conf.subType === `epub` ? epubCss(config) : mobiCss(config),
+      'OEBPS/style.css': epubCss(config),
       'OEBPS/package-document.opf': packageDocument(dpc, conf, src),
       'OEBPS/nav.xhtml': wrapEbookBodyHtml(nav(dpc, conf, src), dpc.lang),
       ...coverFiles(dpc, conf.coverImg),
@@ -86,7 +86,7 @@ function frontmatterFiles(
   conf: EbookConfig,
   src: EbookSrcResult,
 ): Record<string, string> {
-  return Object.entries(ebookFrontmatter(dpc, src, conf.subType)).reduce(
+  return Object.entries(ebookFrontmatter(dpc, src)).reduce(
     (files, [slug, html]) => {
       files[`OEBPS/${slug}.xhtml`] = wrapEbookBodyHtml(String(html), dpc.lang);
       return files;

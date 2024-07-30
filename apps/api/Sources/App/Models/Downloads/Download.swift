@@ -75,7 +75,6 @@ extension Download {
 
   enum Format: String, Codable, CaseIterable, Sendable {
     case epub
-    case mobi
     case webPdf
     case mp3Zip
     case m4b
