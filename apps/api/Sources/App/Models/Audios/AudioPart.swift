@@ -19,7 +19,7 @@ struct AudioPart: Codable, Sendable {
     // detect intermediate state between when we have created the audio part row
     // in the database (via web gui), but have not finished processing the new
     // audio part via the CLI command
-    mp3SizeHq != 0
+    self.mp3SizeHq != 0
   }
 
   init(

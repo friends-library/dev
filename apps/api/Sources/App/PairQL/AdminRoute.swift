@@ -99,46 +99,46 @@ extension AdminRoute: RouteResponder {
       switch authedRoute {
       case .createEntity(let input):
         let output = try await CreateEntity.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .deleteEntity(let input):
         let output = try await DeleteEntity.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .editDocument(let id):
         let output = try await EditDocument.resolve(with: id, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .editFriend(let id):
         let output = try await EditFriend.resolve(with: id, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .editToken(let id):
         let output = try await EditToken.resolve(with: id, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .getOrder(let id):
         let output = try await GetOrder.resolve(with: id, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .getFreeOrderRequest(let id):
         let output = try await GetFreeOrderRequest.resolve(with: id, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .listDocuments:
         let output = try await ListDocuments.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .listFriends:
         let output = try await ListFriends.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .listOrders:
         let output = try await ListOrders.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .listTokens:
         let output = try await ListTokens.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .orderEditions:
         let output = try await OrderEditions.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .selectableDocuments:
         let output = try await SelectableDocuments.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .updateEntity(let input):
         let output = try await UpdateEntity.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       }
     }
   }

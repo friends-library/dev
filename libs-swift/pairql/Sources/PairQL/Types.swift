@@ -82,7 +82,7 @@ public struct SuccessOutput: PairOutput {
   }
 
   public init() {
-    success = true
+    self.success = true
   }
 
   public static var success: Self { .init(true) }

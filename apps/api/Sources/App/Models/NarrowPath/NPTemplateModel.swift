@@ -22,31 +22,31 @@ extension NPEmail {
   func template(to recipient: String) -> TemplateEmail {
     .init(
       to: recipient,
-      from: fromAddress,
+      from: self.fromAddress,
       templateAlias: "narrow-path",
-      templateModel: postmarkModel,
-      messageStream: "narrow-path-\(lang)"
+      templateModel: self.postmarkModel,
+      messageStream: "narrow-path-\(self.lang)"
     )
   }
 
   var postmarkModel: [String: String] {
     [
-      "subject": subject,
-      "html_quote": htmlQuote,
-      "text_quote": textQuote,
-      "html_cite": htmlCite,
-      "text_cite": textCite,
-      "date": dateString,
-      "website_name": websiteName,
-      "html_footer_blurb": htmlFooterBlurb,
-      "text_footer_blurb": textFooterBlurb,
-      "lang": lang.rawValue,
-      "unsubscribe_text": unsubscribe,
+      "subject": self.subject,
+      "html_quote": self.htmlQuote,
+      "text_quote": self.textQuote,
+      "html_cite": self.htmlCite,
+      "text_cite": self.textCite,
+      "date": self.dateString,
+      "website_name": self.websiteName,
+      "html_footer_blurb": self.htmlFooterBlurb,
+      "text_footer_blurb": self.textFooterBlurb,
+      "lang": self.lang.rawValue,
+      "unsubscribe_text": self.unsubscribe,
     ]
   }
 
   private var fromAddress: String {
-    switch lang {
+    switch self.lang {
     case .en:
       return "narrow-path@friendslibrary.com"
     case .es:
@@ -55,18 +55,18 @@ extension NPEmail {
   }
 
   private var textCite: String {
-    switch (authorUrl, document) {
+    switch (self.authorUrl, self.document) {
     case (nil, nil):
-      return "- \(authorName)"
+      return "- \(self.authorName)"
     case (_, .some(let doc)):
-      return "- \(authorName), \(doc.textName)\n\n\(doc.url)"
+      return "- \(self.authorName), \(doc.textName)\n\n\(doc.url)"
     case (.some(let friendUrl), nil):
-      return "- \(authorName)\n\n\(friendUrl)"
+      return "- \(self.authorName)\n\n\(friendUrl)"
     }
   }
 
   private var subject: String {
-    switch lang {
+    switch self.lang {
     case .en:
       return "The Narrow Path"
     case .es:
@@ -86,7 +86,7 @@ extension NPEmail {
   }
 
   private var websiteName: String {
-    switch lang {
+    switch self.lang {
     case .en:
       return "Friends Library"
     case .es:
@@ -95,7 +95,7 @@ extension NPEmail {
   }
 
   private var htmlFooterBlurb: String {
-    switch lang {
+    switch self.lang {
     case .en:
       return "Find free ebooks, audiobooks and more from early Quakers at <a href=\"https://www.friendslibrary.com\">www.friendslibrary.com</a>."
     case .es:
@@ -104,7 +104,7 @@ extension NPEmail {
   }
 
   private var textFooterBlurb: String {
-    switch lang {
+    switch self.lang {
     case .en:
       return "Find free ebooks, audiobooks and more from early Quakers at https://friendslibrary.com"
     case .es:
@@ -114,17 +114,17 @@ extension NPEmail {
 
   private var dateString: String {
     let formatter = DateFormatter()
-    formatter.locale = lang.locale
-    if lang == .es {
+    formatter.locale = self.lang.locale
+    if self.lang == .es {
       formatter.setLocalizedDateFormatFromTemplate("d 'de' MMMM")
     } else {
       formatter.setLocalizedDateFormatFromTemplate("MMMM d")
     }
-    return formatter.string(from: date)
+    return formatter.string(from: self.date)
   }
 
   private var unsubscribe: String {
-    switch lang {
+    switch self.lang {
     case .en:
       return "Unsubscribe"
     case .es:

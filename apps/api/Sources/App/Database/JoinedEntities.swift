@@ -193,22 +193,22 @@ extension EditionImpression {
   private var joinedAudioParts: [AudioPart.Id: AudioPart.Joined] = [:]
 
   public func flush() {
-    loaded = false
-    joinedFriends = [:]
-    joinedDocuments = [:]
-    joinedEditions = [:]
-    joinedImpressions = [:]
-    joinedAudios = [:]
-    joinedAudioParts = [:]
+    self.loaded = false
+    self.joinedFriends = [:]
+    self.joinedDocuments = [:]
+    self.joinedEditions = [:]
+    self.joinedImpressions = [:]
+    self.joinedAudios = [:]
+    self.joinedAudioParts = [:]
   }
 
   fileprivate func friends() async throws -> [Friend.Joined] {
-    if !loaded { try await load() }
-    return Array(joinedFriends.values)
+    if !self.loaded { try await self.load() }
+    return Array(self.joinedFriends.values)
   }
 
   fileprivate func friend(_ id: Friend.Id) async throws -> Friend.Joined {
-    if !loaded { try await load() }
+    if !self.loaded { try await self.load() }
     guard let friend = joinedFriends[id] else {
       throw DuetSQLError.notFound("Friend: \(id.lowercased)")
     }
@@ -216,12 +216,12 @@ extension EditionImpression {
   }
 
   fileprivate func documents() async throws -> [Document.Joined] {
-    if !loaded { try await load() }
-    return Array(joinedDocuments.values)
+    if !self.loaded { try await self.load() }
+    return Array(self.joinedDocuments.values)
   }
 
   fileprivate func document(_ id: Document.Id) async throws -> Document.Joined {
-    if !loaded { try await load() }
+    if !self.loaded { try await self.load() }
     guard let document = joinedDocuments[id] else {
       throw DuetSQLError.notFound("Document: \(id.lowercased)")
     }
@@ -229,19 +229,19 @@ extension EditionImpression {
   }
 
   fileprivate func editions() async throws -> [Edition.Joined] {
-    if !loaded { try await load() }
-    return Array(joinedEditions.values)
+    if !self.loaded { try await self.load() }
+    return Array(self.joinedEditions.values)
   }
 
   fileprivate func editionImpressions() async throws -> [EditionImpression.Joined] {
-    if !loaded { try await load() }
-    return Array(joinedImpressions.values)
+    if !self.loaded { try await self.load() }
+    return Array(self.joinedImpressions.values)
   }
 
   fileprivate func editionImpression(
     _ id: EditionImpression.Id
   ) async throws -> EditionImpression.Joined {
-    if !loaded { try await load() }
+    if !self.loaded { try await self.load() }
     guard let impression = joinedImpressions[id] else {
       throw DuetSQLError.notFound("EditionImpression: \(id.lowercased)")
     }
@@ -249,12 +249,12 @@ extension EditionImpression {
   }
 
   fileprivate func audios() async throws -> [Audio.Joined] {
-    if !loaded { try await load() }
-    return Array(joinedAudios.values)
+    if !self.loaded { try await self.load() }
+    return Array(self.joinedAudios.values)
   }
 
   fileprivate func audio(_ id: Audio.Id) async throws -> Audio.Joined {
-    if !loaded { try await load() }
+    if !self.loaded { try await self.load() }
     guard let audio = joinedAudios[id] else {
       throw DuetSQLError.notFound("Audio: \(id.lowercased)")
     }
@@ -262,7 +262,7 @@ extension EditionImpression {
   }
 
   fileprivate func edition(_ id: Edition.Id) async throws -> Edition.Joined {
-    if !loaded { try await load() }
+    if !self.loaded { try await self.load() }
     guard let edition = joinedEditions[id] else {
       throw DuetSQLError.notFound("Edition: \(id.lowercased)")
     }

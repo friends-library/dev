@@ -20,6 +20,6 @@ struct FriendResidence: Codable, Sendable {
 
 extension FriendResidence {
   func isValid() async -> Bool {
-    city.firstLetterIsUppercase && region.firstLetterIsUppercase
+    self.city.firstLetterIsUppercase && self.region.firstLetterIsUppercase
   }
 }

@@ -161,7 +161,7 @@ extension Stripe.Api.Error: CustomStringConvertible {
 }
 
 extension Stripe.Api.Error: CustomDebugStringConvertible {
-  public var debugDescription: String { description }
+  public var debugDescription: String { self.description }
 }
 
 extension Stripe.Api.Error: Decodable {}

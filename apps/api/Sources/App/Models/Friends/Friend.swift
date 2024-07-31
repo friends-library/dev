@@ -15,16 +15,16 @@ struct Friend: Codable, Sendable {
   var deletedAt: Date?
 
   var isCompilations: Bool {
-    slug.starts(with: "compila")
+    self.slug.starts(with: "compila")
   }
 
   var directoryPath: String {
-    "\(lang)/\(slug)"
+    "\(self.lang)/\(self.slug)"
   }
 
   var alphabeticalName: String {
-    let parts = name.split(separator: " ")
-    guard parts.count > 1, let last = parts.last else { return name }
+    let parts = self.name.split(separator: " ")
+    guard parts.count > 1, let last = parts.last else { return self.name }
     return "\(last), \(parts.dropLast().joined(separator: " "))"
   }
 
@@ -60,22 +60,22 @@ extension Friend {
   }
 
   var urlPath: String {
-    switch (lang, gender) {
+    switch (self.lang, self.gender) {
     case (_, .mixed):
-      return slug // compilations
+      return self.slug // compilations
     case (.en, _):
-      return "friend/\(slug)"
+      return "friend/\(self.slug)"
     case (.es, .male):
-      return "amigo/\(slug)"
+      return "amigo/\(self.slug)"
     case (.es, .female):
-      return "amiga/\(slug)"
+      return "amiga/\(self.slug)"
     }
   }
 }
 
 extension Friend.DirectoryPathData: DirectoryPathable {
   var directoryPath: String {
-    "\(lang)/\(slug)"
+    "\(self.lang)/\(self.slug)"
   }
 }
 

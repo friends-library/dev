@@ -4,8 +4,8 @@ extension NPQuote {
       quoteId: id,
       lang: lang,
       date: Current.date(),
-      htmlQuote: htmlQuote,
-      textQuote: textQuote,
+      htmlQuote: self.htmlQuote,
+      textQuote: self.textQuote,
       authorName: authorName ?? "",
       authorUrl: nil
     )

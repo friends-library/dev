@@ -22,7 +22,7 @@ private struct PassthroughHandler: LogHandler, Sendable {
     function: String,
     line: UInt
   ) {
-    receive(level, message)
+    self.receive(level, message)
   }
 
   subscript(metadataKey _: String) -> Logger.Metadata.Value? {

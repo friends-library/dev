@@ -35,11 +35,11 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testFindDuplicatePodcastDownloads() async throws {
-    let d1 = podcastDownload(ip: "1.2.3.4")
-    var d2 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- DUPE, same ed.id and ip
-    let d3 = podcastDownload(ip: "1.2.3.4") // <-- not dupe, new ed.id
-    let d4 = podcastDownload(d1.editionId, ip: "1.2.3.5") // <-- not dupe, new ip
-    var d5 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- another DUPE
+    let d1 = self.podcastDownload(ip: "1.2.3.4")
+    var d2 = self.podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- DUPE, same ed.id and ip
+    let d3 = self.podcastDownload(ip: "1.2.3.4") // <-- not dupe, new ed.id
+    let d4 = self.podcastDownload(d1.editionId, ip: "1.2.3.5") // <-- not dupe, new ip
+    var d5 = self.podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- another DUPE
 
     d2.createdAt = Date(timeIntervalSince1970: 500)
     d5.createdAt = Date(timeIntervalSince1970: 100) // <-- older than other dupes
@@ -49,10 +49,10 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testBackfillLocationData() {
-    var d1 = podcastDownload(ip: "1.2.3.4", city: "San Francisco")
-    let d2 = podcastDownload(ip: "1.2.3.4", city: nil)
-    var d3 = podcastDownload(ip: "1.2.3.4", city: "Atlanta")
-    let d4 = podcastDownload(ip: "5.5.5.5", city: nil) // <-- still missing
+    var d1 = self.podcastDownload(ip: "1.2.3.4", city: "San Francisco")
+    let d2 = self.podcastDownload(ip: "1.2.3.4", city: nil)
+    var d3 = self.podcastDownload(ip: "1.2.3.4", city: "Atlanta")
+    let d4 = self.podcastDownload(ip: "5.5.5.5", city: nil) // <-- still missing
 
     // we have two patterns for 1.2.3.4, d3 is newer, it should be used
     d1.createdAt = Date(timeIntervalSince1970: 100)
@@ -283,7 +283,7 @@ final class DownloadableFileTests: AppTestCase {
     for (format, pathEnd) in tests {
       let downloadable = entities.edition.downloadableFile(format: format)
       XCTAssertEqual(downloadable.logPath, "download/\(entities.edition.id.lowercased)/\(pathEnd)")
-      XCTAssertEqual(downloadable.logUrl.absoluteString, "\(selfUrl)/\(downloadable.logPath)")
+      XCTAssertEqual(downloadable.logUrl.absoluteString, "\(self.selfUrl)/\(downloadable.logPath)")
     }
   }
 
@@ -301,16 +301,16 @@ final class DownloadableFileTests: AppTestCase {
       (
         .audio(.podcast(.high)),
         "download/\(id)/audio/podcast/hq/podcast.rss",
-        "\(selfUrl)/download/\(id)/audio/podcast/hq/podcast.rss",
+        "\(self.selfUrl)/download/\(id)/audio/podcast/hq/podcast.rss",
         "\(edition.directoryPath.replace("^en/", ""))/podcast.rss",
-        "\(websiteUrl)/\(edition.directoryPath.replace("^en/", ""))/podcast.rss"
+        "\(self.websiteUrl)/\(edition.directoryPath.replace("^en/", ""))/podcast.rss"
       ),
       (
         .audio(.podcast(.low)),
         "download/\(id)/audio/podcast/lq/podcast.rss",
-        "\(selfUrl)/download/\(id)/audio/podcast/lq/podcast.rss",
+        "\(self.selfUrl)/download/\(id)/audio/podcast/lq/podcast.rss",
         "\(edition.directoryPath.replace("^en/", ""))/lq/podcast.rss",
-        "\(websiteUrl)/\(edition.directoryPath.replace("^en/", ""))/lq/podcast.rss"
+        "\(self.websiteUrl)/\(edition.directoryPath.replace("^en/", ""))/lq/podcast.rss"
       ),
     ]
 
@@ -351,7 +351,7 @@ final class DownloadableFileTests: AppTestCase {
       XCTAssertEqual(downloadable.filename, expectedFilename)
       XCTAssertEqual(
         downloadable.sourceUrl.absoluteString,
-        "\(cloudUrl)/\(edition.directoryPath)/\(expectedFilename)"
+        "\(self.cloudUrl)/\(edition.directoryPath)/\(expectedFilename)"
       )
     }
   }

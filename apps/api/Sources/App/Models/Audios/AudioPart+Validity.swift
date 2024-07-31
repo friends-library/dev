@@ -5,49 +5,49 @@ extension AudioPart {
     let isTempNoteToListener = title == "Nota para el oyente"
 
     if !isTempNoteToListener, mp3SizeHq < 2_000_000, mp3SizeHq != 0 {
-      logInvalid("mp3 size hq too small \(mp3SizeHq))")
+      self.logInvalid("mp3 size hq too small \(mp3SizeHq))")
       return false
     }
 
     if !isTempNoteToListener, mp3SizeLq < 1_000_000, mp3SizeLq != 0 {
-      logInvalid("mp3 size lq too small \(mp3SizeLq))")
+      self.logInvalid("mp3 size lq too small \(mp3SizeLq))")
       return false
     }
 
     if mp3SizeLq == mp3SizeHq, mp3SizeHq != 0 {
-      logInvalid("mp3 lq/hq same size \(mp3SizeLq))")
+      self.logInvalid("mp3 lq/hq same size \(mp3SizeLq))")
       return false
     }
 
     if mp3SizeLq >= mp3SizeHq, mp3SizeLq != 0 {
-      logInvalid("mp3 lq larger than hq, \(mp3SizeLq) >= \(mp3SizeHq))")
+      self.logInvalid("mp3 lq larger than hq, \(mp3SizeLq) >= \(mp3SizeHq))")
       return false
     }
 
     if isPublished, duration < 200, !isTempNoteToListener {
-      logInvalid("short duration \(duration))")
+      self.logInvalid("short duration \(duration))")
       return false
     }
 
     if title.isEmpty || title.containsUnpresentableSubstring {
-      logInvalid("empty or unpresentable title \(title))")
+      self.logInvalid("empty or unpresentable title \(title))")
       return false
     }
 
     if order < 1 {
-      logInvalid("order < 1 \(order))")
+      self.logInvalid("order < 1 \(order))")
       return false
     }
 
     if !chapters.allSatisfy({ $0 >= 0 }) {
-      logInvalid("negative chapter \(chapters))")
+      self.logInvalid("negative chapter \(chapters))")
       return false
     }
 
     var prevChapter = chapters.first - 1
     for chapter in chapters {
       if chapter != prevChapter + 1 {
-        logInvalid("non-sequenced chapter \(chapters))")
+        self.logInvalid("non-sequenced chapter \(chapters))")
         return false
       }
       prevChapter = chapter

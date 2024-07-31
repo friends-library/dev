@@ -25,8 +25,8 @@ struct RelatedDocument: Codable, Sendable {
 
 extension RelatedDocument {
   func isValid() async -> Bool {
-    description.count >= 85
-      && description.count <= 450
-      && !description.containsUnpresentableSubstring
+    self.description.count >= 85
+      && self.description.count <= 450
+      && !self.description.containsUnpresentableSubstring
   }
 }

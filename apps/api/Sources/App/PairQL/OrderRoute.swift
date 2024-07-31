@@ -51,23 +51,23 @@ extension OrderRoute: RouteResponder {
     switch route {
     case .brickOrder(let input):
       let output = try await BrickOrder.resolve(with: input, in: context)
-      return try respond(with: output)
+      return try self.respond(with: output)
     case .createFreeOrderRequest(let input):
       let output = try await CreateFreeOrderRequest.resolve(with: input, in: context)
-      return try respond(with: output)
+      return try self.respond(with: output)
     case .getPrintJobExploratoryMetadata(let input):
       let output = try await GetPrintJobExploratoryMetadata.resolve(with: input, in: context)
-      return try respond(with: output)
+      return try self.respond(with: output)
     case .createOrder(let token, let input):
       try await CreateOrder.authenticate(with: .init(token))
       let output = try await CreateOrder.resolve(with: input, in: context)
-      return try respond(with: output)
+      return try self.respond(with: output)
     case .initOrder(let input):
       let output = try await InitOrder.resolve(with: input, in: context)
-      return try respond(with: output)
+      return try self.respond(with: output)
     case .sendOrderConfirmationEmail(let input):
       let output = try await SendOrderConfirmationEmail.resolve(with: input, in: context)
-      return try respond(with: output)
+      return try self.respond(with: output)
     }
   }
 }

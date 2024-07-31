@@ -18,15 +18,15 @@ struct Document: Codable, Sendable {
   var deletedAt: Date? = nil
 
   var htmlTitle: String {
-    Asciidoc.htmlTitle(title)
+    Asciidoc.htmlTitle(self.title)
   }
 
   var htmlShortTitle: String {
-    Asciidoc.htmlShortTitle(title)
+    Asciidoc.htmlShortTitle(self.title)
   }
 
   var utf8ShortTitle: String {
-    Asciidoc.utf8ShortTitle(title)
+    Asciidoc.utf8ShortTitle(self.title)
   }
 
   init(
@@ -66,7 +66,7 @@ extension Document {
     var slug: String
 
     var directoryPath: String {
-      "\(friend.directoryPath)/\(slug)"
+      "\(self.friend.directoryPath)/\(self.slug)"
     }
   }
 }
@@ -88,7 +88,7 @@ extension Document.Joined {
   }
 
   var directoryPath: String {
-    directoryPathData.directoryPath
+    self.directoryPathData.directoryPath
   }
 
   var trimmedUtf8ShortTitle: String {

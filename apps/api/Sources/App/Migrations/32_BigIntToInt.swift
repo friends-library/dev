@@ -50,7 +50,7 @@ struct BigIntToInt: AsyncMigration {
     Current.logger.info("Running migration: BigIntToInt UP")
     let sql = database as! SQLDatabase
 
-    for (table, column) in columns {
+    for (table, column) in self.columns {
       try await sql.execute(
         """
         ALTER TABLE \(unsafeRaw: table)
@@ -59,7 +59,7 @@ struct BigIntToInt: AsyncMigration {
       )
     }
 
-    for (table, column) in arrayColumns {
+    for (table, column) in self.arrayColumns {
       try await sql.execute(
         """
         ALTER TABLE \(unsafeRaw: table)
@@ -73,7 +73,7 @@ struct BigIntToInt: AsyncMigration {
     Current.logger.info("Running migration: BigIntToInt DOWN")
     let sql = database as! SQLDatabase
 
-    for (table, column) in columns {
+    for (table, column) in self.columns {
       try await sql.execute(
         """
         ALTER TABLE \(unsafeRaw: table)
@@ -82,7 +82,7 @@ struct BigIntToInt: AsyncMigration {
       )
     }
 
-    for (table, column) in arrayColumns {
+    for (table, column) in self.arrayColumns {
       try await sql.execute(
         """
         ALTER TABLE \(unsafeRaw: table)

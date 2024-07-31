@@ -111,7 +111,7 @@ struct MockLogger: LogHandler {
     function: String,
     line: UInt
   ) {
-    logged.withValue { $0.append(message.description) }
+    self.logged.withValue { $0.append(message.description) }
   }
 
   var metadata: Logging.Logger.Metadata { get { .init() } set {} }

@@ -100,10 +100,10 @@ struct ApiTemplateEmail: Encodable {
 
 extension ApiTemplateEmail {
   init(email: TemplateEmail) {
-    To = email.to
-    From = email.from
-    TemplateAlias = email.templateAlias
-    TemplateModel = email.templateModel
-    MessageStream = email.messageStream
+    self.To = email.to
+    self.From = email.from
+    self.TemplateAlias = email.templateAlias
+    self.TemplateModel = email.templateModel
+    self.MessageStream = email.messageStream
   }
 }

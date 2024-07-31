@@ -22,39 +22,39 @@ struct RateLimitedSlackClient: Sendable {
     send: @escaping @Sendable (FlpSlack.Message) async -> Void
   ) {
     self.dailyLimit = dailyLimit
-    execSend = send
+    self.execSend = send
 
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
-    dateFormatter = formatter
+    self.dateFormatter = formatter
 
-    state = LockIsolated(State())
+    self.state = LockIsolated(State())
   }
 
   func send(_ slack: FlpSlack.Message) async {
     var state = state.value
-    let today = dateFormatter.string(from: Current.date())
+    let today = self.dateFormatter.string(from: Current.date())
     switch state.currentDay {
 
     // first time initializing
     case nil:
       state = .init(currentDay: today)
-      await execSend(slack)
+      await self.execSend(slack)
 
     // new day
     case .some(let day) where day != today:
       let msg = "Sent `\(state.numSent)/\(state.numAttempted)` attempted slacks on `\(day)`"
-      await execSend(.debug(msg))
+      await self.execSend(.debug(msg))
       state = .init(currentDay: today)
-      await execSend(slack)
+      await self.execSend(slack)
 
     default:
       state.numAttempted += 1
 
       // over daily limit
-      if state.numAttempted >= dailyLimit {
-        if state.numAttempted - 1 < dailyLimit {
-          await execSend(.error("Exceeded daily slack limit"))
+      if state.numAttempted >= self.dailyLimit {
+        if state.numAttempted - 1 < self.dailyLimit {
+          await self.execSend(.error("Exceeded daily slack limit"))
           await Current.postmarkClient.send(.init(
             to: Env.JARED_CONTACT_FORM_EMAIL,
             from: "info@friendslibrary.com",
@@ -62,40 +62,40 @@ struct RateLimitedSlackClient: Sendable {
             textBody: "See server logs for dropped slacks"
           ))
         }
-        drop(slack)
+        self.drop(slack)
 
         // at 90% of daily limit
-      } else if state.numAttempted >= dailyLimit * 9 / 10 {
-        if state.numAttempted - 1 < dailyLimit * 9 / 10 {
-          await execSend(.error("Exceeded 90% of daily slack limit"))
+      } else if state.numAttempted >= self.dailyLimit * 9 / 10 {
+        if state.numAttempted - 1 < self.dailyLimit * 9 / 10 {
+          await self.execSend(.error("Exceeded 90% of daily slack limit"))
         }
         switch slack.channel {
         case .debug, .audioDownloads, .downloads:
-          drop(slack)
+          self.drop(slack)
         case .info where slack.message.text.contains("Unusual missing location"):
-          drop(slack)
+          self.drop(slack)
         case .info, .errors, .orders, .other:
           state.numSent += 1
-          await execSend(slack)
+          await self.execSend(slack)
         }
 
         // at 80% of daily limit
-      } else if state.numAttempted >= dailyLimit * 8 / 10 {
-        if state.numAttempted - 1 < dailyLimit * 8 / 10 {
-          await execSend(.error("Exceeded 80% of daily slack limit"))
+      } else if state.numAttempted >= self.dailyLimit * 8 / 10 {
+        if state.numAttempted - 1 < self.dailyLimit * 8 / 10 {
+          await self.execSend(.error("Exceeded 80% of daily slack limit"))
         }
         switch slack.channel {
         case .debug, .audioDownloads, .downloads:
-          drop(slack)
+          self.drop(slack)
         case .info, .errors, .orders, .other:
           state.numSent += 1
-          await execSend(slack)
+          await self.execSend(slack)
         }
 
         // under all limits
       } else {
         state.numSent += 1
-        await execSend(slack)
+        await self.execSend(slack)
       }
     }
 

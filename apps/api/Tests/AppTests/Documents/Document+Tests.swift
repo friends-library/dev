@@ -14,28 +14,28 @@ final class DocumentTests: AppTestCase {
   }
 
   func testEmptyTitleInvalid() async {
-    var doc = validDocument
+    var doc = self.validDocument
     doc.title = ""
     expect(await doc.isValid()).toBeFalse()
   }
 
   func testOriginalTitleTooShortInvalid() async {
-    var doc = validDocument
+    var doc = self.validDocument
     doc.originalTitle = "Abc"
     expect(await doc.isValid()).toBeFalse()
   }
 
   func testOriginalTitleNotCapitalizedInvalid() async {
-    var doc = validDocument
+    var doc = self.validDocument
     doc.originalTitle = "the life and labors of george dilwynn"
     expect(await doc.isValid()).toBeFalse()
   }
 
   func testPublishedDateOutOfBoundsInvalid() async {
-    var doc = validDocument
+    var doc = self.validDocument
     doc.published = 1500
     expect(await doc.isValid()).toBeFalse()
-    doc = validDocument
+    doc = self.validDocument
     doc.published = 1901
     expect(await doc.isValid()).toBeFalse()
   }
@@ -58,25 +58,25 @@ final class DocumentTests: AppTestCase {
   }
 
   func testNonCapitalizedTitleInvalid() async {
-    var doc = validDocument
+    var doc = self.validDocument
     doc.title = "no Cross, No Crown"
     expect(await doc.isValid()).toBeFalse()
   }
 
   func testTooShortTitleInValid() async {
-    var doc = validDocument
+    var doc = self.validDocument
     doc.title = "No"
     expect(await doc.isValid()).toBeFalse()
   }
 
   func testNonSluggySlugInvalid() async {
-    var doc = validDocument
+    var doc = self.validDocument
     doc.slug = "This is not A Sluggy Slug"
     expect(await doc.isValid()).toBeFalse()
   }
 
   func testMalformedFilenameInvalid() async {
-    var doc = validDocument
+    var doc = self.validDocument
     doc.filename = "This is not A good filename :("
     expect(await doc.isValid()).toBeFalse()
   }

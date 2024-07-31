@@ -15,6 +15,6 @@ struct ArtifactProductionVersion: Codable, Sendable {
 
 extension ArtifactProductionVersion {
   func isValid() async -> Bool {
-    version.rawValue.isValidGitCommitFullSha
+    self.version.rawValue.isValidGitCommitFullSha
   }
 }

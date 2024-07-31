@@ -29,13 +29,13 @@ struct Order: Codable, Sendable {
 
   var address: ShippingAddress {
     .init(
-      name: addressName,
-      street: addressStreet,
-      street2: addressStreet2,
-      city: addressCity,
-      state: addressState,
-      zip: addressZip,
-      country: addressCountry
+      name: self.addressName,
+      street: self.addressStreet,
+      street2: self.addressStreet2,
+      city: self.addressCity,
+      state: self.addressState,
+      zip: self.addressZip,
+      country: self.addressCountry
     )
   }
 
@@ -149,7 +149,7 @@ extension Order {
 extension Order {
   func items() async throws -> [OrderItem] {
     try await OrderItem.query()
-      .where(.orderId == id)
+      .where(.orderId == self.id)
       .all()
   }
 }

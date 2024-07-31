@@ -20,7 +20,7 @@ public extension String {
   }
 
   var isValidGitCommitFullSha: Bool {
-    count == 40 && match(#"^[0-9a-f]+$"#)
+    count == 40 && self.match(#"^[0-9a-f]+$"#)
   }
 
   var containsUnpresentableSubstring: Bool {
@@ -30,7 +30,7 @@ public extension String {
       || contains("...")
       || contains("+++[")
       || contains("\u{200B}") // zero-width space
-      || match(#"\bLorem\b"#) // lorem ipsum
+      || self.match(#"\bLorem\b"#) // lorem ipsum
   }
 
   func padLeft(toLength: Int, withPad: String) -> String {

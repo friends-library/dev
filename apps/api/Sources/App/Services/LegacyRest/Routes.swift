@@ -11,44 +11,44 @@ enum LegacyRest {
     func setLegacyAppEditions(data: Data, lang: Lang) {
       switch lang {
       case .en:
-        appEditionsEnglish = data
+        self.appEditionsEnglish = data
       case .es:
-        appEditionsSpanish = data
+        self.appEditionsSpanish = data
       }
     }
 
     func getLegacyAppEditions(lang: Lang) -> Data? {
       switch lang {
       case .en:
-        return appEditionsEnglish
+        return self.appEditionsEnglish
       case .es:
-        return appEditionsSpanish
+        return self.appEditionsSpanish
       }
     }
 
     func setLegacyAppAudios(data: Data, lang: Lang) {
       switch lang {
       case .en:
-        appAudiosEnglish = data
+        self.appAudiosEnglish = data
       case .es:
-        appAudiosSpanish = data
+        self.appAudiosSpanish = data
       }
     }
 
     func getLegacyAppAudios(lang: Lang) -> Data? {
       switch lang {
       case .en:
-        return appAudiosEnglish
+        return self.appAudiosEnglish
       case .es:
-        return appAudiosSpanish
+        return self.appAudiosSpanish
       }
     }
 
     public func flush() {
-      appEditionsEnglish = nil
-      appEditionsSpanish = nil
-      appAudiosEnglish = nil
-      appAudiosSpanish = nil
+      self.appEditionsEnglish = nil
+      self.appEditionsSpanish = nil
+      self.appAudiosEnglish = nil
+      self.appAudiosSpanish = nil
     }
   }
 

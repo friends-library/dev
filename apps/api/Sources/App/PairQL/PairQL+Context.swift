@@ -21,7 +21,7 @@ struct AuthedContext: ResolverContext {
   var scopes: [TokenScope]
 
   func verify(_ scope: Scope) throws {
-    guard scopes.can(scope) else {
+    guard self.scopes.can(scope) else {
       throw error(
         id: "7bdaa820",
         type: .unauthorized,

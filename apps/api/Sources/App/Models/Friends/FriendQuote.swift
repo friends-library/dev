@@ -31,6 +31,6 @@ struct FriendQuote: Codable, Sendable {
 
 extension FriendQuote {
   func isValid() async -> Bool {
-    source.firstLetterIsUppercase && text.firstLetterIsUppercase && order > 0
+    self.source.firstLetterIsUppercase && self.text.firstLetterIsUppercase && self.order > 0
   }
 }

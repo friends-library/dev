@@ -65,12 +65,12 @@ extension GettingStartedBooks: Resolver {
 
 extension SelectedDocuments {
   func resolve() async throws -> [Document.Joined] {
-    let docSlugs = slugs.map(\.documentSlug)
+    let docSlugs = self.slugs.map(\.documentSlug)
     let allDocuments = try await Document.Joined.all()
       .filter { docSlugs.contains($0.slug) }
 
     var documents: [Document.Joined] = []
-    for slug in slugs {
+    for slug in self.slugs {
       let matchedDocument = allDocuments.filter { doc in
         guard doc.slug == slug.documentSlug else { return false }
         return doc.friend.slug == slug.friendSlug && doc.friend.lang == lang

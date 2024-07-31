@@ -28,7 +28,7 @@ extension Token {
 
   func scopes() async throws -> [TokenScope] {
     try await TokenScope.query()
-      .where(.tokenId == id)
+      .where(.tokenId == self.id)
       .all()
   }
 }
