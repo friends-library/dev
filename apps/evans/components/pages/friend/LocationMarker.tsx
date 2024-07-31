@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import cx from 'classnames';
 
@@ -7,7 +9,7 @@ interface Props {
   label: string;
   className?: string;
   tailwindColor?: string;
-  onClick?(label: any): unknown;
+  onClick?(label: string): unknown;
 }
 
 const LocationMarker: React.FC<Props> = ({

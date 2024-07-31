@@ -30,7 +30,6 @@ export namespace DocumentPage {
         numPages: [number, ...number[]];
         loggedDownloadUrls: {
           epub: string;
-          mobi: string;
           pdf: string;
           speech: string;
         };

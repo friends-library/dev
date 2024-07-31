@@ -2,7 +2,7 @@ import React from 'react';
 import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
-import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { Metadata } from 'next';
 import { LANG } from '@/lib/env';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
 import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
@@ -11,48 +11,15 @@ import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
-import { sortDocuments } from '@/lib/document';
-import * as custom from '@/lib/ssg/custom-code';
-import Seo from '@/components/core/Seo';
-import { friendPageMetaDesc } from '@/lib/seo';
+import * as seo from '@/lib/seo';
 import api, { type Api } from '@/lib/ssg/api-client';
 import BookTeaserCards from '@/components/core/BookTeaserCards';
+import * as custom from '@/lib/ssg/custom-code';
+import { sortDocuments } from '@/lib/document';
 
-type Props = Api.FriendPage.Output;
+export type Props = Api.FriendPage.Output;
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = await api.publishedFriendSlugs(LANG);
-  return {
-    paths: slugs.map((friend_slug) => ({ params: { friend_slug } })),
-    fallback: false,
-  };
-};
-
-export const getStaticProps: GetStaticProps<Props> = async (context) => {
-  invariant(typeof context.params?.friend_slug === `string`);
-  const slug = context.params.friend_slug;
-  const friend = await api.friendPage({ lang: LANG, slug });
-  const customCode = await custom.some([
-    ...friend.documents.map(({ slug }) => ({
-      friendSlug: friend.slug,
-      documentSlug: slug,
-    })),
-    ...friend.relatedDocuments.map((related) => ({
-      friendSlug: related.friendSlug,
-      documentSlug: related.slug,
-    })),
-  ]);
-  friend.documents = friend.documents.map(
-    custom.merging(customCode, (doc) => [friend.slug, doc.slug]),
-  );
-  friend.relatedDocuments = friend.relatedDocuments.map(
-    custom.merging(customCode, (doc) => [doc.friendSlug, doc.slug]),
-  );
-  friend.documents.sort(sortDocuments);
-  return { props: friend };
-};
-
-const Friend: React.FC<Props> = ({
+const FriendPage: React.FC<Props> = ({
   name,
   isCompilations,
   gender,
@@ -98,16 +65,6 @@ const Friend: React.FC<Props> = ({
 
   return (
     <div>
-      <Seo
-        title={name}
-        description={friendPageMetaDesc(
-          name,
-          description,
-          documents.map((doc) => doc.title),
-          documents.filter((doc) => doc.hasAudio).length,
-          isCompilations,
-        )}
-      />
       <FriendBlock name={name} gender={gender} blurb={description} />
       {quotes[0] && <FeaturedQuoteBlock cite={quotes[0].source} quote={quotes[0].text} />}
       <div className="bg-flgray-100 px-8 pt-12 pb-4 lg:px-8">
@@ -176,4 +133,40 @@ const Friend: React.FC<Props> = ({
   );
 };
 
-export default Friend;
+export default FriendPage;
+
+export async function queryFriend(slug: string): Promise<Props> {
+  const friend = await api.friendPage({ lang: LANG, slug });
+  const customCode = await custom.some([
+    ...friend.documents.map(({ slug }) => ({
+      friendSlug: friend.slug,
+      documentSlug: slug,
+    })),
+    ...friend.relatedDocuments.map((related) => ({
+      friendSlug: related.friendSlug,
+      documentSlug: related.slug,
+    })),
+  ]);
+  friend.documents = friend.documents.map(
+    custom.merging(customCode, (doc) => [friend.slug, doc.slug]),
+  );
+  friend.relatedDocuments = friend.relatedDocuments.map(
+    custom.merging(customCode, (doc) => [doc.friendSlug, doc.slug]),
+  );
+  friend.documents.sort(sortDocuments);
+  return friend;
+}
+//
+export async function metadata(slug: string): Promise<Metadata> {
+  const friend = await queryFriend(slug);
+  return seo.nextMetadata(
+    friend.name,
+    seo.friendPageMetaDesc(
+      friend.name,
+      friend.description,
+      friend.documents.map((doc) => doc.title),
+      friend.documents.filter((doc) => doc.hasAudio).length,
+      friend.isCompilations,
+    ),
+  );
+}
