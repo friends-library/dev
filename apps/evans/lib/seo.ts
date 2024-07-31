@@ -177,4 +177,8 @@ const PAGE_META_DESCS = {
     LANG === `en`
       ? `View hand-picked reading recommendations to help you get started with our %NUM_BOOKS% books written by early members of the Religious Society of Friends (Quakers). Recommendations come in four categories: History, Doctrine, Spiritual Life, and Journals. All books are freely available in their entirety in our Android/iOS app or to download as an ebook or PDF, and a growing number are also available as free audiobooks. Paperback copies are also available at very low cost.`
       : `Hemos seleccionado algunos de nuestros libros favoritos de los primeros miembros de la Sociedad de Amigos (Cuáqueros), y los hemos organizado en categorías para ayudarte a comenzar. Nuestras recomendaciones están organizadas en cuatro categorías: Historia, Doctrina, Vida Espiritual, y Biografía. Todos los libros pueden ser leídos gratuitamente en nuestra aplicación para Android y iOS, o descargados a tu dispositivo como eBook o PDF, y muchos han sido grabados como audiolibros. Libros impresos también están disponibles por un precio muy económico.`,
+  'not-found':
+    LANG === `en`
+      ? `Sorry, it looks like you followed a broken link, or tried a URL that doesn’t exist. Try searching below for what you’re looking for, or you can contact us if you believe you’ve found a problem with the website &mdash; we’d love to know about it so we can fix it as soon as possible!`
+      : `Lo sentimos, parece que has entrado en un enlace roto, o intentado abrir un URL que no existe. Trata de encontrar lo que estás buscando más abajo, o puedes contactarnos si crees que has encontrado un problema con el sitio web &mdash; ¡Nos encantaría saberlo para poder solucionarlo lo antes posible!`,
 };
