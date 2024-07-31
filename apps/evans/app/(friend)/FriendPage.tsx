@@ -156,7 +156,7 @@ export async function queryFriend(slug: string): Promise<Props> {
   friend.documents.sort(sortDocuments);
   return friend;
 }
-//
+
 export async function metadata(slug: string): Promise<Metadata> {
   const friend = await queryFriend(slug);
   return seo.nextMetadata(
