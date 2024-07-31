@@ -216,7 +216,7 @@ private actor Responses {
   }
 
   func next() -> Lulu.Api.PrintJobCostCalculationsResponse {
-    if responses.count == 1 { return responses[0] }
-    return responses.removeFirst()
+    if self.responses.count == 1 { return self.responses[0] }
+    return self.responses.removeFirst()
   }
 }

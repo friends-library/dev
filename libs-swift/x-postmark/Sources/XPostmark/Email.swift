@@ -16,7 +16,7 @@ public struct Email {
   public private(set) var textBody: String?
 
   public var body: String {
-    htmlBody ?? textBody ?? ""
+    self.htmlBody ?? self.textBody ?? ""
   }
 
   public init(
@@ -120,12 +120,12 @@ struct ApiEmail: Encodable {
   let TrackOpens: Bool
 
   init(email: Email) {
-    From = email.from
-    To = email.to
-    Subject = email.subject
-    HtmlBody = email.htmlBody
-    TextBody = email.textBody
-    ReplyTo = email.replyTo
-    TrackOpens = true
+    self.From = email.from
+    self.To = email.to
+    self.Subject = email.subject
+    self.HtmlBody = email.htmlBody
+    self.TextBody = email.textBody
+    self.ReplyTo = email.replyTo
+    self.TrackOpens = true
   }
 }

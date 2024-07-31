@@ -16,11 +16,11 @@ extension Lulu.Api.Client {
     public func get() async throws -> String {
       if let token, token.expiration > Current.date() {
         return token.value
-      } else if requestInFlight {
+      } else if self.requestInFlight {
         try? await Task.sleep(nanoseconds: 150_000_000)
-        return try await get()
+        return try await self.get()
       }
-      requestInFlight = true
+      self.requestInFlight = true
       let creds = try await HTTP.postFormUrlencoded(
         ["grant_type": "client_credentials"],
         to: "\(Env.LULU_API_ENDPOINT)/auth/realms/glasstree/protocol/openid-connect/token",
@@ -28,7 +28,7 @@ extension Lulu.Api.Client {
         auth: .basic(Env.LULU_CLIENT_KEY, Env.LULU_CLIENT_SECRET),
         keyDecodingStrategy: .convertFromSnakeCase
       )
-      requestInFlight = false
+      self.requestInFlight = false
       token = (
         value: creds.accessToken,
         expiration: Current.date().addingTimeInterval(creds.expiresIn - 5.0)

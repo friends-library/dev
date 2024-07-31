@@ -34,7 +34,7 @@ public struct PqlError: Error, Codable, Equatable, Sendable {
     self.dashboardTag = dashboardTag
     self.appTag = appTag
     self.showContactSupport = showContactSupport
-    statusCode = type.statusCode
+    self.statusCode = type.statusCode
   }
 }
 

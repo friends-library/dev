@@ -10,7 +10,7 @@ enum DownloadRoute: RouteHandler {
     var path = request.url.path
     path.removeFirst()
     do {
-      return try await logAndRedirect(
+      return try await self.logAndRedirect(
         file: try await DownloadableFile(logPath: path),
         userAgent: request.headers.first(name: .userAgent) ?? "",
         ipAddress: request.ipAddress,
@@ -134,7 +134,7 @@ private actor LastLocation {
   var value: IpApi.Response?
 
   func update(_ newValue: IpApi.Response?) {
-    value = newValue
+    self.value = newValue
   }
 }
 

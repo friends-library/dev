@@ -30,13 +30,13 @@ extension EvansRoute: RouteResponder {
     switch route {
     case .logJsError(let input):
       let output = try await LogJsError.resolve(with: input, in: context)
-      return try respond(with: output)
+      return try self.respond(with: output)
     case .submitContactForm(let input):
       let output = try await SubmitContactForm.resolve(with: input, in: context)
-      return try respond(with: output)
+      return try self.respond(with: output)
     case .subscribeToNarrowPath(let input):
       let output = try await SubscribeToNarrowPath.resolve(with: input, in: context)
-      return try respond(with: output)
+      return try self.respond(with: output)
     }
   }
 }

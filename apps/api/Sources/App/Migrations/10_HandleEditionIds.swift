@@ -8,13 +8,13 @@ struct HandleEditionIds: AsyncMigration {
     Current.logger.info("Running migration: HandleEditionIds UP")
     let sqlDb = database as! SQLDatabase
 
-    try await createNonForeignKeyNullableColumns(database)
+    try await self.createNonForeignKeyNullableColumns(database)
 
     if Env.get("SKIP_LEGACY_DATA_MIGRATION_STEPS") != "true" {
-      try await addEditionIds(sqlDb)
+      try await self.addEditionIds(sqlDb)
     }
 
-    try await removeColumns(database)
+    try await self.removeColumns(database)
   }
 
   private func createNonForeignKeyNullableColumns(_ database: Database) async throws {

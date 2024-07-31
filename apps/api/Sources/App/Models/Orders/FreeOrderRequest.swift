@@ -18,13 +18,13 @@ struct FreeOrderRequest: Codable, Sendable {
 
   var address: ShippingAddress {
     .init(
-      name: name,
-      street: addressStreet,
-      street2: addressStreet2,
-      city: addressCity,
-      state: addressState,
-      zip: addressZip,
-      country: addressCountry
+      name: self.name,
+      street: self.addressStreet,
+      street2: self.addressStreet2,
+      city: self.addressCity,
+      state: self.addressState,
+      zip: self.addressZip,
+      country: self.addressCountry
     )
   }
 

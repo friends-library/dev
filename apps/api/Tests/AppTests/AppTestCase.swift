@@ -26,22 +26,22 @@ class AppTestCase: XCTestCase {
   override static func setUp() {
     setenv("WEBSITE_URL_EN", "https://friendslibrary.com", 1)
     setenv("WEBSITE_URL_ES", "https://bibliotecadelosamigos.org", 1)
-    app = Application(.testing)
+    self.app = Application(.testing)
     Current = .mock
     Current.uuid = { UUID() }
-    try! Configure.app(app)
-    Current.db = FlushingDbClient(app.db as! SQLDatabase)
+    try! Configure.app(self.app)
+    Current.db = FlushingDbClient(self.app.db as! SQLDatabase)
     Current.logger = .null
-    app.logger = .null
-    if !migrated {
-      try! app.autoRevert().wait()
-      try! app.autoMigrate().wait()
-      migrated = true
+    self.app.logger = .null
+    if !self.migrated {
+      try! self.app.autoRevert().wait()
+      try! self.app.autoMigrate().wait()
+      self.migrated = true
     }
   }
 
   override static func tearDown() {
-    app.shutdown()
+    self.app.shutdown()
     sync { await SQL.resetPreparedStatements() }
   }
 

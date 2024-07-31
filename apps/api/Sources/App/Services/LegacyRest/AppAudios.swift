@@ -6,7 +6,7 @@ extension LegacyRest {
     if let cachedData = await cachedData.getLegacyAppAudios(lang: lang) {
       data = cachedData
     } else {
-      data = try await queryData(lang: lang)
+      data = try await self.queryData(lang: lang)
       await cachedData.setLegacyAppAudios(data: data, lang: lang)
     }
     let response = Response()

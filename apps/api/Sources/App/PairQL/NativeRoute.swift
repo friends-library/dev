@@ -17,7 +17,7 @@ extension NativeRoute: RouteResponder {
     switch route {
     case .reportError(let input):
       let output = try await ReportError.resolve(with: input, in: context)
-      return try respond(with: output)
+      return try self.respond(with: output)
     }
   }
 }

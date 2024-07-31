@@ -54,7 +54,7 @@ enum FlpSlack {
       username: String = "FLP Bot"
     ) {
       self.channel = channel
-      message = .init(
+      self.message = .init(
         text: text,
         channel: channel.string,
         username: username,
@@ -70,7 +70,7 @@ enum FlpSlack {
       username: String = "FLP Bot"
     ) {
       self.channel = channel
-      message = .init(
+      self.message = .init(
         blocks: blocks,
         fallbackText: fallbackText,
         channel: channel.string,

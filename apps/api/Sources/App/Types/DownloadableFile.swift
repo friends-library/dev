@@ -40,67 +40,67 @@ struct DownloadableFile {
   }
 
   var sourceUrl: URL {
-    switch format {
+    switch self.format {
     case .ebook, .paperback, .audio(.mp3), .audio(.m4b), .audio(.mp3s):
-      return URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(sourcePath)")!
+      return URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(self.sourcePath)")!
     case .audio(.podcast):
-      let siteUrl = edition.document.friend.lang == .en
+      let siteUrl = self.edition.document.friend.lang == .en
         ? Env.WEBSITE_URL_EN
         : Env.WEBSITE_URL_ES
-      return URL(string: "\(siteUrl)/\(sourcePath)")!
+      return URL(string: "\(siteUrl)/\(self.sourcePath)")!
     }
   }
 
   var sourcePath: String {
-    switch format {
+    switch self.format {
     case .ebook, .paperback, .audio(.mp3), .audio(.m4b), .audio(.mp3s):
-      return "\(edition.directoryPath)/\(filename)"
+      return "\(self.edition.directoryPath)/\(self.filename)"
     case .audio(.podcast(let quality)):
-      let pathWithoutLang = edition.directoryPath
+      let pathWithoutLang = self.edition.directoryPath
         .split(separator: "/")
         .dropFirst()
         .joined(separator: "/")
       let qualitySegment = quality == .high ? "" : "lq/"
-      return "\(pathWithoutLang)/\(qualitySegment)\(filename)"
+      return "\(pathWithoutLang)/\(qualitySegment)\(self.filename)"
     }
   }
 
   var logUrl: URL {
-    URL(string: "\(Env.SELF_URL)/\(logPath)")!
+    URL(string: "\(Env.SELF_URL)/\(self.logPath)")!
   }
 
   var editionFilename: String {
-    "\(documentFilename)--\(edition.type)"
+    "\(self.documentFilename)--\(self.edition.type)"
   }
 
   var filename: String {
-    switch format {
+    switch self.format {
     case .ebook(.epub):
-      return "\(editionFilename).epub"
+      return "\(self.editionFilename).epub"
     case .ebook(.pdf):
-      return "\(editionFilename).pdf"
+      return "\(self.editionFilename).pdf"
     case .ebook(.speech):
-      return "\(editionFilename).html"
+      return "\(self.editionFilename).html"
     case .ebook(.app):
-      return "\(editionFilename)--(app-ebook).html"
+      return "\(self.editionFilename)--(app-ebook).html"
     case .paperback(.interior, let index):
-      return "\(editionFilename)--(print)\(index |> volumeFilenameSuffix).pdf"
+      return "\(self.editionFilename)--(print)\(index |> volumeFilenameSuffix).pdf"
     case .paperback(.cover, let index):
-      return "\(editionFilename)--cover\(index |> volumeFilenameSuffix).pdf"
+      return "\(self.editionFilename)--cover\(index |> volumeFilenameSuffix).pdf"
     case .audio(.m4b(let quality)):
-      return "\(documentFilename)\(quality |> qualityFilenameSuffix).m4b"
+      return "\(self.documentFilename)\(quality |> qualityFilenameSuffix).m4b"
     case .audio(.mp3s(let quality)):
-      return "\(documentFilename)--mp3s\(quality |> qualityFilenameSuffix).zip"
+      return "\(self.documentFilename)--mp3s\(quality |> qualityFilenameSuffix).zip"
     case .audio(.mp3(let quality, let index)):
-      return "\(documentFilename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
+      return "\(self.documentFilename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
     case .audio(.podcast):
       return "podcast.rss"
     }
   }
 
   var logPath: String {
-    let id = editionId.lowercased
-    switch format {
+    let id = self.editionId.lowercased
+    switch self.format {
     case .ebook(.epub):
       return "download/\(id)/ebook/epub"
     case .ebook(.pdf):

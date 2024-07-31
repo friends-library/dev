@@ -95,43 +95,43 @@ extension DevRoute: RouteResponder {
       switch authedRoute {
       case .createArtifactProductionVersion(let input):
         let output = try await CreateArtifactProductionVersion.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .createEditionChapters(let input):
         let output = try await CreateEditionChapters.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .coverWebAppFriends:
         let output = try await CoverWebAppFriends.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .deleteEntities(let input):
         let output = try await DeleteEntities.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .dpcEditions:
         let output = try await DpcEditions.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .getEdition(let input):
         let output = try await GetEdition.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .getAudios:
         let output = try await GetAudios.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .latestArtifactProductionVersion:
         let output = try await LatestArtifactProductionVersion.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .editorDocumentMap:
         let output = try await EditorDocumentMap.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .getEditionImpression(let input):
         let output = try await GetEditionImpression.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .updateAudio(let input):
         let output = try await UpdateAudio.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .updateAudioPart(let input):
         let output = try await UpdateAudioPart.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .upsertEditionImpression(let input):
         let output = try await UpsertEditionImpression.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       }
     }
   }

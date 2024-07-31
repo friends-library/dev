@@ -34,24 +34,24 @@ struct NPQuote: Codable, Sendable {
 
 extension NPQuote {
   func isValid() async -> Bool {
-    if friendId != nil, !isFriend {
+    if self.friendId != nil, !self.isFriend {
       return false
-    } else if !isFriend, authorName == nil {
+    } else if !self.isFriend, self.authorName == nil {
       return false
-    } else if friendId != nil, authorName != nil {
+    } else if self.friendId != nil, self.authorName != nil {
       return false
-    } else if quote.isEmpty {
+    } else if self.quote.isEmpty {
       return false
-    } else if quote.contains("\n\n") {
+    } else if self.quote.contains("\n\n") {
       return false
-    } else if quote.hasPrefix("\n") {
+    } else if self.quote.hasPrefix("\n") {
       return false
-    } else if quote.hasSuffix("\n") {
+    } else if self.quote.hasSuffix("\n") {
       return false
-    } else if quote.filter({ $0 == "_" }).count % 2 != 0 {
+    } else if self.quote.filter({ $0 == "_" }).count % 2 != 0 {
       // uneven number of underscores, invalid markdown -> html
       return false
-    } else if quote.contains("*") {
+    } else if self.quote.contains("*") {
       // we are only supporting italics now
       return false
     } else {

@@ -24,12 +24,12 @@ extension NPRedirect {
   var response: Response {
     .init(
       status: .temporaryRedirect,
-      headers: .init([("Location", url)])
+      headers: .init([("Location", self.url)])
     )
   }
 
   var url: String {
-    switch (lang, destination) {
+    switch (self.lang, self.destination) {
     case (.en, .confirmEmailSuccess):
       return "\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/success"
     case (.en, .confirmEmailFailure):

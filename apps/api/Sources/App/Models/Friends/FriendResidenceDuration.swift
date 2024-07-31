@@ -24,6 +24,6 @@ struct FriendResidenceDuration: Codable, Sendable {
 
 extension FriendResidenceDuration {
   func isValid() async -> Bool {
-    start.isValidEarlyQuakerYear && end.isValidEarlyQuakerYear && start <= end
+    self.start.isValidEarlyQuakerYear && self.end.isValidEarlyQuakerYear && self.start <= self.end
   }
 }

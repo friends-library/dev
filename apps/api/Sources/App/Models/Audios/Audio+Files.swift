@@ -6,7 +6,7 @@ struct AudioFiles {
     let lq: DownloadableFile
 
     var all: [DownloadableFile] {
-      [hq, lq]
+      [self.hq, self.lq]
     }
   }
 
@@ -15,7 +15,7 @@ struct AudioFiles {
   let m4b: Qualities
 
   var all: [DownloadableFile] {
-    podcast.all + mp3s.all + m4b.all
+    self.podcast.all + self.mp3s.all + self.m4b.all
   }
 }
 

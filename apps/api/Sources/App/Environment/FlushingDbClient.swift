@@ -17,7 +17,7 @@ struct FlushingDbClient: DuetSQL.Client {
     withBindings: [DuetSQL.Postgres.Data]?
   ) async throws -> [T]
     where T: DuetSQL.CustomQueryable {
-    try await origin.customQuery(Custom, withBindings: withBindings)
+    try await self.origin.customQuery(Custom, withBindings: withBindings)
   }
 
   func select<M>(
@@ -28,7 +28,7 @@ struct FlushingDbClient: DuetSQL.Client {
     offset: Int?,
     withSoftDeleted: Bool
   ) async throws -> [M] where M: DuetSQL.Model {
-    try await origin.select(
+    try await self.origin.select(
       Model,
       where: constraint,
       orderBy: order,
@@ -43,7 +43,7 @@ struct FlushingDbClient: DuetSQL.Client {
     where constraint: DuetSQL.SQL.WhereConstraint<M>,
     withSoftDeleted: Bool
   ) async throws -> Int where M: DuetSQL.Model {
-    try await origin.count(M.self, where: constraint, withSoftDeleted: withSoftDeleted)
+    try await self.origin.count(M.self, where: constraint, withSoftDeleted: withSoftDeleted)
   }
 
   func create<M>(_ models: [M]) async throws -> [M] where M: DuetSQL.Model {
@@ -98,6 +98,6 @@ struct FlushingDbClient: DuetSQL.Client {
 
 extension FlushingDbClient {
   init(_ sql: SQLDatabase) {
-    origin = LiveClient(sql: sql)
+    self.origin = LiveClient(sql: sql)
   }
 }

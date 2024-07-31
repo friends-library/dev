@@ -28,7 +28,7 @@ enum Asciidoc {
   static func trimmedUtf8ShortDocumentTitle(_ title: String, lang: Lang) -> String {
     if lang == .en {
       return
-        utf8ShortTitle(title)
+        self.utf8ShortTitle(title)
           .replacingOccurrences(
             of: #"^(The|A) "#,
             with: "",
@@ -41,7 +41,7 @@ enum Asciidoc {
           )
     }
 
-    let shortTitle = utf8ShortTitle(title)
+    let shortTitle = self.utf8ShortTitle(title)
     if shortTitle.count < 25 { return shortTitle }
 
     return
@@ -64,7 +64,7 @@ enum Asciidoc {
   }
 
   static func utf8ShortTitle(_ title: String) -> String {
-    htmlShortTitle(title)
+    self.htmlShortTitle(title)
       .replacingOccurrences(of: HtmlEntities.Named.mdash.rawValue, with: "–")
       .replacingOccurrences(of: HtmlEntities.Numbered.mdash.rawValue, with: "–")
       .replacingOccurrences(of: HtmlEntities.Named.nonBreakingSpace.rawValue, with: " ")

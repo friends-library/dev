@@ -10,7 +10,7 @@ struct NPSubscriber: Codable, Sendable {
   var updatedAt = Current.date()
 
   var confirmed: Bool {
-    pendingConfirmationToken == nil
+    self.pendingConfirmationToken == nil
   }
 
   init(
@@ -24,6 +24,6 @@ struct NPSubscriber: Codable, Sendable {
     self.email = email
     self.lang = lang
     self.mixedQuotes = mixedQuotes
-    pendingConfirmationToken = token
+    self.pendingConfirmationToken = token
   }
 }

@@ -26,17 +26,17 @@ extension Edition {
 
       var all: [Image] {
         [
-          w45,
-          w90,
-          w180,
-          w270,
-          w300,
-          w450,
-          w600,
-          w750,
-          w900,
-          w1150,
-          w1400,
+          self.w45,
+          self.w90,
+          self.w180,
+          self.w270,
+          self.w300,
+          self.w450,
+          self.w600,
+          self.w750,
+          self.w900,
+          self.w1150,
+          self.w1400,
         ]
       }
     }
@@ -54,15 +54,15 @@ extension Edition {
 
       var all: [Image] {
         [
-          w55,
-          w110,
-          w250,
-          w400,
-          w550,
-          w700,
-          w850,
-          w1000,
-          w1120,
+          self.w55,
+          self.w110,
+          self.w250,
+          self.w400,
+          self.w550,
+          self.w700,
+          self.w850,
+          self.w1000,
+          self.w1120,
         ]
       }
     }

@@ -98,43 +98,43 @@ extension EvansBuildRoute: RouteResponder {
       switch authedRoute {
       case .allDocumentPages(let lang):
         let output = try await AllDocumentPages.resolve(with: lang, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .allFriendPages(let lang):
         let output = try await AllFriendPages.resolve(with: lang, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .audiobooksPage(let lang):
         let output = try await AudiobooksPage.resolve(with: lang, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .documentPage(let input):
         let output = try await DocumentPage.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .explorePageBooks(let lang):
         let output = try await ExplorePageBooks.resolve(with: lang, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .friendPage(let input):
         let output = try await FriendPage.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .friendsPage(let lang):
         let output = try await FriendsPage.resolve(with: lang, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .gettingStartedBooks(let input):
         let output = try await GettingStartedBooks.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .homepageFeaturedBooks(let input):
         let output = try await HomepageFeaturedBooks.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .newsFeedItems(let input):
         let output = try await NewsFeedItems.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .publishedFriendSlugs(let lang):
         let output = try await PublishedFriendSlugs.resolve(with: lang, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .publishedDocumentSlugs(let input):
         let output = try await PublishedDocumentSlugs.resolve(with: input, in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       case .totalPublished:
         let output = try await TotalPublished.resolve(in: authed)
-        return try respond(with: output)
+        return try self.respond(with: output)
       }
     }
   }

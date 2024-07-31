@@ -22,7 +22,7 @@ public struct VerifyCloudAssets: AsyncScheduledJob {
 
     var missing: [String] = []
     for uris in chunks {
-      missing.append(contentsOf: try await verify(chunk: uris, in: context))
+      missing.append(contentsOf: try await self.verify(chunk: uris, in: context))
     }
 
     guard !missing.isEmpty else { return }

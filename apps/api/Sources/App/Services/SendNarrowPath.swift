@@ -17,7 +17,7 @@ extension SendNarrowPath {
 
 public struct SendNarrowPath: AsyncScheduledJob {
   public func run(context: QueueContext) async throws {
-    try await exec()
+    try await self.exec()
 
     // delete unconfirmed subscribers after 3 days
     try await NPSubscriber.query()
@@ -30,7 +30,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
     let sentQuotes = try await NPSentQuote.query().all()
     let allQuotes = try await NPQuote.query().all()
     let subscribers = try await NPSubscriber.query().all()
-    let action = determineAction(
+    let action = self.determineAction(
       sentQuotes: sentQuotes,
       allQuotes: allQuotes,
       subscribers: subscribers
@@ -40,9 +40,9 @@ public struct SendNarrowPath: AsyncScheduledJob {
       try await NPSentQuote.query()
         .where(.quoteId |=| allQuotes.filter { $0.lang == lang }.map(\.id))
         .delete()
-      return try await exec()
+      return try await self.exec()
     case .send(let groups):
-      try await send(groups)
+      try await self.send(groups)
     }
   }
 

@@ -40,7 +40,7 @@ extension Edition {
     var type: EditionType
 
     var directoryPath: String {
-      "\(document.directoryPath)/\(type)"
+      "\(self.document.directoryPath)/\(self.type)"
     }
   }
 }
@@ -51,6 +51,6 @@ extension Edition.Joined {
   }
 
   var directoryPath: String {
-    directoryPathData.directoryPath
+    self.directoryPathData.directoryPath
   }
 }

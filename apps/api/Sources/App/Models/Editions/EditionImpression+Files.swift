@@ -18,11 +18,11 @@ struct EditionImpressionFiles {
   let paperback: Paperback
 
   var all: [DownloadableFile] {
-    paperback.interior + paperback.cover + [
-      ebook.epub,
-      ebook.pdf,
-      ebook.speech,
-      ebook.app,
+    self.paperback.interior + self.paperback.cover + [
+      self.ebook.epub,
+      self.ebook.pdf,
+      self.ebook.speech,
+      self.ebook.app,
     ]
   }
 }
@@ -55,10 +55,10 @@ extension EditionImpression.Joined {
 
     return EditionImpressionFiles(
       ebook: .init(
-        epub: downloadableFile(format: .ebook(.epub)),
-        pdf: downloadableFile(format: .ebook(.pdf)),
-        speech: downloadableFile(format: .ebook(.speech)),
-        app: downloadableFile(format: .ebook(.app))
+        epub: self.downloadableFile(format: .ebook(.epub)),
+        pdf: self.downloadableFile(format: .ebook(.pdf)),
+        speech: self.downloadableFile(format: .ebook(.speech)),
+        app: self.downloadableFile(format: .ebook(.app))
       ),
       paperback: .init(
         interior: .init(interiors.removeFirst()) + interiors,

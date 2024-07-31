@@ -20,15 +20,15 @@ public struct BackupJob: AsyncScheduledJob, Sendable {
   }
 
   public func run(context: QueueContext) async throws {
-    try await handler(backupFileData)
+    try await self.handler(self.backupFileData)
   }
 
   private var backupFileData: Data {
     let pgDump = Process()
-    pgDump.executableURL = URL(fileURLWithPath: pgDumpPath)
+    pgDump.executableURL = URL(fileURLWithPath: self.pgDumpPath)
 
     var arguments = [dbName, "-Z", "9"] // -Z 9 means full gzip compression
-    for tableName in excludeDataFromTables {
+    for tableName in self.excludeDataFromTables {
       arguments += ["--exclude-table-data", tableName]
     }
     pgDump.arguments = arguments

@@ -13,11 +13,11 @@ struct EditionImpression: Codable, Sendable {
   var createdAt = Current.date()
 
   var paperbackSize: PrintSize {
-    paperbackSizeVariant.printSize
+    self.paperbackSizeVariant.printSize
   }
 
   var paperbackPrice: Cents<Int> {
-    Lulu.paperbackPrice(size: paperbackSizeVariant.printSize, volumes: paperbackVolumes)
+    Lulu.paperbackPrice(size: self.paperbackSizeVariant.printSize, volumes: self.paperbackVolumes)
   }
 
   init(

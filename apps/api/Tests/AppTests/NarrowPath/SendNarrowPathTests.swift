@@ -10,17 +10,17 @@ final class SendNarrowPathTests: AppTestCase {
     Current.randomNumberGenerator = { stableRng() }
     let action = SendNarrowPath().determineAction(
       sentQuotes: [],
-      allQuotes: [enFriendId1, enFriendId2, esFriendId4],
-      subscribers: allSubscribers
+      allQuotes: [self.enFriendId1, self.enFriendId2, self.esFriendId4],
+      subscribers: self.allSubscribers
     )
 
     switch action {
     case .send(let groups):
       expect(groups.map(\.testable)).toEqual([
-        .init(to: ["en.friends"], quoteId: enFriendId1.id),
-        .init(to: ["en.mixed"], quoteId: enFriendId1.id), // <-- same as friends
-        .init(to: ["es.friends"], quoteId: esFriendId4.id),
-        .init(to: ["es.mixed"], quoteId: esFriendId4.id), // <-- same as friends
+        .init(to: ["en.friends"], quoteId: self.enFriendId1.id),
+        .init(to: ["en.mixed"], quoteId: self.enFriendId1.id), // <-- same as friends
+        .init(to: ["es.friends"], quoteId: self.esFriendId4.id),
+        .init(to: ["es.mixed"], quoteId: self.esFriendId4.id), // <-- same as friends
       ])
     default:
       XCTFail("Expected .send, got \(action)")
@@ -31,17 +31,17 @@ final class SendNarrowPathTests: AppTestCase {
     Current.randomNumberGenerator = { stableRng(seed: .max) }
     let action = SendNarrowPath().determineAction(
       sentQuotes: [],
-      allQuotes: [enFriendId2, enFriendId1, enOtherId3, esFriendId4],
-      subscribers: allSubscribers
+      allQuotes: [self.enFriendId2, self.enFriendId1, self.enOtherId3, self.esFriendId4],
+      subscribers: self.allSubscribers
     )
 
     switch action {
     case .send(let groups):
       expect(groups.map(\.testable)).toEqual([
-        .init(to: ["en.friends"], quoteId: enFriendId1.id),
-        .init(to: ["en.mixed"], quoteId: enOtherId3.id), // <- other
-        .init(to: ["es.friends"], quoteId: esFriendId4.id),
-        .init(to: ["es.mixed"], quoteId: esFriendId4.id),
+        .init(to: ["en.friends"], quoteId: self.enFriendId1.id),
+        .init(to: ["en.mixed"], quoteId: self.enOtherId3.id), // <- other
+        .init(to: ["es.friends"], quoteId: self.esFriendId4.id),
+        .init(to: ["es.mixed"], quoteId: self.esFriendId4.id),
       ])
     default:
       XCTFail("Expected .send, got \(action)")
@@ -50,18 +50,18 @@ final class SendNarrowPathTests: AppTestCase {
 
   func testResetsEnglishIfNoQuotesUnsent() {
     let action = SendNarrowPath().determineAction(
-      sentQuotes: [.init(quoteId: enFriendId1.id)],
-      allQuotes: [enFriendId1, esFriendId4],
-      subscribers: allSubscribers
+      sentQuotes: [.init(quoteId: self.enFriendId1.id)],
+      allQuotes: [self.enFriendId1, self.esFriendId4],
+      subscribers: self.allSubscribers
     )
     expect(action).toEqual(.reset(.en))
   }
 
   func testResetsSpanishIfNoQuotesUnsent() {
     let action = SendNarrowPath().determineAction(
-      sentQuotes: [.init(quoteId: esFriendId4.id)],
-      allQuotes: [enFriendId1, esFriendId4],
-      subscribers: allSubscribers
+      sentQuotes: [.init(quoteId: self.esFriendId4.id)],
+      allQuotes: [self.enFriendId1, self.esFriendId4],
+      subscribers: self.allSubscribers
     )
     expect(action).toEqual(.reset(.es))
   }
@@ -103,7 +103,7 @@ final class SendNarrowPathTests: AppTestCase {
       friendId: nil,
       documentId: nil
     ).create()
-    try await Current.db.create([enFriendsSub, esFriendsSub])
+    try await Current.db.create([self.enFriendsSub, self.esFriendsSub])
 
     // both spanish quotes have been sent, which exercizes the .reset path
     // these will be deleted, we should end up with one sent spanish quote
@@ -208,7 +208,7 @@ final class SendNarrowPathTests: AppTestCase {
   let unconfirmed = NPSubscriber(token: .init(), email: "unconfirmed", lang: .en)
 
   var allSubscribers: [NPSubscriber] {
-    [enFriendsSub, enMixedSub, unconfirmed, esFriendsSub, esMixedSub]
+    [self.enFriendsSub, self.enMixedSub, self.unconfirmed, self.esFriendsSub, self.esMixedSub]
   }
 }
 

@@ -18,6 +18,6 @@ struct Isbn: Codable, Sendable {
 
 extension Isbn {
   func isValid() async -> Bool {
-    code.rawValue.match(#"^978-1-64476-\d\d\d-\d$"#)
+    self.code.rawValue.match(#"^978-1-64476-\d\d\d-\d$"#)
   }
 }

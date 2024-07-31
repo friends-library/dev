@@ -7,7 +7,7 @@ extension LegacyRest {
     if let cachedData = await cachedData.getLegacyAppEditions(lang: lang) {
       data = cachedData
     } else {
-      data = try await queryData(lang: lang)
+      data = try await self.queryData(lang: lang)
       await cachedData.setLegacyAppEditions(data: data, lang: lang)
     }
     let response = Response()
@@ -191,7 +191,7 @@ struct EncodeNilAsNull<T>: Codable where T: Codable {
 
   func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
-    switch wrappedValue {
+    switch self.wrappedValue {
     case .some(let value): try container.encode(value)
     case .none: try container.encodeNil()
     }

@@ -13,19 +13,19 @@ struct EditionChapter: Codable, Sendable {
   var updatedAt = Current.date()
 
   var slug: String {
-    "chapter-\(order)"
+    "chapter-\(self.order)"
   }
 
   var htmlId: String {
-    customId ?? slug
+    self.customId ?? self.slug
   }
 
   var isSequenced: Bool {
-    sequenceNumber != nil
+    self.sequenceNumber != nil
   }
 
   var hasNonSequenceTitle: Bool {
-    nonSequenceTitle != nil
+    self.nonSequenceTitle != nil
   }
 
   init(

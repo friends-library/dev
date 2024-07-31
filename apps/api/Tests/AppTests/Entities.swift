@@ -109,31 +109,31 @@ extension Entities.Unjoined {
   func join() -> Entities {
     let friendResidence = FriendResidence.Joined(
       friendResidence,
-      durations: [friendResidenceDuration]
+      durations: [self.friendResidenceDuration]
     )
 
     let friend = Friend.Joined(
       friend,
       residences: [friendResidence],
-      quotes: [friendQuote]
+      quotes: [self.friendQuote]
     )
 
     let document = Document.Joined(
       document,
       friend: friend,
-      tags: [documentTag.type]
+      tags: [self.documentTag.type]
     )
     friend.documents.append(document)
 
     let edition = Edition.Joined(
       edition,
       document: document,
-      chapters: [editionChapter],
-      isbn: isbn
+      chapters: [self.editionChapter],
+      isbn: self.isbn
     )
     document.editions.append(edition)
 
-    let impression = EditionImpression.Joined(editionImpression, edition: edition)
+    let impression = EditionImpression.Joined(self.editionImpression, edition: edition)
     edition.impression = impression
 
     let audio = Audio.Joined(audio, edition: edition)
@@ -144,14 +144,14 @@ extension Entities.Unjoined {
     return Entities(
       friend: friend,
       friendResidence: friendResidence,
-      friendResidenceDuration: friendResidenceDuration,
-      friendQuote: friendQuote,
+      friendResidenceDuration: self.friendResidenceDuration,
+      friendQuote: self.friendQuote,
       document: document,
-      documentTag: documentTag,
+      documentTag: self.documentTag,
       edition: edition,
-      editionChapter: editionChapter,
+      editionChapter: self.editionChapter,
       editionImpression: impression,
-      isbn: isbn,
+      isbn: self.isbn,
       audio: audio,
       audioPart: audioPart
     )

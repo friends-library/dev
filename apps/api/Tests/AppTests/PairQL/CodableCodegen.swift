@@ -37,7 +37,7 @@ struct ApiTypeScriptEnumsCodableGenerator: AggregateCodeGenerator {
   func format() throws {
     let proc = Process()
     proc.executableURL = URL(fileURLWithPath: requireEnvVar("SWIFT_FORMAT_BIN"))
-    proc.arguments = generators.compactMap { generator in
+    proc.arguments = self.generators.compactMap { generator in
       (generator as? EnumCodableGen.EnumsGenerator)?.path
     }
     try proc.run()
