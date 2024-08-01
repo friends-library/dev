@@ -182,3 +182,5 @@ const PAGE_META_DESCS = {
       ? `Sorry, it looks like you followed a broken link, or tried a URL that doesn’t exist. Try searching below for what you’re looking for, or you can contact us if you believe you’ve found a problem with the website &mdash; we’d love to know about it so we can fix it as soon as possible!`
       : `Lo sentimos, parece que has entrado en un enlace roto, o intentado abrir un URL que no existe. Trata de encontrar lo que estás buscando más abajo, o puedes contactarnos si crees que has encontrado un problema con el sitio web &mdash; ¡Nos encantaría saberlo para poder solucionarlo lo antes posible!`,
 };
+
+export const QUAKER_BELIEFS_SEO_META_DESC = `What did early Quakers believe? A succinct but thorough explanation of the principles and practices of Friends in the 1600’s on a wide variety of doctrinal subjects, in response to calumnies and accusations that were commonly leveled against the society by other professing Christians.`;

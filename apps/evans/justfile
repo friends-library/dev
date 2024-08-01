@@ -19,6 +19,7 @@ build-en-vercel:
 
 build-es-vercel:
   rm -rf app/(friend)/friend/
+  rm -rf app/what-early-quakers-believed/
   just build-es
 
 build-analyze:

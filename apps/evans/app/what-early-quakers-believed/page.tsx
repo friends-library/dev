@@ -1,14 +1,14 @@
 import React from 'react';
+import type { NextPage } from 'next';
 import { MdxH2, MdxH3, MdxLead, MdxP } from '@/components/mdx';
 import WhiteOverlay from '@/components/core/WhiteOverlay';
-import Seo from '@/components/core/Seo';
 import BooksBgBlock from '@/components/core/BooksBgBlock';
 import TruthDefendedNotes from '@/components/truth-defended/TruthDefendedNotes';
 import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
+import * as seo from '@/lib/seo';
 
-const WhatEarlyQuakersBelieved: React.FC = () => (
+const Page: NextPage = async () => (
   <div>
-    <Seo title="Early Quaker Beliefs" description={SEO_META_DESC} />
     <BooksBgBlock>
       <WhiteOverlay>
         <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
@@ -1006,7 +1006,7 @@ const WhatEarlyQuakersBelieved: React.FC = () => (
         <Footnote number={158} />
         And in another place, he says, “Those who live according to the flesh shall die.”
         <Footnote number={159} />
-        It is therefore for lack of people’s embracing the means provided by God, and
+        It is therefore for lack of people��s embracing the means provided by God, and
         bringing their deeds to the Light of Christ in their hearts, and heeding the
         reproofs of instruction which are the way of life;
         <Footnote number={160} />
@@ -1554,9 +1554,12 @@ const WhatEarlyQuakersBelieved: React.FC = () => (
   </div>
 );
 
-export default WhatEarlyQuakersBelieved;
+export default Page;
 
-export const SEO_META_DESC = `What did early Quakers believe? A succinct but thorough explanation of the principles and practices of Friends in the 1600’s on a wide variety of doctrinal subjects, in response to calumnies and accusations that were commonly leveled against the society by other professing of Christians.`;
+export const metadata = seo.nextMetadata(
+  `Early Quaker Beliefs`,
+  seo.QUAKER_BELIEFS_SEO_META_DESC,
+);
 
 const Footnote: React.FC<{ number: number }> = ({ number }) => (
   <sup className="pr-1 relative inline-block">
