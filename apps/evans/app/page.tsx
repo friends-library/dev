@@ -1,6 +1,6 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import type { GetStaticProps } from 'next';
+import type { NextPage, Metadata } from 'next';
 import type { FeedItem } from '@/components/pages/home/news-feed/news-feed';
 import { getNewsFeedItems } from '@/components/pages/home/news-feed/news-feed';
 import FeaturedBooksBlock from '@/components/pages/home/FeaturedBooksBlock';
@@ -13,12 +13,12 @@ import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
 import NewsFeedBlock from '@/components/pages/home/news-feed/NewsFeedBlock';
 import NarrowPathSignupBlock from '@/components/pages/home/NarrowPathSignupBlock';
 import { LANG } from '@/lib/env';
-import Seo, { pageMetaDesc } from '@/components/core/Seo';
 import * as custom from '@/lib/ssg/custom-code';
 import api, { type Api } from '@/lib/ssg/api-client';
 import sendSearchDataToAlgolia from '@/lib/ssg/algolia';
+import * as seo from '@/lib/seo';
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
+async function getPageData(): Promise<Props> {
   const props = await Promise.all([
     api.homepageFeaturedBooks({ lang: LANG, slugs: featuredBooks[LANG] }),
     api.newsFeedItems(LANG),
@@ -34,8 +34,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   if (process.env.VERCEL_ENV === `production`) {
     await sendSearchDataToAlgolia();
   }
-  return { props };
-};
+  return props;
+}
 
 interface Props {
   featuredBooks: Api.HomepageFeaturedBooks.Output;
@@ -43,25 +43,32 @@ interface Props {
   numTotalBooks: number;
 }
 
-const Home: React.FC<Props> = ({ featuredBooks, newsFeedItems, numTotalBooks }) => (
-  <main className="overflow-hidden">
-    <Seo
-      title={t`Friends Library`}
-      description={pageMetaDesc(`home`, { numBooks: numTotalBooks })}
-    />
-    <HeroBlock />
-    <SubHeroBlock numTotalBooks={numTotalBooks} />
-    <NewsFeedBlock items={newsFeedItems} />
-    <FeaturedBooksBlock books={featuredBooks} />
-    <GettingStartedBlock />
-    <NarrowPathSignupBlock />
-    <WhoWereTheQuakersBlock />
-    <FormatsBlock />
-    <ExploreBooksBlock numTotalBooks={numTotalBooks} />
-  </main>
-);
+const Page: NextPage = async () => {
+  const { featuredBooks, newsFeedItems, numTotalBooks } = await getPageData();
+  return (
+    <main className="overflow-hidden">
+      <HeroBlock />
+      <SubHeroBlock numTotalBooks={numTotalBooks} />
+      <NewsFeedBlock items={newsFeedItems} />
+      <FeaturedBooksBlock books={featuredBooks} />
+      <GettingStartedBlock />
+      <NarrowPathSignupBlock />
+      <WhoWereTheQuakersBlock />
+      <FormatsBlock />
+      <ExploreBooksBlock numTotalBooks={numTotalBooks} />
+    </main>
+  );
+};
 
-export default Home;
+export default Page;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { numTotalBooks } = await getPageData();
+  return seo.nextMetadata(
+    t`Friends Library`,
+    seo.pageMetaDesc(`home`, { numBooks: numTotalBooks }),
+  );
+}
 
 // helpers
 
