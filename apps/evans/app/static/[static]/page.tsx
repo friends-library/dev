@@ -5,7 +5,7 @@ import React from 'react';
 import type { Metadata, NextPage } from 'next';
 import type { MdxPageFrontmatter } from '@/lib/types';
 import { replacePlaceholders, components } from '@/components/mdx';
-import { WhiteOverlay } from '@/pages/explore';
+import WhiteOverlay from '@/components/core/WhiteOverlay';
 import api from '@/lib/ssg/api-client';
 import * as mdx from '@/lib/mdx';
 import { LANG } from '@/lib/env';
