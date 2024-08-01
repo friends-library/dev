@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { t } from '@friends-library/locale';
 import type { Metadata, NextPage } from 'next';
 import type { EditionType } from '@/lib/types';
+import Audiobook from './Audiobook';
 import api from '@/lib/ssg/api-client';
 import { newestFirst, shortDate } from '@/lib/dates';
 import { LANG } from '@/lib/env';
@@ -11,7 +12,6 @@ import AudiobooksHero from '@/components/pages/explore/AudiobooksHero';
 import Dual from '@/components/core/Dual';
 import BookTeaserCard from '@/components/core/BookTeaserCard';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
-import Audiobook from '@/components/pages/audiobooks/Audiobook';
 import * as seo from '@/lib/seo';
 
 interface Audiobook {

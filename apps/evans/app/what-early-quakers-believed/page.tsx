@@ -1,9 +1,9 @@
 import React from 'react';
 import type { NextPage } from 'next';
+import Footnotes from './Notes';
 import { MdxH2, MdxH3, MdxLead, MdxP } from '@/components/mdx';
 import WhiteOverlay from '@/components/core/WhiteOverlay';
 import BooksBgBlock from '@/components/core/BooksBgBlock';
-import TruthDefendedNotes from '@/components/truth-defended/TruthDefendedNotes';
 import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
 import * as seo from '@/lib/seo';
 
@@ -1549,7 +1549,7 @@ const Page: NextPage = async () => (
       </MdxP>
 
       <MdxH3>Footnotes:</MdxH3>
-      <TruthDefendedNotes />
+      <Footnotes />
     </div>
   </div>
 );
