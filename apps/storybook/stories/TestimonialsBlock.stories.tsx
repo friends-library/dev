@@ -1,6 +1,6 @@
-import TestimonialsBlock from '@evans/pages/friend/TestimonialsBlock';
 import type { Meta, StoryObj } from '@storybook/react';
 import { MEDIUM_LOREM, props } from './helpers';
+import TestimonialsBlock from '@/app/(friend)/TestimonialsBlock';
 
 const meta = {
   title: 'Friend/TestimonialsBlock', // eslint-disable-line

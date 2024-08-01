@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import Image from 'next/image';
 import type { Region } from '@/lib/types';
-import LocationMarker from '../friend/LocationMarker';
+import LocationMarker from '@/app/(friend)/LocationMarker';
 import map from '@/public/images/full_map.png';
 
 interface Props {

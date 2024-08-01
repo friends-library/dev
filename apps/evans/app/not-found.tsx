@@ -1,10 +1,10 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
 import type { NextPage } from 'next';
+import ExploreAltSiteBlock from '@/app/explore/AltSiteBlock';
+import ExploreBooksBlock from '@/app/(home)/ExploreBooksBlock';
+import HomeGettingStartedBlock from '@/app/(home)/GettingStartedBlock';
 import api from '@/lib/ssg/api-client';
-import HomeGettingStartedBlock from '@/components/pages/home/GettingStartedBlock';
-import ExploreAltSiteBlock from '@/components/pages/explore/AltSiteBlock';
-import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
 import NotFoundHeroBlock from '@/components/404/NotFoundHeroBlock';
 import { APP_ALT_URL, LANG } from '@/lib/env';
 import * as seo from '@/lib/seo';

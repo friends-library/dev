@@ -10,8 +10,8 @@ import {
 import { ThreeD } from '@friends-library/cover-component';
 import { t, translate } from '@friends-library/locale';
 import type { CoverProps } from '@friends-library/types';
-import Dual from '../../core/Dual';
-import Button from '../../core/Button';
+import Dual from '@/components/core/Dual';
+import Button from '@/components/core/Button';
 
 type Props = Omit<CoverProps, 'pages' | 'blurb'> & {
   htmlShortTitle: string;
