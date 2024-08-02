@@ -1,6 +1,6 @@
-import ListenBlock from '@evans/pages/document/ListenBlock';
 import type { Meta, StoryObj } from '@storybook/react';
 import { props } from './helpers';
+import ListenBlock from '@/app/[friend_slug]/[document_slug]/ListenBlock';
 
 const meta = {
   title: 'Document/ListenBlock', // eslint-disable-line

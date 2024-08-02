@@ -1,7 +1,9 @@
 import React from 'react';
 import type { NextPage } from 'next';
-import ConfirmationPage from '@/components/narrow-path/ConfirmationPage';
+import ConfirmationPage from '../ConfirmationPage';
 
 const FailurePage: NextPage = () => <ConfirmationPage result="failure" />;
 
 export default FailurePage;
+
+export const dynamic = `force-static`;

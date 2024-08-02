@@ -1,6 +1,6 @@
-import MapBlock from '@evans/pages/friend/MapBlock';
 import type { Meta, StoryObj } from '@storybook/react';
 import { props } from './helpers';
+import MapBlock from '@/app/(friend)/MapBlock';
 
 const meta = {
   title: 'Friend/MapBlock', // eslint-disable-line

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import cx from 'classnames';
 import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';

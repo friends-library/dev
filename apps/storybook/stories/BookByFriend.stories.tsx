@@ -1,7 +1,7 @@
-import BookByFriend from '@evans/pages/friend/BookByFriend';
 import type { Meta, StoryObj } from '@storybook/react';
 import WebCoverStyles from '../decorators/CoverStyles';
 import { SHORT_LOREM, props } from './helpers';
+import BookByFriend from '@/app/(friend)/BookByFriend';
 
 const meta = {
   title: 'Friend/BookByFriend', // eslint-disable-line

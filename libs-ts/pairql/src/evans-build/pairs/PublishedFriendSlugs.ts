@@ -1,6 +1,10 @@
 // auto-generated, do not edit
 
 export namespace PublishedFriendSlugs {
-  export type Input = 'en' | 'es';
+  export interface Input {
+    lang: 'en' | 'es';
+    gender?: 'male' | 'female' | 'mixed';
+  }
+
   export type Output = string[];
 }

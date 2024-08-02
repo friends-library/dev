@@ -17,16 +17,8 @@ const nextConfig = {
       beforeFiles: [
         ...staticFiles(),
         {
-          source: `/amigo/:path*`,
-          destination: `/friend/:path*`,
-        },
-        {
-          source: `/amiga/:path*`,
-          destination: `/friend/:path*`,
-        },
-        {
           source: `/compilaciones`,
-          destination: `/friend/compilaciones`,
+          destination: `/amigo/compilaciones`,
         },
         {
           source: `/compilations`,
@@ -73,6 +65,11 @@ const nextConfig = {
       {
         source: `/friend/compilations`,
         destination: `/compilations`,
+        permanent: true,
+      },
+      {
+        source: `/friend/compilaciones`,
+        destination: `/compilaciones`,
         permanent: true,
       },
       {

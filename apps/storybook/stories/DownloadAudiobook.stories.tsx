@@ -1,6 +1,6 @@
-import DownloadAudiobook from '@evans/pages/document/DownloadAudiobook';
 import type { Meta, StoryObj } from '@storybook/react';
 import { props } from './helpers';
+import DownloadAudiobook from '@/app/[friend_slug]/[document_slug]/DownloadAudiobook';
 
 const meta = {
   title: 'Document/DownloadAudiobook', // eslint-disable-line

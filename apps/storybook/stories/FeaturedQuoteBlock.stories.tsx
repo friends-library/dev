@@ -1,6 +1,6 @@
-import FeaturedQuoteBlock from '@evans/pages/friend/FeaturedQuoteBlock';
 import type { Meta, StoryObj } from '@storybook/react';
 import { LONG_LOREM, SHORT_LOREM, props } from './helpers';
+import FeaturedQuoteBlock from '@/app/(friend)/FeaturedQuoteBlock';
 
 const meta = {
   title: 'Friend/FeaturedQuoteBlock', // eslint-disable-line

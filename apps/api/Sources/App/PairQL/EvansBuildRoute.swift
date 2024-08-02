@@ -31,7 +31,7 @@ enum AuthedEvansBuildRoute: PairRoute, Sendable {
   case homepageFeaturedBooks(HomepageFeaturedBooks.Input)
   case newsFeedItems(NewsFeedItems.Input)
   case publishedDocumentSlugs(PublishedDocumentSlugs.Input)
-  case publishedFriendSlugs(Lang)
+  case publishedFriendSlugs(PublishedFriendSlugs.Input)
   case totalPublished
 
   nonisolated(unsafe) static let router = OneOf {

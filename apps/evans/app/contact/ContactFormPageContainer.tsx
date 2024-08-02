@@ -5,7 +5,11 @@ import EvansClient from '@friends-library/pairql/evans';
 import ContactFormPage from './ContactFormPage';
 import { LANG } from '@/lib/env';
 
-export const Container: React.FC = () => {
+interface Props {
+  _buildTime?: string;
+}
+
+export const Container: React.FC<Props> = ({ _buildTime }) => {
   const [name, setName] = useState<string>(``);
   const [email, setEmail] = useState<string>(``);
   const [message, setMessage] = useState<string>(``);
@@ -41,6 +45,7 @@ export const Container: React.FC = () => {
         }
         setState(`submitted`);
       }}
+      _buildTime={_buildTime}
     />
   );
 };

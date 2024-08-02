@@ -1,6 +1,6 @@
-import FriendBlock from '@evans/pages/friend/FriendBlock';
 import type { Meta, StoryObj } from '@storybook/react';
 import { MEDIUM_LOREM, props } from './helpers';
+import FriendBlock from '@/app/(friend)/FriendBlock';
 
 const meta = {
   title: 'Friend/FriendBlock', // eslint-disable-line

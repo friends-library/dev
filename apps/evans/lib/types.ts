@@ -5,6 +5,8 @@ export { type EditionType };
 export type HeroIcon = typeof ArrowRightIcon;
 export type Period = 'early' | 'mid' | 'late';
 
+export type Params<T> = { params: T };
+
 export type Region =
   | 'Eastern US'
   | 'Western US'
