@@ -12,7 +12,6 @@ import BookTeaserCards from '@/components/core/BookTeaserCards';
 import * as code from '@/lib/ssg/custom-code';
 import * as seo from '@/lib/seo';
 import api, { type Api } from '@/lib/ssg/api-client';
-import { generatePodcastFeeds } from '@/lib/ssg/podcast';
 
 type PageData = Api.DocumentPage.Output;
 type Path = { friend_slug: string; document_slug: string };
@@ -41,9 +40,6 @@ async function getPageData(path: Path): Promise<PageData> {
       documentSlug: document.slug,
     })),
   );
-  if (process.env.VERCEL) {
-    generatePodcastFeeds(props.document);
-  }
   return {
     otherBooksByFriend: props.otherBooksByFriend.map(
       code.merging(otherCode, (doc) => [friendSlug, doc.slug]),

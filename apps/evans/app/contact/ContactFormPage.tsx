@@ -20,6 +20,7 @@ interface Props {
   state: 'default' | 'submitting' | 'submitted';
   success: boolean;
   onSubmit(): Promise<unknown>;
+  _buildTime?: string;
 }
 
 export const ContactForm: React.FC<Props> = ({
@@ -34,12 +35,16 @@ export const ContactForm: React.FC<Props> = ({
   setEmail,
   state,
   success,
+  _buildTime,
 }) => (
   <NextBgImage
     minImageWidth={900}
     src={[bgColor(`rgba(0,0,0,0.5)`), BooksBg, bgColor(`rgb(33,20,14)`)]}
   >
-    <div className="flex flex-col lg:flex-row lg:py-24 lg:px-6 max-w-screen-lg mx-auto">
+    <div
+      data-buildtime={_buildTime ?? `not-production`}
+      className="flex flex-col lg:flex-row lg:py-24 lg:px-6 max-w-screen-lg mx-auto"
+    >
       <ContactFormTextBlock />
       <div className="ContactForm bg-cover lg:bg-white lg:flex-grow p-6 m-2 sm:m-6 lg:m-0 lg:py-12">
         <form
