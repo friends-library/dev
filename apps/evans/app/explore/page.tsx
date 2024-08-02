@@ -22,12 +22,12 @@ import api, { type Api } from '@/lib/ssg/api-client';
 import BooksBgBlock from '@/components/core/BooksBgBlock';
 import WhiteOverlay from '@/components/core/WhiteOverlay';
 
-type Props = {
+type PageData = {
   books: Api.ExplorePageBooks.Output;
   totalPublished: Api.TotalPublished.Output;
 };
 
-async function getPageData(): Promise<Props> {
+async function getPageData(): Promise<PageData> {
   return Promise.all([
     api.explorePageBooks(LANG),
     api.totalPublished(),

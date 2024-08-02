@@ -2,6 +2,7 @@ import React from 'react';
 import invariant from 'tiny-invariant';
 import { t } from '@friends-library/locale';
 import type { NextPage, Metadata } from 'next';
+import type { Params } from '@/lib/types';
 import DocBlock from './DocBlock';
 import ListenBlock from './ListenBlock';
 import { LANG } from '@/lib/env';
@@ -13,10 +14,10 @@ import * as seo from '@/lib/seo';
 import api, { type Api } from '@/lib/ssg/api-client';
 import { generatePodcastFeeds } from '@/lib/ssg/podcast';
 
-type Props = Api.DocumentPage.Output;
-type Params = { friend_slug: string; document_slug: string };
+type PageData = Api.DocumentPage.Output;
+type Path = { friend_slug: string; document_slug: string };
 
-export async function generateStaticParams(): Promise<Array<Params>> {
+export async function generateStaticParams(): Promise<Path[]> {
   const output = await api.publishedDocumentSlugs(LANG);
   return output.map(({ friendSlug, documentSlug }) => ({
     friend_slug: friendSlug,
@@ -24,9 +25,9 @@ export async function generateStaticParams(): Promise<Array<Params>> {
   }));
 }
 
-async function getPageData(params: Params): Promise<Props> {
-  const friendSlug = params.friend_slug;
-  const documentSlug = params.document_slug;
+async function getPageData(path: Path): Promise<PageData> {
+  const friendSlug = path.friend_slug;
+  const documentSlug = path.document_slug;
   invariant(typeof friendSlug === `string`);
   invariant(typeof documentSlug === `string`);
   const input = { lang: LANG, friendSlug, documentSlug } as const;
@@ -52,7 +53,7 @@ async function getPageData(params: Params): Promise<Props> {
   };
 }
 
-const Page: NextPage<{ params: Params }> = async ({ params }) => {
+const Page: NextPage<Params<Path>> = async ({ params }) => {
   const { otherBooksByFriend, numTotalBooks, document } = await getPageData(params);
   return (
     <div>
@@ -111,7 +112,7 @@ const Page: NextPage<{ params: Params }> = async ({ params }) => {
 
 export default Page;
 
-export async function generateMetadata(props: { params: Params }): Promise<Metadata> {
+export async function generateMetadata(props: Params<Path>): Promise<Metadata> {
   const { document } = await getPageData(props.params);
   return seo.nextMetadata(
     document.title,

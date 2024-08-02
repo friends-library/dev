@@ -18,7 +18,13 @@ import api, { type Api } from '@/lib/ssg/api-client';
 import sendSearchDataToAlgolia from '@/lib/ssg/algolia';
 import * as seo from '@/lib/seo';
 
-async function getPageData(): Promise<Props> {
+interface PageData {
+  featuredBooks: Api.HomepageFeaturedBooks.Output;
+  newsFeedItems: FeedItem[];
+  numTotalBooks: number;
+}
+
+async function getPageData(): Promise<PageData> {
   const props = await Promise.all([
     api.homepageFeaturedBooks({ lang: LANG, slugs: featuredBooks[LANG] }),
     api.newsFeedItems(LANG),
@@ -35,12 +41,6 @@ async function getPageData(): Promise<Props> {
     await sendSearchDataToAlgolia();
   }
   return props;
-}
-
-interface Props {
-  featuredBooks: Api.HomepageFeaturedBooks.Output;
-  newsFeedItems: FeedItem[];
-  numTotalBooks: number;
 }
 
 const Page: NextPage = async () => {
