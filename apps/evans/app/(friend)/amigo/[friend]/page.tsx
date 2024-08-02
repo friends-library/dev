@@ -28,3 +28,4 @@ export async function generateMetadata(props: Params<Path>): Promise<Metadata> {
 
 export default Page;
 export const revalidate = 10800; // 3 hours
+export const dynamicParams = false;

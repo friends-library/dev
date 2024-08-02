@@ -15,7 +15,6 @@ import NarrowPathSignupBlock from './NarrowPathSignupBlock';
 import { LANG } from '@/lib/env';
 import * as custom from '@/lib/ssg/custom-code';
 import api, { type Api } from '@/lib/ssg/api-client';
-import sendSearchDataToAlgolia from '@/lib/ssg/algolia';
 import * as seo from '@/lib/seo';
 
 interface PageData {
@@ -37,9 +36,6 @@ async function getPageData(): Promise<PageData> {
     newsFeedItems: getNewsFeedItems(newsFeedItems),
     numTotalBooks: totalPublished.books[LANG],
   }));
-  if (process.env.VERCEL_ENV === `production`) {
-    await sendSearchDataToAlgolia();
-  }
   return props;
 }
 
