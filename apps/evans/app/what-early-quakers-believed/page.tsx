@@ -1577,3 +1577,5 @@ const Footnote: React.FC<{ number: number }> = ({ number }) => (
     </a>
   </sup>
 );
+
+export const dynamic = `force-static`;

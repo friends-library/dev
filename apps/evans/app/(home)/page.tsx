@@ -87,3 +87,5 @@ const featuredBooks = {
     { friendSlug: `william-penn`, documentSlug: `no-cruz-no-corona` },
   ],
 };
+
+export const revalidate = 10800; // 3 hours

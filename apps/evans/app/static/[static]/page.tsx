@@ -59,3 +59,6 @@ export async function generateMetadata({ params }: Params<Path>): Promise<Metada
   const { frontmatter } = await getPageData(params.static);
   return seo.nextMetadata(frontmatter.title, frontmatter.description);
 }
+
+export const revalidate = 10800; // 3 hours
+export const dynamicParams = false;

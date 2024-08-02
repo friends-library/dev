@@ -199,3 +199,5 @@ function customCodeSlugs(): Array<{ friendSlug: string; documentSlug: string }> 
   }
   return slugs;
 }
+
+export const revalidate = 10800; // 3 hours

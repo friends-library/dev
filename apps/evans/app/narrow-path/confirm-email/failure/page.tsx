@@ -5,3 +5,5 @@ import ConfirmationPage from '../ConfirmationPage';
 const FailurePage: NextPage = () => <ConfirmationPage result="failure" />;
 
 export default FailurePage;
+
+export const dynamic = `force-static`;

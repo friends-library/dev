@@ -200,3 +200,5 @@ function getPeriod(date?: number): Period {
   if (date < 1815) return `mid`;
   return `late`;
 }
+
+export const revalidate = 10800; // 3 hours
