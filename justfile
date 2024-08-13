@@ -68,6 +68,7 @@ test-typescript:
 
 clean: nx-reset
   @rm -rf apps/admin/node_modules/.vite
+  @rm -rf apps/evans/.next/
 
 prettier:
   @pnpm prettier --write {{invocation_directory()}}
@@ -119,7 +120,7 @@ codegen: codegen-ts codegen-swift
 
 # helpers
 
-nuke-node-modules:
+nuke-node-modules: clean
   @pnpm store prune
   @find . -name "node_modules" -type d -prune -exec rm -rf {} + && \
     PUPPETEER_PRODUCT=firefox pnpm install

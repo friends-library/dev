@@ -1,7 +1,6 @@
 import Vapor
 
 enum LegacyRest {
-
   actor CachedData {
     var appEditionsEnglish: Data?
     var appEditionsSpanish: Data?

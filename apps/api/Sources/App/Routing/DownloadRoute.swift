@@ -17,7 +17,7 @@ enum DownloadRoute: RouteHandler {
         referrer: query?.referer ?? request.headers.first(name: .referer)
       )
     } catch {
-      if ["/.git", "/.env", "%0A"].contains(where: path.contains) == false {
+      if shouldSlackError(from: path) {
         var errorMsg = "Failed to resolve Downloadable file from path: \(path), error: \(error)"
         if let parseErr = error as? DownloadableFile.ParseLogPathError {
           let errorDesc = parseErr.errorDescription ?? String(describing: parseErr)
@@ -270,10 +270,19 @@ private extension UserAgentDeviceData {
   }
 }
 
-func isPodcast(userAgent: String) -> Bool {
+private func isPodcast(userAgent: String) -> Bool {
   userAgent
     .lowercased()
     .match("(podcast|stitcher|tunein|audible|spotify|pocketcasts|overcast|castro|castbox)")
+}
+
+private func shouldSlackError(from path: String) -> Bool {
+  if ["/.git", "/.env", "%0A"].contains(where: path.contains) {
+    return false
+  } else {
+    // deprecated mobi file format
+    return !path.hasSuffix("/ebook/mobi")
+  }
 }
 
 // TODO: i think ipapi gives this as country_code
