@@ -1,10 +1,10 @@
 import React from 'react';
-import invariant from 'tiny-invariant';
 import { t } from '@friends-library/locale';
 import type { NextPage, Metadata } from 'next';
 import type { Params } from '@/lib/types';
 import DocBlock from './DocBlock';
 import ListenBlock from './ListenBlock';
+import invariant from '@/lib/invariant';
 import { LANG } from '@/lib/env';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import ExploreBooksBlock from '@/app/(home)/ExploreBooksBlock';
@@ -27,8 +27,8 @@ export async function generateStaticParams(): Promise<Path[]> {
 async function getPageData(path: Path): Promise<PageData> {
   const friendSlug = path.friend_slug;
   const documentSlug = path.document_slug;
-  invariant(typeof friendSlug === `string`);
-  invariant(typeof documentSlug === `string`);
+  invariant(typeof friendSlug === `string`, `missing friend slug`);
+  invariant(typeof documentSlug === `string`, `missing document slug`);
   const input = { lang: LANG, friendSlug, documentSlug } as const;
   const [props, docCustomCode] = await Promise.all([
     api.documentPage(input),

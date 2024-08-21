@@ -1,9 +1,9 @@
 import matter from 'gray-matter';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import invariant from 'tiny-invariant';
 import React from 'react';
 import type { Metadata, NextPage } from 'next';
 import type { MdxPageFrontmatter, Params } from '@/lib/types';
+import invariant from '@/lib/invariant';
 import { replacePlaceholders, components } from '@/components/mdx';
 import WhiteOverlay from '@/components/core/WhiteOverlay';
 import api from '@/lib/ssg/api-client';
@@ -30,7 +30,7 @@ async function getPageData(slug: string): Promise<PageData> {
   const totals = await api.totalPublished();
   const source = replacePlaceholders(mdx.source(slug, LANG), totals);
   const { content, data: frontmatter } = matter(source);
-  invariant(mdx.verifyFrontmatter(frontmatter));
+  invariant(mdx.verifyFrontmatter(frontmatter), `invalid frontmatter`);
   frontmatter.description = replacePlaceholders(frontmatter.description, totals);
   return { source: content, frontmatter };
 }

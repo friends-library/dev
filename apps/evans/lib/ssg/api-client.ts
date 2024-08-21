@@ -1,5 +1,5 @@
 import Client, { type T as Api } from '@friends-library/pairql/evans-build';
-import invariant from 'tiny-invariant';
+import invariant from '@/lib/invariant';
 
 export type { Api };
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-import invariant from 'tiny-invariant';
 import {
   ArrowDownTrayIcon,
   BookmarkIcon,
@@ -10,6 +9,7 @@ import {
 import { ThreeD } from '@friends-library/cover-component';
 import { t, translate } from '@friends-library/locale';
 import type { CoverProps } from '@friends-library/types';
+import invariant from '@/lib/invariant';
 import Dual from '@/components/core/Dual';
 import Button from '@/components/core/Button';
 
@@ -27,7 +27,7 @@ type Props = Omit<CoverProps, 'pages' | 'blurb'> & {
 
 const BookByFriend: React.FC<Props> = (props) => {
   const { className, isAlone, hasAudio, description, pages, numDownloads } = props;
-  invariant(pages[0] !== undefined);
+  invariant(pages[0] !== undefined, `empty book pages array`);
   return (
     <div
       className={cx(

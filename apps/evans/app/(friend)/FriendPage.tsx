@@ -1,5 +1,4 @@
 import React from 'react';
-import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
 import type { Metadata } from 'next';
@@ -8,6 +7,7 @@ import FeaturedQuoteBlock from './FeaturedQuoteBlock';
 import BookByFriend from './BookByFriend';
 import TestimonialsBlock from './TestimonialsBlock';
 import MapBlock from './MapBlock';
+import invariant from '@/lib/invariant';
 import { LANG } from '@/lib/env';
 import getResidences from '@/lib/residences';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
@@ -36,7 +36,7 @@ const FriendPage: React.FC<Props> = ({
   const mapData = getResidences(residences);
   let mapBlock;
   if (!isCompilations) {
-    invariant(mapData[0] !== undefined);
+    invariant(mapData[0] !== undefined, `missing friend map data`);
     mapBlock = (
       <MapBlock
         friendName={name}

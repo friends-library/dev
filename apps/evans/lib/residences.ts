@@ -1,4 +1,4 @@
-import invariant from 'tiny-invariant';
+import invariant from '@/lib/invariant';
 
 type Map = 'UK' | 'US' | 'Europe';
 
@@ -34,7 +34,10 @@ function deriveMap(positions: Position[]): 'UK' | 'US' | 'Europe' {
   );
   const arrays = Object.values(dict);
   arrays.sort((a, b) => (a.length < b.length ? 1 : -1));
-  invariant(arrays[0] !== undefined && arrays[0][0] !== undefined);
+  invariant(
+    arrays[0] !== undefined && arrays[0][0] !== undefined,
+    `failed to derive map`,
+  );
   return arrays[0][0];
 }
 

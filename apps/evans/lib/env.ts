@@ -1,4 +1,4 @@
-import invariant from 'tiny-invariant';
+import invariant from './invariant';
 
 invariant(process.env.NEXT_PUBLIC_LANG, `process.env.NEXT_PUBLIC_LANG is not defined`);
 

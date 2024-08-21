@@ -3,20 +3,21 @@ import path from 'path';
 import { safeLoad as ymlToJs } from 'js-yaml';
 import algoliasearch from 'algoliasearch';
 import { t, translateOptional } from '@friends-library/locale';
-import invariant from 'tiny-invariant';
 import { LANG } from '../env';
 import { getFriendUrl } from '../../lib/friend';
 import * as mdx from '../mdx';
 import * as seo from '../seo';
 import beliefs from './beliefs-search';
 import api, { type Api } from './api-client';
+import invariant from '@/lib/invariant';
 import { replacePlaceholders } from '@/components/mdx';
 
 export default async function sendSearchDataToAlgolia(): Promise<void> {
   process.stdout.write(`Sending search data to Algolia...\n`);
   const APP_ID = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID;
   const ADMIN_KEY = process.env.ALGOLIA_ADMIN_KEY;
-  invariant(APP_ID && ADMIN_KEY);
+  invariant(APP_ID, `algolia APP_ID env var missing`);
+  invariant(ADMIN_KEY, `algolia ADMIN_KEY env var missing`);
   const client = algoliasearch(APP_ID, ADMIN_KEY);
   const [friends, documents, totalPublished] = await Promise.all([
     api.allFriendPages(LANG).then((map) => Object.values(map)),
@@ -101,14 +102,14 @@ function mdxRecords(counts: Api.TotalPublished.Output): Record<string, string | 
   return files.flatMap(({ filepath, slug }) => {
     const content = fs.readFileSync(filepath).toString();
     const slugs = pages.find(([pageSlug]) => pageSlug === slug);
-    invariant(slugs);
+    invariant(slugs, `no mdx page matching file`);
     const localizedSlug = LANG === `en` ? slugs[0] : slugs[1];
     if (!localizedSlug) return []; // no spanish page for this english page
     const [, yaml, text] = content.split(/---\n/m);
-    invariant(typeof yaml === `string`);
-    invariant(typeof text === `string`);
+    invariant(typeof yaml === `string`, `mdx content yaml not string`);
+    invariant(typeof text === `string`, `mdx content text not string`);
     const frontmatter = ymlToJs(yaml);
-    invariant(mdx.verifyFrontmatter(frontmatter));
+    invariant(mdx.verifyFrontmatter(frontmatter), `invalid frontmatter`);
     const records: Record<string, string | null>[] = [
       {
         title: frontmatter.title,
