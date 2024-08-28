@@ -9,7 +9,7 @@ async function main(): Promise<void> {
         Authorization: `Bearer ${process.env.INPUT_FLP_API_STATUS_QUERY_TOKEN}`,
         'Content-Type': `application/json`,
       },
-      body: JSON.stringify(`en`),
+      body: JSON.stringify({ lang: `en` }),
     });
     const json = await res.json();
     const slug = validateOutput(json);
