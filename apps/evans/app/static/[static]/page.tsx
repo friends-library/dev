@@ -1,11 +1,11 @@
 import matter from 'gray-matter';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import invariant from 'tiny-invariant';
 import React from 'react';
 import type { Metadata, NextPage } from 'next';
-import type { MdxPageFrontmatter } from '@/lib/types';
+import type { MdxPageFrontmatter, Params } from '@/lib/types';
+import invariant from '@/lib/invariant';
 import { replacePlaceholders, components } from '@/components/mdx';
-import { WhiteOverlay } from '@/pages/explore';
+import WhiteOverlay from '@/components/core/WhiteOverlay';
 import api from '@/lib/ssg/api-client';
 import * as mdx from '@/lib/mdx';
 import { LANG } from '@/lib/env';
@@ -17,11 +17,9 @@ interface PageData {
   frontmatter: MdxPageFrontmatter;
 }
 
-type Props = {
-  params: { static: string };
-};
+type Path = { static: string };
 
-export async function generateStaticParams(): Promise<Array<Props['params']>> {
+export async function generateStaticParams(): Promise<Path[]> {
   return mdx
     .fileData()
     .filter((file) => file.lang === LANG)
@@ -32,12 +30,12 @@ async function getPageData(slug: string): Promise<PageData> {
   const totals = await api.totalPublished();
   const source = replacePlaceholders(mdx.source(slug, LANG), totals);
   const { content, data: frontmatter } = matter(source);
-  invariant(mdx.verifyFrontmatter(frontmatter));
+  invariant(mdx.verifyFrontmatter(frontmatter), `invalid frontmatter`);
   frontmatter.description = replacePlaceholders(frontmatter.description, totals);
   return { source: content, frontmatter };
 }
 
-const Page: NextPage<Props> = async (props) => {
+const Page: NextPage<Params<Path>> = async (props) => {
   const { source, frontmatter } = await getPageData(props.params.static);
   return (
     <div>
@@ -57,7 +55,10 @@ const Page: NextPage<Props> = async (props) => {
 
 export default Page;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Params<Path>): Promise<Metadata> {
   const { frontmatter } = await getPageData(params.static);
   return seo.nextMetadata(frontmatter.title, frontmatter.description);
 }
+
+export const revalidate = 10800; // 3 hours
+export const dynamicParams = false;

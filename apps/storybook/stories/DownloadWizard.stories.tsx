@@ -1,6 +1,6 @@
-import DownloadWizard from '@evans/pages/document/DownloadWizard';
 import type { Meta, StoryObj } from '@storybook/react';
 import { props } from './helpers';
+import DownloadWizard from '@/app/[friend_slug]/[document_slug]/DownloadWizard';
 
 const meta = {
   title: 'Document/DownloadWizard', // eslint-disable-line

@@ -7,7 +7,5 @@ export namespace SubscribeToNarrowPath {
     mixedQuotes: boolean;
   }
 
-  export interface Output {
-    success: boolean;
-  }
+  export type Output = void;
 }

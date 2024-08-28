@@ -65,6 +65,18 @@ export default class Result<T> {
     throw new Error(`PqlError: ${JSON.stringify(this.data.error)}`);
   }
 
+  public unwrapWith404(f: (e: PqlError) => unknown): T {
+    return this.reduce({
+      success: (v) => v,
+      error: (e) => {
+        if (e.statusCode === 404) {
+          f(e);
+        }
+        throw e;
+      },
+    });
+  }
+
   public get value(): T | undefined {
     if (this.data.type === `success`) {
       return this.data.value;

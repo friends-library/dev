@@ -2,13 +2,13 @@ import React from 'react';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
 import type { NextPage } from 'next';
-import { WhiteOverlay } from '@/pages/explore';
-import api from '@/lib/ssg/api-client';
-import AppStoreBadgeLinks from '@/components/pages/app/AppStoreBadgeLinks';
-import AppScreenshots from '@/components/pages/app/AppScreenshots';
-import * as seo from '@/lib/seo';
+import AppStoreBadgeLinks from '@/components/core/AppStoreBadgeLinks';
+import AppScreenshots from '@/components/core/AppScreenshots';
+import WhiteOverlay from '@/components/core/WhiteOverlay';
 import Dual from '@/components/core/Dual';
 import BooksBgBlock from '@/components/core/BooksBgBlock';
+import api from '@/lib/ssg/api-client';
+import * as seo from '@/lib/seo';
 import { LANG } from '@/lib/env';
 
 interface PageData {

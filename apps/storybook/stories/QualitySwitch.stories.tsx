@@ -1,6 +1,6 @@
-import QualitySwitch from '@evans/pages/document/QualitySwitch';
 import type { Meta, StoryObj } from '@storybook/react';
 import { props } from './helpers';
+import QualitySwitch from '@/app/[friend_slug]/[document_slug]/QualitySwitch';
 
 const meta = {
   title: 'Document/QualitySwitch', // eslint-disable-line

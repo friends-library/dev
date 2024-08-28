@@ -1,7 +1,7 @@
-import DocBlock from '@evans/pages/document/DocBlock';
 import WebCoverStyles from 'decorators/CoverStyles';
 import type { Meta, StoryObj } from '@storybook/react';
 import { MEDIUM_LOREM, props } from './helpers';
+import DocBlock from '@/app/[friend_slug]/[document_slug]/DocBlock';
 
 const meta = {
   title: 'Document/DocBlock', // eslint-disable-line
