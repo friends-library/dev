@@ -1,5 +1,6 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
+import { notFound } from 'next/navigation';
 import type { NextPage, Metadata } from 'next';
 import type { Params } from '@/lib/types';
 import DocBlock from './DocBlock';
@@ -31,7 +32,7 @@ async function getPageData(path: Path): Promise<PageData> {
   invariant(typeof documentSlug === `string`, `missing document slug`);
   const input = { lang: LANG, friendSlug, documentSlug } as const;
   const [props, docCustomCode] = await Promise.all([
-    api.documentPage(input),
+    api.documentPageResult(input).then((r) => r.unwrapWith404(notFound)),
     code.document(friendSlug, documentSlug),
   ]);
   const otherCode = await code.some(

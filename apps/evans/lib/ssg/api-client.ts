@@ -1,5 +1,5 @@
 import Client, { type T as Api } from '@friends-library/pairql/evans-build';
-import invariant from '@/lib/invariant';
+import { notFound } from 'next/navigation';
 
 export type { Api };
 
@@ -26,7 +26,7 @@ function createClient(): Client {
     }
     return _friendPages.then((allPages) => {
       const page = allPages[input.slug];
-      invariant(page, `No batched friend page found for slug: ${input.slug}`);
+      if (!page) notFound();
       return page;
     });
   };
@@ -38,7 +38,7 @@ function createClient(): Client {
     return _documentPages.then((allPages) => {
       const key = `${input.friendSlug}/${input.documentSlug}`;
       const page = allPages[key];
-      invariant(page, `No batched document page found for document: ${key}`);
+      if (!page) notFound();
       return page;
     });
   };

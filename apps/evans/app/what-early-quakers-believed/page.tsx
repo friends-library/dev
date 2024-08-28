@@ -1,11 +1,13 @@
 import React from 'react';
-import type { NextPage } from 'next';
+import { notFound } from 'next/navigation';
+import type { NextPage, Metadata } from 'next';
 import Footnotes from './Notes';
 import { MdxH2, MdxH3, MdxLead, MdxP } from '@/components/mdx';
 import WhiteOverlay from '@/components/core/WhiteOverlay';
 import BooksBgBlock from '@/components/core/BooksBgBlock';
 import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
 import * as seo from '@/lib/seo';
+import { LANG } from '@/lib/env';
 
 const Page: NextPage = async () => (
   <div>
@@ -1556,10 +1558,13 @@ const Page: NextPage = async () => (
 
 export default Page;
 
-export const metadata = seo.nextMetadata(
-  `Early Quaker Beliefs`,
-  seo.QUAKER_BELIEFS_SEO_META_DESC,
-);
+export async function generateMetadata(): Promise<Metadata> {
+  if (LANG === `es`) {
+    notFound();
+  } else {
+    return seo.nextMetadata(`Early Quaker Beliefs`, seo.QUAKER_BELIEFS_SEO_META_DESC);
+  }
+}
 
 const Footnote: React.FC<{ number: number }> = ({ number }) => (
   <sup className="pr-1 relative inline-block">

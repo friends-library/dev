@@ -1,4 +1,5 @@
 import React from 'react';
+import { notFound } from 'next/navigation';
 import type { NextPage, Metadata } from 'next';
 import type { Params } from '@/lib/types';
 import FriendPage, { queryFriend, metadata } from '../../FriendPage';
@@ -14,6 +15,7 @@ export async function generateStaticParams(): Promise<Path[]> {
 }
 
 const Page: NextPage<Params<Path>> = async (props) => {
+  if (LANG === `es`) notFound();
   const slug = props.params.friend;
   const friend = await queryFriend(slug);
   return <FriendPage {...friend} />;

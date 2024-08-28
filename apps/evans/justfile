@@ -13,15 +13,6 @@ build-en: lang-en write-cover-css web-covers && unweb-covers
 build-es: lang-es write-cover-css web-covers && unweb-covers
   @NEXT_PUBLIC_LANG=es pnpm next build
 
-build-en-vercel:
-  rm -rf 'app/(friend)/amigo/ app/(friend)/amiga/'
-  just build-en
-
-build-es-vercel:
-  rm -rf 'app/(friend)/friend/'
-  rm -rf 'app/what-early-quakers-believed/'
-  just build-es
-
 build-analyze:
   @ANALYZE=true just build-en
 

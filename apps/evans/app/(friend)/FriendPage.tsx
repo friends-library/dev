@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import FriendBlock from './FriendBlock';
 import FeaturedQuoteBlock from './FeaturedQuoteBlock';
@@ -136,7 +137,8 @@ const FriendPage: React.FC<Props> = ({
 export default FriendPage;
 
 export async function queryFriend(slug: string): Promise<Props> {
-  const friend = await api.friendPage({ lang: LANG, slug });
+  const friendResult = await api.friendPageResult({ lang: LANG, slug });
+  const friend = friendResult.unwrapWith404(notFound);
   const customCode = await custom.some([
     ...friend.documents.map(({ slug }) => ({
       friendSlug: friend.slug,
