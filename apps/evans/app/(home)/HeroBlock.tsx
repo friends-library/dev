@@ -1,6 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import cx from 'classnames';
-import Head from 'next/head';
 import Dual from '@/components/core/Dual';
 import TreeRootsLg from '@/public/images/tree-roots.webp';
 import TreeRootsSm from '@/public/images/tree-roots.small.webp';
@@ -12,16 +12,13 @@ const HeroBlock: React.FC = () => {
     LANG === `en`
       ? `[background:linear-gradient(rgba(108,49,66,0.5),rgba(108,49,66,0.5))]`
       : `[background:linear-gradient(rgba(195,142,97,0.5),rgba(195,142,97,0.5))]`;
+  ReactDOM.preload(`...`, {
+    as: `image`,
+    imageSrcSet: `${TreeRootsSm.src} 700w, ${TreeRootsLg.src} 1200w`,
+    fetchPriority: `high`,
+  });
   return (
     <section className="HeroBlock flex w-full">
-      <Head>
-        <link
-          rel="preload"
-          as="image"
-          imageSrcSet={`${TreeRootsSm.src} 700w, ${TreeRootsLg.src} 1200w`}
-          fetchPriority="high"
-        />
-      </Head>
       <TreeRootsBg className="md:w-2/3 xl:w-3/5">
         <div
           className={cx(
