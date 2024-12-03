@@ -84,4 +84,4 @@ const featuredBooks = {
   ],
 };
 
-export const revalidate = 10800; // 3 hours
+export const revalidate = 1800; // 30 minutes
