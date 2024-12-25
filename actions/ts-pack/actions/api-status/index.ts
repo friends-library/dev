@@ -2,18 +2,10 @@ import log from '@friends-library/slack';
 
 async function main(): Promise<void> {
   try {
-    const endpoint = process.env.INPUT_FLP_API_ENDPOINT ?? ``;
-    const res = await fetch(`${endpoint}/pairql/evans-build/PublishedFriendSlugs`, {
-      method: `POST`,
-      headers: {
-        Authorization: `Bearer ${process.env.INPUT_FLP_API_STATUS_QUERY_TOKEN}`,
-        'Content-Type': `application/json`,
-      },
-      body: JSON.stringify({ lang: `en` }),
-    });
-    const json = await res.json();
-    const slug = validateOutput(json);
-    await log.debug(`:white_check_mark: _FLP_ *Api Status Check* success \`${slug}\``);
+    const slug = await testFriendSlugOutput();
+    const shipping = await testExploratoryMetadata();
+    const data = JSON.stringify({ slug, shipping });
+    await log.debug(`:white_check_mark: _FLP_ *Api Status Check* success \`${data}\``);
   } catch (error: unknown) {
     await log.error(`_FLP_ *Api Status Check* failed`, { error: String(error) });
   }
@@ -31,9 +23,74 @@ async function main(): Promise<void> {
   }
 }
 
+async function testExploratoryMetadata(): Promise<number> {
+  const endpoint = process.env.INPUT_FLP_API_ENDPOINT ?? ``;
+  const res = await fetch(`${endpoint}/pairql/order/GetPrintJobExploratoryMetadata`, {
+    method: `POST`,
+    headers: { 'Content-Type': `application/json` },
+    body: JSON.stringify({
+      items: [{ volumes: [167], printSize: `m`, quantity: 1 }],
+      address: {
+        name: `George Fox`,
+        street: `777 Brockton Avenue`,
+        city: `Abington`,
+        state: `MA`,
+        zip: `02351`,
+        country: `US`,
+        email: `george.fox@gmail.com`,
+      },
+      email: `george.fox@gmail.com`,
+      lang: `en`,
+    }),
+  });
+  const json = await res.json();
+  return validatePrintJobOutput(json);
+}
+
+async function testFriendSlugOutput(): Promise<string> {
+  const endpoint = process.env.INPUT_FLP_API_ENDPOINT ?? ``;
+  const res = await fetch(`${endpoint}/pairql/evans-build/PublishedFriendSlugs`, {
+    method: `POST`,
+    headers: {
+      Authorization: `Bearer ${process.env.INPUT_FLP_API_STATUS_QUERY_TOKEN}`,
+      'Content-Type': `application/json`,
+    },
+    body: JSON.stringify({ lang: `en` }),
+  });
+  const json = await res.json();
+  return validateFriendSlugOutput(json);
+}
+
 main();
 
-function validateOutput(output: unknown): string {
+function validatePrintJobOutput(output: unknown): number {
+  try {
+    var json = JSON.stringify(output);
+  } catch (error) {
+    throw new Error(`Got non-stringifiable JSON output: ${output}`);
+  }
+  if (output === null || typeof output !== `object` || Array.isArray(output)) {
+    throw new Error(`Expected object output, got=${output}`);
+  }
+  const obj = output as Record<string, unknown>;
+  if (obj.case !== `success`) {
+    throw new Error(`Expected case="success", got=${json}`);
+  }
+  if (
+    obj.metadata === null ||
+    typeof obj.metadata !== `object` ||
+    Array.isArray(obj.metadata)
+  ) {
+    throw new Error(`Expected metadata object, got=${json}`);
+  }
+  const metadata = obj.metadata as Record<string, unknown>;
+  if (typeof metadata.shipping !== `number`) {
+    throw new Error(`Expected metadata.shipping number, got=${json}`);
+  }
+  return metadata.shipping;
+}
+
+function validateFriendSlugOutput(output: unknown): string {
   try {
     var json = JSON.stringify(output);
   } catch (error) {
