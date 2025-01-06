@@ -102,14 +102,6 @@ test-api isolate="":
 db-sync:
   @cd apps/api && pnpm ts-node ./sync.ts
 
-deploy-api-staging:
-  @cd apps/api && pnpm ts-node ./deploy.ts
-
-deploy-api-production:
-  @cd apps/api && pnpm ts-node ./deploy.ts --production
-
-deploy-api: deploy-api-staging deploy-api-production
-
 codegen-ts:
   @pnpm ts-node libs-ts/pairql/src/pairql-codegen.ts
 

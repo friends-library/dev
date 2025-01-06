@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-libs:
-    runs-on: ubuntu-latest
+    runs-on: namespace-profile-default
     container: swift:5.10-focal
     steps:
       - name: checkout
@@ -25,7 +25,7 @@ jobs:
         run: cd libs-swift/x-stripe && swift build
 
   test-libs:
-    runs-on: ubuntu-latest
+    runs-on: namespace-profile-default
     container: swift:5.10-focal
     steps:
       - name: checkout
@@ -40,7 +40,7 @@ jobs:
         run: cd libs-swift/x-slack && swift test
 
   build-api:
-    runs-on: ubuntu-latest
+    runs-on: namespace-profile-default
     container: swift:5.10-focal
     steps:
       - name: checkout
@@ -48,19 +48,63 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: apps/api/.build
-          key: api-v3-${{ hashFiles('api/Package.resolved') }}
-          restore-keys: api-v3-
-      - name: build api
-        run: cd apps/api && swift build
+          key: api-build-${{ hashFiles('api/Package.resolved') }}
+          restore-keys: api-build-
+      - name: meta
+        id: meta
+        uses: friends-library/dev/actions/ts-pack/actions/meta@master
+        with:
+          github_token: ${{ github.token }}
+      - name: set-env-vars
+        run: |
+          DATESTR=$(TZ=America/New_York date +'%Y.%m.%d_%H.%M')
+          SHORTSHA=${{ steps.meta.outputs.latest_commit_sha_short }}
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            API_ENV=production
+            echo "SRCDIR=apps/api/.build/release" >> $GITHUB_ENV
+            echo "DESTDIR=builds/production"      >> $GITHUB_ENV
+            echo "CONFIGURATION=release"          >> $GITHUB_ENV
+          else
+            API_ENV=staging
+            echo "SRCDIR=apps/api/.build/debug" >> $GITHUB_ENV
+            echo "DESTDIR=builds/staging"       >> $GITHUB_ENV
+            echo "CONFIGURATION=debug"          >> $GITHUB_ENV
+          fi
+          echo "FILENAME=api_${API_ENV}_${DATESTR}_${SHORTSHA}" >> $GITHUB_ENV
+      - name: build-api
+        run: |
+          cd apps/api && swift build --verbose --static-swift-stdlib -c $CONFIGURATION
+          cd ../../ && cp ${SRCDIR}/Run ${FILENAME}
+      - name: scp-bin
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: api.friendslibrary.com
+          username: ${{ secrets.API_SERVER_SSH_USER }}
+          key: ${{ secrets.API_SERVER_SSH_KEY }}
+          source: '${{ env.FILENAME }}'
+          target: '${{ env.DESTDIR }}'
+      - name: ssh-tasks
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: api.friendslibrary.com
+          username: ${{ secrets.API_SERVER_SSH_USER }}
+          key: ${{ secrets.API_SERVER_SSH_KEY }}
+          envs: DESTDIR,FILENAME
+          script: |
+            ln -sf "./${FILENAME}" "${DESTDIR}/latest"
+            chmod +x "${DESTDIR}/${FILENAME}" "${DESTDIR}/latest"
+            cd ~/builds/production && ls -r api_* | grep -v $(basename $(readlink -f current)) | tail -n +11 | xargs rm
+            cd ~/builds/staging && ls -r api_* | tail -n  +6 | xargs rm
+            pm2 restart staging > /dev/null
 
   test-api:
-    runs-on: ubuntu-latest
+    runs-on: namespace-profile-default
     container: swift:5.10-focal
     env:
       DATABASE_HOST: postgres
     services:
       postgres:
-        image: postgres:latest
+        image: postgres:17
         env:
           POSTGRES_USER: vapor_username
           POSTGRES_PASSWORD: vapor_password
@@ -71,8 +115,8 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: apps/api/.build
-          key: api-v3-${{ hashFiles('api/Package.resolved') }}
-          restore-keys: api-v3-
+          key: api-test-${{ hashFiles('api/Package.resolved') }}
+          restore-keys: api-test-
       - name: test api
         run: cd apps/api && swift test
 
