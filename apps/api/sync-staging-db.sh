@@ -24,7 +24,7 @@ pg_dump \
   --exclude-table-data np_subscribers \
   > ~/prod-to-staging.sql \
   && echo "✅ Dumped prod db for staging overwrite..." &&
-pm2 stop /^staging_/ > /dev/null \
+pm2 stop staging > /dev/null \
   && echo "✅ Stopped pm2 staging process temporarily..." &&
 dropdb staging \
   && echo "✅ Dropped staging db..." &&
@@ -34,7 +34,7 @@ psql --dbname staging --file ~/prod-to-staging.sql 1> /dev/null 2>> ~/staging-db
   && echo "✅ Recreated database from prod export..." &&
 psql --dbname staging --file ~/staging-preserved-tables.sql 1> /dev/null 2>> ~/staging-db-sync-err.txt \
   && echo "✅ Restored preserved staging db tables..." &&
-pm2 restart /^staging_/ > /dev/null \
+pm2 restart staging > /dev/null \
   && echo "✅ Restarted pm2 staging process..."
 
 rm -f ~/prod-to-staging.sql
