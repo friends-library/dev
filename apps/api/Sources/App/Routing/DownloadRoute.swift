@@ -277,7 +277,7 @@ private func isPodcast(userAgent: String) -> Bool {
 }
 
 private func shouldSlackError(from path: String) -> Bool {
-  if ["/.git", "/.env", "%0A"].contains(where: path.contains) {
+  if ["/.git", "/.env", "%0A", "%5C"].contains(where: path.contains) {
     return false
   } else {
     // deprecated mobi file format
