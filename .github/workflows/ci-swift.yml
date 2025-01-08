@@ -76,7 +76,7 @@ jobs:
           echo "FILENAME=api_${API_ENV}_${DATESTR}_${SHORTSHA}" >> $GITHUB_ENV
       - name: build-api
         run: |
-          cd apps/api && swift build --verbose --static-swift-stdlib -c $CONFIGURATION
+          cd apps/api && swift build --static-swift-stdlib -c $CONFIGURATION
           cd ../../ && cp ${SRCDIR}/Run ${FILENAME}
       - name: scp-bin
         uses: appleboy/scp-action@v0.1.7
