@@ -104,7 +104,7 @@ private func confirmationBodyEs(for order: Order) async throws -> String {
   \(try await lineItems(order))
 
   Para tu información, el número de referencia de tu pedido es: \(order.id
-    .lowercased). Dentro de unos pocos días, cuando el envío sea realizado, vamos a enviarte otro correo electrónico con tu número de rastreo. En la mayoría de los casos, el tiempo normal de entrega es de unos 7 a 14 días después de la compra.
+    .lowercased). Dentro de unos pocos días, cuando el envío sea realizado, vamos a enviarte otro correo electrónico con tu número de rastreo. En la mayoría de los casos, el tiempo normal de entrega es de unos 14 a 21 días después de la compra.
 
   ¡Por favor no dudes en hacernos saber si tienes alguna pregunta!
 
@@ -121,7 +121,7 @@ private func confirmationBodyEn(for order: Order) async throws -> String {
   \(try await lineItems(order))
 
   For your reference, your order id is: \(order.id
-    .lowercased). We'll be sending you one more email in a few days with your tracking number, as soon as it ships. For many shipping addresses, a normal delivery date is around 7 to 14 days after purchase.
+    .lowercased). We'll be sending you one more email in a few days with your tracking number, as soon as it ships. For many shipping addresses, a normal delivery date is around 14 to 21 days after purchase.
 
   Please don't hesitate to let us know if you have any questions!
 
