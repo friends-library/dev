@@ -298,6 +298,11 @@ async function createMp3Zip(
   const mp3Filenames: string[] = [];
   const unhashed: string[] = [];
 
+  if (audio.parts.length === 0) {
+    logError(`Audio with no parts`);
+    process.exit(1);
+  }
+
   for (let idx = 0; idx < audio.parts.length; idx++) {
     await ensureLocalMp3(audio, fsData, idx, quality);
     const mp3Data = fsData.parts[idx]!.mp3s[quality];
