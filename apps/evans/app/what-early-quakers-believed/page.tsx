@@ -825,8 +825,8 @@ const Page: NextPage = async () => (
           It is for lack of people’s experiencing this real birth of the Spirit brought
           forth in them,
         </em>
-        and knowing freedom in themselves by it—which no duties or performances in the
-        will of man, nor entertaining the most refined opinions in religion can
+        {` `}and knowing freedom in themselves by it—which no duties or performances in
+        the will of man, nor entertaining the most refined opinions in religion can
         administer, short of the law of the Spirit of Christ in their hearts—it is for
         lack of this, I say, that people are so very apprehensive of the difficulty, and
         quick to call it it an impossibility, for man to live a holy righteous life; which
@@ -1215,7 +1215,7 @@ const Page: NextPage = async () => (
           it is our chiefest concern to experience this inward spiritual baptism of
           Christ,
         </em>
-        that our hearts may be washed, purified, and sanctified by the Spirit of God;
+        {` `}that our hearts may be washed, purified, and sanctified by the Spirit of God;
         <Footnote number={184} />
         and that we really put on Christ, and are in Him, who is the substance, in whom
         the types and shadows have ended. John knew and foretold that “he must decrease,
@@ -1291,8 +1291,8 @@ const Page: NextPage = async () => (
         their predecessors, or at least something similar in its stead, but by degrees
         added more rites and ceremonies, and at length began to trim and adorn that
         religion that was at first plain, simple, and homely, and{` `}
-        <em>consisted more in power and divine love than an outward observations.</em>
-        And this, in the process of time, was so dressed and garnished, that its
+        <em>consisted more in power and divine love than in outward observations.</em>
+        {` `}And this, in the process of time, was so dressed and garnished, that its
         distinguished splendor became inviting to others. Under a degree of this
         degeneracy sprung up the practice of infant-baptism, a mere human invention,
         without any scripture-authority either by precept or practice; though the
