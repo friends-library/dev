@@ -5,7 +5,7 @@ import XExpect
 
 @testable import App
 
-final class RateLimitedSlackClientTests: AppTestCase {
+final class RateLimitedSlackClientTests: AppTestCase, @unchecked Sendable {
   func testRateLimitedClient() async throws {
     Current.date = { Date(timeIntervalSince1970: 0) }
 

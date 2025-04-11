@@ -4,8 +4,7 @@ import XCTest
 
 @testable import App
 
-final class CreateNewPrintJobTests: AppTestCase {
-
+final class CreateNewPrintJobTests: AppTestCase, @unchecked Sendable {
   func testNoPrintJobsCreatedIfNoOrdersInPresubmitStatus() async throws {
     await OrderPrintJobCoordinator.createNewPrintJobs { _ in throw Fail() }
   }
@@ -49,7 +48,7 @@ final class CreateNewPrintJobTests: AppTestCase {
 }
 
 struct Fail: Error {
-  init(_ msg: String = "", file: StaticString = #file, line: UInt = #line) {
+  init(_ msg: String = "", file: StaticString = #filePath, line: UInt = #line) {
     XCTFail(msg, file: file, line: line)
   }
 }

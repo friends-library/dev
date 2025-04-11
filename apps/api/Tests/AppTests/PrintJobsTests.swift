@@ -3,7 +3,7 @@ import XExpect
 
 @testable import App
 
-final class PrintJobsTests: AppTestCase {
+final class PrintJobsTests: AppTestCase, @unchecked Sendable {
   func testQueryExploratoryMetadata() async throws {
     let responses = Responses([
       .init(shipping: "9.99", tax: "3.33", total: "19.12", fee: "1.50"),
@@ -11,7 +11,7 @@ final class PrintJobsTests: AppTestCase {
     ])
 
     Current.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
-      .success(await responses.next())
+      await .success(responses.next())
     }
 
     let result = try await GetPrintJobExploratoryMetadata.resolve(
@@ -143,7 +143,7 @@ final class PrintJobsTests: AppTestCase {
     ])
 
     Current.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
-      .success(await responses.next())
+      await .success(responses.next())
     }
 
     let result = try await PrintJobs.getExploratoryMetadata(
@@ -173,7 +173,7 @@ final class PrintJobsTests: AppTestCase {
     ])
 
     Current.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
-      .success(await responses.next())
+      await .success(responses.next())
     }
 
     let meta = try await PrintJobs.getExploratoryMetadata(

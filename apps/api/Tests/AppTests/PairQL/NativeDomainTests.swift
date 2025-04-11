@@ -4,7 +4,7 @@ import XExpect
 
 @testable import App
 
-final class NativeDomainTests: AppTestCase {
+final class NativeDomainTests: AppTestCase, @unchecked Sendable {
   func testReportNativeAppError() async throws {
     let installId = UUID().lowercased
     let output = try await ReportError.resolve(

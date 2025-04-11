@@ -4,9 +4,8 @@ import Foundation
 @_exported import URLRouting
 
 #if os(Linux)
-  extension JSONEncoder: @unchecked Sendable {}
+  extension JSONEncoder: @retroactive @unchecked Sendable {}
   extension JSONDecoder.DateDecodingStrategy: @unchecked Sendable {}
-  extension ISO8601DateFormatter: @unchecked Sendable {}
 #endif
 
 public protocol PairRoute: Equatable {}
@@ -49,7 +48,7 @@ public extension PairOutput {
   }
 
   func json() throws -> String {
-    guard let json = String(data: try jsonData(), encoding: .utf8) else {
+    guard let json = try String(data: jsonData(), encoding: .utf8) else {
       throw PairJsonEncodingError()
     }
     return json
@@ -112,7 +111,7 @@ public protocol RouteResponder {
 extension Resolver {
   static func result(with input: Input, in context: Context) async -> Result<Output, Error> {
     do {
-      return .success(try await resolve(with: input, in: context))
+      return try await .success(resolve(with: input, in: context))
     } catch {
       return .failure(error)
     }
@@ -127,11 +126,11 @@ public struct Operation<P: Pair>: ParserPrinter {
   }
 
   public func parse(_ input: inout URLRequestData) throws {
-    try Path { pair.name }.parse(&input)
+    try Path { self.pair.name }.parse(&input)
   }
 
   public func print(_ output: Void, into input: inout URLRequestData) throws {
-    try Path { pair.name }.print(output, into: &input)
+    try Path { self.pair.name }.print(output, into: &input)
   }
 }
 
@@ -153,7 +152,7 @@ public extension JSONDecoder.DateDecodingStrategy {
   static let forgivingIso8601 = custom {
     let container = try $0.singleValueContainer()
     let string = try container.decode(String.self)
-    if let date = Formatter.iso8601withFractionalSeconds.date(from: string) ?? Formatter.iso8601
+    if let date = Formatter.iso8601withFractionalSeconds().date(from: string) ?? Formatter.iso8601()
       .date(from: string) {
       return date
     }
@@ -164,16 +163,16 @@ public extension JSONDecoder.DateDecodingStrategy {
   }
 }
 
-public extension Formatter {
-  static let iso8601withFractionalSeconds: ISO8601DateFormatter = {
+extension Formatter {
+  static func iso8601withFractionalSeconds() -> ISO8601DateFormatter {
     let formatter = ISO8601DateFormatter()
     formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
     return formatter
-  }()
+  }
 
-  static let iso8601: ISO8601DateFormatter = {
+  static func iso8601() -> ISO8601DateFormatter {
     let formatter = ISO8601DateFormatter()
     formatter.formatOptions = [.withInternetDateTime]
     return formatter
-  }()
+  }
 }

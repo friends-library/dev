@@ -2,8 +2,7 @@ import XCTest
 
 @testable import App
 
-final class FriendPrimaryResidenceTests: AppTestCase {
-
+final class FriendPrimaryResidenceTests: AppTestCase, @unchecked Sendable {
   func testReturnsUnDatedResidenceIfOnlyOne() async throws {
     let entities = await Entities.create {
       $0.friendResidence.city = "Sheffield"

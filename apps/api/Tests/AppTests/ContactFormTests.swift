@@ -3,7 +3,7 @@ import XExpect
 
 @testable import App
 
-final class ContactFormTests: AppTestCase {
+final class ContactFormTests: AppTestCase, @unchecked Sendable {
   func testSubmitContactFormEnglish() async throws {
     Current.date = { Date(timeIntervalSinceReferenceDate: 0) }
 
@@ -35,7 +35,7 @@ final class ContactFormTests: AppTestCase {
   func testSubmitContactFormSpanish() async throws {
     Current.date = { Date(timeIntervalSinceReferenceDate: 0) }
 
-    let _ = try await SubmitContactForm.resolve(
+    _ = try await SubmitContactForm.resolve(
       with: .init(
         lang: .es,
         name: "Pablo Smith",

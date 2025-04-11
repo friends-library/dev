@@ -13,7 +13,7 @@ extension NonEmpty {
   }
 }
 
-extension NonEmpty: TypeScriptAliased {
+extension NonEmpty: @retroactive TypeScriptAliased {
   public static var typescriptAlias: String {
     switch Element.self {
     case is String.Type: return "[string, ...string[]]"

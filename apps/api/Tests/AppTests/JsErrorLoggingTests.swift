@@ -3,7 +3,7 @@ import XExpect
 
 @testable import App
 
-final class JsErrorLoggingTests: AppTestCase {
+final class JsErrorLoggingTests: AppTestCase, @unchecked Sendable {
   func testLoggingJsError() async throws {
     let output = try await LogJsError.resolve(
       with: .init(

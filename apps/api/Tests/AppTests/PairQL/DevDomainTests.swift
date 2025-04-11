@@ -4,7 +4,7 @@ import XExpect
 
 @testable import App
 
-final class DevDomainTests: AppTestCase {
+final class DevDomainTests: AppTestCase, @unchecked Sendable {
   func testLatestRevision() async throws {
     try await ArtifactProductionVersion.create(.init(version: "older"))
     try await ArtifactProductionVersion.create(.init(version: "newer"))

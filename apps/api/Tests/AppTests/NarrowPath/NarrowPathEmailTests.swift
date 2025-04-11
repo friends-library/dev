@@ -3,7 +3,7 @@ import XExpect
 
 @testable import App
 
-final class NarrowPathEmailTests: AppTestCase {
+final class NarrowPathEmailTests: AppTestCase, @unchecked Sendable {
   func testQuoteConversions() async throws {
     var markdown = "foo _bar_\nbaz"
     var quote = NPQuote(lang: .en, quote: markdown, authorName: "")

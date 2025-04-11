@@ -31,6 +31,6 @@ struct AuthedContext: ResolverContext {
   }
 }
 
-extension Infallible: TypeScriptAliased {
+extension Infallible: @retroactive TypeScriptAliased {
   public static var typescriptAlias: String { "void" }
 }

@@ -9,7 +9,7 @@ import XExpect
 @testable import App
 @testable import XStripe
 
-final class OrderResolverTests: AppTestCase {
+final class OrderResolverTests: AppTestCase, @unchecked Sendable {
   func orderSetup() async throws -> (CreateOrder.Input, OrderItem) {
     let entities = await Entities.create()
     let order = Order.random
@@ -175,7 +175,8 @@ final class OrderResolverTests: AppTestCase {
             orderId: orderId,
             userAgent: "operafox",
             stateHistory: ["foo", "bar"]
-          ), .pretty)!)
+          ), .pretty
+        )!)
         ```
         """),
       ]

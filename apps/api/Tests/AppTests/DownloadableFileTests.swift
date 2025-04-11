@@ -1,4 +1,3 @@
-// import ConcurrencyExtras
 import DuetSQL
 import Vapor
 import XCTest
@@ -6,7 +5,7 @@ import XExpect
 
 @testable import App
 
-final class DownloadableFileTests: AppTestCase {
+final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
   var cloudUrl: String { Env.CLOUD_STORAGE_BUCKET_URL }
   var selfUrl: String { Env.SELF_URL }
   var websiteUrl: String { Env.WEBSITE_URL_EN }

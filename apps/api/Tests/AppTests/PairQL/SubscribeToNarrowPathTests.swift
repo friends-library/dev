@@ -4,7 +4,7 @@ import XExpect
 
 @testable import App
 
-final class SubscribeToNarrowPathTests: AppTestCase {
+final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testEnglishSubscribingHappyPath() async throws {
     var quote = NPQuote.mock
     quote.lang = .en

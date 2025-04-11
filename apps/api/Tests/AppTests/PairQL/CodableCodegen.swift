@@ -4,7 +4,7 @@ import XCTest
 
 @testable import App
 
-final class Codegen: AppTestCase {
+final class Codegen: AppTestCase, @unchecked Sendable {
   func test_codegenSwift() throws {
     if envVarSet("CODEGEN_SWIFT") {
       try ApiTypeScriptEnumsCodableGenerator().write()

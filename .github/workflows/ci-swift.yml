@@ -10,7 +10,7 @@ on:
 jobs:
   build-libs:
     runs-on: namespace-profile-default
-    container: swift:5.10-focal
+    container: swift:6.0.3-focal
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
 
   test-libs:
     runs-on: namespace-profile-default
-    container: swift:5.10-focal
+    container: swift:6.0.3-focal
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -44,7 +44,7 @@ jobs:
 
   build-api:
     runs-on: namespace-profile-default
-    container: swift:5.10-focal
+    container: swift:6.0.3-focal
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -102,7 +102,7 @@ jobs:
 
   test-api:
     runs-on: namespace-profile-default
-    container: swift:5.10-focal
+    container: swift:6.0.3-focal
     env:
       DATABASE_HOST: postgres
     services:

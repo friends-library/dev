@@ -3,7 +3,7 @@ import PairQL
 import Tagged
 import TypeScriptInterop
 
-extension Tagged: TypeScriptAliased {
+extension Tagged: @retroactive TypeScriptAliased {
   public static var typescriptAlias: String {
     switch RawValue.self {
     case is UUID.Type: return "UUID"
@@ -21,5 +21,5 @@ public extension Tagged where RawValue == UUID {
   }
 }
 
-extension Tagged: PairInput where RawValue: Codable & Equatable {}
-extension Tagged: PairOutput where RawValue == UUID {}
+extension Tagged: @retroactive PairInput where RawValue: Codable & Equatable {}
+extension Tagged: @retroactive PairOutput where RawValue == UUID {}
