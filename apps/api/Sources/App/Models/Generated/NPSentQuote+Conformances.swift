@@ -19,11 +19,11 @@ extension NPSentQuote: Model {
   func postgresData(for column: ColumnName) -> DuetSQL.Postgres.Data {
     switch column {
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .id:
-      return .id(self)
+      .id(self)
     case .quoteId:
-      return .uuid(quoteId)
+      .uuid(quoteId)
     }
   }
 }

@@ -12,25 +12,25 @@ extension Edition: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .documentId:
-      return .uuid(documentId)
+      .uuid(documentId)
     case .type:
-      return .enum(type)
+      .enum(type)
     case .editor:
-      return .string(editor)
+      .string(editor)
     case .isDraft:
-      return .bool(isDraft)
+      .bool(isDraft)
     case .paperbackSplits:
-      return .intArray(paperbackSplits?.array)
+      .intArray(paperbackSplits?.array)
     case .paperbackOverrideSize:
-      return .enum(paperbackOverrideSize)
+      .enum(paperbackOverrideSize)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .updatedAt:
-      return .date(updatedAt)
+      .date(updatedAt)
     case .deletedAt:
-      return .date(deletedAt)
+      .date(deletedAt)
     }
   }
 }

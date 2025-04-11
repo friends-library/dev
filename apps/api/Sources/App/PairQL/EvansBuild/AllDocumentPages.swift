@@ -9,7 +9,7 @@ struct AllDocumentPages: Pair {
 
 extension AllDocumentPages: Resolver {
   static func resolve(with lang: Lang, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let documents = try await Document.Joined.all()
       .filter { $0.friend.lang == lang && $0.hasNonDraftEdition }
 
@@ -57,7 +57,7 @@ struct AllDocumentDownloads: CustomQueryable {
   var total: Int
 }
 
-extension Array where Element == AllDocumentDownloads {
+extension [AllDocumentDownloads] {
   var urlPathDict: [String: Int] {
     reduce(into: [:]) { result, download in
       result["\(download.friendSlug)/\(download.documentSlug)"] = download.total

@@ -10,18 +10,18 @@ extension Lang {
   var locale: Locale {
     switch self {
     case .en:
-      return .init(identifier: "en_US")
+      .init(identifier: "en_US")
     case .es:
-      return .init(identifier: "es_ES")
+      .init(identifier: "es_ES")
     }
   }
 
   var website: String {
     switch self {
     case .en:
-      return Env.WEBSITE_URL_EN
+      Env.WEBSITE_URL_EN
     case .es:
-      return Env.WEBSITE_URL_ES
+      Env.WEBSITE_URL_ES
     }
   }
 }
@@ -41,11 +41,11 @@ enum PrintSizeVariant: String, Codable, CaseIterable, Sendable {
   var printSize: PrintSize {
     switch self {
     case .s:
-      return .s
+      .s
     case .m:
-      return .m
+      .m
     case .xl, .xlCondensed:
-      return .xl
+      .xl
     }
   }
 }

@@ -115,7 +115,7 @@ struct DocumentPage: Pair {
 
 extension DocumentPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let publishedDocs = try await Document.Joined.all()
       .filter(\.hasNonDraftEdition)
       .filter { $0.friend.lang == input.lang }
@@ -202,7 +202,7 @@ extension DocumentPage.Output {
       )
     }
 
-    self = .init(
+    self = try .init(
       document: .init(
         friendName: friend.name,
         friendSlug: friend.slug,
@@ -217,12 +217,12 @@ extension DocumentPage.Output {
         numDownloads: downloads[document.urlPath] ?? 0,
         isCompilation: friend.isCompilations,
         ogImageUrl: primaryEdition.images.threeD.w700.url.absoluteString,
-        editions: try editions.filter { !$0.isDraft }.map { edition in
+        editions: editions.filter { !$0.isDraft }.map { edition in
           let impression = try expect(edition.impression)
-          return .init(
+          return try .init(
             id: edition.id,
             type: edition.type,
-            isbn: try expect(edition.isbn).code,
+            isbn: expect(edition.isbn).code,
             printSize: impression.paperbackSize,
             numPages: impression.paperbackVolumes,
             loggedDownloadUrls: .init(
@@ -244,17 +244,17 @@ extension DocumentPage.Output {
           audiobook: audiobook
         )
       ),
-      otherBooksByFriend: try friend.documents.filter(\.hasNonDraftEdition)
+      otherBooksByFriend: friend.documents.filter(\.hasNonDraftEdition)
         .filter { $0.slug != document.slug }
         .map { otherDoc in
           let edition = try expect(otherDoc.primaryEdition)
-          return .init(
+          return try .init(
             title: otherDoc.title,
             slug: otherDoc.slug,
             editionType: edition.type,
             description: otherDoc.partialDescription,
-            paperbackVolumes: try expect(edition.impression).paperbackVolumes,
-            isbn: try expect(edition.isbn).code,
+            paperbackVolumes: expect(edition.impression).paperbackVolumes,
+            isbn: expect(edition.isbn).code,
             audioDuration: edition.audio.map(\.humanDurationClock),
             htmlShortTitle: otherDoc.htmlShortTitle,
             documentSlug: otherDoc.slug,

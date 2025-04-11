@@ -11,7 +11,7 @@ struct CreateEntity: Pair {
 
 extension CreateEntity: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let model: any ApiModel
 
     switch input {
@@ -28,12 +28,12 @@ extension CreateEntity: Resolver {
       )
 
     case .audioPart(let input):
-      model = AudioPart(
+      model = try AudioPart(
         id: input.id,
         audioId: input.audioId,
         title: input.title,
         duration: input.duration,
-        chapters: try .fromArray(input.chapters),
+        chapters: .fromArray(input.chapters),
         order: input.order,
         mp3SizeHq: input.mp3SizeHq,
         mp3SizeLq: input.mp3SizeLq
@@ -70,13 +70,13 @@ extension CreateEntity: Resolver {
         await slackError("Failed to query ISBN to assign to new edition: \(error)")
         throw error
       }
-      let edition = Edition(
+      let edition = try Edition(
         id: input.id,
         documentId: input.documentId,
         type: input.type,
         editor: nilIfEmpty(input.editor),
         isDraft: input.isDraft,
-        paperbackSplits: try input.paperbackSplits.map { try .fromArray($0) },
+        paperbackSplits: input.paperbackSplits.map { try .fromArray($0) },
         paperbackOverrideSize: input.paperbackOverrideSize
       )
       isbn.editionId = edition.id

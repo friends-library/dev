@@ -29,7 +29,7 @@ public extension SQLMutating {
   func update<M: Model>(_ models: [M]) async throws -> [M] {
     try await withThrowingTaskGroup(of: M.self) { group in
       for model in models {
-        group.addTask { try await update(model) }
+        group.addTask { try await self.update(model) }
       }
       var updated: [M] = []
       for try await updatedModel in group {

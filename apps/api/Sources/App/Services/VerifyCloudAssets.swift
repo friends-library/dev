@@ -9,7 +9,7 @@ public struct VerifyCloudAssets: AsyncScheduledJob {
 
     let impressionFiles = editionImpressions
       .map { $0.files.all.map(\.sourceUrl) }
-      .flatMap { $0 }
+      .flatMap(\.self)
 
     let allUrls = impressionFiles
       + audios.flatMap(\.files.all).map(\.sourceUrl)
@@ -22,7 +22,7 @@ public struct VerifyCloudAssets: AsyncScheduledJob {
 
     var missing: [String] = []
     for uris in chunks {
-      missing.append(contentsOf: try await self.verify(chunk: uris, in: context))
+      try await missing.append(contentsOf: self.verify(chunk: uris, in: context))
     }
 
     guard !missing.isEmpty else { return }
@@ -45,7 +45,7 @@ public struct VerifyCloudAssets: AsyncScheduledJob {
         missing.append(error)
       }
 
-      return missing.compactMap { $0 }
+      return missing.compactMap(\.self)
     }
   }
 }

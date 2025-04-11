@@ -65,12 +65,11 @@ public struct LiveClient: Client {
     offset: Int? = nil
   ) async throws -> [M] {
     let models = try await select(Model.self, where: constraint)
-    let prepared: SQL.PreparedStatement
-    if (try? M.column("deleted_at")) != nil {
+    let prepared: SQL.PreparedStatement = if (try? M.column("deleted_at")) != nil {
       // @TODO should support order, limit
-      prepared = SQL.softDelete(M.self, where: constraint)
+      SQL.softDelete(M.self, where: constraint)
     } else {
-      prepared = SQL.delete(
+      SQL.delete(
         from: M.self,
         where: constraint,
         orderBy: order,

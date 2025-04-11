@@ -40,7 +40,7 @@ extension Document {
       return false
     }
 
-    if let originalTitle = originalTitle {
+    if let originalTitle {
       if !originalTitle.firstLetterIsUppercase {
         logInvalid("Original title does not start with uppercase letter")
         return false

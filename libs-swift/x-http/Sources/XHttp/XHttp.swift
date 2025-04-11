@@ -17,8 +17,8 @@ public enum HTTP {
     case get = "GET"
   }
 
-  public static func postJson<Body: Encodable>(
-    _ body: Body,
+  public static func postJson(
+    _ body: some Encodable,
     to urlString: String,
     headers: [String: String] = [:],
     auth: AuthType? = nil,
@@ -30,11 +30,11 @@ public enum HTTP {
     let encoder = JSONEncoder()
     encoder.keyEncodingStrategy = keyEncodingStrategy
     request.httpBody = try encoder.encode(body)
-    return try convertResponse(try await data(for: request))
+    return try await convertResponse(data(for: request))
   }
 
-  public static func postJson<Body: Encodable, Response: Decodable>(
-    _ body: Body,
+  public static func postJson<Response: Decodable>(
+    _ body: some Encodable,
     to urlString: String,
     decoding: Response.Type,
     headers: [String: String] = [:],
@@ -64,7 +64,7 @@ public enum HTTP {
     // @see: https://www.advancedswift.com/a-guide-to-urls-in-swift/#create-url-string
     let query = params.map { key, value in "\(key)=\(value)" }.joined(separator: "&")
     request.httpBody = query.data(using: .utf8)
-    return try convertResponse(await data(for: request))
+    return try await convertResponse(data(for: request))
   }
 
   public static func get(
@@ -73,7 +73,7 @@ public enum HTTP {
     auth: AuthType? = nil
   ) async throws -> (Data, HTTPURLResponse) {
     let request = try urlRequest(to: urlString, method: .get, headers: headers, auth: auth)
-    return try convertResponse(await data(for: request))
+    return try await convertResponse(data(for: request))
   }
 
   public static func get<T: Decodable>(
@@ -93,7 +93,7 @@ public enum HTTP {
     auth: AuthType? = nil
   ) async throws -> (Data, HTTPURLResponse) {
     let request = try urlRequest(to: urlString, method: .post, headers: headers, auth: auth)
-    return try convertResponse(await data(for: request))
+    return try await convertResponse(data(for: request))
   }
 
   public static func post<T: Decodable>(
@@ -137,15 +137,15 @@ public enum HttpError: Error, LocalizedError {
   public var errorDescription: String? {
     switch self {
     case .invalidUrl(let string):
-      return "Invalid URL string: \(string)"
+      "Invalid URL string: \(string)"
     case .base64EncodingFailed:
-      return "base64Endoding failed"
+      "base64Endoding failed"
     case .decodingError(let error, let raw):
-      return "JSON decoding failed. Error=\(error), Raw=\(raw)"
+      "JSON decoding failed. Error=\(error), Raw=\(raw)"
     case .unexpectedResponseType:
-      return "Unexpected response type, could not convert to HTTPURLResponse"
+      "Unexpected response type, could not convert to HTTPURLResponse"
     case .missingDataOrResponse:
-      return "Unexpectedly missing data or response"
+      "Unexpectedly missing data or response"
     }
   }
 }
@@ -215,11 +215,11 @@ private func decode<T: Decodable>(
 private func data(for request: URLRequest) async throws -> (Data, URLResponse) {
   try await withCheckedThrowingContinuation { continuation in
     URLSession.shared.dataTask(with: request) { data, response, err in
-      if let err = err {
+      if let err {
         continuation.resume(throwing: err)
         return
       }
-      guard let data = data, let response = response else {
+      guard let data, let response else {
         continuation.resume(throwing: HttpError.missingDataOrResponse)
         return
       }

@@ -12,25 +12,25 @@ extension Audio: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .editionId:
-      return .uuid(editionId)
+      .uuid(editionId)
     case .reader:
-      return .string(reader)
+      .string(reader)
     case .isIncomplete:
-      return .bool(isIncomplete)
+      .bool(isIncomplete)
     case .mp3ZipSizeHq:
-      return .int(mp3ZipSizeHq.rawValue)
+      .int(mp3ZipSizeHq.rawValue)
     case .mp3ZipSizeLq:
-      return .int(mp3ZipSizeLq.rawValue)
+      .int(mp3ZipSizeLq.rawValue)
     case .m4bSizeHq:
-      return .int(m4bSizeHq.rawValue)
+      .int(m4bSizeHq.rawValue)
     case .m4bSizeLq:
-      return .int(m4bSizeLq.rawValue)
+      .int(m4bSizeLq.rawValue)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .updatedAt:
-      return .date(updatedAt)
+      .date(updatedAt)
     }
   }
 }

@@ -12,17 +12,17 @@ extension RelatedDocument: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .description:
-      return .string(description)
+      .string(description)
     case .documentId:
-      return .uuid(documentId)
+      .uuid(documentId)
     case .parentDocumentId:
-      return .uuid(parentDocumentId)
+      .uuid(parentDocumentId)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .updatedAt:
-      return .date(updatedAt)
+      .date(updatedAt)
     }
   }
 }

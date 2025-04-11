@@ -13,7 +13,7 @@ struct DeleteEntities: Pair {
 
 extension DeleteEntities: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     switch input {
     case .editionImpression(let id):
       try await Current.db.delete(id)

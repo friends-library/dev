@@ -46,11 +46,11 @@ extension EditionImpression.Joined {
   var files: EditionImpressionFiles {
     var interiors = model.paperbackVolumes.indices.map { index -> DownloadableFile in
       let volumeIndex = model.paperbackVolumes.count == 1 ? nil : index
-      return downloadableFile(format: .paperback(type: .interior, volumeIndex: volumeIndex))
+      return self.downloadableFile(format: .paperback(type: .interior, volumeIndex: volumeIndex))
     }
     var covers = model.paperbackVolumes.indices.map { index -> DownloadableFile in
       let volumeIndex = model.paperbackVolumes.count == 1 ? nil : index
-      return downloadableFile(format: .paperback(type: .cover, volumeIndex: volumeIndex))
+      return self.downloadableFile(format: .paperback(type: .cover, volumeIndex: volumeIndex))
     }
 
     return EditionImpressionFiles(

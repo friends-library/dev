@@ -20,9 +20,9 @@ extension Model {
          Audio.tableName,
          AudioPart.tableName,
          Isbn.tableName:
-      return true
+      true
     default:
-      return false
+      false
     }
   }
 }

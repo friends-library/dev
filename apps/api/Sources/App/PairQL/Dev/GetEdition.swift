@@ -36,7 +36,7 @@ extension GetEdition: Resolver {
     with editionId: Edition.Id,
     in context: AuthedContext
   ) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let edition = try await Edition.Joined.find(editionId)
     return .init(
       type: edition.type,

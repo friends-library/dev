@@ -53,11 +53,11 @@ extension CodegenRoute.Output.Pair {
   ) throws {
     let codegen = CodeGen(config: config)
     let name = "\(P.self)"
-    var decl = """
+    var decl = try """
     export namespace \(name) {
-      \(try codegen.declaration(for: P.Input.self, as: "Input"))
+      \(codegen.declaration(for: P.Input.self, as: "Input"))
 
-      \(try codegen.declaration(for: P.Output.self, as: "Output"))
+      \(codegen.declaration(for: P.Output.self, as: "Output"))
     }
     """
 

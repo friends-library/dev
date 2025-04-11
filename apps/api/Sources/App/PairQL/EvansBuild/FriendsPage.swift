@@ -28,7 +28,7 @@ struct FriendsPage: Pair {
 
 extension FriendsPage: Resolver {
   static func resolve(with lang: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let friends = try await Friend.Joined.all()
       .filter { $0.lang == lang }
     return friends.map { friend -> FriendOutput? in
@@ -47,7 +47,7 @@ extension FriendsPage: Resolver {
         primaryResidence: .init(city: residence.city, region: residence.region),
         createdAt: friend.createdAt
       )
-    }.compactMap { $0 }
+    }.compactMap(\.self)
   }
 }
 

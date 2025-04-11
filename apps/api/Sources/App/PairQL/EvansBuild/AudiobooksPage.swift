@@ -28,7 +28,7 @@ struct AudiobooksPage: Pair {
 
 extension AudiobooksPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let audiobooks = try await Audio.Joined.all()
     return try audiobooks.compactMap { audiobook in
       let edition = audiobook.edition
@@ -41,12 +41,12 @@ extension AudiobooksPage: Resolver {
             edition.impression != nil else {
         return nil
       }
-      return .init(
+      return try .init(
         slug: document.slug,
         title: document.title,
         htmlShortTitle: document.htmlShortTitle,
         editionType: edition.type,
-        isbn: try expect(edition.isbn).code,
+        isbn: expect(edition.isbn).code,
         isCompilation: friend.isCompilations,
         friendName: friend.name,
         friendSlug: friend.slug,

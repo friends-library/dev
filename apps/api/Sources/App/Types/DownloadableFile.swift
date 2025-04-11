@@ -76,25 +76,25 @@ struct DownloadableFile {
   var filename: String {
     switch self.format {
     case .ebook(.epub):
-      return "\(self.editionFilename).epub"
+      "\(self.editionFilename).epub"
     case .ebook(.pdf):
-      return "\(self.editionFilename).pdf"
+      "\(self.editionFilename).pdf"
     case .ebook(.speech):
-      return "\(self.editionFilename).html"
+      "\(self.editionFilename).html"
     case .ebook(.app):
-      return "\(self.editionFilename)--(app-ebook).html"
+      "\(self.editionFilename)--(app-ebook).html"
     case .paperback(.interior, let index):
-      return "\(self.editionFilename)--(print)\(index |> volumeFilenameSuffix).pdf"
+      "\(self.editionFilename)--(print)\(index |> volumeFilenameSuffix).pdf"
     case .paperback(.cover, let index):
-      return "\(self.editionFilename)--cover\(index |> volumeFilenameSuffix).pdf"
+      "\(self.editionFilename)--cover\(index |> volumeFilenameSuffix).pdf"
     case .audio(.m4b(let quality)):
-      return "\(self.documentFilename)\(quality |> qualityFilenameSuffix).m4b"
+      "\(self.documentFilename)\(quality |> qualityFilenameSuffix).m4b"
     case .audio(.mp3s(let quality)):
-      return "\(self.documentFilename)--mp3s\(quality |> qualityFilenameSuffix).zip"
+      "\(self.documentFilename)--mp3s\(quality |> qualityFilenameSuffix).zip"
     case .audio(.mp3(let quality, let index)):
-      return "\(self.documentFilename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
+      "\(self.documentFilename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
     case .audio(.podcast):
-      return "podcast.rss"
+      "podcast.rss"
     }
   }
 
@@ -247,19 +247,19 @@ extension DownloadableFile {
     var errorDescription: String? {
       switch self {
       case .missingLeadingDownload(let path):
-        return "Missing leading `download/` segment in path \(path)"
+        "Missing leading `download/` segment in path \(path)"
       case .missingEditionId(let path):
-        return "Missing edition id path \(path)"
+        "Missing edition id path \(path)"
       case .invalidEditionId(let path):
-        return "Invalid edition id in path \(path)"
+        "Invalid edition id in path \(path)"
       case .editionNotFound(let path):
-        return "Edition not found from path \(path)"
+        "Edition not found from path \(path)"
       case .invalid(let path):
-        return "Invalid path \(path)"
+        "Invalid path \(path)"
       case .invalidPaperbackVolume(let path):
-        return "Invalid paperback volume in path \(path)"
+        "Invalid paperback volume in path \(path)"
       case .invalidMp3Part(let path):
-        return "Invalid mp3 part in path \(path)"
+        "Invalid mp3 part in path \(path)"
       }
     }
   }
@@ -286,40 +286,40 @@ private func toIndex(_ segment: String.SubSequence) -> Int? {
 }
 
 private func volumeFilenameSuffix(_ index: Int?) -> String {
-  guard let index = index else { return "" }
+  guard let index else { return "" }
   return "--v\(index + 1)"
 }
 
 private func volumeLogPathSuffix(_ index: Int?) -> String {
-  guard let index = index else { return "" }
+  guard let index else { return "" }
   return "/\(index + 1)"
 }
 
 private func partFilenameSuffix(_ index: Int?) -> String {
-  guard let index = index else { return "" }
+  guard let index else { return "" }
   return "--pt\(index + 1)"
 }
 
 private func partLogPathSuffix(_ index: Int?) -> String {
-  guard let index = index else { return "" }
+  guard let index else { return "" }
   return "/\(index + 1)"
 }
 
 private func qualityFilenameSuffix(_ quality: DownloadableFile.Format.Audio.Quality) -> String {
   switch quality {
   case .high:
-    return ""
+    ""
   case .low:
-    return "--lq"
+    "--lq"
   }
 }
 
 private func qualityLogPathSuffix(_ quality: DownloadableFile.Format.Audio.Quality) -> String {
   switch quality {
   case .high:
-    return "/hq"
+    "/hq"
   case .low:
-    return "/lq"
+    "/lq"
   }
 }
 
@@ -329,71 +329,71 @@ extension DownloadableFile.Format {
   var description: String {
     switch self {
     case .ebook(.epub):
-      return "epub"
+      "epub"
     case .ebook(.pdf):
-      return "web-pdf"
+      "web-pdf"
     case .ebook(.speech):
-      return "speech"
+      "speech"
     case .ebook(.app):
-      return "app-ebook"
+      "app-ebook"
     case .audio(.mp3s(let quality)):
-      return "mp3 zip (\(quality == .high ? "HQ" : "LQ"))"
+      "mp3 zip (\(quality == .high ? "HQ" : "LQ"))"
     case .audio(.m4b(let quality)):
-      return "m4b audiobook (\(quality == .high ? "HQ" : "LQ"))"
+      "m4b audiobook (\(quality == .high ? "HQ" : "LQ"))"
     case .audio(.mp3(let quality, let index)):
-      return "mp3 \(index == nil ? "" : "pt \(index! + 1) ")(\(quality == .high ? "HQ" : "LQ"))"
+      "mp3 \(index == nil ? "" : "pt \(index! + 1) ")(\(quality == .high ? "HQ" : "LQ"))"
     case .audio(.podcast(let quality)):
-      return "podcast rss feed (\(quality == .high ? "HQ" : "LQ"))"
+      "podcast rss feed (\(quality == .high ? "HQ" : "LQ"))"
     case .paperback(type: .cover, let index):
-      return "paperback cover\(index == nil ? "" : " (v\(index! + 1)")"
+      "paperback cover\(index == nil ? "" : " (v\(index! + 1)")"
     case .paperback(type: .interior, let index):
-      return "paperback interior\(index == nil ? "" : " (v\(index! + 1)")"
+      "paperback interior\(index == nil ? "" : " (v\(index! + 1)")"
     }
   }
 
   var downloadFormat: Download.Format? {
     switch self {
     case .ebook(.epub):
-      return .epub
+      .epub
     case .ebook(.pdf):
-      return .webPdf
+      .webPdf
     case .ebook(.speech):
-      return .speech
+      .speech
     case .ebook(.app):
-      return .appEbook
+      .appEbook
     case .audio(.mp3s):
-      return .mp3Zip
+      .mp3Zip
     case .audio(.m4b):
-      return .m4b
+      .m4b
     case .audio(.mp3):
-      return .mp3
+      .mp3
     case .audio(.podcast):
-      return .podcast
+      .podcast
     case .paperback:
-      return nil
+      nil
     }
   }
 
   var audioQuality: Download.AudioQuality? {
     switch self {
     case .ebook, .paperback:
-      return nil
+      nil
     case .audio(.mp3s(.high)):
-      return .hq
+      .hq
     case .audio(.mp3s(.low)):
-      return .lq
+      .lq
     case .audio(.m4b(.high)):
-      return .hq
+      .hq
     case .audio(.m4b(.low)):
-      return .lq
+      .lq
     case .audio(.podcast(.high)):
-      return .hq
+      .hq
     case .audio(.podcast(.low)):
-      return .lq
+      .lq
     case .audio(.mp3(quality: .high, multipartIndex: _)):
-      return .hq
+      .hq
     case .audio(.mp3(quality: .low, multipartIndex: _)):
-      return .lq
+      .lq
     }
   }
 
@@ -404,7 +404,7 @@ extension DownloadableFile.Format {
     case .audio(.mp3s), .audio(.m4b), .audio(.podcast):
       return nil
     case .audio(.mp3(quality: _, multipartIndex: let index)):
-      if let index = index {
+      if let index {
         return index + 1
       }
       return nil
@@ -414,9 +414,9 @@ extension DownloadableFile.Format {
   var slackChannel: FlpSlack.Message.Channel {
     switch self {
     case .audio(.mp3), .audio(.podcast):
-      return .audioDownloads
+      .audioDownloads
     case .audio, .paperback, .ebook:
-      return .downloads
+      .downloads
     }
   }
 }

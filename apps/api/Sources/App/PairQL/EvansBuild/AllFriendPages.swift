@@ -11,7 +11,7 @@ struct AllFriendPages: Pair {
 
 extension AllFriendPages: Resolver {
   static func resolve(with lang: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
 
     let friends = try await Friend.Joined.all()
       .filter { $0.lang == lang && $0.hasNonDraftDocument }

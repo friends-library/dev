@@ -16,7 +16,7 @@ public extension SQLQueryString {
     self.appendInterpolation(unsafeRaw: uuid.uuidString)
   }
 
-  mutating func appendInterpolation<M: DuetSQL.Model>(table model: M.Type) {
+  mutating func appendInterpolation(table model: (some DuetSQL.Model).Type) {
     self.appendInterpolation(unsafeRaw: model.tableName)
   }
 

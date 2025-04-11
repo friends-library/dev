@@ -104,7 +104,7 @@ public struct DuetQuery<M: Model> {
   @discardableResult
   public func delete(force: Bool = false) async throws -> [M] {
     if force || self._withSoftDeleted {
-      return try await self.db.forceDelete(
+      try await self.db.forceDelete(
         M.self,
         where: self.constraint,
         orderBy: self.order,
@@ -112,7 +112,7 @@ public struct DuetQuery<M: Model> {
         offset: self.offset
       )
     } else {
-      return try await self.db.delete(
+      try await self.db.delete(
         M.self,
         where: self.constraint,
         orderBy: self.order,

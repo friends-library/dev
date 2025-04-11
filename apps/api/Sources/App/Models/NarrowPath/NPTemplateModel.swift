@@ -48,29 +48,29 @@ extension NPEmail {
   private var fromAddress: String {
     switch self.lang {
     case .en:
-      return "narrow-path@friendslibrary.com"
+      "narrow-path@friendslibrary.com"
     case .es:
-      return "camino-estrecho@bibliotecadelosamigos.org"
+      "camino-estrecho@bibliotecadelosamigos.org"
     }
   }
 
   private var textCite: String {
     switch (self.authorUrl, self.document) {
     case (nil, nil):
-      return "- \(self.authorName)"
+      "- \(self.authorName)"
     case (_, .some(let doc)):
-      return "- \(self.authorName), \(doc.textName)\n\n\(doc.url)"
+      "- \(self.authorName), \(doc.textName)\n\n\(doc.url)"
     case (.some(let friendUrl), nil):
-      return "- \(self.authorName)\n\n\(friendUrl)"
+      "- \(self.authorName)\n\n\(friendUrl)"
     }
   }
 
   private var subject: String {
     switch self.lang {
     case .en:
-      return "The Narrow Path"
+      "The Narrow Path"
     case .es:
-      return "El Camino Estrecho"
+      "El Camino Estrecho"
     }
   }
 
@@ -88,27 +88,27 @@ extension NPEmail {
   private var websiteName: String {
     switch self.lang {
     case .en:
-      return "Friends Library"
+      "Friends Library"
     case .es:
-      return "Biblioteca de los Amigos"
+      "Biblioteca de los Amigos"
     }
   }
 
   private var htmlFooterBlurb: String {
     switch self.lang {
     case .en:
-      return "Find free ebooks, audiobooks and more from early Quakers at <a href=\"https://www.friendslibrary.com\">www.friendslibrary.com</a>."
+      "Find free ebooks, audiobooks and more from early Quakers at <a href=\"https://www.friendslibrary.com\">www.friendslibrary.com</a>."
     case .es:
-      return "Puedes encontrar libros electrónicos y audiolibros gratuitos de los primeros Cuáqueros en <a href=\"https://www.bibliotecadelosamigos.org\">www.bibliotecadelosamigos.org</a>."
+      "Puedes encontrar libros electrónicos y audiolibros gratuitos de los primeros Cuáqueros en <a href=\"https://www.bibliotecadelosamigos.org\">www.bibliotecadelosamigos.org</a>."
     }
   }
 
   private var textFooterBlurb: String {
     switch self.lang {
     case .en:
-      return "Find free ebooks, audiobooks and more from early Quakers at https://friendslibrary.com"
+      "Find free ebooks, audiobooks and more from early Quakers at https://friendslibrary.com"
     case .es:
-      return "Puedes encontrar libros electrónicos y audiolibros gratuitos de los primeros Cuáqueros en https://bibliotecadelosamigos.org"
+      "Puedes encontrar libros electrónicos y audiolibros gratuitos de los primeros Cuáqueros en https://bibliotecadelosamigos.org"
     }
   }
 
@@ -126,9 +126,9 @@ extension NPEmail {
   private var unsubscribe: String {
     switch self.lang {
     case .en:
-      return "Unsubscribe"
+      "Unsubscribe"
     case .es:
-      return "Cancelar suscripción"
+      "Cancelar suscripción"
     }
   }
 }

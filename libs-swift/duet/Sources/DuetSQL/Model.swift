@@ -16,7 +16,7 @@ public extension Model {
 
   static func column(_ name: String) throws -> ColumnName {
     for column in ColumnName.allCases {
-      if Self.columnName(column) == name {
+      if columnName(column) == name {
         return column
       }
     }
@@ -55,7 +55,7 @@ extension Model {
 }
 
 public extension Array where Element: Model {
-  mutating func order<M: Model>(by order: SQL.Order<M>) throws {
+  mutating func order(by order: SQL.Order<some Model>) throws {
     try sort { a, b in
       let propA = try a.introspectValue(at: order.column.stringValue)
       let propB = try b.introspectValue(at: order.column.stringValue)

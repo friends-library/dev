@@ -86,7 +86,7 @@ struct FriendPage: Pair {
 
 extension FriendPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let friend = try await Friend.Joined.all()
       .first { $0.lang == input.lang && $0.slug == input.slug }
 
@@ -131,7 +131,7 @@ extension FriendPage.Output {
       )
     }
 
-    self = .init(
+    self = try .init(
       born: friend.born,
       died: friend.died,
       name: friend.name,
@@ -139,7 +139,7 @@ extension FriendPage.Output {
       description: friend.description,
       gender: friend.gender,
       isCompilations: friend.isCompilations,
-      documents: try documents.map { document in
+      documents: documents.map { document in
         let primaryEdition = try expect(document.primaryEdition)
         let impression = try expect(primaryEdition.impression)
         let isbn = try expect(primaryEdition.isbn)
@@ -169,10 +169,10 @@ extension FriendPage.Output {
         )
       },
       quotes: quotes.map { .init(text: $0.text, source: $0.source) },
-      relatedDocuments: try relatedDocs.map { related, doc in
+      relatedDocuments: relatedDocs.map { related, doc in
         let friend = doc.friend
         let edition = try expect(doc.primaryEdition)
-        return .init(
+        return try .init(
           title: doc.title,
           htmlShortTitle: doc.htmlShortTitle,
           slug: doc.slug,
@@ -182,8 +182,8 @@ extension FriendPage.Output {
           friendSlug: friend.slug,
           friendGender: friend.gender,
           editionType: edition.type,
-          paperbackVolumes: try expect(edition.impression).paperbackVolumes,
-          isbn: try expect(edition.isbn).code,
+          paperbackVolumes: expect(edition.impression).paperbackVolumes,
+          isbn: expect(edition.isbn).code,
           createdAt: doc.createdAt
         )
       }

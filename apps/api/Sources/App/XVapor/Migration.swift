@@ -21,8 +21,10 @@ public extension Migration {
             INSERT INTO "_fluent_enums"
             ("id", "name", "case")
             VALUES
-            ('\(unsafeRaw: UUID().uuidString
-              .lowercased())', '\(unsafeRaw: enumName)', '\(unsafeRaw: newCase)');
+            ('\(
+              unsafeRaw: UUID().uuidString
+                .lowercased()
+            )', '\(unsafeRaw: enumName)', '\(unsafeRaw: newCase)');
             """
           ).all()
         }
@@ -44,8 +46,10 @@ public extension Migration {
       _ = try await sql.raw(
         """
         ALTER TABLE "\(unsafeRaw: tableName)"
-        RENAME COLUMN "\(unsafeRaw: oldColumn.description)" TO "\(unsafeRaw: newColumn
-          .description)";
+        RENAME COLUMN "\(unsafeRaw: oldColumn.description)" TO "\(
+          unsafeRaw: newColumn
+            .description
+        )";
         """
       ).all()
     }

@@ -12,35 +12,35 @@ extension Document: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .friendId:
-      return .uuid(friendId)
+      .uuid(friendId)
     case .altLanguageId:
-      return .uuid(altLanguageId)
+      .uuid(altLanguageId)
     case .title:
-      return .string(title)
+      .string(title)
     case .slug:
-      return .string(slug)
+      .string(slug)
     case .filename:
-      return .string(filename)
+      .string(filename)
     case .published:
-      return .int(published)
+      .int(published)
     case .originalTitle:
-      return .string(originalTitle)
+      .string(originalTitle)
     case .incomplete:
-      return .bool(incomplete)
+      .bool(incomplete)
     case .description:
-      return .string(description)
+      .string(description)
     case .partialDescription:
-      return .string(partialDescription)
+      .string(partialDescription)
     case .featuredDescription:
-      return .string(featuredDescription)
+      .string(featuredDescription)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .updatedAt:
-      return .date(updatedAt)
+      .date(updatedAt)
     case .deletedAt:
-      return .date(deletedAt)
+      .date(deletedAt)
     }
   }
 }

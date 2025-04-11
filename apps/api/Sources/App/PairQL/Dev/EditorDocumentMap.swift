@@ -8,7 +8,7 @@ struct EditorDocumentMap: Pair {
 
 extension EditorDocumentMap: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let documents = try await Document.Joined.all()
     return documents.reduce(into: [:]) { acc, document in
       acc[document.directoryPath] = Asciidoc.trimmedUtf8ShortDocumentTitle(

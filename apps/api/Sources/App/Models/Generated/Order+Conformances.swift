@@ -12,51 +12,51 @@ extension Order: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .lang:
-      return .enum(lang)
+      .enum(lang)
     case .source:
-      return .enum(source)
+      .enum(source)
     case .paymentId:
-      return .string(paymentId.rawValue)
+      .string(paymentId.rawValue)
     case .printJobId:
-      return .int(printJobId?.rawValue)
+      .int(printJobId?.rawValue)
     case .printJobStatus:
-      return .enum(printJobStatus)
+      .enum(printJobStatus)
     case .amount:
-      return .int(amount.rawValue)
+      .int(amount.rawValue)
     case .taxes:
-      return .int(taxes.rawValue)
+      .int(taxes.rawValue)
     case .fees:
-      return .int(fees.rawValue)
+      .int(fees.rawValue)
     case .ccFeeOffset:
-      return .int(ccFeeOffset.rawValue)
+      .int(ccFeeOffset.rawValue)
     case .shipping:
-      return .int(shipping.rawValue)
+      .int(shipping.rawValue)
     case .shippingLevel:
-      return .enum(shippingLevel)
+      .enum(shippingLevel)
     case .email:
-      return .string(email.rawValue)
+      .string(email.rawValue)
     case .addressName:
-      return .string(addressName)
+      .string(addressName)
     case .addressStreet:
-      return .string(addressStreet)
+      .string(addressStreet)
     case .addressStreet2:
-      return .string(addressStreet2)
+      .string(addressStreet2)
     case .addressCity:
-      return .string(addressCity)
+      .string(addressCity)
     case .addressState:
-      return .string(addressState)
+      .string(addressState)
     case .addressZip:
-      return .string(addressZip)
+      .string(addressZip)
     case .addressCountry:
-      return .string(addressCountry)
+      .string(addressCountry)
     case .freeOrderRequestId:
-      return .uuid(freeOrderRequestId)
+      .uuid(freeOrderRequestId)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .updatedAt:
-      return .date(updatedAt)
+      .date(updatedAt)
     }
   }
 }

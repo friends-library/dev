@@ -12,15 +12,15 @@ extension FriendResidenceDuration: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .friendResidenceId:
-      return .uuid(friendResidenceId)
+      .uuid(friendResidenceId)
     case .start:
-      return .int(start)
+      .int(start)
     case .end:
-      return .int(end)
+      .int(end)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     }
   }
 }

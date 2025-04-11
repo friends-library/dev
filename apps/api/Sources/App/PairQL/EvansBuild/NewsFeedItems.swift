@@ -30,7 +30,7 @@ struct NewsFeedItems: Pair {
 
 extension NewsFeedItems: Resolver {
   static func resolve(with lang: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     var items: [NewsFeedItem] = []
 
     let impressions = try await EditionImpression.Joined.all()

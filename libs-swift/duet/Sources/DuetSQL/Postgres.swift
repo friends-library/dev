@@ -35,9 +35,9 @@ public enum Postgres {
     public var sql: String {
       switch self {
       case .all:
-        return "*"
+        "*"
       case .columns(let columns):
-        return "\"\(columns.joined(separator: "\", \""))\""
+        "\"\(columns.joined(separator: "\", \""))\""
       }
     }
   }
@@ -62,58 +62,58 @@ public enum Postgres {
     public var holdsNull: Bool {
       switch self {
       case .id, .currentTimestamp, .null:
-        return false
+        false
       case .string(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .varchar(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .intArray(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .int(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .int64(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .float(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .double(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .uuid(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .bool(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .date(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .enum(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       case .json(let wrapped):
-        return wrapped == nil
+        wrapped == nil
       }
     }
 
     public var typeName: String {
       switch self {
       case .string:
-        return "text"
+        "text"
       case .varchar:
-        return "varchar"
+        "varchar"
       case .int, .int64, .double, .float:
-        return "numeric"
+        "numeric"
       case .intArray:
-        return "numeric[]"
+        "numeric[]"
       case .uuid, .id:
-        return "uuid"
+        "uuid"
       case .bool:
-        return "bool"
+        "bool"
       case .enum(let enumVal):
-        return enumVal?.typeName ?? "unknown"
+        enumVal?.typeName ?? "unknown"
       case .null:
-        return "unknown"
+        "unknown"
       case .date:
-        return "timestamp with time zone"
+        "timestamp with time zone"
       case .json:
-        return "jsonb"
+        "jsonb"
       case .currentTimestamp:
-        return "timestamp with time zone"
+        "timestamp with time zone"
       }
     }
 
@@ -134,7 +134,7 @@ public enum Postgres {
       case .double(let double):
         return nullable(double)
       case .intArray(let ints):
-        guard let ints = ints else { return "NULL" }
+        guard let ints else { return "NULL" }
         return "'{\(ints.map(String.init).joined(separator: ","))}'"
       case .id(let model):
         return "'\(model.uuidId.uuidString)'"
@@ -188,7 +188,6 @@ extension Postgres.Data: Comparable {
       return left.uuidId.uuidString < right.uuidId.uuidString
     case (.uuid(let left), .uuid(let right)):
       return left?.uuidString ?? "" < right?.uuidString ?? ""
-
     case (.json, .json):
       assertionFailure("cannot compare to Postgres.Data.json values")
       return false
@@ -201,7 +200,6 @@ extension Postgres.Data: Comparable {
     case (.intArray, .intArray):
       assertionFailure("cannot compare to Postgres.Data.intArray values")
       return false
-
     case (.string(nil), .string(nil)):
       return false
     case (.string(nil), .string):
@@ -210,7 +208,6 @@ extension Postgres.Data: Comparable {
       return false
     case (.string(let left), .string(let right)):
       return left ?? "" < right ?? ""
-
     case (.int(nil), .int(nil)):
       return false
     case (.int(nil), .int):
@@ -219,7 +216,6 @@ extension Postgres.Data: Comparable {
       return false
     case (.int(let left), .int(let right)):
       return left ?? 0 < right ?? 0
-
     case (.float(nil), .float(nil)):
       return false
     case (.float(nil), .float):
@@ -228,7 +224,6 @@ extension Postgres.Data: Comparable {
       return false
     case (.float(let left), .float(let right)):
       return left ?? 0.0 < right ?? 0.0
-
     case (.bool(nil), .bool(nil)):
       return false
     case (.bool(nil), .bool):
@@ -237,7 +232,6 @@ extension Postgres.Data: Comparable {
       return false
     case (.bool(let left), .bool(let right)):
       return left == right ? false : left == false
-
     case (.enum(nil), .enum(nil)):
       return false
     case (.enum(nil), .enum):
@@ -246,23 +240,21 @@ extension Postgres.Data: Comparable {
       return false
     case (.enum(let left), .enum(let right)):
       return left?.rawValue ?? "" < right?.rawValue ?? ""
-
     case (.date(let left), .date(let right)):
-      guard let left = left, let right = right else {
+      guard let left, let right else {
         return false
       }
       return left < right
     case (.date(let left), .currentTimestamp):
-      if let left = left {
+      if let left {
         return left < Date()
       }
       return false
     case (.currentTimestamp, .date(let right)):
-      if let right = right {
+      if let right {
         return Date() < right
       }
       return false
-
     default:
       assertionFailure("cannot compare two Postgres.Data values of different type")
       return false
@@ -275,35 +267,35 @@ extension Postgres.Data: Comparable {
 private func nullable(_ string: String?) -> String {
   switch string {
   case nil:
-    return "NULL"
+    "NULL"
   case .some(let string):
-    return "'\(string.replacingOccurrences(of: "'", with: "''"))'"
+    "'\(string.replacingOccurrences(of: "'", with: "''"))'"
   }
 }
 
 private func nullable(_ bool: Bool?) -> String {
   switch bool {
   case nil:
-    return "NULL"
+    "NULL"
   case .some(let bool):
-    return bool ? "true" : "false"
+    bool ? "true" : "false"
   }
 }
 
 private func nullable(_ date: Date?) -> String {
   switch date {
   case nil:
-    return "NULL"
+    "NULL"
   case .some(let date):
-    return "'\(date.postgresTimestampString)'"
+    "'\(date.postgresTimestampString)'"
   }
 }
 
-private func nullable<N: Numeric>(_ string: N?) -> String {
+private func nullable(_ string: (some Numeric)?) -> String {
   switch string {
   case nil:
-    return "NULL"
+    "NULL"
   case .some(let number):
-    return "\(number)"
+    "\(number)"
   }
 }

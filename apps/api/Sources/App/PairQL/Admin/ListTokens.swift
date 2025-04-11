@@ -10,7 +10,7 @@ struct ListTokens: Pair {
 
 extension ListTokens: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let tokens = try await Token.query().all()
     return try await tokens.concurrentMap { token in
       let scopes = try await token.scopes()

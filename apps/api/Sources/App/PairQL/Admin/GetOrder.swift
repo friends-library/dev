@@ -48,10 +48,10 @@ struct GetOrder: Pair {
 
 extension GetOrder: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let order = try await Order.find(input)
     let items = try await order.items()
-    return .init(
+    return try await .init(
       id: order.id,
       printJobStatus: order.printJobStatus,
       printJobId: order.printJobId,
@@ -64,7 +64,7 @@ extension GetOrder: Resolver {
       email: order.email,
       lang: order.lang,
       source: order.source,
-      items: try await items.concurrentMap { item in
+      items: items.concurrentMap { item in
         let edition = try await Edition.Joined.find(item.editionId)
         return .init(
           id: item.id,
