@@ -12,10 +12,22 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
 
     let token = UUID()
     Current.uuid = { token }
+    Current.cloudflareClient.verifyTurnstileToken = { input in
+      if input == "turnstile-token-value" {
+        .success
+      } else {
+        .failure(errorCodes: [], messages: nil)
+      }
+    }
 
     let email = "you@example.com".random
     let output = try await SubscribeToNarrowPath.resolve(
-      with: .init(email: .init(rawValue: email), lang: .en, mixedQuotes: false),
+      with: .init(
+        email: .init(rawValue: email),
+        lang: .en,
+        mixedQuotes: false,
+        turnstileToken: "turnstile-token-value"
+      ),
       in: .mock
     )
 
@@ -53,10 +65,22 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
 
     let token = UUID()
     Current.uuid = { token }
+    Current.cloudflareClient.verifyTurnstileToken = { input in
+      if input == "turnstile-token-value" {
+        .success
+      } else {
+        .failure(errorCodes: [], messages: nil)
+      }
+    }
 
     let email = "tu@examplo.com".random
     let output = try await SubscribeToNarrowPath.resolve(
-      with: .init(email: .init(rawValue: email), lang: .es, mixedQuotes: false),
+      with: .init(
+        email: .init(rawValue: email),
+        lang: .es,
+        mixedQuotes: false,
+        turnstileToken: "turnstile-token-value"
+      ),
       in: .mock
     )
 
@@ -101,5 +125,29 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
       expect(res.headers.first(name: .location))
         .toEqual("\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/failure")
     }
+  }
+
+  func testSpamRejectionFromCloudflareChallenge() async throws {
+    var quote = NPQuote.mock
+    quote.lang = .en
+    try await quote.create()
+
+    let token = UUID()
+    Current.uuid = { token }
+    Current.cloudflareClient.verifyTurnstileToken = { _ in
+      .failure(errorCodes: [], messages: nil)
+    }
+
+    try await expectErrorFrom {
+      try await SubscribeToNarrowPath.resolve(
+        with: .init(
+          email: .init(rawValue: "you@example.com"),
+          lang: .en,
+          mixedQuotes: false,
+          turnstileToken: "turnstile-token-value"
+        ),
+        in: .mock
+      )
+    }.toContain("Bad Request")
   }
 }

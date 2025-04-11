@@ -102,4 +102,5 @@ extension Vapor.Environment {
   static let SELF_URL = get("SELF_URL")!
   static let WEBSITE_URL_EN = get("WEBSITE_URL_EN")!
   static let WEBSITE_URL_ES = get("WEBSITE_URL_ES")!
+  static let CLOUDFLARE_SECRET = get("CLOUDFLARE_SECRET")!
 }

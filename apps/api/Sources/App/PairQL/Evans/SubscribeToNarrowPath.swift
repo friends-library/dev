@@ -8,6 +8,7 @@ struct SubscribeToNarrowPath: Pair {
     let email: EmailAddress
     let lang: Lang
     let mixedQuotes: Bool
+    let turnstileToken: String
   }
 
   typealias Output = Infallible
@@ -17,6 +18,20 @@ struct SubscribeToNarrowPath: Pair {
 
 extension SubscribeToNarrowPath: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
+    switch await Current.cloudflareClient.verifyTurnstileToken(input.turnstileToken) {
+    case .success:
+      break
+    case .failure:
+      await slackError("Rejected turnstile token for email: `\(input.email)`")
+      throw Abort(.badRequest)
+    case .error(let error):
+      await slackError("""
+      *Error verifying turnstile token*
+      Data: `\(JSON.encode(input) ?? "nil")`
+      Error: \(String(reflecting: error))
+      """)
+    }
+
     let existing = try? await NPSubscriber.query()
       .where(.email == input.email.rawValue.lowercased())
       .where(.lang == input.lang)
