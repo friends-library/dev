@@ -12,21 +12,21 @@ extension EditionImpression: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .editionId:
-      return .uuid(editionId)
+      .uuid(editionId)
     case .adocLength:
-      return .int(adocLength)
+      .int(adocLength)
     case .paperbackSizeVariant:
-      return .enum(paperbackSizeVariant)
+      .enum(paperbackSizeVariant)
     case .paperbackVolumes:
-      return .intArray(paperbackVolumes.array)
+      .intArray(paperbackVolumes.array)
     case .publishedRevision:
-      return .string(publishedRevision.rawValue)
+      .string(publishedRevision.rawValue)
     case .productionToolchainRevision:
-      return .string(productionToolchainRevision.rawValue)
+      .string(productionToolchainRevision.rawValue)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     }
   }
 }

@@ -9,7 +9,7 @@ extension UUID {
   }
 }
 
-extension UUID: ExpressibleByIntegerLiteral {
+extension UUID: @retroactive ExpressibleByIntegerLiteral {
   public init(integerLiteral value: Int) {
     self.init(value)
   }

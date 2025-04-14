@@ -5,7 +5,7 @@ import XExpect
 
 @testable import App
 
-final class OrderEmailsTests: AppTestCase {
+final class OrderEmailsTests: AppTestCase, @unchecked Sendable {
   func mockOrder(lang: Lang) async -> (Order, String) {
     var order = Order.empty
     order.lang = lang

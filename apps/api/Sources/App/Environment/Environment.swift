@@ -10,6 +10,7 @@ import XStripe
     let date: @Sendable () -> Date = { Date() }
     var db: DuetSQL.Client = ThrowingClient()
     let deeplClient: DeepL.Client = .live
+    let cloudflareClient: CloudflareClient = .live
     var logger = Logger(label: "api.friendslibrary")
     var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
     let randomNumberGenerator: @Sendable ()
@@ -26,6 +27,7 @@ import XStripe
     var date: @Sendable () -> Date = { Date() }
     var db: DuetSQL.Client = ThrowingClient()
     var deeplClient: DeepL.Client = .live
+    var cloudflareClient: CloudflareClient = .live
     var logger = Logger(label: "api.friendslibrary")
     var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
     var randomNumberGenerator: @Sendable ()

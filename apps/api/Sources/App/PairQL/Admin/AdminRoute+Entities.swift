@@ -144,18 +144,18 @@ extension AdminRoute {
 
     var entityType: AdminRoute.EntityType {
       switch self {
-      case .audio: return .audio
-      case .audioPart: return .audioPart
-      case .document: return .document
-      case .documentTag: return .documentTag
-      case .edition: return .edition
-      case .friend: return .friend
-      case .friendQuote: return .friendQuote
-      case .friendResidence: return .friendResidence
-      case .friendResidenceDuration: return .friendResidenceDuration
-      case .relatedDocument: return .relatedDocument
-      case .token: return .token
-      case .tokenScope: return .tokenScope
+      case .audio: .audio
+      case .audioPart: .audioPart
+      case .document: .document
+      case .documentTag: .documentTag
+      case .edition: .edition
+      case .friend: .friend
+      case .friendQuote: .friendQuote
+      case .friendResidence: .friendResidence
+      case .friendResidenceDuration: .friendResidenceDuration
+      case .relatedDocument: .relatedDocument
+      case .token: .token
+      case .tokenScope: .tokenScope
       }
     }
   }
@@ -166,18 +166,18 @@ extension AdminRoute {
 extension AdminRoute.EntityType {
   var modelType: any ApiModel.Type {
     switch self {
-    case .friendQuote: return FriendQuote.self
-    case .friendResidence: return FriendResidence.self
-    case .friendResidenceDuration: return FriendResidenceDuration.self
-    case .document: return Document.self
-    case .documentTag: return DocumentTag.self
-    case .relatedDocument: return RelatedDocument.self
-    case .edition: return Edition.self
-    case .audio: return Audio.self
-    case .audioPart: return AudioPart.self
-    case .token: return Token.self
-    case .tokenScope: return TokenScope.self
-    case .friend: return Friend.self
+    case .friendQuote: FriendQuote.self
+    case .friendResidence: FriendResidence.self
+    case .friendResidenceDuration: FriendResidenceDuration.self
+    case .document: Document.self
+    case .documentTag: DocumentTag.self
+    case .relatedDocument: RelatedDocument.self
+    case .edition: Edition.self
+    case .audio: Audio.self
+    case .audioPart: AudioPart.self
+    case .token: Token.self
+    case .tokenScope: TokenScope.self
+    case .friend: Friend.self
     }
   }
 }

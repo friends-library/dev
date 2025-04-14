@@ -52,26 +52,26 @@ extension Vapor.Environment {
     var name: String {
       switch self {
       case .prod:
-        return "production"
+        "production"
       case .dev:
-        return "development"
+        "development"
       case .staging:
-        return "staging"
+        "staging"
       case .test:
-        return "testing"
+        "testing"
       }
     }
 
     var coloredName: String {
       switch self {
       case .prod:
-        return self.name.uppercased().red.bold
+        self.name.uppercased().red.bold
       case .dev:
-        return self.name.uppercased().green.bold
+        self.name.uppercased().green.bold
       case .staging:
-        return self.name.uppercased().yellow.bold
+        self.name.uppercased().yellow.bold
       case .test:
-        return self.name.uppercased().magenta.bold
+        self.name.uppercased().magenta.bold
       }
     }
   }
@@ -102,4 +102,5 @@ extension Vapor.Environment {
   static let SELF_URL = get("SELF_URL")!
   static let WEBSITE_URL_EN = get("WEBSITE_URL_EN")!
   static let WEBSITE_URL_ES = get("WEBSITE_URL_ES")!
+  static let CLOUDFLARE_SECRET = get("CLOUDFLARE_SECRET")!
 }

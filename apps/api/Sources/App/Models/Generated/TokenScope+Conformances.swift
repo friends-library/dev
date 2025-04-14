@@ -12,13 +12,13 @@ extension TokenScope: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .scope:
-      return .enum(scope)
+      .enum(scope)
     case .tokenId:
-      return .uuid(tokenId)
+      .uuid(tokenId)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     }
   }
 }

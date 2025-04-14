@@ -17,14 +17,14 @@ struct SelectableDocuments: Pair {
 
 extension SelectableDocuments: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     return try await .load()
   }
 }
 
 // extensions
 
-extension Array where Element == SelectableDocuments.SelectableDocument {
+extension [SelectableDocuments.SelectableDocument] {
   static func load() async throws -> Self {
     let documents = try await Document.Joined.all()
     return documents.map { document in

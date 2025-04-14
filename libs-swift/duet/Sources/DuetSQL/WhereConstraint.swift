@@ -136,11 +136,11 @@ public func + <M: Model>(
   rhs: SQL.WhereConstraint<M>
 ) -> SQL.WhereConstraint<M> {
   if lhs == .always {
-    return rhs
+    rhs
   } else if rhs == .always {
-    return lhs
+    lhs
   } else {
-    return .and(lhs, rhs)
+    .and(lhs, rhs)
   }
 }
 

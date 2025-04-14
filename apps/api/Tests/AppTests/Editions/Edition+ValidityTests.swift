@@ -3,12 +3,12 @@ import XExpect
 
 @testable import App
 
-final class EditionValidityTests: AppTestCase {
+final class EditionValidityTests: AppTestCase, @unchecked Sendable {
   func testEditorOnNonUpdatedEditionInvalid() async {
     var edition = Edition.valid
     edition.editor = "Bob"
     edition.type = .original
-    expect(await edition.isValid()).toBeFalse()
+    await expect(edition.isValid()).toBeFalse()
   }
 
   func testSpanishUpdatedEditionsShouldNotHaveEditor() async {
@@ -17,7 +17,7 @@ final class EditionValidityTests: AppTestCase {
     edition.type = .updated
 
     // allowed because we can't resolve the language, no joined entities
-    expect(await edition.isValid()).toBeTrue()
+    await expect(edition.isValid()).toBeTrue()
 
     let entities = await Entities.create {
       $0.edition.editor = "Bob"
@@ -25,7 +25,7 @@ final class EditionValidityTests: AppTestCase {
       $0.friend.lang = .es // <-- problem
     }
 
-    expect(await entities.edition.model.isValid()).toBeFalse()
+    await expect(entities.edition.model.isValid()).toBeFalse()
   }
 
   func testLoadedChaptersWithNonSequentialOrderInvalid() async {
@@ -36,6 +36,6 @@ final class EditionValidityTests: AppTestCase {
       shortHeading: "",
       isIntermediateTitle: false
     ))
-    expect(await entities.edition.model.isValid()).toBeFalse()
+    await expect(entities.edition.model.isValid()).toBeFalse()
   }
 }

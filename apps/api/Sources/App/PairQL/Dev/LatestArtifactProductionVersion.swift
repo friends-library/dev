@@ -10,7 +10,7 @@ struct LatestArtifactProductionVersion: Pair {
 
 extension LatestArtifactProductionVersion: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let latest = try await ArtifactProductionVersion.query()
       .orderBy(.createdAt, .desc)
       .first()

@@ -20,19 +20,19 @@ enum IpApi {
       latitude: Double? = nil,
       longitude: Double? = nil
     ) {
-      if let ip = ip, !isRestricted(ip) {
+      if let ip, !isRestricted(ip) {
         self.ip = ip
       }
-      if let city = city, !isRestricted(city) {
+      if let city, !isRestricted(city) {
         self.city = city
       }
-      if let region = region, !isRestricted(region) {
+      if let region, !isRestricted(region) {
         self.region = region
       }
-      if let countryName = countryName, !isRestricted(countryName) {
+      if let countryName, !isRestricted(countryName) {
         self.countryName = countryName
       }
-      if let postal = postal, !isRestricted(postal) {
+      if let postal, !isRestricted(postal) {
         self.postal = postal
       }
       self.latitude = latitude

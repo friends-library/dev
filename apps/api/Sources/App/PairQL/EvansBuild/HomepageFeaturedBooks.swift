@@ -26,17 +26,17 @@ struct HomepageFeaturedBooks: Pair {
 
 extension HomepageFeaturedBooks: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
 
     let documents = try await input.resolve()
 
     return try documents.map { document in
       let edition = try expect(document.primaryEdition)
-      return .init(
-        isbn: try expect(edition.isbn).code,
+      return try .init(
+        isbn: expect(edition.isbn).code,
         title: document.title,
         htmlShortTitle: document.htmlShortTitle,
-        paperbackVolumes: try expect(edition.impression).paperbackVolumes,
+        paperbackVolumes: expect(edition.impression).paperbackVolumes,
         customCss: nil,
         customHtml: nil,
         isCompilation: document.friend.isCompilations,
@@ -44,7 +44,7 @@ extension HomepageFeaturedBooks: Resolver {
         friendSlug: document.friend.slug,
         friendGender: document.friend.gender,
         documentSlug: document.slug,
-        featuredDescription: try expect(document.featuredDescription)
+        featuredDescription: expect(document.featuredDescription)
       )
     }
   }

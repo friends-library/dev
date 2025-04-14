@@ -16,7 +16,7 @@ extension XPostmark.Client {
   }
 }
 
-extension Array: Error where Element == XPostmark.Client.MessageError {}
+extension [XPostmark.Client.MessageError]: @retroactive Error {}
 
 extension XPostmark.Client.SlackErrorLogging {
   static let live: Self = .init(

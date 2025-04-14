@@ -55,7 +55,7 @@ struct ExplorePageBooks: Pair {
 
 extension ExplorePageBooks: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
 
     let documents = try await Document.Joined.all()
       .filter(\.hasNonDraftEdition)
@@ -70,7 +70,7 @@ extension ExplorePageBooks: Resolver {
       let primaryEdition = try expect(document.primaryEdition)
       let impression = try expect(primaryEdition.impression)
       let editions = document.editions
-      return .init(
+      return try .init(
         slug: document.slug,
         title: document.title,
         // we only need descriptions for 4 most recent books, this
@@ -86,11 +86,11 @@ extension ExplorePageBooks: Resolver {
         friendSlug: friend.slug,
         friendBorn: friend.born,
         friendDied: friend.died,
-        editions: try editions.map { edition in
-          .init(isbn: try expect(edition.isbn).code, type: edition.type)
+        editions: editions.map { edition in
+          try .init(isbn: expect(edition.isbn).code, type: edition.type)
         },
         primaryEdition: .init(
-          isbn: try expect(primaryEdition.isbn).code,
+          isbn: expect(primaryEdition.isbn).code,
           type: primaryEdition.type,
           paperbackVolumes: impression.paperbackVolumes
         ),

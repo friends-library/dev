@@ -36,25 +36,25 @@ extension Scope: PostgresEnum {
 extension Scope {
   func can(_ requested: Scope) -> Bool {
     switch (self, requested) {
-    case (.all, _): return true
-    case(let a, let b) where a == b: return true
-    case (.mutateDownloads, .queryDownloads): return true
-    case (.mutateOrders, .queryOrders): return true
-    case (.mutateArtifactProductionVersions, .queryArtifactProductionVersions): return true
-    case (.mutateEntities, .queryEntities): return true
-    case (.mutateTokens, .queryTokens): return true
-    default: return false
+    case (.all, _): true
+    case(let a, let b) where a == b: true
+    case (.mutateDownloads, .queryDownloads): true
+    case (.mutateOrders, .queryOrders): true
+    case (.mutateArtifactProductionVersions, .queryArtifactProductionVersions): true
+    case (.mutateEntities, .queryEntities): true
+    case (.mutateTokens, .queryTokens): true
+    default: false
     }
   }
 }
 
-extension Array where Element == TokenScope {
+extension [TokenScope] {
   func can(_ perform: Scope) -> Bool {
     contains(where: { $0.scope.can(perform) })
   }
 }
 
-extension Array where Element == Scope {
+extension [Scope] {
   func can(_ perform: Scope) -> Bool {
     contains(where: { $0.can(perform) })
   }

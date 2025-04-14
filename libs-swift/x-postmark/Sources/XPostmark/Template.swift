@@ -1,7 +1,7 @@
 import Foundation
 import XHttp
 
-public struct TemplateEmail: Equatable {
+public struct TemplateEmail: Equatable, Sendable {
   public var to: String
   public var from: String
   public var templateAlias: String
@@ -55,9 +55,9 @@ public struct TemplateEmail: Equatable {
         let responses = try JSONDecoder().decode([BatchEmailResponse].self, from: data)
         return .success(responses.map { response in
           if response.ErrorCode == 0 {
-            return .success(())
+            .success(())
           } else {
-            return .failure(.init(
+            .failure(.init(
               errorCode: response.ErrorCode,
               message: response.Message
             ))

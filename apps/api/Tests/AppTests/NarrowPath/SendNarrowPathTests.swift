@@ -5,7 +5,7 @@ import XPostmark
 
 @testable import App
 
-final class SendNarrowPathTests: AppTestCase {
+final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testSendsFriendQuoteToBothGroupsIfNoNonFriends() {
     Current.randomNumberGenerator = { stableRng() }
     let action = SendNarrowPath().determineAction(
@@ -116,11 +116,11 @@ final class SendNarrowPathTests: AppTestCase {
     try await SendNarrowPath().exec()
 
     // this proves the spanish sent quotes were reset
-    expect(try? await NPSentQuote.find(7)).toBeNil()
-    expect(try? await NPSentQuote.find(8)).toBeNil()
+    await expect(try? NPSentQuote.find(7)).toBeNil()
+    await expect(try? NPSentQuote.find(8)).toBeNil()
 
     // correct emails were sent
-    expect(await sentEmails.value).toEqual([
+    await expect(sentEmails.value).toEqual([
       .init(
         to: "en.friends",
         from: "narrow-path@friendslibrary.com",

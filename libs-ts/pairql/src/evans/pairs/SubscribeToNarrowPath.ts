@@ -5,6 +5,7 @@ export namespace SubscribeToNarrowPath {
     email: string;
     lang: 'en' | 'es';
     mixedQuotes: boolean;
+    turnstileToken: string;
   }
 
   export type Output = void;

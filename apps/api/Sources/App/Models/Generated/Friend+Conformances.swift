@@ -12,29 +12,29 @@ extension Friend: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .lang:
-      return .enum(lang)
+      .enum(lang)
     case .name:
-      return .string(name)
+      .string(name)
     case .slug:
-      return .string(slug)
+      .string(slug)
     case .gender:
-      return .enum(gender)
+      .enum(gender)
     case .description:
-      return .string(description)
+      .string(description)
     case .born:
-      return .int(born)
+      .int(born)
     case .died:
-      return .int(died)
+      .int(died)
     case .published:
-      return .date(published)
+      .date(published)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .updatedAt:
-      return .date(updatedAt)
+      .date(updatedAt)
     case .deletedAt:
-      return .date(deletedAt)
+      .date(deletedAt)
     }
   }
 }

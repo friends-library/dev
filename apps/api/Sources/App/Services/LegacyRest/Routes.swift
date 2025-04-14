@@ -19,9 +19,9 @@ enum LegacyRest {
     func getLegacyAppEditions(lang: Lang) -> Data? {
       switch lang {
       case .en:
-        return self.appEditionsEnglish
+        self.appEditionsEnglish
       case .es:
-        return self.appEditionsSpanish
+        self.appEditionsSpanish
       }
     }
 
@@ -37,9 +37,9 @@ enum LegacyRest {
     func getLegacyAppAudios(lang: Lang) -> Data? {
       switch lang {
       case .en:
-        return self.appAudiosEnglish
+        self.appAudiosEnglish
       case .es:
-        return self.appAudiosSpanish
+        self.appAudiosSpanish
       }
     }
 

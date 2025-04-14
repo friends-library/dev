@@ -5,8 +5,7 @@ import XCTest
 
 @testable import App
 
-final class CheckPendingOrdersTests: AppTestCase {
-
+final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
   func testCheckPendingOrdersHappyPath() async throws {
     var order = Order.mock
     order.printJobStatus = .pending
@@ -85,4 +84,4 @@ final class CheckPendingOrdersTests: AppTestCase {
   }
 }
 
-extension String: Error {}
+extension String: @retroactive Error {}

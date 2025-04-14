@@ -3,8 +3,8 @@ import XCTest
 
 @testable import App
 
-let MINUTE = Seconds<Double>.init(rawValue: 60.0)
-let HOUR = Seconds<Double>.init(rawValue: 60.0 * 60.0)
+let MINUTE = Seconds<Double>(rawValue: 60.0)
+let HOUR = Seconds<Double>(rawValue: 60.0 * 60.0)
 
 final class AudioUtilTests: XCTestCase {
 

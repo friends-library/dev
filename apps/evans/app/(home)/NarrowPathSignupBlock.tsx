@@ -5,8 +5,9 @@ import cx from 'classnames';
 import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { Loader2Icon } from 'lucide-react';
 import EvansClient from '@friends-library/pairql/evans';
+import Turnstile from 'react-turnstile';
 import NextBgImage from 'next-bg-image';
-import { LANG } from '@/lib/env';
+import { LANG, TURNSTILE_SITE_KEY } from '@/lib/env';
 import Heading from '@/components/core/Heading';
 import Dual from '@/components/core/Dual';
 import NarrowPathImg from '@/public/images/narrow-path.jpg';
@@ -16,6 +17,7 @@ type Status = `idle` | `loading` | `success` | `error`;
 const NarrowPathSignupBlock: React.FC = () => {
   const [emailAddress, setEmailAddress] = useState(``);
   const [mixedQuotes, setMixedQuotes] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState(``);
   const [status, setStatus] = useState<Status>(`idle`);
 
   return (
@@ -64,7 +66,8 @@ const NarrowPathSignupBlock: React.FC = () => {
               const result = await client.subscribeToNarrowPath({
                 lang: LANG,
                 email: emailAddress,
-                mixedQuotes: mixedQuotes,
+                mixedQuotes,
+                turnstileToken,
               });
               setStatus(result.isError ? `error` : `success`);
             }}
@@ -132,6 +135,13 @@ const NarrowPathSignupBlock: React.FC = () => {
                   </>
                 </Dual.Frag>
               </span>
+            </div>
+            <div className={emailAddress.trim() === `` ? `hidden` : ``}>
+              <Turnstile
+                sitekey={TURNSTILE_SITE_KEY}
+                refreshExpired="auto"
+                onVerify={setTurnstileToken}
+              />
             </div>
           </form>
         </div>

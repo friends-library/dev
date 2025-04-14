@@ -11,7 +11,7 @@ enum DownloadRoute: RouteHandler {
     path.removeFirst()
     do {
       return try await self.logAndRedirect(
-        file: try await DownloadableFile(logPath: path),
+        file: DownloadableFile(logPath: path),
         userAgent: request.headers.first(name: .userAgent) ?? "",
         ipAddress: request.ipAddress,
         referrer: query?.referer ?? request.headers.first(name: .referer)
@@ -68,7 +68,7 @@ enum DownloadRoute: RouteHandler {
       }
 
       // prevent duplicate podcast downloads
-      if downloadFormat == .podcast, let ipAddress = ipAddress {
+      if downloadFormat == .podcast, let ipAddress {
         let dupe = try? await Current.db.query(Download.self)
           .where(.ip == .string(ipAddress))
           .where(.format == .enum(Download.Format.podcast))
@@ -157,7 +157,7 @@ private func slackDownload(
   await lastLocation.update(location)
 
   var refererLink = ""
-  if let referrer = referrer, let refererUrl = URL(string: referrer) {
+  if let referrer, let refererUrl = URL(string: referrer) {
     let urlString = refererUrl.absoluteString
     let path = urlString.replacingOccurrences(
       of: #"https:\/\/([^/]+)\/"#,
@@ -228,7 +228,7 @@ private func slackDownload(
 
   await Current.slackClient.send(slack)
 
-  if let location = location,
+  if let location,
      location.slashedSummary.isEmpty,
      location.ip?.starts(with: "192.168") != true {
     await slackInfo("Unusual missing location data:\n```\(String(describing: location))\n```")
@@ -237,15 +237,15 @@ private func slackDownload(
 
 private extension IpApi.Response {
   var slashedSummary: String {
-    [city, region, postal, countryName].compactMap { $0 }.joined(separator: " / ")
+    [city, region, postal, countryName].compactMap(\.self).joined(separator: " / ")
   }
 
   var compactSummary: String {
-    [city, region, countryName].compactMap { $0 }.joined(separator: ", ")
+    [city, region, countryName].compactMap(\.self).joined(separator: ", ")
   }
 
   var googleMapUrl: String? {
-    guard let latitude = latitude, let longitude = longitude else {
+    guard let latitude, let longitude else {
       return nil
     }
     return "https://www.google.com/maps/@\(latitude),\(longitude),14z"
@@ -264,7 +264,7 @@ private extension IpApi.Response {
 private extension UserAgentDeviceData {
   var slackSummary: String {
     [platform, os, browser, isMobile ? "mobile" : "non-mobile"]
-      .compactMap { $0 }
+      .compactMap(\.self)
       .filter { $0 != "unknown" }
       .joined(separator: " / ")
   }
@@ -278,10 +278,10 @@ private func isPodcast(userAgent: String) -> Bool {
 
 private func shouldSlackError(from path: String) -> Bool {
   if ["/.git", "/.env", "%0A", "%5C"].contains(where: path.contains) {
-    return false
+    false
   } else {
     // deprecated mobi file format
-    return !path.hasSuffix("/ebook/mobi")
+    !path.hasSuffix("/ebook/mobi")
   }
 }
 

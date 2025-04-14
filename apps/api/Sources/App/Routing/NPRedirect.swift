@@ -31,13 +31,13 @@ extension NPRedirect {
   var url: String {
     switch (self.lang, self.destination) {
     case (.en, .confirmEmailSuccess):
-      return "\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/success"
+      "\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/success"
     case (.en, .confirmEmailFailure):
-      return "\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/failure"
+      "\(Env.WEBSITE_URL_EN)/narrow-path/confirm-email/failure"
     case (.es, .confirmEmailSuccess):
-      return "\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-correo/exito"
+      "\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-correo/exito"
     case (.es, .confirmEmailFailure):
-      return "\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-correo/fallo"
+      "\(Env.WEBSITE_URL_ES)/camino-estrecho/confirmar-correo/fallo"
     }
   }
 }

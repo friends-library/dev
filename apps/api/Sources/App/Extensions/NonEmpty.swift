@@ -13,12 +13,12 @@ extension NonEmpty {
   }
 }
 
-extension NonEmpty: TypeScriptAliased {
+extension NonEmpty: @retroactive TypeScriptAliased {
   public static var typescriptAlias: String {
     switch Element.self {
-    case is String.Type: return "[string, ...string[]]"
-    case is any Numeric.Type: return "[number, ...number[]]"
-    case is Bool.Type: return "[boolean, ...boolean[]]"
+    case is String.Type: "[string, ...string[]]"
+    case is any Numeric.Type: "[number, ...number[]]"
+    case is Bool.Type: "[boolean, ...boolean[]]"
     default: fatalError("Typescript alias not declared for NonEmpty<[\(Element.self)]>")
     }
   }

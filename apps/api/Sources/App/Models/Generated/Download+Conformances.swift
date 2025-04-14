@@ -12,45 +12,45 @@ extension Download: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .editionId:
-      return .uuid(editionId)
+      .uuid(editionId)
     case .format:
-      return .enum(format)
+      .enum(format)
     case .source:
-      return .enum(source)
+      .enum(source)
     case .audioQuality:
-      return .enum(audioQuality)
+      .enum(audioQuality)
     case .audioPartNumber:
-      return .int(audioPartNumber)
+      .int(audioPartNumber)
     case .isMobile:
-      return .bool(isMobile)
+      .bool(isMobile)
     case .userAgent:
-      return .string(userAgent)
+      .string(userAgent)
     case .os:
-      return .string(os)
+      .string(os)
     case .browser:
-      return .string(browser)
+      .string(browser)
     case .platform:
-      return .string(platform)
+      .string(platform)
     case .referrer:
-      return .string(referrer)
+      .string(referrer)
     case .ip:
-      return .string(ip)
+      .string(ip)
     case .city:
-      return .string(city)
+      .string(city)
     case .region:
-      return .string(region)
+      .string(region)
     case .postalCode:
-      return .string(postalCode)
+      .string(postalCode)
     case .country:
-      return .string(country)
+      .string(country)
     case .latitude:
-      return .string(latitude)
+      .string(latitude)
     case .longitude:
-      return .string(longitude)
+      .string(longitude)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     }
   }
 }

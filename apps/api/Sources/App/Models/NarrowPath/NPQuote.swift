@@ -35,27 +35,27 @@ struct NPQuote: Codable, Sendable {
 extension NPQuote {
   func isValid() async -> Bool {
     if self.friendId != nil, !self.isFriend {
-      return false
+      false
     } else if !self.isFriend, self.authorName == nil {
-      return false
+      false
     } else if self.friendId != nil, self.authorName != nil {
-      return false
+      false
     } else if self.quote.isEmpty {
-      return false
+      false
     } else if self.quote.contains("\n\n") {
-      return false
+      false
     } else if self.quote.hasPrefix("\n") {
-      return false
+      false
     } else if self.quote.hasSuffix("\n") {
-      return false
+      false
     } else if self.quote.filter({ $0 == "_" }).count % 2 != 0 {
       // uneven number of underscores, invalid markdown -> html
-      return false
+      false
     } else if self.quote.contains("*") {
       // we are only supporting italics now
-      return false
+      false
     } else {
-      return true
+      true
     }
   }
 }

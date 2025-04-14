@@ -15,19 +15,19 @@ enum FlpSlack {
       var string: String {
         switch self {
         case .errors:
-          return "#errors"
+          "#errors"
         case .info:
-          return "#info"
+          "#info"
         case .orders:
-          return "#orders"
+          "#orders"
         case .downloads:
-          return "#downloads"
+          "#downloads"
         case .audioDownloads:
-          return "#audio-downloads"
+          "#audio-downloads"
         case .debug:
-          return "#debug"
+          "#debug"
         case .other(let channel):
-          return channel
+          channel
         }
       }
 

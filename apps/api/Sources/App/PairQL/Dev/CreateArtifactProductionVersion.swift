@@ -14,7 +14,7 @@ struct CreateArtifactProductionVersion: Pair {
 
 extension CreateArtifactProductionVersion: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     if !input.version.isValidGitCommitFullSha {
       throw context.error(
         id: "4e50182e",

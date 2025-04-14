@@ -3,13 +3,13 @@ import PairQL
 import Tagged
 import TypeScriptInterop
 
-extension Tagged: TypeScriptAliased {
+extension Tagged: @retroactive TypeScriptAliased {
   public static var typescriptAlias: String {
     switch RawValue.self {
-    case is UUID.Type: return "UUID"
-    case is String.Type: return "string"
-    case is any Numeric.Type: return "number"
-    case is Bool.Type: return "boolean"
+    case is UUID.Type: "UUID"
+    case is String.Type: "string"
+    case is any Numeric.Type: "number"
+    case is Bool.Type: "boolean"
     default: fatalError("Typescript alias not declared for tagged `\(RawValue.self)`")
     }
   }
@@ -21,5 +21,5 @@ public extension Tagged where RawValue == UUID {
   }
 }
 
-extension Tagged: PairInput where RawValue: Codable & Equatable {}
-extension Tagged: PairOutput where RawValue == UUID {}
+extension Tagged: @retroactive PairInput where RawValue: Codable & Equatable {}
+extension Tagged: @retroactive PairOutput where RawValue == UUID {}

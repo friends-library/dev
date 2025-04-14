@@ -4,7 +4,7 @@ import XExpect
 
 @testable import App
 
-final class AdminDomainTests: AppTestCase {
+final class AdminDomainTests: AppTestCase, @unchecked Sendable {
   func testCreateEditionAlsoAssociatesIsbn() async throws {
     try await Isbn.random.create() // will be assigned to new edition
     let entities = await Entities.create()

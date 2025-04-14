@@ -25,23 +25,23 @@ extension NPQuote: Model {
   func postgresData(for column: ColumnName) -> DuetSQL.Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .lang:
-      return .enum(lang)
+      .enum(lang)
     case .isFriend:
-      return .bool(isFriend)
+      .bool(isFriend)
     case .authorName:
-      return .string(authorName)
+      .string(authorName)
     case .quote:
-      return .string(quote)
+      .string(quote)
     case .friendId:
-      return .uuid(friendId)
+      .uuid(friendId)
     case .documentId:
-      return .uuid(documentId)
+      .uuid(documentId)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .updatedAt:
-      return .date(updatedAt)
+      .date(updatedAt)
     }
   }
 }

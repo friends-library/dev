@@ -18,7 +18,7 @@ struct TotalPublished: Pair {
 
 extension TotalPublished: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let allDocuments = try await Document.Joined.all()
     let allAudios = try await Audio.Joined.all()
 

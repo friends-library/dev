@@ -123,19 +123,19 @@ extension Order.ShippingLevel {
   var lulu: Lulu.Api.ShippingOptionLevel {
     switch self {
     case .mail:
-      return .mail
+      .mail
     case .priorityMail:
-      return .priorityMail
+      .priorityMail
     case .groundHd:
-      return .groundHd
+      .groundHd
     case .groundBus:
-      return .groundBus
+      .groundBus
     case .ground:
-      return .ground
+      .ground
     case .expedited:
-      return .expedited
+      .expedited
     case .express:
-      return .express
+      .express
     }
   }
 }

@@ -15,7 +15,7 @@ struct DeleteEntity: Pair {
 
 extension DeleteEntity: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     guard let model = try? await Current.db.find(input.type.modelType, byId: input.id) else {
       switch input.type {
       case .friend, .token:

@@ -12,15 +12,15 @@ extension Token: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .value:
-      return .uuid(value)
+      .uuid(value)
     case .description:
-      return .string(description)
+      .string(description)
     case .uses:
-      return .int(uses)
+      .int(uses)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     }
   }
 }

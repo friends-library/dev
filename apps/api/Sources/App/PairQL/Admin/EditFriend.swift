@@ -52,9 +52,9 @@ struct EditFriend: Pair {
 
 extension EditFriend: Resolver {
   static func resolve(with friendId: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let friend = try await Friend.Joined.find(friendId)
-    return .init(
+    return try await .init(
       friend: .init(
         id: friend.id,
         lang: friend.lang,
@@ -83,9 +83,9 @@ extension EditFriend: Resolver {
         quotes: friend.quotes.map {
           .init(id: $0.id, friendId: $0.friendId, source: $0.source, text: $0.text, order: $0.order)
         },
-        documents: try await friend.documents.concurrentMap { try await .init(model: $0) }
+        documents: friend.documents.concurrentMap { try await .init(model: $0) }
       ),
-      selectableDocuments: try await .load()
+      selectableDocuments: .load()
     )
   }
 }

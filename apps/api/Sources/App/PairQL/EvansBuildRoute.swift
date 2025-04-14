@@ -94,7 +94,7 @@ extension EvansBuildRoute: RouteResponder {
     switch route {
     case .authed(let token, let authedRoute):
       let token = try await Token.query().where(.value == token).first()
-      let authed = AuthedContext(requestId: context.requestId, scopes: try await token.scopes())
+      let authed = try await AuthedContext(requestId: context.requestId, scopes: token.scopes())
       switch authedRoute {
       case .allDocumentPages(let lang):
         let output = try await AllDocumentPages.resolve(with: lang, in: authed)

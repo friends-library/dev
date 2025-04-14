@@ -26,12 +26,12 @@ extension InitOrder: Resolver {
       )
       let tokenDesc = "single-use create order token for order `\(orderId.lowercased)`"
       async let token = Current.db.create(Token(description: tokenDesc, uses: 1))
-      try await TokenScope(tokenId: try await token.id, scope: .mutateOrders).create()
-      return .init(
+      try await TokenScope(tokenId: token.id, scope: .mutateOrders).create()
+      return try await .init(
         orderId: orderId,
-        orderPaymentId: .init(rawValue: try await pi.id),
-        stripeClientSecret: try await pi.clientSecret,
-        createOrderToken: try await token.value
+        orderPaymentId: .init(rawValue: pi.id),
+        stripeClientSecret: pi.clientSecret,
+        createOrderToken: token.value
       )
     } catch {
       await slackError("InitOrder error: \(String(describing: error))")

@@ -12,15 +12,15 @@ extension Isbn: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .code:
-      return .string(code.rawValue)
+      .string(code.rawValue)
     case .editionId:
-      return .uuid(editionId)
+      .uuid(editionId)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .updatedAt:
-      return .date(updatedAt)
+      .date(updatedAt)
     }
   }
 }

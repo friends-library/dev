@@ -3,7 +3,7 @@ import XCTest
 
 @testable import App
 
-final class SendTrackingEmailsTests: AppTestCase {
+final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
   var order = Order.mock
 
   override func setUp() {

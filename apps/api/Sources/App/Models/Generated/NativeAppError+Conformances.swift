@@ -11,25 +11,25 @@ extension NativeAppError: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .buildSemver:
-      return .string(buildSemver)
+      .string(buildSemver)
     case .buildNumber:
-      return .int(buildNumber)
+      .int(buildNumber)
     case .lang:
-      return .enum(lang)
+      .enum(lang)
     case .detail:
-      return .string(detail)
+      .string(detail)
     case .platform:
-      return .string(platform)
+      .string(platform)
     case .installId:
-      return .string(installId)
+      .string(installId)
     case .errorMessage:
-      return .string(errorMessage)
+      .string(errorMessage)
     case .errorStack:
-      return .string(errorStack)
+      .string(errorStack)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     }
   }
 }

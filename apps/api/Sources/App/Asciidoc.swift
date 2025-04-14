@@ -119,7 +119,7 @@ enum Asciidoc {
 }
 
 private func toRoman(_ string: String?, _ nextChar: Character?) -> String {
-  guard let string = string else { return "" }
+  guard let string else { return "" }
   if let int = Int(string),
      int < 1000, int != 160 || nextChar != ";",
      let rn = try? RomanNumeral(from: int) {

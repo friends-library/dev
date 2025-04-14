@@ -26,7 +26,7 @@ enum PrintJobs {
           quantity: item.quantity
         )
       }
-    }.flatMap { $0 }
+    }.flatMap(\.self)
 
     let payload = Lulu.Api.CreatePrintJobBody(
       shippingLevel: order.shippingLevel.lulu,
@@ -137,12 +137,12 @@ enum PrintJobs {
         throw Error.noExploratoryMetadataRetrieved
       }
 
-      return .success(try ExploratoryMetadata(
+      return try .success(ExploratoryMetadata(
         shippingLevel: level,
         shipping: toCents(cheapest.shippingCost.totalCostExclTax),
         taxes: toCents(cheapest.totalTax),
         fees: toCents(cheapest.fulfillmentCost.totalCostExclTax),
-        creditCardFeeOffset: creditCardFeeOffset(toCents(cheapest.totalCostInclTax))
+        creditCardFeeOffset: self.creditCardFeeOffset(toCents(cheapest.totalCostInclTax))
       ))
     }
   }
@@ -165,13 +165,13 @@ enum PrintJobs {
     var errorDescription: String? {
       switch self {
       case .noExploratoryMetadataRetrieved:
-        return "No exploratory metadata could be retrieved. Very likely shipping was not possible."
+        "No exploratory metadata could be retrieved. Very likely shipping was not possible."
       case .invalidMoneyStringFromApi(let value):
-        return "Could not convert API currency string value (\(value)) to cents."
+        "Could not convert API currency string value (\(value)) to cents."
       case .invalidInputForCreditCardFeeOffset:
-        return "Invalid negative or zero amount for calculating credit card offset."
+        "Invalid negative or zero amount for calculating credit card offset."
       case .unexpectedMissingEditionImpression(let orderId, let editionId):
-        return "Unexpected missing edition impression for edition \(editionId) in order \(orderId)."
+        "Unexpected missing edition impression for edition \(editionId) in order \(orderId)."
       }
     }
   }

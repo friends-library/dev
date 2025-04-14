@@ -25,7 +25,7 @@ struct EditToken: Pair {
 
 extension EditToken: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let token = try await Token.find(input)
     let scopes = try await token.scopes()
     return .init(

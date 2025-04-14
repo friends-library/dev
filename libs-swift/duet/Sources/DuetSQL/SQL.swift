@@ -10,9 +10,9 @@ public enum SQL {
     var sql: String {
       switch self {
       case .asc:
-        return "ASC"
+        "ASC"
       case .desc:
-        return "DESC"
+        "DESC"
       }
     }
   }
@@ -32,7 +32,7 @@ public enum SQL {
     }
 
     static func sql(_ order: Self?, prefixedBy prefix: String = "\n") -> String {
-      guard let order = order else { return "" }
+      guard let order else { return "" }
       return "\(prefix)ORDER BY \"\(M.columnName(order.column))\" \(order.direction.sql)"
     }
   }
@@ -65,10 +65,10 @@ public enum SQL {
     self.update(table: M.tableName, set: ["deleted_at": .currentTimestamp], where: constraint)
   }
 
-  private static func update<M: Model>(
+  private static func update(
     table: String,
     set values: [String: Postgres.Data],
-    where constraint: WhereConstraint<M> = .always,
+    where constraint: WhereConstraint<some Model> = .always,
     returning: Postgres.Columns? = nil
   ) -> PreparedStatement {
     var bindings: [Postgres.Data] = []
@@ -82,7 +82,7 @@ public enum SQL {
     let WHERE = self.whereClause(constraint, bindings: &bindings)
 
     var RETURNING = ""
-    if let returning = returning {
+    if let returning {
       RETURNING = "\nRETURNING \(returning.sql)"
     }
 
@@ -249,12 +249,12 @@ public enum SQL {
     }
   }
 
-  private static func whereClause<M: Model>(
-    _ constraint: WhereConstraint<M>? = .always,
+  private static func whereClause(
+    _ constraint: WhereConstraint<some Model>? = .always,
     bindings: inout [Postgres.Data],
     separatedBy: String = "\n"
   ) -> String {
-    guard let constraint = constraint, constraint != .always else {
+    guard let constraint, constraint != .always else {
       return ""
     }
     return "\(separatedBy)WHERE \(constraint.sql(boundTo: &bindings))"
@@ -265,7 +265,7 @@ public enum SQL {
   }
 }
 
-extension Sequence where Element == String {
+extension Sequence<String> {
   var list: String {
     joined(separator: ", ")
   }
@@ -280,7 +280,7 @@ private enum IntConstraint {
   case offset
 }
 
-private extension Optional where Wrapped == Int {
+private extension Int? {
   func sql(prefixedBy prefix: String = "\n", _ type: IntConstraint) -> String {
     guard let value = self else { return "" }
     switch type {

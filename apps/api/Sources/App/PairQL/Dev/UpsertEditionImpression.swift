@@ -18,13 +18,13 @@ struct UpsertEditionImpression: Pair {
 
 extension UpsertEditionImpression: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
-    let impression = EditionImpression(
+    try context.verify(self.auth)
+    let impression = try EditionImpression(
       id: input.id,
       editionId: input.editionId,
       adocLength: input.adocLength,
       paperbackSizeVariant: input.paperbackSizeVariant,
-      paperbackVolumes: try .fromArray(input.paperbackVolumes),
+      paperbackVolumes: .fromArray(input.paperbackVolumes),
       publishedRevision: input.publishedRevision,
       productionToolchainRevision: input.productionToolchainRevision
     )

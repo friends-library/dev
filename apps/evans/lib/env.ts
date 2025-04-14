@@ -1,8 +1,13 @@
 import invariant from './invariant';
 
 invariant(process.env.NEXT_PUBLIC_LANG, `process.env.NEXT_PUBLIC_LANG is not defined`);
+invariant(
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+  `process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY is not defined`,
+);
 
 export const LANG = process.env.NEXT_PUBLIC_LANG === `es` ? `es` : `en`;
+export const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export const NODE_ENV =
   process.env.NODE_ENV === `production` ? `production` : `development`;

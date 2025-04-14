@@ -93,7 +93,7 @@ extension EditDocument: Resolver {
     with documentId: Document.Id,
     in context: AuthedContext
   ) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let document = try await Document.Joined.find(documentId)
     return try await .init(
       document: .init(model: document),

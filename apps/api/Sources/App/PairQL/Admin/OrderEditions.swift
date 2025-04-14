@@ -25,7 +25,7 @@ struct OrderEditions: Pair {
 
 extension OrderEditions: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let editions = try await Edition.Joined.all()
       .filter { !$0.isDraft }
     return try await editions.concurrentMap { edition -> OrderEdition? in
@@ -48,6 +48,6 @@ extension OrderEditions: NoInputResolver {
         smallImgUrl: edition.images.threeD.w55.url.absoluteString,
         largeImgUrl: edition.images.threeD.w110.url.absoluteString
       )
-    }.compactMap { $0 }
+    }.compactMap(\.self)
   }
 }

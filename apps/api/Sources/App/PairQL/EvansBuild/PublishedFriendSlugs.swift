@@ -14,7 +14,7 @@ struct PublishedFriendSlugs: Pair {
 
 extension PublishedFriendSlugs: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     return try await Friend.Joined.all()
       .filter { friend in
         if let gender = input.gender, friend.gender != gender {

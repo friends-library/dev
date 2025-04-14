@@ -83,7 +83,7 @@ private func sendFreeOrderRequestNotifications(for order: FreeOrderRequest) asyn
 }
 
 private func entry(_ key: String, _ value: String?) -> String {
-  guard let value = value else {
+  guard let value else {
     return ""
   }
   return

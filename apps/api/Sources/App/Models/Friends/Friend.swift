@@ -62,13 +62,13 @@ extension Friend {
   var urlPath: String {
     switch (self.lang, self.gender) {
     case (_, .mixed):
-      return self.slug // compilations
+      self.slug // compilations
     case (.en, _):
-      return "friend/\(self.slug)"
+      "friend/\(self.slug)"
     case (.es, .male):
-      return "amigo/\(self.slug)"
+      "amigo/\(self.slug)"
     case (.es, .female):
-      return "amiga/\(self.slug)"
+      "amiga/\(self.slug)"
     }
   }
 }

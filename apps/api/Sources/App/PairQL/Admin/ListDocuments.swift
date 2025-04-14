@@ -16,7 +16,7 @@ struct ListDocuments: Pair {
 
 extension ListDocuments: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let documents = try await Document.Joined.all()
     return documents.map { document in
       .init(

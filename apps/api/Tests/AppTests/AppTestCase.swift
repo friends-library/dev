@@ -7,8 +7,8 @@ import XPostmark
 @testable import App
 @testable import DuetSQL
 
-class AppTestCase: XCTestCase {
-  static var migrated = false
+class AppTestCase: XCTestCase, @unchecked Sendable {
+  nonisolated(unsafe) static var migrated = false
 
   struct Sent {
     var slacks: [FlpSlack.Message] = []
@@ -16,7 +16,7 @@ class AppTestCase: XCTestCase {
     var templateEmails: [XPostmark.TemplateEmail] = []
   }
 
-  static var app: Application!
+  nonisolated(unsafe) static var app: Application!
   var sent = Sent()
 
   var app: Application {
@@ -90,7 +90,7 @@ func sync(
   function: StaticString = #function,
   line: UInt = #line,
   column: UInt = #column,
-  _ f: @escaping () async throws -> Void
+  _ f: @Sendable @escaping () async throws -> Void
 ) {
   let exp = XCTestExpectation(description: "sync:\(function):\(line):\(column)")
   Task {

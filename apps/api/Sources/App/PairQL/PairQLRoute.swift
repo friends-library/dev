@@ -14,17 +14,17 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
   static func respond(to route: Self, in context: Context) async throws -> Response {
     switch route {
     case .dev(let devRoute):
-      return try await DevRoute.respond(to: devRoute, in: context)
+      try await DevRoute.respond(to: devRoute, in: context)
     case .admin(let adminRoute):
-      return try await AdminRoute.respond(to: adminRoute, in: context)
+      try await AdminRoute.respond(to: adminRoute, in: context)
     case .order(let orderRoute):
-      return try await OrderRoute.respond(to: orderRoute, in: context)
+      try await OrderRoute.respond(to: orderRoute, in: context)
     case .evans(let evansRoute):
-      return try await EvansRoute.respond(to: evansRoute, in: context)
+      try await EvansRoute.respond(to: evansRoute, in: context)
     case .evansBuild(let evansBuildRoute):
-      return try await EvansBuildRoute.respond(to: evansBuildRoute, in: context)
+      try await EvansBuildRoute.respond(to: evansBuildRoute, in: context)
     case .native(let nativeRoute):
-      return try await NativeRoute.respond(to: nativeRoute, in: context)
+      try await NativeRoute.respond(to: nativeRoute, in: context)
     }
   }
 

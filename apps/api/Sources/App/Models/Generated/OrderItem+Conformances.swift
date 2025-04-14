@@ -12,17 +12,17 @@ extension OrderItem: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .orderId:
-      return .uuid(orderId)
+      .uuid(orderId)
     case .editionId:
-      return .uuid(editionId)
+      .uuid(editionId)
     case .quantity:
-      return .int(quantity)
+      .int(quantity)
     case .unitPrice:
-      return .int(unitPrice.rawValue)
+      .int(unitPrice.rawValue)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     }
   }
 }

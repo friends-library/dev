@@ -16,7 +16,7 @@ struct PublishedDocumentSlugs: Pair {
 
 extension PublishedDocumentSlugs: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
 
     let allFriends = try await Friend.Joined.all()
       .filter { $0.lang == input }
@@ -25,6 +25,6 @@ extension PublishedDocumentSlugs: Resolver {
       friend.documents.filter(\.hasNonDraftEdition).map { document in
         Slugs(friendSlug: friend.slug, documentSlug: document.slug)
       }
-    }.flatMap { $0 }
+    }.flatMap(\.self)
   }
 }

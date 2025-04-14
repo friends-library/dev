@@ -12,33 +12,33 @@ extension FreeOrderRequest: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .name:
-      return .string(name)
+      .string(name)
     case .email:
-      return .string(email.rawValue)
+      .string(email.rawValue)
     case .requestedBooks:
-      return .string(requestedBooks)
+      .string(requestedBooks)
     case .aboutRequester:
-      return .string(aboutRequester)
+      .string(aboutRequester)
     case .addressStreet:
-      return .string(addressStreet)
+      .string(addressStreet)
     case .addressStreet2:
-      return .string(addressStreet2)
+      .string(addressStreet2)
     case .addressCity:
-      return .string(addressCity)
+      .string(addressCity)
     case .addressState:
-      return .string(addressState)
+      .string(addressState)
     case .addressZip:
-      return .string(addressZip)
+      .string(addressZip)
     case .addressCountry:
-      return .string(addressCountry)
+      .string(addressCountry)
     case .source:
-      return .string(source)
+      .string(source)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .updatedAt:
-      return .date(updatedAt)
+      .date(updatedAt)
     }
   }
 }

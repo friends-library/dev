@@ -30,7 +30,7 @@ public struct VerifyEntityValidityJob: AsyncScheduledJob {
 
 // helpers
 
-func checkModelsValidity<M: ApiModel>(_ Model: M.Type, _ name: String) async throws {
+func checkModelsValidity(_ Model: (some ApiModel).Type, _ name: String) async throws {
   let models = try await Model.query().all()
   for model in models {
     if await model.isValid() == false {

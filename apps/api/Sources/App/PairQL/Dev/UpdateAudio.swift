@@ -17,7 +17,7 @@ struct UpdateAudio: Pair {
 
 extension UpdateAudio: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     var audio = try await Audio.find(input.id)
     audio.editionId = input.editionId
     audio.reader = input.reader

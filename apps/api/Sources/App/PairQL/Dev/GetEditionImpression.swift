@@ -22,7 +22,7 @@ struct GetEditionImpression: Pair {
 
 extension GetEditionImpression: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
     let impression = try await EditionImpression.Joined.find(input)
     return .init(id: impression.id, cloudFiles: .init(files: impression.files))
   }

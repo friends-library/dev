@@ -12,13 +12,13 @@ extension DocumentTag: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .documentId:
-      return .uuid(documentId)
+      .uuid(documentId)
     case .type:
-      return .enum(type)
+      .enum(type)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     }
   }
 }

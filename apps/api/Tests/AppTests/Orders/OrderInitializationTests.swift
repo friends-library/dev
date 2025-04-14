@@ -4,7 +4,7 @@ import XExpect
 @testable import App
 @testable import XStripe
 
-final class OrderInitializationTests: AppTestCase {
+final class OrderInitializationTests: AppTestCase, @unchecked Sendable {
   func testCreateOrderInitializationSuccess() async throws {
     try await Current.db.deleteAll(Token.self)
 

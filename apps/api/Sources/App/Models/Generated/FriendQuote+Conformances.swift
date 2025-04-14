@@ -12,21 +12,21 @@ extension FriendQuote: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .friendId:
-      return .uuid(friendId)
+      .uuid(friendId)
     case .source:
-      return .string(source)
+      .string(source)
     case .text:
-      return .string(text)
+      .string(text)
     case .order:
-      return .int(order)
+      .int(order)
     case .context:
-      return .string(context)
+      .string(context)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     case .updatedAt:
-      return .date(updatedAt)
+      .date(updatedAt)
     }
   }
 }

@@ -9,7 +9,7 @@ extension UserAgentParser {
   static let `nil` = Self { _ in nil }
   static let mock = Self { ua in
     if ua.contains("GoogleBot") {
-      return .init(
+      .init(
         isBot: true,
         isMobile: false,
         os: "botOS 3.3",
@@ -17,7 +17,7 @@ extension UserAgentParser {
         platform: "bot"
       )
     } else {
-      return .init(
+      .init(
         isBot: false,
         isMobile: false,
         os: "Windows 10.0",

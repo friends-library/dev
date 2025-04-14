@@ -36,7 +36,7 @@ struct GettingStartedBooks: Pair {
 
 extension GettingStartedBooks: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
-    try context.verify(Self.auth)
+    try context.verify(self.auth)
 
     let documents = try await input.resolve()
 
@@ -73,9 +73,9 @@ extension SelectedDocuments {
     for slug in self.slugs {
       let matchedDocument = allDocuments.filter { doc in
         guard doc.slug == slug.documentSlug else { return false }
-        return doc.friend.slug == slug.friendSlug && doc.friend.lang == lang
+        return doc.friend.slug == slug.friendSlug && doc.friend.lang == self.lang
       }.first
-      documents.append(try expect(matchedDocument))
+      try documents.append(expect(matchedDocument))
     }
     return documents
   }

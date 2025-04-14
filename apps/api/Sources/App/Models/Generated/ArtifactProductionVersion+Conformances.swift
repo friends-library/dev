@@ -12,11 +12,11 @@ extension ArtifactProductionVersion: Model {
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
     case .id:
-      return .id(self)
+      .id(self)
     case .version:
-      return .string(version.rawValue)
+      .string(version.rawValue)
     case .createdAt:
-      return .date(createdAt)
+      .date(createdAt)
     }
   }
 }

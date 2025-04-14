@@ -19,7 +19,7 @@ public enum JSON {
     return try decoder.decode(type, from: data)
   }
 
-  public static func encode<T: Encodable>(_ value: T) throws -> String {
+  public static func encode(_ value: some Encodable) throws -> String {
     let encoder = JSONEncoder()
     let data = try encoder.encode(value)
     guard let json = String(data: data, encoding: .utf8) else {
@@ -28,7 +28,7 @@ public enum JSON {
     return json
   }
 
-  public static func data<T: Encodable>(_ value: T) throws -> Data {
+  public static func data(_ value: some Encodable) throws -> Data {
     try JSONEncoder().encode(value)
   }
 }
