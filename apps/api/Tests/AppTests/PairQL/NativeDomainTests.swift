@@ -35,7 +35,5 @@ final class NativeDomainTests: AppTestCase, @unchecked Sendable {
     expect(retrieved.installId).toEqual(installId)
     expect(retrieved.errorMessage).toEqual("whoops")
     expect(retrieved.errorStack).toBeNil()
-
-    expect(sent.slacks).toHaveCount(1)
   }
 }

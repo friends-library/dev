@@ -1,5 +1,4 @@
 import PairQL
-import XSlack
 
 struct ReportError: Pair {
   struct Input: PairInput {
@@ -28,24 +27,6 @@ extension ReportError: Resolver {
       errorMessage: input.errorMessage,
       errorStack: input.errorStack
     ).create()
-
-    await slackError(
-      """
-      *Native App Error:*
-      _detail:_
-      ```
-      \(input.detail)
-      ```
-      _platform:_
-      ```
-      \(input.platform)
-      ```
-      _error:_
-      ```
-      \(input.errorMessage ?? "(nil)")
-      ```
-      """
-    )
 
     return .success
   }
