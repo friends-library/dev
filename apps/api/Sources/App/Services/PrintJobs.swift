@@ -15,9 +15,14 @@ enum PrintJobs {
       }
       return impression.paperbackVolumes.enumerated().map { index, pages in
         let titleSuffix = impression.paperbackVolumes.count > 1 ? ", vol. \(index + 1)" : ""
+        var cover = impression.files.paperback.cover[index].sourceUrl.absoluteString
+        if impression.edition.document.friend.name == "Gerhard Tersteegen" {
+          cover =
+            "https://flp-assets.nyc3.digitaloceanspaces.com/es/gerhard-tersteegen/custom-cover.pdf"
+        }
         return Lulu.Api.CreatePrintJobBody.LineItem(
           title: edition.document.title + titleSuffix,
-          cover: impression.files.paperback.cover[index].sourceUrl.absoluteString,
+          cover: cover,
           interior: impression.files.paperback.interior[index].sourceUrl.absoluteString,
           podPackageId: Lulu.podPackageId(
             size: impression.paperbackSizeVariant.printSize,

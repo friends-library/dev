@@ -27,7 +27,8 @@ extension OrderEditions: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
     let editions = try await Edition.Joined.all()
-      .filter { !$0.isDraft }
+      .filter { !$0.isDraft || $0.document.friend.name == "Gerhard Tersteegen" }
+
     return try await editions.concurrentMap { edition -> OrderEdition? in
       guard let impression = edition.impression else {
         return nil
