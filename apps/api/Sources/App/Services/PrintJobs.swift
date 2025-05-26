@@ -18,7 +18,7 @@ enum PrintJobs {
         var cover = impression.files.paperback.cover[index].sourceUrl.absoluteString
         if impression.edition.document.friend.name == "Gerhard Tersteegen" {
           cover =
-            "https://flp-assets.nyc3.digitaloceanspaces.com/es/gerhard-tersteegen/custom-cover.pdf"
+            "https://flp-assets.nyc3.digitaloceanspaces.com/es/gerhard-tersteegen/harriet-cover.pdf"
         }
         return Lulu.Api.CreatePrintJobBody.LineItem(
           title: edition.document.title + titleSuffix,
