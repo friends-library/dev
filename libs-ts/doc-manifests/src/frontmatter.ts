@@ -59,13 +59,17 @@ export function originalTitle({ meta, lang }: DocPrecursor): string {
   }
 
   setLocale(lang);
+  const originalTitle = meta.originalTitle.replace(
+    meta.author.name,
+    meta.author.name.replace(/ /g, HTML_DEC_ENTITIES.NON_BREAKING_SPACE),
+  );
   return `
     <div class="original-title-page">
       <p class="originally-titled__label">
         ${t`Original title`}:
       </p>
       <p class="originally-titled__title">
-        ${capitalizeTitle(meta.originalTitle, lang)}
+        ${capitalizeTitle(originalTitle, lang)}
       </p>
     </div>
   `;
