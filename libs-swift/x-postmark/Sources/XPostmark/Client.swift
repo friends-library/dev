@@ -6,16 +6,19 @@ public struct Client: Sendable {
   public var sendTemplateEmail: @Sendable (TemplateEmail) async -> Result<Void, Client.Error>
   public var sendTemplateEmailBatch: @Sendable ([TemplateEmail]) async
     -> Result<[Result<Void, Client.BatchEmail.Error>], Client.Error>
+  public var deleteSuppression: @Sendable (String, String) async -> Result<Void, Client.Error>
 
   public init(
     sendEmail: @escaping @Sendable (Email) async -> Result<Void, Client.Error>,
     sendTemplateEmail: @escaping @Sendable (TemplateEmail) async -> Result<Void, Client.Error>,
     sendTemplateEmailBatch: @escaping @Sendable ([TemplateEmail]) async
-      -> Result<[Result<Void, Client.BatchEmail.Error>], Client.Error>
+      -> Result<[Result<Void, Client.BatchEmail.Error>], Client.Error>,
+    deleteSuppression: @escaping @Sendable (String, String) async -> Result<Void, Client.Error>
   ) {
     self.sendEmail = sendEmail
     self.sendTemplateEmail = sendTemplateEmail
     self.sendTemplateEmailBatch = sendTemplateEmailBatch
+    self.deleteSuppression = deleteSuppression
   }
 }
 
@@ -45,6 +48,9 @@ public extension Client {
       },
       sendTemplateEmailBatch: { email in
         await _sendTemplateEmailBatch(email, apiKey)
+      },
+      deleteSuppression: { emailAddress, streamId in
+        await _deleteSuppression(emailAddress, streamId, apiKey)
       }
     )
   }
@@ -54,13 +60,14 @@ public extension Client {
   static let mock = Client(
     sendEmail: { _ in .success(()) },
     sendTemplateEmail: { _ in .success(()) },
-    sendTemplateEmailBatch: { emails in .success([]) }
+    sendTemplateEmailBatch: { emails in .success([]) },
+    deleteSuppression: { _, _ in .success(()) }
   )
 }
 
 // api types
 
-struct ApiResponse: Decodable {
+struct SendEmailResponse: Decodable {
   let ErrorCode: Int
   let Message: String
 }

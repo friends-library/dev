@@ -11,6 +11,7 @@ extension NPSubscriber: ApiModel {
       .mixedQuotes: .bool(mixedQuotes),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
+      .unsubscribedAt: .date(unsubscribedAt)
     ]
   }
 
@@ -26,6 +27,8 @@ extension NPSubscriber: Model {
       .date(createdAt)
     case .updatedAt:
       .date(updatedAt)
+    case .unsubscribedAt:
+      .date(unsubscribedAt)
     case .email:
       .string(email)
     case .id:
@@ -48,6 +51,7 @@ extension NPSubscriber {
     case email
     case createdAt
     case updatedAt
+    case unsubscribedAt
     case pendingConfirmationToken
     case lang
     case mixedQuotes

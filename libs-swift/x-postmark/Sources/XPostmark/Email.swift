@@ -87,22 +87,22 @@ enum SingleEmail {
     }
 
     do {
-      let decoded = try JSONDecoder().decode(ApiResponse.self, from: data)
-      return .failure(Client.Error(
+      let decoded = try JSONDecoder().decode(SendEmailResponse.self, from: data)
+      return .failure(.init(
         statusCode: urlResponse.statusCode,
         errorCode: decoded.ErrorCode,
         message: decoded.Message
       ))
     } catch {
       let body = String(decoding: data, as: UTF8.self)
-      return .failure(Client.Error(
+      return .failure(.init(
         statusCode: urlResponse.statusCode,
         errorCode: -1,
         message: "Error decoding Postmark response: \(error), body: \(body)"
       ))
     }
   } catch {
-    return .failure(Client.Error(
+    return .failure(.init(
       statusCode: -2,
       errorCode: -2,
       message: "Error sending Postmark email: \(error)"

@@ -150,6 +150,7 @@ env:
   SELF_URL: /not-real
   WEBSITE_URL_EN: /not-real
   WEBSITE_URL_ES: /not-real
+  POSTMARK_WEBHOOK_SLUG: not-real
 
 concurrency:
   group: ${{ github.ref }}-ci-swift

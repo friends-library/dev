@@ -2,7 +2,6 @@ import Fluent
 import Vapor
 
 struct AddOrderFeesColumn: AsyncMigration {
-
   func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: AddOrderFeesColumn UP")
     try await database.schema(Order.M2.tableName)

@@ -7,6 +7,7 @@ extension XPostmark.Client {
     var sendTemplateEmail: @Sendable (XPostmark.TemplateEmail) async -> Void
     var sendTemplateEmailBatch: @Sendable ([XPostmark.TemplateEmail]) async
       -> Result<[MessageError], XPostmark.Client.Error>
+    var deleteSuppression: @Sendable (String, Lang) async -> Result<Void, XPostmark.Client.Error>
   }
 
   struct MessageError: Swift.Error, Sendable {
@@ -86,11 +87,28 @@ extension XPostmark.Client.SlackErrorLogging {
             }
         )
       }
+    },
+    deleteSuppression: { email, lang in
+      let client: XPostmark.Client = .live(apiKey: Env.POSTMARK_API_KEY)
+      switch await client.deleteSuppression(email, "narrow-path-\(lang)") {
+      case .failure(let error):
+        let msg = """
+        **Failed to delete Postmark suppression**
+        Email: \(email)
+        Stream: `narrow-path-\(lang)`
+        Error: `\(JSON.encode(error) ?? "\(String(describing: error))")`
+        """
+        await Current.slackClient.send(.error(msg))
+        return .failure(error)
+      case .success:
+        return .success(())
+      }
     }
   )
   static let mock = Self(
     send: { _ in },
     sendTemplateEmail: { _ in },
-    sendTemplateEmailBatch: { _ in .success([]) }
+    sendTemplateEmailBatch: { _ in .success([]) },
+    deleteSuppression: { _, _ in .success(()) }
   )
 }

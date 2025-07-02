@@ -45,7 +45,7 @@ public struct TemplateEmail: Equatable, Sendable {
     )
     do {
       if urlResponse.statusCode != 200 {
-        let decoded = try JSONDecoder().decode(ApiResponse.self, from: data)
+        let decoded = try JSONDecoder().decode(SendEmailResponse.self, from: data)
         return .failure(Client.Error(
           statusCode: urlResponse.statusCode,
           errorCode: decoded.ErrorCode,
