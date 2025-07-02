@@ -5,6 +5,42 @@ import XExpect
 @testable import App
 
 final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
+  func testUnsubscribeWebhook() async throws {
+    let subscriber = try await Current.db.create(NPSubscriber(
+      token: nil,
+      mixedQuotes: true,
+      email: "bob@\(Int.random)bob.com",
+      lang: .en
+    ))
+    expect(subscriber.unsubscribedAt).toBeNil()
+
+    // https://postmarkapp.com/developer/webhooks/subscription-change-webhook
+    let json = """
+    {
+      "RecordType":"SubscriptionChange",
+      "MessageID": "883953f4-6105-42a2-a16a-77a8eac79483",
+      "ServerID":123456,
+      "MessageStream": "narrow-path-en",
+      "ChangedAt": "2020-02-01T10:53:34.416071Z",
+      "Recipient": "\(subscriber.email)",
+      "Origin": "Recipient",
+      "SuppressSending": true,
+      "SuppressionReason": "ManualSupression",
+      "Tag": "my-tag",
+      "Metadata": {
+         "example": "value",
+         "example_2": "value"
+      }
+    }
+    """
+
+    let path = "postmark/webhook/\(Env.POSTMARK_WEBHOOK_SLUG)"
+    try await app.test(.POST, path, body: .init(string: json), afterResponse: { res in
+      let retrieved = try await Current.db.find(subscriber.id)
+      expect(retrieved.unsubscribedAt).not.toBeNil()
+    })
+  }
+
   func testEnglishSubscribingHappyPath() async throws {
     var quote = NPQuote.mock
     quote.lang = .en

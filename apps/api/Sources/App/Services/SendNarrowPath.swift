@@ -29,7 +29,9 @@ public struct SendNarrowPath: AsyncScheduledJob {
   public func exec() async throws {
     let sentQuotes = try await NPSentQuote.query().all()
     let allQuotes = try await NPQuote.query().all()
-    let subscribers = try await NPSubscriber.query().all()
+    let subscribers = try await NPSubscriber.query()
+      .where(.isNull(.unsubscribedAt))
+      .all()
     let action = self.determineAction(
       sentQuotes: sentQuotes,
       allQuotes: allQuotes,

@@ -19,6 +19,16 @@ public extension Configure {
       use: ConfirmEmailRoute.handler(_:)
     )
 
+    app.post(
+      "postmark", "webhook", .constant(Env.POSTMARK_WEBHOOK_SLUG),
+      use: PostmarkWebhookRoute.handler(_:)
+    )
+
+    app.get(
+      "np-resubscribe", ":id",
+      use: NPResubscribeRoute.handler(_:)
+    )
+
     app.on(
       .POST,
       "pairql", ":domain", ":operation",

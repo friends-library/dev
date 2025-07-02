@@ -80,6 +80,7 @@ extension Vapor.Environment {
 extension Vapor.Environment {
   static let PG_DUMP_PATH = get("PG_DUMP_PATH")!
   static let POSTMARK_API_KEY = get("POSTMARK_API_KEY")!
+  static let POSTMARK_WEBHOOK_SLUG = get("POSTMARK_WEBHOOK_SLUG")!
   static let SLACK_API_TOKEN_WORKSPACE_MAIN = get("SLACK_API_TOKEN_WORKSPACE_MAIN")!
   static let SLACK_API_TOKEN_WORKSPACE_BOT = get("SLACK_API_TOKEN_WORKSPACE_BOT")!
   static let DATABASE_NAME = get("DATABASE_NAME")!

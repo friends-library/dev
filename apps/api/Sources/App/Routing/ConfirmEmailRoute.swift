@@ -44,3 +44,30 @@ enum ConfirmEmailRoute: RouteHandler {
     return .npRedirect(.confirmEmailSuccess, lang)
   }
 }
+
+enum NPResubscribeRoute: RouteHandler {
+  @Sendable static func handler(_ request: Request) async throws -> Response {
+    guard let uuidString = request.parameters.get("id"),
+          let uuid = UUID(uuidString: uuidString) else {
+      return Response(status: .badRequest)
+    }
+
+    guard var subscriber = try? await NPSubscriber.find(NPSubscriber.Id(uuid)) else {
+      return Response(status: .notFound)
+    }
+
+    let result = await Current.postmarkClient.deleteSuppression(subscriber.email, subscriber.lang)
+    switch result {
+    case .failure:
+      return Response(status: .internalServerError)
+    case .success:
+      subscriber.unsubscribedAt = nil
+      try await Current.db.update(subscriber)
+      return .init(
+        status: .ok,
+        headers: ["Content-Type": "text/html"],
+        body: .init(string: "<h1>\(subscriber.lang == .en ? "Success" : "Éxito")</h1>")
+      )
+    }
+  }
+}

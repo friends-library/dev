@@ -6,6 +6,7 @@ struct NPSubscriber: Codable, Sendable {
   var lang: Lang
   var pendingConfirmationToken: UUID?
   var mixedQuotes: Bool
+  var unsubscribedAt: Date? = nil
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
