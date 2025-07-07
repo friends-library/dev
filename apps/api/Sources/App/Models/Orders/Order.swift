@@ -24,6 +24,7 @@ struct Order: Codable, Sendable {
   var addressZip: String
   var addressCountry: String
   var freeOrderRequestId: FreeOrderRequest.Id?
+  var recipientTaxId: String?
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
@@ -60,7 +61,8 @@ struct Order: Codable, Sendable {
     addressState: String,
     addressZip: String,
     addressCountry: String,
-    freeOrderRequestId: FreeOrderRequest.Id? = nil
+    freeOrderRequestId: FreeOrderRequest.Id? = nil,
+    recipientTaxId: String? = nil
   ) {
     self.id = id
     self.printJobId = printJobId
@@ -83,6 +85,7 @@ struct Order: Codable, Sendable {
     self.addressZip = addressZip
     self.addressCountry = addressCountry
     self.freeOrderRequestId = freeOrderRequestId
+    self.recipientTaxId = recipientTaxId
 
     if addressCountry == "US" {
       self.addressState = abbreviate(us: addressState)

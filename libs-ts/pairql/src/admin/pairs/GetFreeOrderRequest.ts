@@ -13,6 +13,7 @@ export namespace GetFreeOrderRequest {
       state: string;
       zip: string;
       country: string;
+      recipientTaxId?: string;
     };
   }
 }

@@ -25,6 +25,7 @@ extension Lulu.Api {
     let stateCode: String
     let postcode: String
     let phoneNumber: String
+    let recipientTaxId: String?
   }
 
   struct PrintJobCostCalculationsBody: Encodable {
@@ -107,14 +108,15 @@ extension Lulu.Api {
 extension ShippingAddress {
   var lulu: Lulu.Api.ShippingAddress {
     .init(
-      name: name,
-      street1: street,
-      street2: street2,
-      countryCode: country,
-      city: city,
-      stateCode: state,
-      postcode: zip,
-      phoneNumber: Env.LULU_PHONE_NUMBER
+      name: self.name,
+      street1: self.street,
+      street2: self.street2,
+      countryCode: self.country,
+      city: self.city,
+      stateCode: self.state,
+      postcode: self.zip,
+      phoneNumber: Env.LULU_PHONE_NUMBER,
+      recipientTaxId: self.recipientTaxId
     )
   }
 }

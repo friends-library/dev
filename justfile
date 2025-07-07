@@ -110,6 +110,12 @@ codegen-swift:
 
 codegen: codegen-ts codegen-swift
 
+hurl-dev *args:
+  @hurl --variables-file apps/api/hurl/dev.env {{args}}
+
+hurl-prod *args:
+  @hurl --variables-file apps/api/hurl/prod.env {{args}}
+
 # helpers
 
 nuke-node-modules: clean

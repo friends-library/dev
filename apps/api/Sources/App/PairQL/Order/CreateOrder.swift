@@ -30,6 +30,7 @@ struct CreateOrder: Pair {
     var addressZip: String
     var addressCountry: String
     var freeOrderRequestId: FreeOrderRequest.Id?
+    var recipientTaxId: String?
     var items: [Item]
   }
 
@@ -90,7 +91,8 @@ extension Order {
       addressState: input.addressState,
       addressZip: input.addressZip,
       addressCountry: input.addressCountry,
-      freeOrderRequestId: input.freeOrderRequestId
+      freeOrderRequestId: input.freeOrderRequestId,
+      recipientTaxId: input.recipientTaxId
     )
   }
 }

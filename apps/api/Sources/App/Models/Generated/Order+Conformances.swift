@@ -53,6 +53,8 @@ extension Order: Model {
       .string(addressCountry)
     case .freeOrderRequestId:
       .uuid(freeOrderRequestId)
+    case .recipientTaxId:
+      .string(recipientTaxId)
     case .createdAt:
       .date(createdAt)
     case .updatedAt:
@@ -86,6 +88,7 @@ extension Order {
     case addressZip
     case addressCountry
     case freeOrderRequestId
+    case recipientTaxId
     case createdAt
     case updatedAt
   }
@@ -115,6 +118,7 @@ extension Order {
       .addressZip: .string(addressZip),
       .addressCountry: .string(addressCountry),
       .freeOrderRequestId: .uuid(freeOrderRequestId),
+      .recipientTaxId: .string(recipientTaxId),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
     ]

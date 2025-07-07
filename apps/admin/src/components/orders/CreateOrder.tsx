@@ -215,6 +215,13 @@ const CreateOrder: React.FC = () => {
           />
           <TextInput
             type="text"
+            label="Tax Recipient ID"
+            optional
+            value={address.recipientTaxId ?? ``}
+            onChange={(newValue) => setAddress({ ...address, recipientTaxId: newValue })}
+          />
+          <TextInput
+            type="text"
             label="Request ID"
             optional
             placeholder="12034482-5410-4db7-a9f3-c12f34565a55"

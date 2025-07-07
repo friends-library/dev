@@ -8,6 +8,7 @@ struct ShippingAddress: Codable, Equatable {
   var state: String
   var zip: String
   var country: String
+  var recipientTaxId: String?
 
   init(
     name: String,
@@ -16,7 +17,8 @@ struct ShippingAddress: Codable, Equatable {
     city: String,
     state: String,
     zip: String,
-    country: String
+    country: String,
+    recipientTaxId: String? = nil
   ) {
     self.name = name
     self.street = street
@@ -25,6 +27,7 @@ struct ShippingAddress: Codable, Equatable {
     self.state = state
     self.zip = zip
     self.country = country
+    self.recipientTaxId = recipientTaxId
 
     if country == "US" {
       self.state = abbreviate(us: state)

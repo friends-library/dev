@@ -32,7 +32,8 @@ extension GetPrintJobExploratoryMetadata: Resolver {
           city: input.address.city,
           state: input.address.state,
           zip: input.address.zip,
-          country: input.address.country
+          country: input.address.country,
+          recipientTaxId: input.address.recipientTaxId
         ),
         email: input.email,
         lang: input.lang
