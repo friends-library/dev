@@ -53,6 +53,7 @@ export async function createOrder(
     addressStreet: address.street,
     addressStreet2: address.street2,
     addressZip: address.zip,
+    recipientTaxId: address.recipientTaxId,
     amount: totalCents,
     shipping,
     taxes,

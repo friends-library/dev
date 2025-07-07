@@ -16,6 +16,7 @@ export interface ShippingAddress {
   state: string;
   zip: string;
   country: string;
+  recipientTaxId?: string;
 }
 
 export type ShippingLevel =

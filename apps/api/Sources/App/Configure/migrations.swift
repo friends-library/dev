@@ -39,5 +39,6 @@ extension Configure {
     app.migrations.add(CreateNativeAppErrors())
     app.migrations.add(NarrowPath())
     app.migrations.add(NarrowPathUnsub())
+    app.migrations.add(OrderRecipientTaxId())
   }
 }

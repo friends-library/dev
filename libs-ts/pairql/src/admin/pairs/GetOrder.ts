@@ -46,6 +46,7 @@ export namespace GetOrder {
       state: string;
       zip: string;
       country: string;
+      recipientTaxId?: string;
     };
     createdAt: ISODateString;
   }

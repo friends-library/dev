@@ -22,6 +22,7 @@ export namespace CreateOrder {
     addressZip: string;
     addressCountry: string;
     freeOrderRequestId?: UUID;
+    recipientTaxId?: string;
     items: Array<{
       editionId: UUID;
       quantity: number;
