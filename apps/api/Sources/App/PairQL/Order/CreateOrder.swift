@@ -86,13 +86,13 @@ extension Order {
       email: input.email,
       addressName: input.addressName,
       addressStreet: input.addressStreet,
-      addressStreet2: input.addressStreet2,
+      addressStreet2: nilIfEmpty(input.addressStreet2),
       addressCity: input.addressCity,
       addressState: input.addressState,
       addressZip: input.addressZip,
       addressCountry: input.addressCountry,
       freeOrderRequestId: input.freeOrderRequestId,
-      recipientTaxId: input.recipientTaxId
+      recipientTaxId: nilIfEmpty(input.recipientTaxId)
     )
   }
 }

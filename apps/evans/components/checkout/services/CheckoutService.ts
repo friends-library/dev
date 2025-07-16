@@ -173,6 +173,7 @@ export default class CheckoutService {
       addressState: this.cart.address.state,
       addressZip: this.cart.address.zip,
       addressCountry: this.cart.address.country,
+      recipientTaxId: this.cart.address.recipientTaxId,
       source: `website`,
       lang: LANG as Lang,
     };

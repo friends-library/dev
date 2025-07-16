@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
-import countries from './countries';
+import { COUNTRIES, TAX_ID_COUNTRIES } from './countries';
 import Input from './Input';
 
 export interface Props {
@@ -21,6 +21,8 @@ export interface Props {
   setCountry(newValue: string): unknown;
   zip: string;
   setZip(newValue: string): unknown;
+  recipientTaxId: string;
+  setRecipientTaxId(newValue: string): unknown;
   autoFocusFirst: boolean;
 }
 
@@ -41,6 +43,8 @@ const ShippingAddress: React.FC<Props> = ({
   setCountry,
   zip,
   setZip,
+  recipientTaxId,
+  setRecipientTaxId,
   autoFocusFirst,
 }) => {
   const [emailBlurred, setEmailBlurred] = useState<boolean>(false);
@@ -50,6 +54,7 @@ const ShippingAddress: React.FC<Props> = ({
   const [stateBlurred, setStateBlurred] = useState<boolean>(false);
   const [zipBlurred, setZipBlurred] = useState<boolean>(false);
   const [countryBlurred, setCountryBlurred] = useState<boolean>(false);
+  const [recipientTaxIdBlurred, setRecipientTaxIdBlurred] = useState<boolean>(false);
   return (
     <>
       <Input
@@ -153,14 +158,44 @@ const ShippingAddress: React.FC<Props> = ({
         <option value="">
           {!countryBlurred || country ? t`Select Country` : t`Select a Country`}
         </option>
-        {(Object.keys(countries) as Array<keyof typeof countries>).map((code) => (
+        {(Object.keys(COUNTRIES) as Array<keyof typeof COUNTRIES>).map((code) => (
           <option key={code} value={code}>
-            {countries[code]}
+            {COUNTRIES[code]}
           </option>
         ))}
       </select>
+      {TAX_ID_COUNTRIES.includes(country) && (
+        <Input
+          wrapClassName="order-last"
+          invalidMsg={t`${recipientTaxIdName(country)} is required`}
+          valid={!recipientTaxIdBlurred || recipientTaxId.trim().length > 0}
+          onChange={(val) => setRecipientTaxId(val)}
+          onFocus={() => setRecipientTaxIdBlurred(false)}
+          onBlur={() => setRecipientTaxIdBlurred(true)}
+          value={recipientTaxId}
+          placeholder={recipientTaxIdName(country)}
+          name="recipientTaxId"
+        />
+      )}
     </>
   );
 };
+
+function recipientTaxIdName(country: string): string {
+  switch (country) {
+    case `BR`:
+      return `CPF`;
+    case `CL`:
+      return `RUT/RUN`;
+    case `MX`:
+      return `RFC`;
+    case `PE`:
+      return `RUC`;
+    case `AR`:
+      return `CUIT`;
+    default:
+      return ``;
+  }
+}
 
 export default ShippingAddress;

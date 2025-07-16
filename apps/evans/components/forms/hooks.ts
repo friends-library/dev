@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { AddressWithEmail } from '@/lib/types';
 import type { Props as AddressProps } from './ShippingAddress';
+import { TAX_ID_COUNTRIES } from './countries';
 
 export function useAddress(
   initial: Partial<AddressWithEmail>,
@@ -17,6 +18,9 @@ export function useAddress(
   const [state, setState] = useState<string>(initial.state || ``);
   const [zip, setZip] = useState<string>(initial.zip || ``);
   const [country, setCountry] = useState<string>(initial.country || ``);
+  const [recipientTaxId, setRecipientTaxId] = useState<string>(
+    initial.recipientTaxId || ``,
+  );
   return [
     {
       email,
@@ -35,6 +39,8 @@ export function useAddress(
       setZip,
       country,
       setCountry,
+      recipientTaxId,
+      setRecipientTaxId,
     },
     {
       email,
@@ -45,6 +51,7 @@ export function useAddress(
       state,
       zip,
       country,
+      recipientTaxId,
     },
     !!(
       name.trim().length > 0 &&
@@ -55,7 +62,8 @@ export function useAddress(
       state.trim().length > 0 &&
       zip.trim().length > 0 &&
       country.trim().length > 0 &&
-      email.includes(`@`)
+      email.includes(`@`) &&
+      (!TAX_ID_COUNTRIES.includes(country) || recipientTaxId.trim().length > 0)
     ),
   ];
 }

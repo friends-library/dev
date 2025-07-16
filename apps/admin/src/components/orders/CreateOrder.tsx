@@ -15,7 +15,7 @@ import EmptyWell from '../EmptyWell';
 import PillButton from '../PillButton';
 import TextInput from '../TextInput';
 import LabeledSelect from '../LabeledSelect';
-import COUNTRIES from '../../lib/countries';
+import { COUNTRIES, TAX_ID_COUNTRIES } from '../../lib/countries';
 import * as price from '../../lib/price';
 import Button from '../Button';
 import InfoMessage from '../InfoMessage';
@@ -213,7 +213,7 @@ const CreateOrder: React.FC = () => {
             setSelected={(newValue) => setAddress({ ...address, country: newValue })}
             options={countries}
           />
-          {TAX_ID_REQUIRED_COUNTRIES.includes(address.country) && (
+          {TAX_ID_COUNTRIES.includes(address.country) && (
             <TextInput
               type="text"
               label="Tax Recipient ID"
@@ -310,14 +310,13 @@ const CreateOrder: React.FC = () => {
 export default CreateOrder;
 
 const countries = Object.entries(COUNTRIES);
-const TAX_ID_REQUIRED_COUNTRIES = [`BR`, `CL`, `MX`, `PE`, `AR`];
 
 function addressValid(address: OrderAddress, email: string): boolean {
   if (email.length < 4 || !email.includes(`@`)) {
     return false;
   }
 
-  if (TAX_ID_REQUIRED_COUNTRIES.includes(address.country)) {
+  if (TAX_ID_COUNTRIES.includes(address.country)) {
     if (!address.recipientTaxId || address.recipientTaxId.length < 1) {
       return false;
     }

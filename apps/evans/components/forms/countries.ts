@@ -1,4 +1,4 @@
-const COUNTRIES = {
+export const COUNTRIES = {
   US: `United States`,
   GB: `United Kingdom`,
   AF: `Afghanistan`,
@@ -249,4 +249,4 @@ const COUNTRIES = {
   ZW: `Zimbabwe`,
 } as const;
 
-export default COUNTRIES;
+export const TAX_ID_COUNTRIES = [`BR`, `CL`, `MX`, `PE`, `AR`];
