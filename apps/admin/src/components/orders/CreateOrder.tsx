@@ -213,13 +213,19 @@ const CreateOrder: React.FC = () => {
             setSelected={(newValue) => setAddress({ ...address, country: newValue })}
             options={countries}
           />
-          <TextInput
-            type="text"
-            label="Tax Recipient ID"
-            optional
-            value={address.recipientTaxId ?? ``}
-            onChange={(newValue) => setAddress({ ...address, recipientTaxId: newValue })}
-          />
+          {TAX_ID_REQUIRED_COUNTRIES.includes(address.country) && (
+            <TextInput
+              type="text"
+              label="Tax Recipient ID"
+              value={address.recipientTaxId ?? ``}
+              isValid={(val) => (val?.trim().length ?? 0) > 0}
+              invalidMessage="Required for Brazil, Chile, Mexico, Peru, and Argentina"
+              onChange={(newValue) =>
+                setAddress({ ...address, recipientTaxId: newValue })
+              }
+              placeholder={recipientTaxIdTypeHint(address.country)}
+            />
+          )}
           <TextInput
             type="text"
             label="Request ID"
@@ -304,10 +310,17 @@ const CreateOrder: React.FC = () => {
 export default CreateOrder;
 
 const countries = Object.entries(COUNTRIES);
+const TAX_ID_REQUIRED_COUNTRIES = [`BR`, `CL`, `MX`, `PE`, `AR`];
 
 function addressValid(address: OrderAddress, email: string): boolean {
   if (email.length < 4 || !email.includes(`@`)) {
     return false;
+  }
+
+  if (TAX_ID_REQUIRED_COUNTRIES.includes(address.country)) {
+    if (!address.recipientTaxId || address.recipientTaxId.length < 1) {
+      return false;
+    }
   }
 
   for (const [key, value] of Object.entries(address)) {
@@ -328,6 +341,8 @@ function addressValid(address: OrderAddress, email: string): boolean {
         if (trimmed !== undefined && trimmed !== `` && (length < 2 || length > 30)) {
           return false;
         }
+        break;
+      case `recipientTaxId`:
         break;
       default:
         if (length < 2) {
@@ -360,6 +375,23 @@ function emptyAddress(): T.ShippingAddress {
     zip: ``,
     country: `US`,
   };
+}
+
+function recipientTaxIdTypeHint(country: string): string {
+  switch (country) {
+    case `BR`:
+      return `CPF`;
+    case `CL`:
+      return `RUT/RUN`;
+    case `MX`:
+      return `RFC`;
+    case `PE`:
+      return `RUC`;
+    case `AR`:
+      return `CUIT`;
+    default:
+      return ``;
+  }
 }
 
 const Constrained: React.FC<{ to: string; children: React.ReactNode }> = ({

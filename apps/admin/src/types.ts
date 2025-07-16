@@ -100,4 +100,5 @@ export interface OrderAddress {
   state: string;
   zip: string;
   country: string;
+  recipientTaxId?: string | null;
 }
