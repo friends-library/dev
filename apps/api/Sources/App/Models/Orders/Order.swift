@@ -36,7 +36,8 @@ struct Order: Codable, Sendable {
       city: self.addressCity,
       state: self.addressState,
       zip: self.addressZip,
-      country: self.addressCountry
+      country: self.addressCountry,
+      recipientTaxId: self.recipientTaxId
     )
   }
 
