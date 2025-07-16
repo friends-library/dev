@@ -9,13 +9,13 @@ import {
   CloudUploadIcon,
 } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
+import { COUNTRIES, TAX_ID_COUNTRIES, recipientTaxIdType } from '@friends-library/lulu';
 import type { OrderAddress, OrderItem } from '../../types';
 import type { SelectableEdition } from './SelectBook';
 import EmptyWell from '../EmptyWell';
 import PillButton from '../PillButton';
 import TextInput from '../TextInput';
 import LabeledSelect from '../LabeledSelect';
-import COUNTRIES from '../../lib/countries';
 import * as price from '../../lib/price';
 import Button from '../Button';
 import InfoMessage from '../InfoMessage';
@@ -213,13 +213,19 @@ const CreateOrder: React.FC = () => {
             setSelected={(newValue) => setAddress({ ...address, country: newValue })}
             options={countries}
           />
-          <TextInput
-            type="text"
-            label="Tax Recipient ID"
-            optional
-            value={address.recipientTaxId ?? ``}
-            onChange={(newValue) => setAddress({ ...address, recipientTaxId: newValue })}
-          />
+          {TAX_ID_COUNTRIES.includes(address.country) && (
+            <TextInput
+              type="text"
+              label="Recipient Tax ID"
+              value={address.recipientTaxId ?? ``}
+              isValid={(val) => (val?.trim().length ?? 0) > 0}
+              invalidMessage="Required for Brazil, Chile, Mexico, Peru, and Argentina"
+              onChange={(newValue) =>
+                setAddress({ ...address, recipientTaxId: newValue })
+              }
+              placeholder={recipientTaxIdType(address.country)}
+            />
+          )}
           <TextInput
             type="text"
             label="Request ID"
@@ -310,6 +316,12 @@ function addressValid(address: OrderAddress, email: string): boolean {
     return false;
   }
 
+  if (TAX_ID_COUNTRIES.includes(address.country)) {
+    if (!address.recipientTaxId || address.recipientTaxId.length < 1) {
+      return false;
+    }
+  }
+
   for (const [key, value] of Object.entries(address)) {
     const trimmed = (value as string | undefined)?.trim();
     const length = trimmed?.length || 0;
@@ -328,6 +340,8 @@ function addressValid(address: OrderAddress, email: string): boolean {
         if (trimmed !== undefined && trimmed !== `` && (length < 2 || length > 30)) {
           return false;
         }
+        break;
+      case `recipientTaxId`:
         break;
       default:
         if (length < 2) {

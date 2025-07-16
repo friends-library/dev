@@ -1,4 +1,4 @@
-const COUNTRIES = {
+export const COUNTRIES = {
   US: `United States`,
   GB: `United Kingdom`,
   AF: `Afghanistan`,
@@ -249,4 +249,21 @@ const COUNTRIES = {
   ZW: `Zimbabwe`,
 } as const;
 
-export default COUNTRIES;
+export const TAX_ID_COUNTRIES = [`BR`, `CL`, `MX`, `PE`, `AR`];
+
+export function recipientTaxIdType(country: string): string {
+  switch (country) {
+    case `BR`:
+      return `CPF`;
+    case `CL`:
+      return `RUT/RUN`;
+    case `MX`:
+      return `RFC`;
+    case `PE`:
+      return `RUC`;
+    case `AR`:
+      return `CUIT`;
+    default:
+      return ``;
+  }
+}

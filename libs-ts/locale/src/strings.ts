@@ -185,6 +185,7 @@ const strings: { [k: string]: string } = {
   'Email is required': `Se requiere tu correo electrónico `,
   'Valid email is required': `Se requiere tu correo electrónico `,
   'ZIP / Postal Code is required': `Se requiere tu código postal `,
+  '%s is required': `Se requiere tu %s`,
   'Select a Country': `Selecciona tu país`,
   Subtotal: `Subtotal`,
   Shipping: `Envío`,
