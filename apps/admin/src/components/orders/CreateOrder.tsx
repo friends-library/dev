@@ -9,13 +9,13 @@ import {
   CloudUploadIcon,
 } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
+import { COUNTRIES, TAX_ID_COUNTRIES, recipientTaxIdType } from '@friends-library/lulu';
 import type { OrderAddress, OrderItem } from '../../types';
 import type { SelectableEdition } from './SelectBook';
 import EmptyWell from '../EmptyWell';
 import PillButton from '../PillButton';
 import TextInput from '../TextInput';
 import LabeledSelect from '../LabeledSelect';
-import { COUNTRIES, TAX_ID_COUNTRIES } from '../../lib/countries';
 import * as price from '../../lib/price';
 import Button from '../Button';
 import InfoMessage from '../InfoMessage';
@@ -216,14 +216,14 @@ const CreateOrder: React.FC = () => {
           {TAX_ID_COUNTRIES.includes(address.country) && (
             <TextInput
               type="text"
-              label="Tax Recipient ID"
+              label="Recipient Tax ID"
               value={address.recipientTaxId ?? ``}
               isValid={(val) => (val?.trim().length ?? 0) > 0}
               invalidMessage="Required for Brazil, Chile, Mexico, Peru, and Argentina"
               onChange={(newValue) =>
                 setAddress({ ...address, recipientTaxId: newValue })
               }
-              placeholder={recipientTaxIdTypeHint(address.country)}
+              placeholder={recipientTaxIdType(address.country)}
             />
           )}
           <TextInput
@@ -374,23 +374,6 @@ function emptyAddress(): T.ShippingAddress {
     zip: ``,
     country: `US`,
   };
-}
-
-function recipientTaxIdTypeHint(country: string): string {
-  switch (country) {
-    case `BR`:
-      return `CPF`;
-    case `CL`:
-      return `RUT/RUN`;
-    case `MX`:
-      return `RFC`;
-    case `PE`:
-      return `RUC`;
-    case `AR`:
-      return `CUIT`;
-    default:
-      return ``;
-  }
 }
 
 const Constrained: React.FC<{ to: string; children: React.ReactNode }> = ({

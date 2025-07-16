@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { TAX_ID_COUNTRIES } from '@friends-library/lulu';
 import type { AddressWithEmail } from '@/lib/types';
 import type { Props as AddressProps } from './ShippingAddress';
-import { TAX_ID_COUNTRIES } from './countries';
 
 export function useAddress(
   initial: Partial<AddressWithEmail>,

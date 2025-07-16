@@ -2,6 +2,7 @@ import type { PrintSize } from '@friends-library/types';
 import type { PrintSizeDetails } from './types';
 
 export type { PrintSizeDetails };
+export { COUNTRIES, TAX_ID_COUNTRIES, recipientTaxIdType } from './countries';
 
 const defaultMargins = {
   top: 0.85,

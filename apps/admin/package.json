@@ -33,6 +33,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@friends-library/lulu": "workspace:*",
     "@friends-library/theme": "workspace:*",
     "@friends-library/types": "workspace:*",
     "@htc-class/storylite": "^2.0.0",

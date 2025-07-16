@@ -250,3 +250,20 @@ export const COUNTRIES = {
 } as const;
 
 export const TAX_ID_COUNTRIES = [`BR`, `CL`, `MX`, `PE`, `AR`];
+
+export function recipientTaxIdType(country: string): string {
+  switch (country) {
+    case `BR`:
+      return `CPF`;
+    case `CL`:
+      return `RUT/RUN`;
+    case `MX`:
+      return `RFC`;
+    case `PE`:
+      return `RUC`;
+    case `AR`:
+      return `CUIT`;
+    default:
+      return ``;
+  }
+}

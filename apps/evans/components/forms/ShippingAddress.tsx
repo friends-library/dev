@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
-import { COUNTRIES, TAX_ID_COUNTRIES } from './countries';
+import { COUNTRIES, TAX_ID_COUNTRIES, recipientTaxIdType } from '@friends-library/lulu';
 import Input from './Input';
 
 export interface Props {
@@ -167,35 +167,18 @@ const ShippingAddress: React.FC<Props> = ({
       {TAX_ID_COUNTRIES.includes(country) && (
         <Input
           wrapClassName="order-last"
-          invalidMsg={t`${recipientTaxIdName(country)} is required`}
+          invalidMsg={t`${recipientTaxIdType(country)} is required`}
           valid={!recipientTaxIdBlurred || recipientTaxId.trim().length > 0}
           onChange={(val) => setRecipientTaxId(val)}
           onFocus={() => setRecipientTaxIdBlurred(false)}
           onBlur={() => setRecipientTaxIdBlurred(true)}
           value={recipientTaxId}
-          placeholder={recipientTaxIdName(country)}
+          placeholder={recipientTaxIdType(country)}
           name="recipientTaxId"
         />
       )}
     </>
   );
 };
-
-function recipientTaxIdName(country: string): string {
-  switch (country) {
-    case `BR`:
-      return `CPF`;
-    case `CL`:
-      return `RUT/RUN`;
-    case `MX`:
-      return `RFC`;
-    case `PE`:
-      return `RUC`;
-    case `AR`:
-      return `CUIT`;
-    default:
-      return ``;
-  }
-}
 
 export default ShippingAddress;
