@@ -108,6 +108,11 @@ android {
         versionName "{BUILD_SEMVER_STRING}"
     }
 
+    buildFeatures {
+        // from sdk 35 work...
+        buildConfig true
+    }
+
     splits {
         abi {
             reset()
