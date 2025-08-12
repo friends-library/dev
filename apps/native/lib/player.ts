@@ -95,12 +95,12 @@ class Player {
 
     RNTrackPlayer.updateOptions({
       android: {
-        appKilledPlaybackBehavior: AppKilledPlaybackBehavior.PausePlayback,
+        appKilledPlaybackBehavior: AppKilledPlaybackBehavior.ContinuePlayback,
+        alwaysPauseOnInterruption: true,
       },
       progressUpdateEventInterval: 1,
       forwardJumpInterval: 30,
       backwardJumpInterval: 15,
-      alwaysPauseOnInterruption: true,
       capabilities: [
         Capability.Play,
         Capability.Pause,

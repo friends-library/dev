@@ -1,3 +1,10 @@
+## releases
+
+- build 33/2.2.10 (android) released 8/21/25, google sdk bump requirement
+  - build nums 29-31 were burned in internal testing
+  - recorded an audio for future me, search email for `flp android bump`
+- build 28/2.2.5 (android) released probably aug 2024, for same reason
+
 ## pnpm/monorepo hacks
 
 - I had to install `@babel/runtime` in the monorepo _root_ in order to get the importing
