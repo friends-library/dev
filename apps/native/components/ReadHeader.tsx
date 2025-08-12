@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dimensions, View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback } from '@friends-library/react-native-gesture-handler';
 import type { StackHeaderProps } from '@react-navigation/stack';
 import tw from '../lib/tailwind';
 import { useDispatch, useSelector } from '../state';

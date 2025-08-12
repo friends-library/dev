@@ -6,8 +6,8 @@ import RNTrackPlayer, {
   IOSCategoryOptions,
   PitchAlgorithm,
   State,
-} from 'react-native-track-player';
-import type { Event } from 'react-native-track-player';
+} from '@friends-library/react-native-track-player';
+import type { Event } from '@friends-library/react-native-track-player';
 import type { EmitterSubscription } from 'react-native/types';
 import type { TrackData, PlayerState } from '../types';
 import type { Dispatch } from '../state';

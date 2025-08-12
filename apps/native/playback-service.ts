@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { Event } from 'react-native-track-player';
+import { Event } from '@friends-library/react-native-track-player';
 import Player from './lib/player';
 import { setCurrentTrackPosition } from './state/audio/track-position';
 import { maybeDownloadNextQueuedTrack } from './state/audio/filesystem';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, useWindowDimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from '@friends-library/react-native-gesture-handler';
 import { t } from '@friends-library/locale';
 import type { EbookColorScheme } from '../types';
 import tw from '../lib/tailwind';

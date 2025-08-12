@@ -1,2 +1,2 @@
-const mockedModule = jest.mock(`react-native-track-player`);
+const mockedModule = jest.mock(`@friends-library/react-native-track-player`);
 module.exports = mockedModule;
