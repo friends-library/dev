@@ -44,7 +44,7 @@
     "react-native-screens": "3.35.0",
     "react-native-scrubber": "1.1.5",
     "react-native-splash-screen": "github:jaredh159/react-native-splash-screen#ff157686d18d201ab8399be8b933e4f886d234b9",
-    "react-native-track-player": "github:jaredh159/react-native-track-player#c1092e0097c81c29bdce9bfc04fff02bb7f7602b",
+    "react-native-track-player": "github:jaredh159/react-native-track-player#99369677757a6740e06775f4a5ba58d923022dba",
     "react-native-vector-icons": "github:jaredh159/react-native-vector-icons#311ede8830d34513e245bd5f5af6aecd49219619",
     "react-native-webview": "13.6.4",
     "react-redux": "7.2.1",
