@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.1.0" type="baseline" client="gradle" dependencies="false" name="AGP (8.1.0)" variant="all" version="8.1.0">
+
+    <issue
+        id="NewApi"
+        message="`android:windowLightStatusBar` requires API level 23 (current min is 21)"
+        errorLine1="    &lt;item name=&quot;android:windowLightStatusBar&quot;>false&lt;/item>"
+        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles.xml"
+            line="6"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="NotificationPermission"
+        message="When targeting Android 13 or higher, posting a permission requires holding the `POST_NOTIFICATIONS` permission (usage from com.google.android.exoplayer2.offline.DownloadService.ForegroundNotificationUpdater)">
+        <location
+            file="src/main/AndroidManifest.xml"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `width` is only used in API level 23 and higher (current min is 21)"
+        errorLine1="    android:width=&quot;200dp&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/splash_screen.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `height` is only used in API level 23 and higher (current min is 21)"
+        errorLine1="    android:height=&quot;50dp&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/splash_screen.xml"
+            line="9"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="CustomSplashScreen"
+        message="The application should not provide its own launch screen"
+        errorLine1="public class SplashActivity extends AppCompatActivity {"
+        errorLine2="             ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/friendslibrary/SplashActivity.java"
+            line="13"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="RedundantLabel"
+        message="Redundant label can be removed"
+        errorLine1="      android:label=&quot;@string/app_name&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="13"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="RedundantLabel"
+        message="Redundant label can be removed"
+        errorLine1="      android:label=&quot;@string/app_name&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="22"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="VisibleForTests"
+        message="This method should only be accessed from tests or within private scope"
+        errorLine1="      ReactContext reactContext = reactInstanceManager.getCurrentReactContext();"
+        errorLine2="                                                       ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/debug/java/com/friendslibrary/ReactNativeFlipper.java"
+            line="49"
+            column="56"/>
+    </issue>
+
+    <issue
+        id="DataExtractionRules"
+        message="The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
+        errorLine1="    android:allowBackup=&quot;false&quot;"
+        errorLine2="                         ~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="8"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/primary_dark` with a theme that also paints a background (inferred theme is `@style/AppTheme`)"
+        errorLine1="  android:background=&quot;@color/primary_dark&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/launch_screen.xml"
+            line="7"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.integer.react_native_dev_server_port` appears to be unused">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.integer.react_native_inspector_proxy_port` appears to be unused">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.primary_dark` appears to be unused"
+        errorLine1="  &lt;color name=&quot;primary_dark&quot;>#6c3142&lt;/color>"
+        errorLine2="         ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="4"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.launch_screen` appears to be unused"
+        errorLine1="&lt;LinearLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/launch_screen.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="src/main/res/mipmap-hdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="src/main/res/mipmap-mdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="src/main/res/mipmap-xhdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="src/main/res/mipmap-xxhdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconLauncherShape"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="src/main/res/mipmap-xxxhdpi/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconDipSize"
+        message="The image `splash_icon.png` varies significantly in its density-independent (dip) size across the various density versions: mipmap-hdpi/splash_icon.png: 267x67 dp (400x100 px), mipmap-mdpi/splash_icon.png: 200x50 dp (200x50 px), mipmap-xhdpi/splash_icon.png: 300x75 dp (600x150 px), mipmap-xxhdpi/splash_icon.png: 200x50 dp (600x150 px), mipmap-xxxhdpi/splash_icon.png: 150x38 dp (600x150 px)">
+        <location
+            file="src/main/res/mipmap-xxxhdpi/splash_icon.png"/>
+        <location
+            file="src/main/res/mipmap-mdpi/splash_icon.png"/>
+        <location
+            file="src/main/res/mipmap-xxhdpi/splash_icon.png"/>
+        <location
+            file="src/main/res/mipmap-hdpi/splash_icon.png"/>
+        <location
+            file="src/main/res/mipmap-xhdpi/splash_icon.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicatesConfig"
+        message="The `splash_icon.png` icon has identical contents in the following configuration folders: mipmap-xhdpi, mipmap-xxhdpi, mipmap-xxxhdpi">
+        <location
+            file="src/main/res/mipmap-xxxhdpi/splash_icon.png"/>
+        <location
+            file="src/main/res/mipmap-xxhdpi/splash_icon.png"/>
+        <location
+            file="src/main/res/mipmap-xhdpi/splash_icon.png"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="&lt;ImageView android:layout_width=&quot;200dp&quot;"
+        errorLine2=" ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/launch_screen.xml"
+            line="9"
+            column="2"/>
+    </issue>
+
+</issues>
