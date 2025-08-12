@@ -145,7 +145,7 @@
     "preset": "react-native",
     "testRegex": "__tests__/.*spec\\.ts$",
     "transformIgnorePatterns": [
-      "node_modules/(?!(?:.pnpm/)?(@react-native|react-native))"
+      "node_modules/(?!(?:.pnpm/)?(@react-native|react-native|@friends-library.react-native-track-player|@friends-library.react-native-gesture-handler))"
     ]
   }
 }
