@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { LONG_LOREM, SHORT_LOREM, props } from './helpers';
 import FeaturedQuoteBlock from '@/app/(friend)/FeaturedQuoteBlock';
 

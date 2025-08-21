@@ -1,7 +1,7 @@
 import React from 'react';
 import { RequestFreeBooks } from '@evans/forms/RequestFreeBooks';
 import { useAddress } from '@evans/forms/hooks';
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/nextjs';
 
 export default {
   title: 'Misc/RequestFreeBooks', // eslint-disable-line

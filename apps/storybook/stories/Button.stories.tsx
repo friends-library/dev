@@ -1,6 +1,6 @@
 import Button from '@evans/core/Button';
 import type { ComponentProps } from 'react';
-import type { Meta, StoryFn } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/nextjs';
 
 const meta = {
   title: 'Core/Button', // eslint-disable-line

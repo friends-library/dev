@@ -6,7 +6,7 @@ import CheckoutService from '@evans/checkout/services/CheckoutService';
 import CheckoutFlow from '@evans/checkout/Flow';
 import { cartPlusData, cart } from '@evans/checkout/models/__tests__/fixtures';
 import type Cart from '@evans/checkout/models/Cart';
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/nextjs';
 import MockCheckoutApi from './MockCheckoutApi';
 
 export default {
