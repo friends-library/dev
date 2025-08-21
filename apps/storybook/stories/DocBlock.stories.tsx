@@ -1,5 +1,5 @@
 import WebCoverStyles from 'decorators/CoverStyles';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { MEDIUM_LOREM, props } from './helpers';
 import DocBlock from '@/app/[friend_slug]/[document_slug]/DocBlock';
 

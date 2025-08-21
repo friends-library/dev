@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { props } from './helpers';
 import DownloadWizard from '@/app/[friend_slug]/[document_slug]/DownloadWizard';
 

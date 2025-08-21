@@ -8,7 +8,7 @@ import EmptyCart from '@evans/checkout/EmptyCart';
 import UnrecoverableError from '@evans/checkout/UnrecoverableError';
 import Progress from '@evans/checkout/Progress';
 import Confirmation from '@evans/checkout/Confirmation';
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/nextjs';
 
 export default {
   title: 'Checkout/Components', // eslint-disable-line

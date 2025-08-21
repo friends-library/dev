@@ -6,7 +6,7 @@ import CartItemComponent from '@evans/checkout/cart/Item';
 import { cartItemsData, cartItemData3 } from '@evans/checkout/models/__tests__/fixtures';
 import CartItemModel from '@evans/checkout/models/CartItem';
 import type { CartItemData } from '@evans/checkout/models/CartItem';
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/nextjs';
 
 export default {
   title: 'Checkout/Cart', // eslint-disable-line

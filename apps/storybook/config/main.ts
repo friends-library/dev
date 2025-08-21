@@ -6,11 +6,11 @@ const config: StorybookConfig = {
     NEXT_PUBLIC_TEST_STRIPE_PUBLISHABLE_KEY: `pk_test_51H`,
     NEXT_PUBLIC_TURNSTILE_SITE_KEY: `not-real`,
   },
+
   stories: [`../stories/**/*.stories.tsx`],
   addons: [`@storybook/addon-essentials`],
   framework: `@storybook/nextjs`,
   typescript: { reactDocgen: false },
-  docs: { autodocs: false },
 };
 
 export default config;

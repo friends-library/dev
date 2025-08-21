@@ -1,5 +1,5 @@
 import BookteaserCard from '@evans/core/BookTeaserCard';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import WebCoverStyles from '../decorators/CoverStyles';
 import { SHORT_LOREM, props } from './helpers';
 

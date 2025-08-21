@@ -1,5 +1,5 @@
 import NotFoundHeroBlock from '@evans/404/NotFoundHeroBlock';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { props } from './helpers';
 
 const meta = {
