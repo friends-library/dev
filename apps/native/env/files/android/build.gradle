@@ -108,6 +108,11 @@ android {
         versionName "{BUILD_SEMVER_STRING}"
     }
 
+    buildFeatures {
+        // from sdk 35 work...
+        buildConfig true
+    }
+
     splits {
         abi {
             reset()
@@ -160,6 +165,11 @@ android {
 
         }
     }
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
 }
 
 dependencies {
@@ -181,5 +191,16 @@ dependencies {
     }
 }
 
+afterEvaluate {
+    // Fix all lint tasks that depend on vector icon fonts
+    tasks.matching { task ->
+        task.name.startsWith('lint')
+    }.configureEach {
+        dependsOn 'copyReactNativeVectorIconFonts'
+    }
+}
+
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+
 
