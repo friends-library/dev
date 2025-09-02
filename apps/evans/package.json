@@ -5,6 +5,8 @@
   "packageManager": "pnpm@10.15.0",
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest . -- watch",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just ../../prettier",
