@@ -27,10 +27,7 @@ export const MdxH2: HtmlComponent<HTMLHeadingElement> = (props) => (
 );
 
 export const MdxP: HtmlComponent<HTMLParagraphElement> = (props) => (
-  <p
-    className="mb-6 pb-1 last:mb-0 last:pb-0 text-base sm:text-lg leading-loose"
-    {...props}
-  >
+  <p className="mb-6 pb-1 last:mb-0 last:pb-0 text-lg/8 sm:text-xl/8" {...props}>
     {props.children}
   </p>
 );
@@ -64,10 +61,7 @@ export const MdxBlockquote: HtmlComponent<HTMLQuoteElement> = (props) => (
 
 export const MdxUl: HtmlComponent<HTMLUListElement> = (props) => (
   <ul
-    className={cx(
-      `diamonds leading-normal bg-flgray-100 text-base sm:text-lg`,
-      `py-4 px-16 mb-8`,
-    )}
+    className={cx(`diamonds bg-flgray-100 text-lg sm:text-xl`, `py-4 px-16 mb-8`)}
     {...props}
   >
     {props.children}
@@ -77,7 +71,7 @@ export const MdxUl: HtmlComponent<HTMLUListElement> = (props) => (
 export const MdxLead: (p: { children: React.ReactNode }) => React.JSX.Element = ({
   children,
 }) => (
-  <div className="text-xl pb-4 pt-2 leading-relaxed sm:!text-2xl sm:!leading-relaxed [&>p]:text-xl [&>p]:pb-4 [&>p]:pt-2 [&>p]:leading-relaxed [&>p]:sm:!text-2xl [&_a]:text-flprimary [&_a]:border-b-2 [&_a]:border-flprimary [&_a]:pb-0.5 [&_a:hover]:pb-0 [&_a]:transition-[padding-bottom] duration-200">
+  <div className="text-2xl/10 pb-4 pt-2 [&>p]:text-2xl/8 [&>p]:pb-4 [&>p]:pt-2 [&>p]:!text-2xl/10 [&_a]:text-flprimary [&_a]:border-b-2 [&_a]:border-flprimary [&_a]:pb-0.5 [&_a:hover]:pb-0 [&_a]:transition-[padding-bottom] duration-200">
     {children}
   </div>
 );
