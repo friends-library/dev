@@ -88,6 +88,7 @@ jobs:
 
 env:
   DOCS_REPOS_ROOT: /
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: not-real
 
 concurrency:
   group: ${{ github.ref }}-ci-typescript

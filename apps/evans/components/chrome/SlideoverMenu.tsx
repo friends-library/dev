@@ -47,6 +47,7 @@ const SlideoverMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           links={[
             [t`/quakers`, t`About the Quakers`],
             [`/what-early-quakers-believed`, `Early Quaker Beliefs`, `en`],
+            [`/quakers-today`, `Quakers Today?`, `en`],
             [`/modernization`, `About Modernization`, `en`],
             [`/editions`, `About Book Editions`, `en`],
             [`/spanish-translations`, `About Spanish Books`, `en`],

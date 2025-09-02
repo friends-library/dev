@@ -11,7 +11,7 @@ extension NPSubscriber: ApiModel {
       .mixedQuotes: .bool(mixedQuotes),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
-      .unsubscribedAt: .date(unsubscribedAt)
+      .unsubscribedAt: .date(unsubscribedAt),
     ]
   }
 
