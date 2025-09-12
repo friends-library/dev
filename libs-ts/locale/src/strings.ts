@@ -35,6 +35,7 @@ const strings: { [k: string]: string } = {
   'All Friends': `Todos los Amigos`,
   'About the Quakers': `Acerca de los Cuáqueros`,
   'About this Site': `Acerca de este sitio`,
+  'Quakers Today?': `¿Cuáqueros hoy en día?`,
   'Audio Help': `Ayuda para Audio`,
   'E-Book Help': `Ayuda para Libro Electrónico`,
   'Contact Us': `Contáctanos`,
@@ -120,6 +121,8 @@ const strings: { [k: string]: string } = {
   '/compilations': `/compilaciones`,
   '/friends': `/amigos`,
   '/quakers': `/cuaqueros`,
+  '/quakers-today': `/cuaqeros-hoy-en-dia`,
+
   '/about': `/acerca-de-este-sitio`,
   '/audio-help': `/audio-ayuda`,
   '/ebook-help': `/ebook-ayuda`,
