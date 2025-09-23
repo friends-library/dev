@@ -37,7 +37,11 @@ export function halfTitle(dpc: DocPrecursor, volIdx?: number): string {
   let markup = `<h1>${prettyTitle}</h1>`;
 
   if (name === `Gerhard Tersteegen`) {
-    markup = `${markup}\n<p class="byline">Editado por Samuel Jackson</p>`;
+    if (lang === `es`) {
+      markup = `${markup}\n<p class="byline">Editado por Samuel Jackson</p>`;
+    } else {
+      markup = `${markup}\n<p class="byline">Edited by Samuel Jackson</p>`;
+    }
     return markup;
   }
 
