@@ -11,7 +11,18 @@ import com.facebook.react.defaults.DefaultReactActivityDelegate;
 import android.content.Intent;
 import android.content.res.Configuration;
 
+// jared added, 9/25, fix restore state crash
+// @see: https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067
+import android.os.Bundle;
+
 public class MainActivity extends ReactActivity {
+
+  // jared added, 9/25, fix restore state crash
+  // @see: https://github.com/software-mansion/react-native-screens/issues/17#issuecomment-424704067
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(null);
+  }
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule

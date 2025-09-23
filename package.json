@@ -28,5 +28,10 @@
     "ts-node": "10.9.1",
     "typescript": "5.5.2",
     "vitest": "0.28.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "react-native-gesture-handler": "npm:@friends-library/react-native-gesture-handler"
+    }
   }
 }
