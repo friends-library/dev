@@ -36,6 +36,7 @@ const strings: { [k: string]: string } = {
   'About the Quakers': `Acerca de los Cuáqueros`,
   'About this Site': `Acerca de este sitio`,
   'Quakers Today?': `¿Cuáqueros hoy en día?`,
+  'Early Quaker Beliefs': `Creencias de los Cuáqueros`,
   'Audio Help': `Ayuda para Audio`,
   'E-Book Help': `Ayuda para Libro Electrónico`,
   'Contact Us': `Contáctanos`,
@@ -122,6 +123,7 @@ const strings: { [k: string]: string } = {
   '/friends': `/amigos`,
   '/quakers': `/cuaqueros`,
   '/quakers-today': `/cuaqeros-hoy-en-dia`,
+  '/what-early-quakers-believed': `/creencias-de-los-primeros-cuaqueros`,
 
   '/about': `/acerca-de-este-sitio`,
   '/audio-help': `/audio-ayuda`,

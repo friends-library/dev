@@ -66,7 +66,7 @@ const Footer: React.FC = () => (
           title={t`About`}
           links={[
             [t`/quakers`, t`About the Quakers`],
-            [`/what-early-quakers-believed`, `Early Quaker Beliefs`, `en`],
+            [t`/what-early-quakers-believed`, t`Early Quaker Beliefs`],
             [t`/quakers-today`, t`Quakers Today?`],
             [`/modernization`, `About modernization`, `en`],
             [`/editions`, `About book editions`, `en`],

@@ -183,4 +183,6 @@ const PAGE_META_DESCS = {
       : `Lo sentimos, parece que has entrado en un enlace roto, o intentado abrir un URL que no existe. Trata de encontrar lo que estás buscando más abajo, o puedes contactarnos si crees que has encontrado un problema con el sitio web &mdash; ¡Nos encantaría saberlo para poder solucionarlo lo antes posible!`,
 };
 
-export const QUAKER_BELIEFS_SEO_META_DESC = `What did early Quakers believe? A succinct but thorough explanation of the principles and practices of Friends in the 1600’s on a wide variety of doctrinal subjects, in response to calumnies and accusations that were commonly leveled against the society by other professing Christians.`;
+export const QUAKER_BELIEFS_SEO_META_DESC_EN = `What did early Quakers believe? A succinct but thorough explanation of the principles and practices of Friends in the 1600’s on a wide variety of doctrinal subjects, in response to calumnies and accusations that were commonly leveled against the society by other professing Christians.`;
+
+export const QUAKER_BELIEFS_SEO_META_DESC_ES = `¿En Qué Creían los Primeros Cuáqueros? Una explicación sucinta pero completa de los principios y prácticas de los Amigos en el siglo XVII, escrita por Alexander Pyot, William Chandler y Joseph Hodges sobre una amplia variedad de temas doctrinales, en respuesta a las calumnias y acusaciones que con frecuencia se dirigían contra la Sociedad por otros profesantes del cristianismo.`;
