@@ -1,4 +1,5 @@
 import React from 'react';
+import { LANG } from '@/lib/env';
 import { FIXED_TOPNAV_HEIGHT } from '@/lib/scroll';
 
 const TruthDefendedNotes: React.FC = () => (
@@ -281,7 +282,7 @@ const TruthDefendedNotes: React.FC = () => (
 
 export default TruthDefendedNotes;
 
-const Footnote: React.FC<{ number: number; children: React.ReactNode }> = ({
+export const Footnote: React.FC<{ number: number; children: React.ReactNode }> = ({
   number,
   children,
 }) => (
@@ -312,4 +313,21 @@ const Footnote: React.FC<{ number: number; children: React.ReactNode }> = ({
       </span>
     </div>
   </div>
+);
+
+export const FootnoteRef: React.FC<{ number: number }> = ({ number }) => (
+  <sup className="pr-1 relative inline-block">
+    <span
+      id={`src-${number}`}
+      className="absolute"
+      style={{ height: `${FIXED_TOPNAV_HEIGHT}px`, bottom: `1em` }}
+    />
+    <a
+      className="text-flprimary font-bold"
+      href={`#note-${number}`}
+      title={LANG === `en` ? `View footnote.` : `Ver nota al pie.`}
+    >
+      {number}
+    </a>
+  </sup>
 );

@@ -7,7 +7,8 @@ import { LANG } from '../env';
 import { getFriendUrl } from '../../lib/friend';
 import * as mdx from '../mdx';
 import * as seo from '../seo';
-import beliefs from './beliefs-search';
+import beliefsEn from './beliefs-search.en';
+import beliefsEs from './beliefs-search.es';
 import api, { type Api } from './api-client';
 import invariant from '@/lib/invariant';
 import { replacePlaceholders } from '@/components/mdx';
@@ -221,19 +222,19 @@ function sanitizeMdParagraph(paragraph: string): string {
 }
 
 function whatQuakersBelievedRecords(): Record<string, string | null>[] {
-  if (LANG !== `en`) {
-    return [];
-  }
   return [
     {
-      title: `What Early Quakers Believed`,
-      url: `/what-early-quakers-believed`,
-      text: seo.QUAKER_BELIEFS_SEO_META_DESC,
+      title: t`Early Quaker Beliefs`,
+      url: t`/what-early-quakers-believed`,
+      text:
+        LANG === `en`
+          ? seo.QUAKER_BELIEFS_SEO_META_DESC_EN
+          : seo.QUAKER_BELIEFS_SEO_META_DESC_ES,
     },
-    ...beliefs.map((chunk) => ({
-      title: `What Early Quakers Believed`,
+    ...(LANG === `en` ? beliefsEn : beliefsEs).map((chunk) => ({
+      title: t`Early Quaker Beliefs`,
       subtitle: chunk.sectionTitle,
-      url: `/what-early-quakers-believed#${chunk.id}`,
+      url: `${t`/what-early-quakers-believed`}#${chunk.id}`,
       text: chunk.text,
     })),
   ];
