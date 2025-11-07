@@ -26,22 +26,22 @@ extension TotalPublished: NoInputResolver {
       books: .init(
         en: allDocuments
           .filter(\.hasNonDraftEdition)
-          .filter { $0.friend.lang == .en }
-          .count,
+          .count(where: { $0.friend.lang == .en }),
+
         es: allDocuments
           .filter(\.hasNonDraftEdition)
-          .filter { $0.friend.lang == .es }
-          .count,
+          .count(where: { $0.friend.lang == .es }),
+
       ),
       audiobooks: .init(
         en: allAudios
           .filter { $0.edition.document.friend.lang == .en }
-          .filter { $0.edition.isDraft == false }
-          .count,
+          .count(where: { $0.edition.isDraft == false }),
+
         es: allAudios
           .filter { $0.edition.document.friend.lang == .es }
-          .filter { $0.edition.isDraft == false }
-          .count,
+          .count(where: { $0.edition.isDraft == false }),
+
       ),
     )
   }

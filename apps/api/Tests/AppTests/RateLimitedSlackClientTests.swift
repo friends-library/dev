@@ -102,7 +102,7 @@ final class RateLimitedSlackClientTests: AppTestCase, @unchecked Sendable {
 struct MockLogger: LogHandler {
   let logged: LockIsolated<[String]> = .init([])
 
-  public func log(
+  func log(
     level: Logger.Level,
     message: Logger.Message,
     metadata: Logger.Metadata?,

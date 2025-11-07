@@ -33,7 +33,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
     return download
   }
 
-  func testFindDuplicatePodcastDownloads() async throws {
+  func testFindDuplicatePodcastDownloads() throws {
     let d1 = self.podcastDownload(ip: "1.2.3.4")
     var d2 = self.podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- DUPE, same ed.id and ip
     let d3 = self.podcastDownload(ip: "1.2.3.4") // <-- not dupe, new ed.id

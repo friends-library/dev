@@ -11,9 +11,9 @@ extension XPostmark.Client {
   }
 
   struct MessageError: Swift.Error, Sendable {
-    public let errorCode: Int
-    public let message: String
-    public let address: String
+    let errorCode: Int
+    let message: String
+    let address: String
   }
 }
 

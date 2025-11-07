@@ -13,7 +13,7 @@ extension Lulu.Api.Client {
     private var token: (value: String, expiration: Date)?
     private var requestInFlight = false
 
-    public func get() async throws -> String {
+    func get() async throws -> String {
       if let token, token.expiration > Current.date() {
         return token.value
       } else if self.requestInFlight {

@@ -147,7 +147,7 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     }
   }
 
-  func testInvalidTokenRedirectsToFailurePage() async throws {
+  func testInvalidTokenRedirectsToFailurePage() throws {
     try app.test(.GET, "confirm-email/es/ham-sandwich") { res in
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
@@ -155,7 +155,7 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     }
   }
 
-  func testTokenNotFoundError() async throws {
+  func testTokenNotFoundError() throws {
     try app.test(.GET, "confirm-email/en/\(UUID())") { res in
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))

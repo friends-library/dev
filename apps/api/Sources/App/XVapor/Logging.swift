@@ -13,7 +13,7 @@ public extension Logger {
 private struct PassthroughHandler: LogHandler, Sendable {
   var receive: @Sendable (Logger.Level, Logger.Message) -> Void = { _, _ in }
 
-  public func log(
+  func log(
     level: Logger.Level,
     message: Logger.Message,
     metadata: Logger.Metadata?,
@@ -43,7 +43,7 @@ private struct PassthroughHandler: LogHandler, Sendable {
 
 private struct NullHandler: LogHandler {
 
-  public func log(
+  func log(
     level: Logger.Level,
     message: Logger.Message,
     metadata: Logger.Metadata?,
