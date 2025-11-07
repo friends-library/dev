@@ -16,7 +16,7 @@ let package = Package(
         "-Xfrontend", "-warn-concurrency",
         "-Xfrontend", "-enable-actor-data-race-checks",
         "-Xfrontend", "-warnings-as-errors",
-      ])]
+      ])],
     ),
     .target(
       name: "XBase64",
@@ -24,8 +24,8 @@ let package = Package(
         "-Xfrontend", "-warn-concurrency",
         "-Xfrontend", "-enable-actor-data-race-checks",
         "-Xfrontend", "-warnings-as-errors",
-      ])]
+      ])],
     ),
     .testTarget(name: "XCoreTests", dependencies: ["XCore"]),
-  ]
+  ],
 )

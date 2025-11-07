@@ -14,5 +14,5 @@ let package = Package(
     .target(name: "XPostmark", dependencies: [
       .product(name: "XHttp", package: "x-http"),
     ]),
-  ]
+  ],
 )

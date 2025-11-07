@@ -28,13 +28,13 @@ final class EditionValidityTests: AppTestCase, @unchecked Sendable {
     await expect(entities.edition.model.isValid()).toBeFalse()
   }
 
-  func testLoadedChaptersWithNonSequentialOrderInvalid() async {
+  func testLoadedChaptersWithNonSequentialOrderInvalid() async throws {
     let entities = await Entities.create { $0.editionChapter.order = 1 }
-    try! await EditionChapter.create(.init(
+    try await EditionChapter.create(.init(
       editionId: entities.edition.id,
       order: 3, // <-- unexpected non-sequential order
       shortHeading: "",
-      isIntermediateTitle: false
+      isIntermediateTitle: false,
     ))
     await expect(entities.edition.model.isValid()).toBeFalse()
   }

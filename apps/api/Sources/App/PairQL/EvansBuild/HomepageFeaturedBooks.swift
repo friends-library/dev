@@ -44,7 +44,7 @@ extension HomepageFeaturedBooks: Resolver {
         friendSlug: document.friend.slug,
         friendGender: document.friend.gender,
         documentSlug: document.slug,
-        featuredDescription: expect(document.featuredDescription)
+        featuredDescription: expect(document.featuredDescription),
       )
     }
   }

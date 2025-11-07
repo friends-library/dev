@@ -12,7 +12,7 @@ extension PairOutput {
     try Response(
       status: .ok,
       headers: ["Content-Type": "application/json"],
-      body: .init(data: jsonData())
+      body: .init(data: jsonData()),
     )
   }
 }

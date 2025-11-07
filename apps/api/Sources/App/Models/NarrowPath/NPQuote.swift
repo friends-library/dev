@@ -18,7 +18,7 @@ struct NPQuote: Codable, Sendable {
     isFriend: Bool = true,
     authorName: String? = nil,
     friendId: Friend.Id? = nil,
-    documentId: Document.Id? = nil
+    documentId: Document.Id? = nil,
   ) {
     self.id = id
     self.lang = lang
@@ -48,7 +48,7 @@ extension NPQuote {
       false
     } else if self.quote.hasSuffix("\n") {
       false
-    } else if self.quote.filter({ $0 == "_" }).count % 2 != 0 {
+    } else if self.quote.count(where: { $0 == "_" }) % 2 != 0 {
       // uneven number of underscores, invalid markdown -> html
       false
     } else if self.quote.contains("*") {

@@ -16,9 +16,9 @@ final class NativeDomainTests: AppTestCase, @unchecked Sendable {
         platform: "ios",
         installId: installId,
         errorMessage: "whoops",
-        errorStack: nil
+        errorStack: nil,
       ),
-      in: .init(requestId: "someid".random)
+      in: .init(requestId: "someid".random),
     )
 
     expect(output).toEqual(.success)

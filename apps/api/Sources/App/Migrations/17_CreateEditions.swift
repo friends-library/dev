@@ -19,7 +19,7 @@ struct CreateEditions: AsyncMigration {
         Edition.M17.documentId,
         .uuid,
         .references(Document.M14.tableName, .id, onDelete: .cascade),
-        .required
+        .required,
       )
       .field(M17.type, editionTypes, .required)
       .field(M17.editor, .string)

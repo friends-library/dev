@@ -18,14 +18,14 @@ extension AllFriendPages: Resolver {
 
     let downloads = try await Current.db.customQuery(
       AllDocumentDownloads.self,
-      withBindings: [.enum(lang), .null]
+      withBindings: [.enum(lang), .null],
     )
 
     return try friends.reduce(into: [:]) { result, friend in
       result[friend.slug] = try FriendPage.Output(
         friend,
         downloads: downloads.urlPathDict,
-        in: context
+        in: context,
       )
     }
   }

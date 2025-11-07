@@ -34,7 +34,7 @@ struct GetEdition: Pair {
 extension GetEdition: Resolver {
   static func resolve(
     with editionId: Edition.Id,
-    in context: AuthedContext
+    in context: AuthedContext,
   ) async throws -> Output {
     try context.verify(self.auth)
     let edition = try await Edition.Joined.find(editionId)
@@ -50,9 +50,9 @@ extension GetEdition: Resolver {
         paperbackSize: $0.paperbackSize,
         paperbackVolumes: Array($0.paperbackVolumes),
         publishedRevision: $0.publishedRevision,
-        productionToolchainRevision: $0.productionToolchainRevision
+        productionToolchainRevision: $0.productionToolchainRevision,
       ) },
-      documentFilename: edition.document.filename
+      documentFilename: edition.document.filename,
     )
   }
 }

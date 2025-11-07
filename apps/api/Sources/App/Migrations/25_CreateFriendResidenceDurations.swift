@@ -10,7 +10,7 @@ struct CreateFriendResidenceDurations: AsyncMigration {
       .field(
         M25.friendResidenceId,
         .uuid,
-        .references(FriendResidence.M12.tableName, .id, onDelete: .cascade)
+        .references(FriendResidence.M12.tableName, .id, onDelete: .cascade),
       )
       .field(M25.start, .int)
       .field(M25.end, .int)

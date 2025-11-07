@@ -87,7 +87,7 @@ extension Edition.Joined {
         w750: squareImage(750, path),
         w900: squareImage(900, path),
         w1150: squareImage(1150, path),
-        w1400: squareImage(1400, path)
+        w1400: squareImage(1400, path),
       ),
       threeD: .init(
         w55: threeDImage(55, path),
@@ -99,8 +99,8 @@ extension Edition.Joined {
         w850: threeDImage(850, path),
         w1000: threeDImage(1000, path),
         // keep largest size in sync with cli/src/cmd/publish/cover-server.ts
-        w1120: threeDImage(1120, path)
-      )
+        w1120: threeDImage(1120, path),
+      ),
     )
   }
 }
@@ -116,7 +116,7 @@ private func squareImage(_ size: Int, _ path: String) -> Edition.Images.Image {
     height: size,
     url: URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(path)/\(filename)")!,
     path: "\(path)/\(filename)",
-    filename: filename
+    filename: filename,
   )
 }
 
@@ -127,6 +127,6 @@ private func threeDImage(_ width: Int, _ path: String) -> Edition.Images.Image {
     height: Int((Double(width) / threeDImageAspectRatio).rounded(.down)),
     url: URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(path)/\(filename)")!,
     path: "\(path)/\(filename)",
-    filename: filename
+    filename: filename,
   )
 }

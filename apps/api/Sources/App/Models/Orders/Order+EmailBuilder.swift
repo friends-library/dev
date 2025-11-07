@@ -12,7 +12,7 @@ extension EmailBuilder {
         : "[,] Pedido Enviado – Biblioteca de Amigos",
       textBody: order.lang == .en
         ? shippedBodyEn(for: order, trackingUrl: trackingUrl)
-        : shippedBodyEs(for: order, trackingUrl: trackingUrl)
+        : shippedBodyEs(for: order, trackingUrl: trackingUrl),
     )
   }
 
@@ -25,7 +25,7 @@ extension EmailBuilder {
         : "[,] Confirmación de Pedido – Biblioteca de Amigos",
       textBody: order.lang == .en
         ? confirmationBodyEn(for: order)
-        : confirmationBodyEs(for: order)
+        : confirmationBodyEs(for: order),
     )
   }
 }

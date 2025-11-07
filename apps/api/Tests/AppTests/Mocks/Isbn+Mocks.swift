@@ -12,7 +12,7 @@ extension Isbn {
   static var random: Isbn {
     Isbn(
       code: .init(rawValue: "@random".random),
-      editionId: nil
+      editionId: nil,
     )
   }
 }

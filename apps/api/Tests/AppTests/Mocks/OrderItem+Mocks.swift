@@ -14,7 +14,7 @@ extension OrderItem {
       orderId: .init(),
       editionId: .init(),
       quantity: Int.random,
-      unitPrice: .init(rawValue: Int.random)
+      unitPrice: .init(rawValue: Int.random),
     )
   }
 }

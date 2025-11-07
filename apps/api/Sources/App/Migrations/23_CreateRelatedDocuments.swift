@@ -11,13 +11,13 @@ struct CreateRelatedDocuments: Migration {
         M23.parentDocumentId,
         .uuid,
         .references(Document.M14.tableName, .id, onDelete: .cascade),
-        .required
+        .required,
       )
       .field(
         M23.documentId,
         .uuid,
         .references(Document.M14.tableName, .id, onDelete: .cascade),
-        .required
+        .required,
       )
       .field(M23.description, .string, .required)
       .field(.createdAt, .datetime, .required)

@@ -55,7 +55,7 @@ struct BigIntToInt: AsyncMigration {
         """
         ALTER TABLE \(unsafeRaw: table)
         ALTER COLUMN "\(col: column)" TYPE INTEGER
-        """
+        """,
       )
     }
 
@@ -64,7 +64,7 @@ struct BigIntToInt: AsyncMigration {
         """
         ALTER TABLE \(unsafeRaw: table)
         ALTER COLUMN "\(col: column)" TYPE INTEGER[]
-        """
+        """,
       )
     }
   }
@@ -78,7 +78,7 @@ struct BigIntToInt: AsyncMigration {
         """
         ALTER TABLE \(unsafeRaw: table)
         ALTER COLUMN "\(col: column)" TYPE BIGINT
-        """
+        """,
       )
     }
 
@@ -87,7 +87,7 @@ struct BigIntToInt: AsyncMigration {
         """
         ALTER TABLE \(unsafeRaw: table)
         ALTER COLUMN "\(col: column)" TYPE BIGINT[]
-        """
+        """,
       )
     }
   }

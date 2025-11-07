@@ -7,7 +7,7 @@ final class AsciidocTests: XCTestCase {
   func testNonEntity160RomanNumeraled() {
     XCTAssertEqual(
       Asciidoc.htmlShortTitle("Epistles 133 &#8212; 160"),
-      "Epistles CXXXIII &#8212; CLX"
+      "Epistles CXXXIII &#8212; CLX",
     )
   }
 
@@ -22,28 +22,28 @@ final class AsciidocTests: XCTestCase {
   func testHtmlTitleDoesNotChangeYearsToRoman() throws {
     XCTAssertEqual(
       Asciidoc.htmlTitle("Chapter 9. Letters from 1818--1820"),
-      "Chapter IX. Letters from 1818&#8212;1820"
+      "Chapter IX. Letters from 1818&#8212;1820",
     )
   }
 
   func testHtmlShortTitleShortensVolumeToVol() throws {
     XCTAssertEqual(
       Asciidoc.htmlShortTitle("Foo -- Volume 1"),
-      "Foo &#8212; Vol.&#160;I"
+      "Foo &#8212; Vol.&#160;I",
     )
   }
 
   func testHtmlShortTitleShortensSpanishVolumeToVol() throws {
     XCTAssertEqual(
       Asciidoc.htmlShortTitle("Foo -- volumen 4"),
-      "Foo &#8212; Vol.&#160;IV"
+      "Foo &#8212; Vol.&#160;IV",
     )
   }
 
   func testUtf8ShortTitleShortensCorrectly() throws {
     XCTAssertEqual(
       Asciidoc.utf8ShortTitle("Chapter 9. Letters from 1818--1820"),
-      "Chapter IX. Letters from 1818–1820"
+      "Chapter IX. Letters from 1818–1820",
     )
   }
 

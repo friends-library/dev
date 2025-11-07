@@ -20,7 +20,7 @@ final class DevDomainTests: AppTestCase, @unchecked Sendable {
 
     let output = try await CreateArtifactProductionVersion.resolve(
       with: .init(version: .init(sha)),
-      in: .authed
+      in: .authed,
     )
 
     let retrieved = try? await ArtifactProductionVersion.query()
@@ -42,9 +42,9 @@ final class DevDomainTests: AppTestCase, @unchecked Sendable {
         paperbackSizeVariant: .xl,
         paperbackVolumes: [233],
         publishedRevision: "a499db17511b75407a1229447946138481d05dd6",
-        productionToolchainRevision: "a499db17511b75407a1229447946138481d05dd5"
+        productionToolchainRevision: "a499db17511b75407a1229447946138481d05dd5",
       ),
-      in: .authed
+      in: .authed,
     )
     expect(output.id).toEqual(entities.editionImpression.id)
     let fetched = try await EditionImpression.find(entities.editionImpression.id)

@@ -18,7 +18,7 @@ enum IpApi {
       countryName: String? = nil,
       postal: String? = nil,
       latitude: Double? = nil,
-      longitude: Double? = nil
+      longitude: Double? = nil,
     ) {
       if let ip, !isRestricted(ip) {
         self.ip = ip
@@ -51,7 +51,7 @@ enum IpApi {
   try await HTTP.get(
     "https://ipapi.co/\(ipAddress)/json/?key=\(Env.LOCATION_API_KEY)",
     decoding: IpApi.Response.self,
-    keyDecodingStrategy: .convertFromSnakeCase
+    keyDecodingStrategy: .convertFromSnakeCase,
   )
 }
 

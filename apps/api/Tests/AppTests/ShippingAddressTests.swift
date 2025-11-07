@@ -28,7 +28,7 @@ class StateAbbreviationTests: XCTestCase {
         city: "city",
         state: input,
         zip: "zip",
-        country: country
+        country: country,
       )
       XCTAssertEqual(address.state, expected)
     }

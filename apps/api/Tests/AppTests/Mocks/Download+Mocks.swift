@@ -14,7 +14,7 @@ extension Download {
       editionId: .init(),
       format: Format.allCases.shuffled().first!,
       source: DownloadSource.allCases.shuffled().first!,
-      isMobile: Bool.random()
+      isMobile: Bool.random(),
     )
   }
 }

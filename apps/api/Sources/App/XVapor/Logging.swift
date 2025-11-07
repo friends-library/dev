@@ -4,7 +4,7 @@ public extension Logger {
   static let null = Logger(label: "(null)", factory: { _ in NullHandler() })
 
   static func passthrough(
-    _ receiver: @escaping @Sendable (Logger.Level, Logger.Message) -> Void
+    _ receiver: @escaping @Sendable (Logger.Level, Logger.Message) -> Void,
   ) -> Logger {
     Logger(label: "(passthrough)", factory: { _ in PassthroughHandler(receive: receiver) })
   }
@@ -13,14 +13,14 @@ public extension Logger {
 private struct PassthroughHandler: LogHandler, Sendable {
   var receive: @Sendable (Logger.Level, Logger.Message) -> Void = { _, _ in }
 
-  public func log(
+  func log(
     level: Logger.Level,
     message: Logger.Message,
     metadata: Logger.Metadata?,
     source: String,
     file: String,
     function: String,
-    line: UInt
+    line: UInt,
   ) {
     self.receive(level, message)
   }
@@ -43,14 +43,14 @@ private struct PassthroughHandler: LogHandler, Sendable {
 
 private struct NullHandler: LogHandler {
 
-  public func log(
+  func log(
     level: Logger.Level,
     message: Logger.Message,
     metadata: Logger.Metadata?,
     source: String,
     file: String,
     function: String,
-    line: UInt
+    line: UInt,
   ) {}
 
   subscript(metadataKey _: String) -> Logger.Metadata.Value? {

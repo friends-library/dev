@@ -13,7 +13,7 @@ public struct TemplateEmail: Equatable, Sendable {
     from: String,
     templateAlias: String,
     templateModel: [String: String] = [:],
-    messageStream: String? = nil
+    messageStream: String? = nil,
   ) {
     self.to = to
     self.from = from
@@ -25,13 +25,13 @@ public struct TemplateEmail: Equatable, Sendable {
 
 @Sendable func _sendTemplateEmailBatch(
   _ emails: [TemplateEmail],
-  _ apiKey: String
+  _ apiKey: String,
 ) async -> Result<[Result<Void, Client.BatchEmail.Error>], Client.Error> {
   if emails.count >= 500 {
     return .failure(.init(
       statusCode: -3,
       errorCode: -3,
-      message: "Batched chunking not implemented, size must be less than 500"
+      message: "Batched chunking not implemented, size must be less than 500",
     ))
   }
   do {
@@ -41,7 +41,7 @@ public struct TemplateEmail: Equatable, Sendable {
       headers: [
         "Accept": "application/json",
         "X-Postmark-Server-Token": apiKey,
-      ]
+      ],
     )
     do {
       if urlResponse.statusCode != 200 {
@@ -49,7 +49,7 @@ public struct TemplateEmail: Equatable, Sendable {
         return .failure(Client.Error(
           statusCode: urlResponse.statusCode,
           errorCode: decoded.ErrorCode,
-          message: decoded.Message
+          message: decoded.Message,
         ))
       } else {
         let responses = try JSONDecoder().decode([BatchEmailResponse].self, from: data)
@@ -59,7 +59,7 @@ public struct TemplateEmail: Equatable, Sendable {
           } else {
             .failure(.init(
               errorCode: response.ErrorCode,
-              message: response.Message
+              message: response.Message,
             ))
           }
         })
@@ -69,14 +69,14 @@ public struct TemplateEmail: Equatable, Sendable {
       return .failure(Client.Error(
         statusCode: urlResponse.statusCode,
         errorCode: -4,
-        message: "Error decoding Postmark batch response: \(error), body: \(body)"
+        message: "Error decoding Postmark batch response: \(error), body: \(body)",
       ))
     }
   } catch {
     return .failure(Client.Error(
       statusCode: -5,
       errorCode: -5,
-      message: "Error sending Postmark batch emails: \(error)"
+      message: "Error sending Postmark batch emails: \(error)",
     ))
   }
 }

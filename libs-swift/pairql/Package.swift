@@ -22,9 +22,9 @@ let package = Package(
           "-Xfrontend", "-enable-actor-data-race-checks",
           "-Xfrontend", "-warnings-as-errors",
         ]),
-      ]
+      ],
     ),
-  ]
+  ],
 )
 
 // helpers
@@ -34,7 +34,7 @@ extension PackageDescription.Package.Dependency {
     let parts = commitish.split(separator: "@")
     return .package(
       url: "https://github.com/\(parts[0]).git",
-      from: .init(stringLiteral: "\(parts[1])")
+      from: .init(stringLiteral: "\(parts[1])"),
     )
   }
 }

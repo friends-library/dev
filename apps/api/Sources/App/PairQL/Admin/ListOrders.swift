@@ -28,7 +28,7 @@ extension ListOrders: NoInputResolver {
         addressName: order.addressName,
         printJobStatus: order.printJobStatus,
         source: order.source,
-        createdAt: order.createdAt
+        createdAt: order.createdAt,
       )
     }
   }

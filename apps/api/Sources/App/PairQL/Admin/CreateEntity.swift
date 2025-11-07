@@ -24,7 +24,7 @@ extension CreateEntity: Resolver {
         mp3ZipSizeLq: input.mp3ZipSizeLq,
         m4bSizeHq: input.m4bSizeHq,
         m4bSizeLq: input.m4bSizeLq,
-        isIncomplete: input.isIncomplete
+        isIncomplete: input.isIncomplete,
       )
 
     case .audioPart(let input):
@@ -36,7 +36,7 @@ extension CreateEntity: Resolver {
         chapters: .fromArray(input.chapters),
         order: input.order,
         mp3SizeHq: input.mp3SizeHq,
-        mp3SizeLq: input.mp3SizeLq
+        mp3SizeLq: input.mp3SizeLq,
       )
 
     case .document(let input):
@@ -52,14 +52,14 @@ extension CreateEntity: Resolver {
         incomplete: input.incomplete,
         description: input.description,
         partialDescription: input.partialDescription,
-        featuredDescription: nilIfEmpty(input.featuredDescription)
+        featuredDescription: nilIfEmpty(input.featuredDescription),
       )
 
     case .documentTag(let input):
       model = DocumentTag(
         id: input.id,
         documentId: input.documentId,
-        type: input.type
+        type: input.type,
       )
 
     case .edition(let input):
@@ -77,7 +77,7 @@ extension CreateEntity: Resolver {
         editor: nilIfEmpty(input.editor),
         isDraft: input.isDraft,
         paperbackSplits: input.paperbackSplits.map { try .fromArray($0) },
-        paperbackOverrideSize: input.paperbackOverrideSize
+        paperbackOverrideSize: input.paperbackOverrideSize,
       )
       isbn.editionId = edition.id
       guard await edition.isValid() else { throw ModelError.invalidEntity }
@@ -95,7 +95,7 @@ extension CreateEntity: Resolver {
         description: input.description,
         born: input.born,
         died: input.died,
-        published: input.published
+        published: input.published,
       )
 
     case .friendQuote(let input):
@@ -105,7 +105,7 @@ extension CreateEntity: Resolver {
         source: input.source,
         text: input.text,
         order: input.order,
-        context: nilIfEmpty(input.context)
+        context: nilIfEmpty(input.context),
       )
 
     case .friendResidence(let input):
@@ -113,7 +113,7 @@ extension CreateEntity: Resolver {
         id: input.id,
         friendId: input.friendId,
         city: input.city,
-        region: input.region
+        region: input.region,
       )
 
     case .friendResidenceDuration(let input):
@@ -121,7 +121,7 @@ extension CreateEntity: Resolver {
         id: input.id,
         friendResidenceId: input.friendResidenceId,
         start: input.start,
-        end: input.end
+        end: input.end,
       )
 
     case .relatedDocument(let input):
@@ -129,7 +129,7 @@ extension CreateEntity: Resolver {
         id: input.id,
         description: input.description,
         documentId: input.documentId,
-        parentDocumentId: input.parentDocumentId
+        parentDocumentId: input.parentDocumentId,
       )
 
     case .token(let input):
@@ -137,14 +137,14 @@ extension CreateEntity: Resolver {
         id: input.id,
         value: input.value,
         description: input.description,
-        uses: input.uses
+        uses: input.uses,
       )
 
     case .tokenScope(let input):
       model = TokenScope(
         id: input.id,
         tokenId: input.tokenId,
-        scope: input.scope
+        scope: input.scope,
       )
     }
 

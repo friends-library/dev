@@ -81,7 +81,7 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
           id: "0f5a25c9",
           requestId: context.requestId,
           type: .notFound,
-          detail: Env.mode == .dev ? "PairQL routing \(error)" : "PairQL route not found"
+          detail: Env.mode == .dev ? "PairQL routing \(error)" : "PairQL route not found",
         ))
       } else if let pqlError = error as? PqlError {
         return .init(pqlError)

@@ -47,7 +47,7 @@ public enum SQL {
     where constraint: WhereConstraint<M> = .always,
     orderBy: Order<M>? = nil,
     limit: Int? = nil,
-    offset: Int? = nil
+    offset: Int? = nil,
   ) -> PreparedStatement {
     var bindings: [Postgres.Data] = []
     let WHERE = self.whereClause(constraint, bindings: &bindings)
@@ -60,7 +60,7 @@ public enum SQL {
 
   public static func softDelete<M: Model>(
     _: M.Type,
-    where constraint: WhereConstraint<M> = .always
+    where constraint: WhereConstraint<M> = .always,
   ) -> PreparedStatement {
     self.update(table: M.tableName, set: ["deleted_at": .currentTimestamp], where: constraint)
   }
@@ -69,7 +69,7 @@ public enum SQL {
     table: String,
     set values: [String: Postgres.Data],
     where constraint: WhereConstraint<some Model> = .always,
-    returning: Postgres.Columns? = nil
+    returning: Postgres.Columns? = nil,
   ) -> PreparedStatement {
     var bindings: [Postgres.Data] = []
     var setPairs: [String] = []
@@ -98,26 +98,26 @@ public enum SQL {
     _: M.Type,
     set values: [M.ColumnName: Postgres.Data],
     where constraint: WhereConstraint<M> = .always,
-    returning: Postgres.Columns? = nil
+    returning: Postgres.Columns? = nil,
   ) -> PreparedStatement {
     self.update(
       table: M.tableName,
       set: values.mapKeys { M.columnName($0) },
       where: constraint,
-      returning: returning
+      returning: returning,
     )
   }
 
   public static func insert<M: Model>(
     into _: M.Type,
-    values: [M.ColumnName: Postgres.Data]
+    values: [M.ColumnName: Postgres.Data],
   ) throws -> PreparedStatement {
     try self.insert(into: M.self, values: [values])
   }
 
   public static func insert<M: Model>(
     into _: M.Type,
-    values columnValues: [[M.ColumnName: Postgres.Data]]
+    values columnValues: [[M.ColumnName: Postgres.Data]],
   ) throws -> PreparedStatement {
     let values = columnValues.map { $0.mapKeys { M.columnName($0) } }
     guard let firstRecord = values.first else {
@@ -157,7 +157,7 @@ public enum SQL {
     where constraint: WhereConstraint<M> = .always,
     orderBy order: Order<M>? = nil,
     limit: Int? = nil,
-    offset: Int? = nil
+    offset: Int? = nil,
   ) -> PreparedStatement {
     var bindings: [Postgres.Data] = []
     let WHERE = self.whereClause(constraint, bindings: &bindings)
@@ -172,7 +172,7 @@ public enum SQL {
 
   public static func count<M: Model>(
     _: M.Type,
-    where constraint: WhereConstraint<M> = .always
+    where constraint: WhereConstraint<M> = .always,
   ) -> PreparedStatement {
     var bindings: [Postgres.Data] = []
     let WHERE = self.whereClause(constraint, bindings: &bindings)
@@ -185,7 +185,7 @@ public enum SQL {
   @discardableResult
   public static func execute(
     _ statement: PreparedStatement,
-    on db: SQLDatabase
+    on db: SQLDatabase,
   ) async throws -> [SQLRow] {
     // e.g. SELECT statements with no WHERE clause have
     // no bindings, and so can't be sent as a pg prepared statement
@@ -252,7 +252,7 @@ public enum SQL {
   private static func whereClause(
     _ constraint: WhereConstraint<some Model>? = .always,
     bindings: inout [Postgres.Data],
-    separatedBy: String = "\n"
+    separatedBy: String = "\n",
   ) -> String {
     guard let constraint, constraint != .always else {
       return ""

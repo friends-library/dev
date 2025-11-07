@@ -137,7 +137,7 @@ public struct Operation<P: Pair>: ParserPrinter {
 public extension Conversion {
   static func input<P: Pair>(
     _ Pair: P.Type,
-    dateDecodingStrategy strategy: JSONDecoder.DateDecodingStrategy? = .forgivingIso8601
+    dateDecodingStrategy strategy: JSONDecoder.DateDecodingStrategy? = .forgivingIso8601,
   ) -> Self where Self == Conversions.JSON<P.Input> {
     if let strategy {
       let decoder = JSONDecoder()
@@ -158,7 +158,7 @@ public extension JSONDecoder.DateDecodingStrategy {
     }
     throw DecodingError.dataCorruptedError(
       in: container,
-      debugDescription: "Invalid date: \(string)"
+      debugDescription: "Invalid date: \(string)",
     )
   }
 }

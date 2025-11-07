@@ -12,7 +12,7 @@ struct CreateEditionChaptersTable: Migration {
         M22.editionId,
         .uuid,
         .references(Edition.M17.tableName, .id, onDelete: .cascade),
-        .required
+        .required,
       )
       .field(M22.order, .int, .required)
       .field(M22.customId, .string)

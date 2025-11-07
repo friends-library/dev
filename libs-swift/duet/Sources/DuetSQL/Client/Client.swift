@@ -12,7 +12,7 @@ public protocol Client: SQLQuerying, SQLMutating, Sendable {
 
   func customQuery<T: CustomQueryable>(
     _ Custom: T.Type,
-    withBindings: [Postgres.Data]?
+    withBindings: [Postgres.Data]?,
   ) async throws -> [T]
 }
 
@@ -36,7 +36,7 @@ public extension Client {
   func find<M: Model>(
     _: M.Type,
     byId id: M.IdValue,
-    withSoftDeleted: Bool = false
+    withSoftDeleted: Bool = false,
   ) async throws -> M {
     try await self.query(M.self).byId(id, withSoftDeleted: withSoftDeleted).first()
   }
@@ -51,7 +51,7 @@ public extension Client {
   func delete<M: Model>(
     _: M.Type,
     byId id: UUIDStringable,
-    force: Bool = false
+    force: Bool = false,
   ) async throws -> M {
     try await self.query(M.self).where(M.column("id") == id).deleteOne(force: force)
   }

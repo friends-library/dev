@@ -10,7 +10,7 @@ on:
 jobs:
   build-libs:
     runs-on: namespace-profile-default
-    container: swift:6.0.3-focal
+    container: swift:6.1.2-focal
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
 
   test-libs:
     runs-on: namespace-profile-default
-    container: swift:6.0.3-focal
+    container: swift:6.1.2-focal
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -44,7 +44,7 @@ jobs:
 
   build-api:
     runs-on: namespace-profile-default
-    container: swift:6.0.3-focal
+    container: swift:6.1.2-focal
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -102,7 +102,7 @@ jobs:
 
   test-api:
     runs-on: namespace-profile-default
-    container: swift:6.0.3-focal
+    container: swift:6.1.2-focal
     env:
       DATABASE_HOST: postgres
     services:
@@ -122,6 +122,22 @@ jobs:
           restore-keys: api-test-
       - name: test api
         run: cd apps/api && swift test
+
+  swift-lint:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    container: swift:6.1.2-focal
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build
+        run: |
+          git clone --depth 1 --branch 0.58.5 https://github.com/nicklockwood/SwiftFormat
+          cd SwiftFormat && swift build -c debug
+          cp ./.build/debug/swiftformat /usr/local/bin
+          cd ../ && rm -rf SwiftFormat/
+      - name: swiftlint
+        run: /usr/local/bin/swiftformat . --lint
 
 env:
   SWIFT_DETERMINISTIC_HASHING: 1

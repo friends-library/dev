@@ -14,7 +14,7 @@ public struct DuetQuery<M: Model> {
     order: SQL.Order<M>? = nil,
     limit: Int? = nil,
     offset: Int? = nil,
-    withSoftDeleted: Bool = false
+    withSoftDeleted: Bool = false,
   ) {
     self.db = db
     self.constraint = constraint
@@ -31,7 +31,7 @@ public struct DuetQuery<M: Model> {
       order: self.order,
       limit: self.limit,
       offset: self.offset,
-      withSoftDeleted: withSoftDeleted
+      withSoftDeleted: withSoftDeleted,
     )
   }
 
@@ -42,7 +42,7 @@ public struct DuetQuery<M: Model> {
       order: self.order,
       limit: self.limit,
       offset: self.offset,
-      withSoftDeleted: true
+      withSoftDeleted: true,
     )
   }
 
@@ -53,7 +53,7 @@ public struct DuetQuery<M: Model> {
       order: self.order,
       limit: self.limit,
       offset: self.offset,
-      withSoftDeleted: self._withSoftDeleted
+      withSoftDeleted: self._withSoftDeleted,
     )
   }
 
@@ -64,7 +64,7 @@ public struct DuetQuery<M: Model> {
       order: self.order,
       limit: limit,
       offset: self.offset,
-      withSoftDeleted: self._withSoftDeleted
+      withSoftDeleted: self._withSoftDeleted,
     )
   }
 
@@ -75,7 +75,7 @@ public struct DuetQuery<M: Model> {
       order: self.order,
       limit: self.limit,
       offset: offset,
-      withSoftDeleted: self._withSoftDeleted
+      withSoftDeleted: self._withSoftDeleted,
     )
   }
 
@@ -86,7 +86,7 @@ public struct DuetQuery<M: Model> {
       order: order,
       limit: self.limit,
       offset: self.offset,
-      withSoftDeleted: self._withSoftDeleted
+      withSoftDeleted: self._withSoftDeleted,
     )
   }
 
@@ -97,7 +97,7 @@ public struct DuetQuery<M: Model> {
       order: .init(column: column, direction: direction),
       limit: self.limit,
       offset: self.offset,
-      withSoftDeleted: self._withSoftDeleted
+      withSoftDeleted: self._withSoftDeleted,
     )
   }
 
@@ -109,7 +109,7 @@ public struct DuetQuery<M: Model> {
         where: self.constraint,
         orderBy: self.order,
         limit: self.limit,
-        offset: self.offset
+        offset: self.offset,
       )
     } else {
       try await self.db.delete(
@@ -117,7 +117,7 @@ public struct DuetQuery<M: Model> {
         where: self.constraint,
         orderBy: self.order,
         limit: self.limit,
-        offset: self.offset
+        offset: self.offset,
       )
     }
   }
@@ -130,7 +130,7 @@ public struct DuetQuery<M: Model> {
       orderBy: self.order,
       limit: self.limit,
       offset: self.offset,
-      withSoftDeleted: force || self._withSoftDeleted
+      withSoftDeleted: force || self._withSoftDeleted,
     )
     guard !models.isEmpty else { throw DuetSQLError.notFound("\(M.self)") }
     guard models.count == 1 else { throw DuetSQLError.tooManyResultsForDeleteOne }
@@ -140,7 +140,7 @@ public struct DuetQuery<M: Model> {
         where: self.constraint,
         orderBy: self.order,
         limit: self.limit,
-        offset: self.offset
+        offset: self.offset,
       )
     } else {
       try await self.db.delete(
@@ -148,7 +148,7 @@ public struct DuetQuery<M: Model> {
         where: self.constraint,
         orderBy: self.order,
         limit: self.limit,
-        offset: self.offset
+        offset: self.offset,
       )
     }
     return models.first!
@@ -161,7 +161,7 @@ public struct DuetQuery<M: Model> {
       orderBy: self.order,
       limit: self.limit,
       offset: self.offset,
-      withSoftDeleted: self._withSoftDeleted
+      withSoftDeleted: self._withSoftDeleted,
     )
   }
 

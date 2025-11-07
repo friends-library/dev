@@ -11,9 +11,9 @@ extension XPostmark.Client {
   }
 
   struct MessageError: Swift.Error, Sendable {
-    public let errorCode: Int
-    public let message: String
-    public let address: String
+    let errorCode: Int
+    let message: String
+    let address: String
   }
 }
 
@@ -82,9 +82,9 @@ extension XPostmark.Client.SlackErrorLogging {
               return .init(
                 errorCode: error.errorCode,
                 message: error.message,
-                address: emails[idx].to
+                address: emails[idx].to,
               )
-            }
+            },
         )
       }
     },
@@ -103,12 +103,12 @@ extension XPostmark.Client.SlackErrorLogging {
       case .success:
         return .success(())
       }
-    }
+    },
   )
   static let mock = Self(
     send: { _ in },
     sendTemplateEmail: { _ in },
     sendTemplateEmailBatch: { _ in .success([]) },
-    deleteSuppression: { _, _ in .success(()) }
+    deleteSuppression: { _, _ in .success(()) },
   )
 }

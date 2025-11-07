@@ -33,10 +33,10 @@ extension GetPrintJobExploratoryMetadata: Resolver {
           state: input.address.state,
           zip: input.address.zip,
           country: input.address.country,
-          recipientTaxId: input.address.recipientTaxId
+          recipientTaxId: input.address.recipientTaxId,
         ),
         email: input.email,
-        lang: input.lang
+        lang: input.lang,
       ) {
       case .success(let metadata):
         return .success(metadata: metadata)

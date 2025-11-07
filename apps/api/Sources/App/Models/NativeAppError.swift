@@ -22,7 +22,7 @@ struct NativeAppError: Codable, Sendable {
     platform: String,
     installId: String,
     errorMessage: String? = nil,
-    errorStack: String? = nil
+    errorStack: String? = nil,
   ) {
     self.id = id
     self.buildSemver = buildSemver

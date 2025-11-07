@@ -16,7 +16,7 @@ extension DeepL.Client {
 
 @Sendable private func translate(
   text: String,
-  with context: String?
+  with context: String?,
 ) async throws -> String {
   print(Env.DEEPL_API_KEY)
   let response = try await HTTP.postJson(
@@ -24,7 +24,7 @@ extension DeepL.Client {
     to: "https://api-free.deepl.com/v2/translate",
     decoding: TranslateResponse.self,
     headers: ["Authorization": "DeepL-Auth-Key \(Env.DEEPL_API_KEY)"],
-    keyEncodingStrategy: .convertToSnakeCase
+    keyEncodingStrategy: .convertToSnakeCase,
   )
   guard let text = response.translations.first?.text else {
     struct MissingTranslationText: Error {}

@@ -27,7 +27,7 @@ extension LogJsError: Resolver {
       ```
       \(JSON.encode(input) ?? String(describing: input))
       ```
-      """
+      """,
     )
     return .success
   }

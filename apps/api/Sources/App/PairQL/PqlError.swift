@@ -12,7 +12,7 @@ public struct PqlError: Error, Codable, Equatable, Sendable {
     requestId: String,
     type: PqlError.Kind,
     detail: String? = nil,
-    statusCode: Int? = nil
+    statusCode: Int? = nil,
   ) {
     self.id = id
     self.requestId = requestId
@@ -41,7 +41,7 @@ public extension PqlError {
 }
 
 protocol PqlErrorConvertible: Error {
-  func pqlError<C: ResolverContext>(in: C) -> PqlError
+  func pqlError(in: some ResolverContext) -> PqlError
 }
 
 extension DuetSQLError: PqlErrorConvertible {
@@ -51,49 +51,49 @@ extension DuetSQLError: PqlErrorConvertible {
       context.error(
         id: "8271f8a1",
         type: .notFound,
-        detail: "DuetSQL: \(modelType) not found"
+        detail: "DuetSQL: \(modelType) not found",
       )
     case .decodingFailed:
       context.error(
         id: "e3e62901",
         type: .serverError,
-        detail: "DuetSQL model decoding failed"
+        detail: "DuetSQL model decoding failed",
       )
     case .emptyBulkInsertInput:
       context.error(
         id: "db45b1d0",
         type: .serverError,
-        detail: "DuetSQL: empty bulk insert input"
+        detail: "DuetSQL: empty bulk insert input",
       )
     case .invalidEntity:
       context.error(
         id: "7a20146d",
         type: .serverError,
-        detail: "DuetSQL: invalid entity"
+        detail: "DuetSQL: invalid entity",
       )
     case .missingExpectedColumn(let column):
       context.error(
         id: "df128649",
         type: .serverError,
-        detail: "DuetSQL: missing expected column `\(column)`"
+        detail: "DuetSQL: missing expected column `\(column)`",
       )
     case .nonUniformBulkInsertInput:
       context.error(
         id: "e125265d",
         type: .serverError,
-        detail: "DuetSQL: non-uniform bulk insert input"
+        detail: "DuetSQL: non-uniform bulk insert input",
       )
     case .notImplemented(let fn):
       context.error(
         id: "b4e22229",
         type: .serverError,
-        detail: "DuetSQL: not implemented `\(fn)`"
+        detail: "DuetSQL: not implemented `\(fn)`",
       )
     case .tooManyResultsForDeleteOne:
       context.error(
         id: "45557557",
         type: .serverError,
-        detail: "DuetSQL: too many results for delete one"
+        detail: "DuetSQL: too many results for delete one",
       )
     }
   }

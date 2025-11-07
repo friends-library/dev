@@ -10,7 +10,7 @@ extension EditionImpression {
       paperbackSizeVariant: .s,
       paperbackVolumes: NonEmpty<[Int]>(42),
       publishedRevision: "@mock publishedRevision",
-      productionToolchainRevision: "@mock productionToolchainRevision"
+      productionToolchainRevision: "@mock productionToolchainRevision",
     )
   }
 
@@ -21,7 +21,7 @@ extension EditionImpression {
       paperbackSizeVariant: .s,
       paperbackVolumes: NonEmpty<[Int]>(0),
       publishedRevision: "",
-      productionToolchainRevision: ""
+      productionToolchainRevision: "",
     )
   }
 
@@ -32,7 +32,7 @@ extension EditionImpression {
       paperbackSizeVariant: PrintSizeVariant.allCases.shuffled().first!,
       paperbackVolumes: NonEmpty<[Int]>(Int.random),
       publishedRevision: .init(rawValue: "@random".random),
-      productionToolchainRevision: .init(rawValue: "@random".random)
+      productionToolchainRevision: .init(rawValue: "@random".random),
     )
   }
 }

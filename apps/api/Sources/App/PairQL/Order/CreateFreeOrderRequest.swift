@@ -32,7 +32,7 @@ extension CreateFreeOrderRequest: Resolver {
       addressState: input.addressState,
       addressZip: input.addressZip,
       addressCountry: input.addressCountry,
-      source: input.source
+      source: input.source,
     ).create()
 
     try await sendFreeOrderRequestNotifications(for: order)
@@ -70,7 +70,7 @@ private func sendFreeOrderRequestNotifications(for order: FreeOrderRequest) asyn
       <a href="https://admin.friendslibrary.com/orders/new?request=\(id)">
         Create Order &raquo;
       </a>
-      """
+      """,
     )
     await Current.postmarkClient.send(email)
   }

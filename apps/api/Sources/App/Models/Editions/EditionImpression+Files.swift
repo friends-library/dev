@@ -33,7 +33,7 @@ extension Edition.Joined {
       format: format,
       editionId: model.id,
       edition: directoryPathData,
-      documentFilename: document.filename
+      documentFilename: document.filename,
     )
   }
 }
@@ -58,12 +58,12 @@ extension EditionImpression.Joined {
         epub: self.downloadableFile(format: .ebook(.epub)),
         pdf: self.downloadableFile(format: .ebook(.pdf)),
         speech: self.downloadableFile(format: .ebook(.speech)),
-        app: self.downloadableFile(format: .ebook(.app))
+        app: self.downloadableFile(format: .ebook(.app)),
       ),
       paperback: .init(
         interior: .init(interiors.removeFirst()) + interiors,
-        cover: .init(covers.removeFirst()) + covers
-      )
+        cover: .init(covers.removeFirst()) + covers,
+      ),
     )
   }
 }

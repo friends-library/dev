@@ -7,7 +7,7 @@ public struct ThrowingClient: Client {
     orderBy _: SQL.Order<M>? = nil,
     limit _: Int? = nil,
     offset _: Int? = nil,
-    withSoftDeleted _: Bool = false
+    withSoftDeleted _: Bool = false,
   ) async throws -> [M] {
     throw DuetSQLError.notImplemented("ThrowingClient.select")
   }
@@ -17,7 +17,7 @@ public struct ThrowingClient: Client {
     where _: SQL.WhereConstraint<M> = .never,
     orderBy _: SQL.Order<M>? = nil,
     limit _: Int? = nil,
-    offset _: Int? = nil
+    offset _: Int? = nil,
   ) async throws -> [M] {
     throw DuetSQLError.notImplemented("ThrowingClient.forceDelete")
   }
@@ -27,7 +27,7 @@ public struct ThrowingClient: Client {
     where _: SQL.WhereConstraint<M> = .never,
     orderBy _: SQL.Order<M>? = nil,
     limit _: Int? = nil,
-    offset _: Int? = nil
+    offset _: Int? = nil,
   ) async throws -> [M] {
     throw DuetSQLError.notImplemented("ThrowingClient.delete")
   }
@@ -48,7 +48,7 @@ public struct ThrowingClient: Client {
 
   public func customQuery<T: CustomQueryable>(
     _ T: T.Type,
-    withBindings: [Postgres.Data]? = nil
+    withBindings: [Postgres.Data]? = nil,
   ) async throws -> [T] {
     throw DuetSQLError.notImplemented("ThrowingClient.customQuery")
   }
@@ -56,7 +56,7 @@ public struct ThrowingClient: Client {
   public func count<M: Model>(
     _: M.Type,
     where constraint: SQL.WhereConstraint<M> = .never,
-    withSoftDeleted: Bool = false
+    withSoftDeleted: Bool = false,
   ) async throws -> Int {
     throw DuetSQLError.notImplemented("ThrowingClient.count")
   }

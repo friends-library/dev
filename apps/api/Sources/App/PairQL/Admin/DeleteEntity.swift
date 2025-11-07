@@ -22,7 +22,7 @@ extension DeleteEntity: Resolver {
         throw context.error(
           id: "f4d9cc7e",
           type: .notFound,
-          detail: "\(input.type):\(input.id.lowercased) not found"
+          detail: "\(input.type):\(input.id.lowercased) not found",
         )
       // for all non-root entity types, 404 = success, b/c cascading FK deletes
       default:

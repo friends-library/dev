@@ -10,7 +10,7 @@ extension Lulu.Api.ShippingAddress {
     stateCode: "OH",
     postcode: "44281",
     phoneNumber: "5555555555",
-    recipientTaxId: nil
+    recipientTaxId: nil,
   )
 
   static let random: Self = .init(
@@ -22,7 +22,7 @@ extension Lulu.Api.ShippingAddress {
     stateCode: "@state".random,
     postcode: "@postcode".random,
     phoneNumber: "5555555555",
-    recipientTaxId: nil
+    recipientTaxId: nil,
   )
 
   static let empty: Self = .init(
@@ -34,7 +34,7 @@ extension Lulu.Api.ShippingAddress {
     stateCode: "",
     postcode: "",
     phoneNumber: "5555555555",
-    recipientTaxId: nil
+    recipientTaxId: nil,
   )
 }
 
@@ -42,7 +42,7 @@ extension Lulu.Api.PrintJobCostCalculationsBody.LineItem {
   static let mock: Self = .init(
     pageCount: 22,
     podPackageId: "0425X0687BWSTDSS060UW444GXX",
-    quantity: 1
+    quantity: 1,
   )
 }
 
@@ -51,7 +51,7 @@ extension Lulu.Api.PrintJobCostCalculationsResponse {
     totalCostInclTax: "0.00",
     totalTax: "0.00",
     shippingCost: .init(totalCostExclTax: "0.00"),
-    fulfillmentCost: .init(totalCostExclTax: "0.0")
+    fulfillmentCost: .init(totalCostExclTax: "0.0"),
   )
 
   init(shipping: String, tax: String, total: String, fee: String) {

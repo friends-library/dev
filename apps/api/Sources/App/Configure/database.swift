@@ -13,10 +13,10 @@ extension Configure {
           username: Env.DATABASE_USERNAME,
           password: Env.DATABASE_PASSWORD,
           database: Env.get("\(dbPrefix)DATABASE_NAME")!,
-          tls: .disable
-        )
+          tls: .disable,
+        ),
       ),
-      as: .psql
+      as: .psql,
     )
 
     Current.db = FlushingDbClient(app.db as! SQLDatabase)

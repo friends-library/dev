@@ -116,7 +116,7 @@ extension ShippingAddress {
       stateCode: self.state,
       postcode: self.zip,
       phoneNumber: Env.LULU_PHONE_NUMBER,
-      recipientTaxId: self.recipientTaxId
+      recipientTaxId: self.recipientTaxId,
     )
   }
 }

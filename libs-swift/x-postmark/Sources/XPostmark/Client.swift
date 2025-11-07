@@ -13,7 +13,7 @@ public struct Client: Sendable {
     sendTemplateEmail: @escaping @Sendable (TemplateEmail) async -> Result<Void, Client.Error>,
     sendTemplateEmailBatch: @escaping @Sendable ([TemplateEmail]) async
       -> Result<[Result<Void, Client.BatchEmail.Error>], Client.Error>,
-    deleteSuppression: @escaping @Sendable (String, String) async -> Result<Void, Client.Error>
+    deleteSuppression: @escaping @Sendable (String, String) async -> Result<Void, Client.Error>,
   ) {
     self.sendEmail = sendEmail
     self.sendTemplateEmail = sendTemplateEmail
@@ -51,7 +51,7 @@ public extension Client {
       },
       deleteSuppression: { emailAddress, streamId in
         await _deleteSuppression(emailAddress, streamId, apiKey)
-      }
+      },
     )
   }
 }
@@ -61,7 +61,7 @@ public extension Client {
     sendEmail: { _ in .success(()) },
     sendTemplateEmail: { _ in .success(()) },
     sendTemplateEmailBatch: { emails in .success([]) },
-    deleteSuppression: { _, _ in .success(()) }
+    deleteSuppression: { _, _ in .success(()) },
   )
 }
 

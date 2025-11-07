@@ -52,15 +52,15 @@ extension DpcEditions: NoInputResolver {
           originalTitle: document.originalTitle,
           description: document.description,
           slug: document.slug,
-          published: document.published
+          published: document.published,
         ),
         friend: .init(
           isCompilations: friend.isCompilations,
           name: friend.name,
           alphabeticalName: friend.alphabeticalName,
           slug: friend.slug,
-          lang: friend.lang
-        )
+          lang: friend.lang,
+        ),
       )
     }
   }

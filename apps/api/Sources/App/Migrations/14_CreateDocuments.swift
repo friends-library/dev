@@ -12,12 +12,12 @@ struct CreateDocuments: Migration {
         M14.friendId,
         .uuid,
         .references(Friend.M11.tableName, .id, onDelete: .cascade),
-        .required
+        .required,
       )
       .field(
         M14.altLanguageId,
         .uuid,
-        .references(M14.tableName, .id, onDelete: .setNull)
+        .references(M14.tableName, .id, onDelete: .setNull),
       )
       .field(M14.title, .string, .required)
       .field(M14.slug, .string, .required)

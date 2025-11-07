@@ -23,7 +23,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
   func podcastDownload(
     _ editionId: Edition.Id = .init(),
     ip: String,
-    city: String? = nil
+    city: String? = nil,
   ) -> Download {
     var download = Download.random
     download.editionId = editionId
@@ -33,7 +33,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
     return download
   }
 
-  func testFindDuplicatePodcastDownloads() async throws {
+  func testFindDuplicatePodcastDownloads() throws {
     let d1 = self.podcastDownload(ip: "1.2.3.4")
     var d2 = self.podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- DUPE, same ed.id and ip
     let d3 = self.podcastDownload(ip: "1.2.3.4") // <-- not dupe, new ed.id
@@ -114,7 +114,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
       file: file,
       userAgent: userAgent,
       ipAddress: "1.2.3.4",
-      referrer: "https://www.friendslibrary.com"
+      referrer: "https://www.friendslibrary.com",
     )
 
     let inserted = try await Current.db.query(Download.self)
@@ -146,7 +146,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
         countryName: "CountryName",
         postal: "Postal",
         latitude: 123.456,
-        longitude: -123.456
+        longitude: -123.456,
       )
     }
 
@@ -158,7 +158,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
       file: file,
       userAgent: userAgent,
       ipAddress: "1.2.3.4",
-      referrer: "https://www.friendslibrary.com"
+      referrer: "https://www.friendslibrary.com",
     )
 
     let inserted = try await Current.db.query(Download.self)
@@ -197,7 +197,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
       format: .podcast,
       source: .podcast,
       isMobile: false,
-      ip: "1.2.3.4"
+      ip: "1.2.3.4",
     ))
 
     let beforeDupe = try await Current.db.query(Download.self)
@@ -213,7 +213,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
     _ = try await DownloadRoute.logAndRedirect(
       file: file,
       userAgent: "",
-      ipAddress: "1.2.3.4"
+      ipAddress: "1.2.3.4",
     )
 
     let afterDupe = try await Current.db.query(Download.self)
@@ -350,7 +350,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
       XCTAssertEqual(downloadable.filename, expectedFilename)
       XCTAssertEqual(
         downloadable.sourceUrl.absoluteString,
-        "\(self.cloudUrl)/\(edition.directoryPath)/\(expectedFilename)"
+        "\(self.cloudUrl)/\(edition.directoryPath)/\(expectedFilename)",
       )
     }
   }

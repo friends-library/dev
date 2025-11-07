@@ -26,7 +26,7 @@ extension SubmitContactForm: Resolver {
       from: EmailBuilder.fromAddress(lang: input.lang),
       replyTo: input.email,
       subject: input.lang |> subject,
-      textBody: input |> emailBody
+      textBody: input |> emailBody,
     ))
     await slackInfo(
       """
@@ -34,7 +34,7 @@ extension SubmitContactForm: Resolver {
       _Name:_ \(input.name)
       _Email:_ \(input.email)
       _Message:_ \(input.message)
-      """
+      """,
     )
     return .success
   }

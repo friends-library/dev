@@ -30,7 +30,7 @@ struct ApiTypeScriptEnumsCodableGenerator: AggregateCodeGenerator {
       replacements: [
         "Foundation.UUID": "UUID",
         "Tagged.Tagged": "Tagged",
-      ]
+      ],
     ),
   ]
 

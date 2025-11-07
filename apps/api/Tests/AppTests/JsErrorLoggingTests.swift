@@ -17,9 +17,9 @@ final class JsErrorLoggingTests: AppTestCase, @unchecked Sendable {
         event: nil,
         source: nil,
         lineNumber: 33,
-        colNumber: nil
+        colNumber: nil,
       ),
-      in: .mock
+      in: .mock,
     )
 
     expect(output).toEqual(.success)

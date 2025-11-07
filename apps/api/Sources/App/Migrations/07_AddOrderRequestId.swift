@@ -12,8 +12,8 @@ struct AddOrderRequestId: Migration {
         .references(
           FreeOrderRequest.M6.tableName,
           FreeOrderRequest.M6.id,
-          onDelete: .setNull
-        )
+          onDelete: .setNull,
+        ),
       )
       .update()
   }

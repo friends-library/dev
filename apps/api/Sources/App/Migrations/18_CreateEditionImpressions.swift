@@ -13,7 +13,7 @@ struct CreateEditionImpressions: AsyncMigration {
         M18.editionId,
         .uuid,
         .references(Edition.M17.tableName, .id, onDelete: .cascade),
-        .required
+        .required,
       )
       .field(M18.adocLength, .int, .required)
       .field(M18.paperbackSizeVariant, printSizeVariants, .required)

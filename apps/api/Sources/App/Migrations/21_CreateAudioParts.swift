@@ -11,7 +11,7 @@ struct CreateAudioParts: Migration {
         M21.audioId,
         .uuid,
         .references(Audio.M20.tableName, .id, onDelete: .cascade),
-        .required
+        .required,
       )
       .field(M21.title, .string, .required)
       .field(M21.duration, .double, .required)

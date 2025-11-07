@@ -13,7 +13,7 @@ extension FreeOrderRequest {
       addressState: "@mock addressState",
       addressZip: "@mock addressZip",
       addressCountry: "@mock addressCountry",
-      source: "@mock source"
+      source: "@mock source",
     )
   }
 
@@ -29,7 +29,7 @@ extension FreeOrderRequest {
       addressState: "",
       addressZip: "",
       addressCountry: "",
-      source: ""
+      source: "",
     )
   }
 
@@ -45,7 +45,7 @@ extension FreeOrderRequest {
       addressState: "@random".random,
       addressZip: "@random".random,
       addressCountry: "@random".random,
-      source: "@random".random
+      source: "@random".random,
     )
   }
 }

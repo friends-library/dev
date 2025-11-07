@@ -37,7 +37,7 @@ struct Order: Codable, Sendable {
       state: self.addressState,
       zip: self.addressZip,
       country: self.addressCountry,
-      recipientTaxId: self.recipientTaxId
+      recipientTaxId: self.recipientTaxId,
     )
   }
 
@@ -63,7 +63,7 @@ struct Order: Codable, Sendable {
     addressZip: String,
     addressCountry: String,
     freeOrderRequestId: FreeOrderRequest.Id? = nil,
-    recipientTaxId: String? = nil
+    recipientTaxId: String? = nil,
   ) {
     self.id = id
     self.printJobId = printJobId
@@ -120,7 +120,7 @@ extension Order {
     shippingLevel: ShippingLevel,
     email: EmailAddress,
     address: ShippingAddress,
-    freeOrderRequestId: FreeOrderRequest.Id? = nil
+    freeOrderRequestId: FreeOrderRequest.Id? = nil,
   ) {
     self.init(
       id: id,
@@ -143,7 +143,7 @@ extension Order {
       addressState: address.state,
       addressZip: address.zip,
       addressCountry: address.country,
-      freeOrderRequestId: freeOrderRequestId
+      freeOrderRequestId: freeOrderRequestId,
     )
   }
 }

@@ -92,7 +92,7 @@ extension Order {
       addressZip: input.addressZip,
       addressCountry: input.addressCountry,
       freeOrderRequestId: input.freeOrderRequestId,
-      recipientTaxId: nilIfEmpty(input.recipientTaxId)
+      recipientTaxId: nilIfEmpty(input.recipientTaxId),
     )
   }
 }
@@ -103,7 +103,7 @@ extension OrderItem {
       orderId: orderId,
       editionId: input.editionId,
       quantity: input.quantity,
-      unitPrice: input.unitPrice
+      unitPrice: input.unitPrice,
     )
   }
 }

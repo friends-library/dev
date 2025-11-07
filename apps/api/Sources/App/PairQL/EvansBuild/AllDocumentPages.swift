@@ -15,7 +15,7 @@ extension AllDocumentPages: Resolver {
 
     let downloads = try await Current.db.customQuery(
       AllDocumentDownloads.self,
-      withBindings: [.enum(lang), .null]
+      withBindings: [.enum(lang), .null],
     )
 
     return try documents.reduce(into: [:]) { result, document in
@@ -23,7 +23,7 @@ extension AllDocumentPages: Resolver {
         document,
         downloads: downloads.urlPathDict,
         numTotalBooks: documents.count,
-        in: context
+        in: context,
       )
     }
   }

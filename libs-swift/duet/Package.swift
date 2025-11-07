@@ -28,7 +28,7 @@ let package = Package(
           "-Xfrontend", "-enable-actor-data-race-checks",
           "-Xfrontend", "-warnings-as-errors",
         ]),
-      ]
+      ],
     ),
     .target(
       name: "DuetSQL",
@@ -45,17 +45,17 @@ let package = Package(
           "-Xfrontend", "-enable-actor-data-race-checks",
           "-Xfrontend", "-warnings-as-errors",
         ]),
-      ]
+      ],
     ),
     .testTarget(
       name: "DuetSQLTests",
-      dependencies: ["DuetSQL", .product(name: "XExpect", package: "x-expect")]
+      dependencies: ["DuetSQL", .product(name: "XExpect", package: "x-expect")],
     ),
     .testTarget(
       name: "DuetTests",
-      dependencies: ["Duet", .product(name: "XExpect", package: "x-expect")]
+      dependencies: ["Duet", .product(name: "XExpect", package: "x-expect")],
     ),
-  ]
+  ],
 )
 
 // helpers
@@ -65,7 +65,7 @@ extension PackageDescription.Package.Dependency {
     let parts = commitish.split(separator: "@")
     return .package(
       url: "https://github.com/\(parts[0]).git",
-      from: .init(stringLiteral: "\(parts[1])")
+      from: .init(stringLiteral: "\(parts[1])"),
     )
   }
 }

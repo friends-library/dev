@@ -41,7 +41,7 @@ struct Download: Codable, Sendable {
     postalCode: String? = nil,
     country: String? = nil,
     latitude: String? = nil,
-    longitude: String? = nil
+    longitude: String? = nil,
   ) {
     self.id = id
     self.editionId = editionId

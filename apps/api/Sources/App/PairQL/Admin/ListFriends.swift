@@ -27,7 +27,7 @@ extension ListFriends.FriendOutput {
       id: friend.id,
       name: friend.name,
       alphabeticalName: friend.alphabeticalName,
-      lang: friend.lang
+      lang: friend.lang,
     )
   }
 }

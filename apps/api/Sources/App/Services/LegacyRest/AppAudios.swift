@@ -81,7 +81,7 @@ private func toAppAudio(_ audio: Audio.Joined) -> AppAudio {
         size: part.mp3SizeHq.rawValue,
         sizeLq: part.mp3SizeLq.rawValue,
         url: part.mp3File.hq.sourceUrl.absoluteString,
-        urlLq: part.mp3File.lq.sourceUrl.absoluteString
-      ) }
+        urlLq: part.mp3File.lq.sourceUrl.absoluteString,
+      ) },
   )
 }

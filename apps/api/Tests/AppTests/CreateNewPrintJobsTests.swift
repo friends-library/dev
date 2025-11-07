@@ -40,7 +40,7 @@ final class CreateNewPrintJobTests: AppTestCase, @unchecked Sendable {
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(
       sent.slacks,
-      [.error("Unexpected print job status `ERROR` for order \(order.id.lowercased)")]
+      [.error("Unexpected print job status `ERROR` for order \(order.id.lowercased)")],
     )
     XCTAssertEqual(retrieved.printJobStatus, .presubmit)
     XCTAssertEqual(retrieved.printJobId, nil)

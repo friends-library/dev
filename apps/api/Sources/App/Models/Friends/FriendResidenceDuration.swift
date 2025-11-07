@@ -11,7 +11,7 @@ struct FriendResidenceDuration: Codable, Sendable {
     id: Id = .init(),
     friendResidenceId: FriendResidence.Id,
     start: Int,
-    end: Int
+    end: Int,
   ) {
     self.id = id
     self.friendResidenceId = friendResidenceId

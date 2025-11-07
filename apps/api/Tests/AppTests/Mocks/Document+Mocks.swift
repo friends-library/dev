@@ -13,7 +13,7 @@ extension App.Document {
       incomplete: true,
       description: "@mock description",
       partialDescription: "@mock partialDescription",
-      featuredDescription: nil
+      featuredDescription: nil,
     )
   }
 
@@ -29,7 +29,7 @@ extension App.Document {
       incomplete: false,
       description: "",
       partialDescription: "",
-      featuredDescription: nil
+      featuredDescription: nil,
     )
   }
 
@@ -45,7 +45,7 @@ extension App.Document {
       incomplete: Bool.random(),
       description: "@random".random,
       partialDescription: "@random".random,
-      featuredDescription: Bool.random() ? "@random".random : nil
+      featuredDescription: Bool.random() ? "@random".random : nil,
     )
   }
 }

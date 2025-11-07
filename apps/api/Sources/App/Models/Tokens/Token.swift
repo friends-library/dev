@@ -12,7 +12,7 @@ struct Token: Codable, Sendable {
     id: Id = .init(),
     value: Value = .init(),
     description: String,
-    uses: Int? = nil
+    uses: Int? = nil,
   ) {
     self.id = id
     self.value = value

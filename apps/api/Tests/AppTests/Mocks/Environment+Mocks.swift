@@ -14,6 +14,6 @@ extension Environment {
     luluClient: .mock,
     stripeClient: .mock,
     ipApiClient: .mock,
-    userAgentParser: .mock
+    userAgentParser: .mock,
   )
 }

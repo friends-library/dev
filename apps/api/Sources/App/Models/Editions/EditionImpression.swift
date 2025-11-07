@@ -27,7 +27,7 @@ struct EditionImpression: Codable, Sendable {
     paperbackSizeVariant: PrintSizeVariant,
     paperbackVolumes: NonEmpty<[Int]>,
     publishedRevision: GitCommitSha,
-    productionToolchainRevision: GitCommitSha
+    productionToolchainRevision: GitCommitSha,
   ) {
     self.id = id
     self.editionId = editionId

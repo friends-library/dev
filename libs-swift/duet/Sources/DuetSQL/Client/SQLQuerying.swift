@@ -5,12 +5,12 @@ public protocol SQLQuerying: Sendable {
     orderBy: SQL.Order<M>?,
     limit: Int?,
     offset: Int?,
-    withSoftDeleted: Bool
+    withSoftDeleted: Bool,
   ) async throws -> [M]
 
   func count<M: Model>(
     _: M.Type,
     where: SQL.WhereConstraint<M>,
-    withSoftDeleted: Bool
+    withSoftDeleted: Bool,
   ) async throws -> Int
 }

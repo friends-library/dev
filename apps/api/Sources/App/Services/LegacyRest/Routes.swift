@@ -43,7 +43,7 @@ enum LegacyRest {
       }
     }
 
-    public func flush() {
+    func flush() {
       self.appEditionsEnglish = nil
       self.appEditionsSpanish = nil
       self.appAudiosEnglish = nil

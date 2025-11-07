@@ -47,7 +47,7 @@ public extension Stripe {
       createBillingPortalSession: @Sendable @escaping (
         String,
         String
-      ) async throws -> Stripe.Api.BillingPortalSession
+      ) async throws -> Stripe.Api.BillingPortalSession,
     ) {
       self.createPaymentIntent = createPaymentIntent
       self.cancelPaymentIntent = cancelPaymentIntent
@@ -64,41 +64,41 @@ public extension Stripe {
 
 @Sendable private func createBillingPortalSession(
   customerId: String,
-  secretKey: String
+  secretKey: String,
 ) async throws -> Stripe.Api.BillingPortalSession {
   let (data, res) = try await HTTP.postFormUrlencoded(
     ["customer": customerId],
     to: "https://api.stripe.com/v1/billing_portal/sessions",
-    auth: .basic(secretKey, "")
+    auth: .basic(secretKey, ""),
   )
   return try await decode(Stripe.Api.BillingPortalSession.self, data: data, response: res)
 }
 
 @Sendable private func getSubscription(
   id: String,
-  secretKey: String
+  secretKey: String,
 ) async throws -> Stripe.Api.Subscription {
   let (data, response) = try await HTTP.get(
     "https://api.stripe.com/v1/subscriptions/\(id)",
-    auth: .basic(secretKey, "")
+    auth: .basic(secretKey, ""),
   )
   return try await decode(Stripe.Api.Subscription.self, data: data, response: response)
 }
 
 @Sendable private func getCheckoutSession(
   id: String,
-  secretKey: String
+  secretKey: String,
 ) async throws -> Stripe.Api.CheckoutSession {
   let (data, response) = try await HTTP.get(
     "https://api.stripe.com/v1/checkout/sessions/\(id)",
-    auth: .basic(secretKey, "")
+    auth: .basic(secretKey, ""),
   )
   return try await decode(Stripe.Api.CheckoutSession.self, data: data, response: response)
 }
 
 @Sendable private func createCheckoutSession(
   data: Stripe.CheckoutSessionData,
-  secretKey: String
+  secretKey: String,
 ) async throws -> Stripe.Api.CheckoutSession {
   var params = [
     "success_url": data.successUrl,
@@ -135,7 +135,7 @@ public extension Stripe {
   let (data, response) = try await HTTP.postFormUrlencoded(
     params,
     to: "https://api.stripe.com/v1/checkout/sessions",
-    auth: .basic(secretKey, "")
+    auth: .basic(secretKey, ""),
   )
 
   return try await decode(Stripe.Api.CheckoutSession.self, data: data, response: response)
@@ -143,12 +143,12 @@ public extension Stripe {
 
 @Sendable private func createRefund(
   paymentIntentId: String,
-  secretKey: String
+  secretKey: String,
 ) async throws -> Stripe.Api.Refund {
   let (data, response) = try await HTTP.postFormUrlencoded(
     ["payment_intent": paymentIntentId],
     to: "https://api.stripe.com/v1/refunds",
-    auth: .basic(secretKey, "")
+    auth: .basic(secretKey, ""),
   )
   return try await decode(Stripe.Api.Refund.self, data: data, response: response)
 }
@@ -157,7 +157,7 @@ public extension Stripe {
   amountInCents: Int,
   currency: Stripe.Api.Currency,
   metadata: [String: String],
-  secretKey: String
+  secretKey: String,
 ) async throws -> Stripe.Api.PaymentIntent {
   var formData = [
     "amount": "\(amountInCents)",
@@ -171,7 +171,7 @@ public extension Stripe {
   let (data, response) = try await HTTP.postFormUrlencoded(
     formData,
     to: "https://api.stripe.com/v1/payment_intents",
-    auth: .basic(secretKey, "")
+    auth: .basic(secretKey, ""),
   )
 
   return try await decode(Stripe.Api.PaymentIntent.self, data: data, response: response)
@@ -179,11 +179,11 @@ public extension Stripe {
 
 @Sendable private func cancelPaymentIntent(
   id: String,
-  secretKey: String
+  secretKey: String,
 ) async throws -> Stripe.Api.PaymentIntent {
   let (data, response) = try await HTTP.post(
     "https://api.stripe.com/v1/payment_intents/\(id)/cancel",
-    auth: .basic(secretKey, "")
+    auth: .basic(secretKey, ""),
   )
   return try await decode(Stripe.Api.PaymentIntent.self, data: data, response: response)
 }
@@ -195,7 +195,7 @@ private struct WrappedError: Decodable {
 private func decode<T: Decodable>(
   _: T.Type,
   data: Data,
-  response: HTTPURLResponse
+  response: HTTPURLResponse,
 ) async throws -> T {
   let decoder = JSONDecoder()
   decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -205,7 +205,7 @@ private func decode<T: Decodable>(
     } else {
       throw Stripe.Api.Error(
         type: "unknown_error",
-        message: String(data: data, encoding: .utf8) ?? nil
+        message: String(data: data, encoding: .utf8) ?? nil,
       )
     }
   }
@@ -226,7 +226,7 @@ public extension Stripe.Client {
     getCheckoutSession: getCheckoutSession(id:secretKey:),
     createCheckoutSession: createCheckoutSession(data:secretKey:),
     getSubscription: getSubscription(id:secretKey:),
-    createBillingPortalSession: createBillingPortalSession(customerId:secretKey:)
+    createBillingPortalSession: createBillingPortalSession(customerId:secretKey:),
   )
 
   static let mock = Stripe.Client(
@@ -250,6 +250,6 @@ public extension Stripe.Client {
     },
     createBillingPortalSession: { _, _ in
       .init(id: "bps_123", url: "/billing_portal.session/url")
-    }
+    },
   )
 }

@@ -27,7 +27,7 @@ public struct LiveClient: Client {
       M.self,
       set: values,
       where: M.column("id") == .id(model),
-      returning: .all
+      returning: .all,
     )
     let model = try await SQL.execute(prepared, on: self.sql)
       .compactMap { try $0.decode(M.self) }
@@ -41,7 +41,7 @@ public struct LiveClient: Client {
     where constraint: SQL.WhereConstraint<M> = .always,
     orderBy: SQL.Order<M>? = nil,
     limit: Int? = nil,
-    offset: Int? = nil
+    offset: Int? = nil,
   ) async throws -> [M] {
     let models = try await query(M.self)
       .where(constraint)
@@ -62,7 +62,7 @@ public struct LiveClient: Client {
     where constraint: SQL.WhereConstraint<M> = .always,
     orderBy order: SQL.Order<M>? = nil,
     limit: Int? = nil,
-    offset: Int? = nil
+    offset: Int? = nil,
   ) async throws -> [M] {
     let models = try await select(Model.self, where: constraint)
     let prepared: SQL.PreparedStatement = if (try? M.column("deleted_at")) != nil {
@@ -74,7 +74,7 @@ public struct LiveClient: Client {
         where: constraint,
         orderBy: order,
         limit: limit,
-        offset: offset
+        offset: offset,
       )
     }
     try await SQL.execute(prepared, on: self.sql)
@@ -87,7 +87,7 @@ public struct LiveClient: Client {
     orderBy: SQL.Order<M>? = nil,
     limit: Int? = nil,
     offset: Int? = nil,
-    withSoftDeleted: Bool = false
+    withSoftDeleted: Bool = false,
   ) async throws -> [M] {
     let prepared = SQL.select(
       .all,
@@ -95,7 +95,7 @@ public struct LiveClient: Client {
       where: constraint + (withSoftDeleted ? .always : .notSoftDeleted),
       orderBy: orderBy,
       limit: limit,
-      offset: offset
+      offset: offset,
     )
     let rows = try await SQL.execute(prepared, on: self.sql)
     return try rows.compactMap { try $0.decode(Model.self) }
@@ -103,7 +103,7 @@ public struct LiveClient: Client {
 
   public func customQuery<T: CustomQueryable>(
     _ Custom: T.Type,
-    withBindings bindings: [Postgres.Data]? = nil
+    withBindings bindings: [Postgres.Data]? = nil,
   ) async throws -> [T] {
     let query = Custom.query(numBindings: bindings?.count ?? 0)
     let prepared = SQL.PreparedStatement(query: query, bindings: bindings ?? [])
@@ -114,11 +114,11 @@ public struct LiveClient: Client {
   public func count<M: Model>(
     _: M.Type,
     where constraint: SQL.WhereConstraint<M> = .always,
-    withSoftDeleted: Bool = false
+    withSoftDeleted: Bool = false,
   ) async throws -> Int {
     let rows = try await SQL.execute(
       SQL.count(M.self, where: constraint + (withSoftDeleted ? .always : .notSoftDeleted)),
-      on: self.sql
+      on: self.sql,
     )
     guard let row = rows.first else {
       throw DuetSQLError.notFound("\(M.self)")

@@ -58,7 +58,7 @@ final class RateLimitedSlackClientTests: AppTestCase, @unchecked Sendable {
     await client.send(.init(text: "Unusual missing location data:\n```foo\n```", channel: .info))
     await expect(sent.value).toEqual([])
     expect(logged.value).toEqual(
-      ["Dropped rate-limited Slack to `info`: Unusual missing location data:\n```foo\n```"]
+      ["Dropped rate-limited Slack to `info`: Unusual missing location data:\n```foo\n```"],
     )
     await clearMocks()
 
@@ -102,14 +102,14 @@ final class RateLimitedSlackClientTests: AppTestCase, @unchecked Sendable {
 struct MockLogger: LogHandler {
   let logged: LockIsolated<[String]> = .init([])
 
-  public func log(
+  func log(
     level: Logger.Level,
     message: Logger.Message,
     metadata: Logger.Metadata?,
     source: String,
     file: String,
     function: String,
-    line: UInt
+    line: UInt,
   ) {
     self.logged.withValue { $0.append(message.description) }
   }

@@ -7,7 +7,7 @@ extension NPQuote {
       htmlQuote: self.htmlQuote,
       textQuote: self.textQuote,
       authorName: authorName ?? "",
-      authorUrl: nil
+      authorUrl: nil,
     )
 
     if let friendId {
@@ -21,7 +21,7 @@ extension NPQuote {
       email.document = .init(
         htmlName: Asciidoc.htmlShortTitle(document.title),
         textName: Asciidoc.utf8ShortTitle(document.title),
-        url: "\(lang.website)/\(document.urlPath)"
+        url: "\(lang.website)/\(document.urlPath)",
       )
     }
 

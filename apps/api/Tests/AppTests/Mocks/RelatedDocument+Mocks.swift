@@ -5,7 +5,7 @@ extension RelatedDocument {
     RelatedDocument(
       description: "@mock description",
       documentId: .init(),
-      parentDocumentId: .init()
+      parentDocumentId: .init(),
     )
   }
 

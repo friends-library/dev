@@ -8,7 +8,7 @@ extension Audio {
       mp3ZipSizeHq: .init(rawValue: 42),
       mp3ZipSizeLq: .init(rawValue: 42),
       m4bSizeHq: .init(rawValue: 42),
-      m4bSizeLq: .init(rawValue: 42)
+      m4bSizeLq: .init(rawValue: 42),
     )
   }
 
@@ -19,7 +19,7 @@ extension Audio {
       mp3ZipSizeHq: .init(rawValue: 0),
       mp3ZipSizeLq: .init(rawValue: 0),
       m4bSizeHq: .init(rawValue: 0),
-      m4bSizeLq: .init(rawValue: 0)
+      m4bSizeLq: .init(rawValue: 0),
     )
   }
 
@@ -30,7 +30,7 @@ extension Audio {
       mp3ZipSizeHq: .init(rawValue: Int.random),
       mp3ZipSizeLq: .init(rawValue: Int.random),
       m4bSizeHq: .init(rawValue: Int.random),
-      m4bSizeLq: .init(rawValue: Int.random)
+      m4bSizeLq: .init(rawValue: Int.random),
     )
   }
 }

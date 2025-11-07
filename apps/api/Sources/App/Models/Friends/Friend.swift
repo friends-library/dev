@@ -37,7 +37,7 @@ struct Friend: Codable, Sendable {
     description: String,
     born: Int?,
     died: Int?,
-    published: Date?
+    published: Date?,
   ) {
     self.id = id
     self.lang = lang

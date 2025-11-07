@@ -12,7 +12,7 @@ extension Friend {
       description: "@mock description",
       born: nil,
       died: nil,
-      published: nil
+      published: nil,
     )
   }
 
@@ -25,7 +25,7 @@ extension Friend {
       description: "",
       born: nil,
       died: nil,
-      published: nil
+      published: nil,
     )
   }
 
@@ -38,7 +38,7 @@ extension Friend {
       description: "@random".random,
       born: Bool.random() ? Int.random : nil,
       died: Bool.random() ? Int.random : nil,
-      published: Bool.random() ? Date() : nil
+      published: Bool.random() ? Date() : nil,
     )
   }
 }

@@ -53,7 +53,7 @@ extension AudiobooksPage: Resolver {
         friendGender: friend.gender,
         duration: audiobook.humanDurationClock,
         shortDescription: document.partialDescription,
-        createdAt: audiobook.createdAt
+        createdAt: audiobook.createdAt,
       )
     }
   }

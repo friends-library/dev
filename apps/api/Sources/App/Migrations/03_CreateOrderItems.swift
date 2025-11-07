@@ -12,7 +12,7 @@ struct CreateOrderItems: AsyncMigration {
         M3.orderId,
         .uuid,
         .required,
-        .references(Order.M2.tableName, .id, onDelete: .cascade)
+        .references(Order.M2.tableName, .id, onDelete: .cascade),
       )
       .field(M3.title, .string, .required)
       .field(M3.documentId, .uuid, .required)

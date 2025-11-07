@@ -30,7 +30,7 @@ struct AudioPart: Codable, Sendable {
     chapters: NonEmpty<[Int]>,
     order: Int,
     mp3SizeHq: Bytes,
-    mp3SizeLq: Bytes
+    mp3SizeLq: Bytes,
   ) {
     self.id = id
     self.audioId = audioId

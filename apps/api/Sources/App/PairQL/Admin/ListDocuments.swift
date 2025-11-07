@@ -22,7 +22,7 @@ extension ListDocuments: NoInputResolver {
       .init(
         id: document.id,
         title: document.title,
-        friend: .init(model: document.friend.model)
+        friend: .init(model: document.friend.model),
       )
     }
   }

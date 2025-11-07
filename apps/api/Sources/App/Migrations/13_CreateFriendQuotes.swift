@@ -12,7 +12,7 @@ struct CreateFriendQuotes: Migration {
         M13.friendId,
         .uuid,
         .required,
-        .references(Friend.M11.tableName, .id, onDelete: .cascade)
+        .references(Friend.M11.tableName, .id, onDelete: .cascade),
       )
       .field(M13.source, .string, .required)
       .field(M13.text, .string, .required)

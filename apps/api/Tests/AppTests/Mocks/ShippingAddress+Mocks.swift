@@ -8,6 +8,6 @@ extension ShippingAddress {
     city: "Cupertino",
     state: "CA",
     zip: "95014",
-    country: "US"
+    country: "US",
   )
 }

@@ -26,7 +26,7 @@ extension UpsertEditionImpression: Resolver {
       paperbackSizeVariant: input.paperbackSizeVariant,
       paperbackVolumes: .fromArray(input.paperbackVolumes),
       publishedRevision: input.publishedRevision,
-      productionToolchainRevision: input.productionToolchainRevision
+      productionToolchainRevision: input.productionToolchainRevision,
     )
     guard await impression.isValid() else { throw ModelError.invalidEntity }
     try await impression.upsert()

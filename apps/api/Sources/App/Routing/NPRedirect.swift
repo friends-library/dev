@@ -15,7 +15,7 @@ extension Response {
     let redirect = NPRedirect(lang: lang, destination: destination)
     return .init(
       status: .temporaryRedirect,
-      headers: .init([("Location", redirect.url)])
+      headers: .init([("Location", redirect.url)]),
     )
   }
 }
@@ -24,7 +24,7 @@ extension NPRedirect {
   var response: Response {
     .init(
       status: .temporaryRedirect,
-      headers: .init([("Location", self.url)])
+      headers: .init([("Location", self.url)]),
     )
   }
 

@@ -91,13 +91,13 @@ struct EditDocument: Pair {
 extension EditDocument: Resolver {
   static func resolve(
     with documentId: Document.Id,
-    in context: AuthedContext
+    in context: AuthedContext,
   ) async throws -> Output {
     try context.verify(self.auth)
     let document = try await Document.Joined.find(documentId)
     return try await .init(
       document: .init(model: document),
-      selectableDocuments: .load()
+      selectableDocuments: .load(),
     )
   }
 }
@@ -151,9 +151,9 @@ extension EditDocument.EditDocumentOutput {
               duration: part.duration,
               chapters: Array(part.chapters),
               mp3SizeHq: part.mp3SizeHq,
-              mp3SizeLq: part.mp3SizeLq
+              mp3SizeLq: part.mp3SizeLq,
             )
-          }
+          },
         )
       }
       return .init(
@@ -165,7 +165,7 @@ extension EditDocument.EditDocumentOutput {
         editor: edition.editor,
         isbn: isbn?.code.rawValue,
         isDraft: edition.isDraft,
-        audio: audioOutput
+        audio: audioOutput,
       )
     }
 
@@ -175,7 +175,7 @@ extension EditDocument.EditDocumentOutput {
         id: relatedDoc.id,
         documentId: relatedDoc.documentId,
         parentDocumentId: relatedDoc.parentDocumentId,
-        description: relatedDoc.description
+        description: relatedDoc.description,
       )
     }
     friendId = friend.id

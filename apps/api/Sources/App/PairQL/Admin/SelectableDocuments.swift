@@ -32,7 +32,7 @@ extension [SelectableDocuments.SelectableDocument] {
         id: document.id,
         title: document.title,
         lang: document.friend.lang,
-        friendAlphabeticalName: document.friend.alphabeticalName
+        friendAlphabeticalName: document.friend.alphabeticalName,
       )
     }
   }

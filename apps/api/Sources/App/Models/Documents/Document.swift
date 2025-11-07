@@ -41,7 +41,7 @@ struct Document: Codable, Sendable {
     incomplete: Bool,
     description: String,
     partialDescription: String,
-    featuredDescription: String?
+    featuredDescription: String?,
   ) {
     self.id = id
     self.friendId = friendId

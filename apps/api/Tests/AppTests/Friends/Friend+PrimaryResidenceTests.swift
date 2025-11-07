@@ -26,13 +26,13 @@ final class FriendPrimaryResidenceTests: AppTestCase, @unchecked Sendable {
     let longResidence = try await FriendResidence.create(.init(
       friendId: entities.friend.id,
       city: "York",
-      region: "England"
+      region: "England",
     ))
 
     try await FriendResidenceDuration.create(.init(
       friendResidenceId: longResidence.id,
       start: 1700,
-      end: 1770
+      end: 1770,
     ))
 
     let friend = try await Friend.Joined.find(entities.friend.id)
@@ -53,12 +53,12 @@ final class FriendPrimaryResidenceTests: AppTestCase, @unchecked Sendable {
     let adultResidence = try await FriendResidence.create(.init(
       friendId: entities.friend.id,
       city: "Sheffield",
-      region: "England"
+      region: "England",
     ))
 
     try await FriendResidenceDuration.create(.init(
       friendResidenceId: adultResidence.id,
-      start: 1717, end: 1724 // <-- shorter, but adult
+      start: 1717, end: 1724, // <-- shorter, but adult
     ))
 
     let friend = try await Friend.Joined.find(entities.friend.id)

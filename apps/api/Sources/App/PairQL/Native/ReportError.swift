@@ -25,7 +25,7 @@ extension ReportError: Resolver {
       platform: input.platform,
       installId: input.installId,
       errorMessage: input.errorMessage,
-      errorStack: input.errorStack
+      errorStack: input.errorStack,
     ).create()
 
     return .success

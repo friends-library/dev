@@ -20,7 +20,7 @@ extension ListTokens: NoInputResolver {
         description: token.description,
         uses: token.uses,
         scopes: scopes.map { .init(id: $0.id, tokenId: token.id, scope: $0.scope) },
-        createdAt: token.createdAt
+        createdAt: token.createdAt,
       )
     }
   }

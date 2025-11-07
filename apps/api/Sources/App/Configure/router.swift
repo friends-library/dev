@@ -6,34 +6,34 @@ public extension Configure {
 
     app.get(
       "download", "**",
-      use: DownloadRoute.handler(_:)
+      use: DownloadRoute.handler(_:),
     )
 
     app.get(
       "codegen", ":domain",
-      use: CodegenRoute.handler(_:)
+      use: CodegenRoute.handler(_:),
     )
 
     app.get(
       "confirm-email", ":language", ":token",
-      use: ConfirmEmailRoute.handler(_:)
+      use: ConfirmEmailRoute.handler(_:),
     )
 
     app.post(
       "postmark", "webhook", .constant(Env.POSTMARK_WEBHOOK_SLUG),
-      use: PostmarkWebhookRoute.handler(_:)
+      use: PostmarkWebhookRoute.handler(_:),
     )
 
     app.get(
       "np-resubscribe", ":id",
-      use: NPResubscribeRoute.handler(_:)
+      use: NPResubscribeRoute.handler(_:),
     )
 
     app.on(
       .POST,
       "pairql", ":domain", ":operation",
       body: .collect(maxSize: "512kb"),
-      use: PairQLRoute.handler(_:)
+      use: PairQLRoute.handler(_:),
     )
   }
 }

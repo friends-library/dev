@@ -50,7 +50,7 @@ enum PostmarkWebhookRoute: RouteHandler {
       *Narrow Path UNSUBSCRIBE:*
       _Email:_ \(subscriber.email)
       _Language:_ \(lang == .en ? "English" : "Spanish")
-      """
+      """,
     )
 
     return Response(status: .ok)
@@ -63,7 +63,7 @@ private func sendEnglishResubEmail(_ subscriber: NPSubscriber) async throws {
     to: subscriber.email,
     from: EmailBuilder.fromAddress(lang: .en),
     subject: "[,] Unsubscribed from The Narrow Path",
-    htmlBody: "You’ve successfully unsubscribed from the daily Narrow Path emails from <a href='\(Env.WEBSITE_URL_EN)'>Friends Library</a>. If you didn’t mean to do that, you can re-subscribe by <a href=\"\(resubUrl)\">clicking here</a>."
+    htmlBody: "You’ve successfully unsubscribed from the daily Narrow Path emails from <a href='\(Env.WEBSITE_URL_EN)'>Friends Library</a>. If you didn’t mean to do that, you can re-subscribe by <a href=\"\(resubUrl)\">clicking here</a>.",
   ))
 }
 
@@ -73,7 +73,7 @@ private func sendSpanishResubEmail(_ subscriber: NPSubscriber) async throws {
     to: subscriber.email,
     from: EmailBuilder.fromAddress(lang: .es),
     subject: "[,] Suscripción cancelada de El Camino Estrecho",
-    htmlBody: "Te has dado de baja exitosamente de los correos diarios de El Camino Estrecho de <a href='\(Env.WEBSITE_URL_ES)'>La Biblioteca de los Amigos</a>. Si no era tu intención, puedes volver a suscribirte haciendo <a href=\"\(resubUrl)\">clic aquí</a>."
+    htmlBody: "Te has dado de baja exitosamente de los correos diarios de El Camino Estrecho de <a href='\(Env.WEBSITE_URL_ES)'>La Biblioteca de los Amigos</a>. Si no era tu intención, puedes volver a suscribirte haciendo <a href=\"\(resubUrl)\">clic aquí</a>.",
   ))
 }
 

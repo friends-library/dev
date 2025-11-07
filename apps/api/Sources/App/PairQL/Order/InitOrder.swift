@@ -22,7 +22,7 @@ extension InitOrder: Resolver {
       async let pi = Current.stripeClient.createPaymentIntent(
         input.rawValue, .USD,
         ["orderId": orderId.lowercased],
-        Env.STRIPE_SECRET_KEY
+        Env.STRIPE_SECRET_KEY,
       )
       let tokenDesc = "single-use create order token for order `\(orderId.lowercased)`"
       async let token = Current.db.create(Token(description: tokenDesc, uses: 1))
@@ -31,7 +31,7 @@ extension InitOrder: Resolver {
         orderId: orderId,
         orderPaymentId: .init(rawValue: pi.id),
         stripeClientSecret: pi.clientSecret,
-        createOrderToken: token.value
+        createOrderToken: token.value,
       )
     } catch {
       await slackError("InitOrder error: \(String(describing: error))")

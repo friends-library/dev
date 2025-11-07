@@ -14,7 +14,7 @@ struct FlushingDbClient: DuetSQL.Client {
 
   func customQuery<T>(
     _ Custom: T.Type,
-    withBindings: [DuetSQL.Postgres.Data]?
+    withBindings: [DuetSQL.Postgres.Data]?,
   ) async throws -> [T]
     where T: DuetSQL.CustomQueryable {
     try await self.origin.customQuery(Custom, withBindings: withBindings)
@@ -26,7 +26,7 @@ struct FlushingDbClient: DuetSQL.Client {
     orderBy order: DuetSQL.SQL.Order<M>?,
     limit: Int?,
     offset: Int?,
-    withSoftDeleted: Bool
+    withSoftDeleted: Bool,
   ) async throws -> [M] where M: DuetSQL.Model {
     try await self.origin.select(
       Model,
@@ -34,14 +34,14 @@ struct FlushingDbClient: DuetSQL.Client {
       orderBy: order,
       limit: limit,
       offset: offset,
-      withSoftDeleted: withSoftDeleted
+      withSoftDeleted: withSoftDeleted,
     )
   }
 
   func count<M>(
     _: M.Type,
     where constraint: DuetSQL.SQL.WhereConstraint<M>,
-    withSoftDeleted: Bool
+    withSoftDeleted: Bool,
   ) async throws -> Int where M: DuetSQL.Model {
     try await self.origin.count(M.self, where: constraint, withSoftDeleted: withSoftDeleted)
   }
@@ -60,14 +60,14 @@ struct FlushingDbClient: DuetSQL.Client {
     where constraints: SQL.WhereConstraint<M>,
     orderBy order: SQL.Order<M>?,
     limit: Int?,
-    offset: Int?
+    offset: Int?,
   ) async throws -> [M] {
     let deleted = try await origin.delete(
       Model,
       where: constraints,
       orderBy: order,
       limit: limit,
-      offset: offset
+      offset: offset,
     )
     if M.isPreloaded {
       await self.flush()
@@ -80,14 +80,14 @@ struct FlushingDbClient: DuetSQL.Client {
     where constraints: DuetSQL.SQL.WhereConstraint<M>,
     orderBy order: DuetSQL.SQL.Order<M>?,
     limit: Int?,
-    offset: Int?
+    offset: Int?,
   ) async throws -> [M] where M: DuetSQL.Model {
     let deleted = try await origin.forceDelete(
       Model,
       where: constraints,
       orderBy: order,
       limit: limit,
-      offset: offset
+      offset: offset,
     )
     if M.isPreloaded {
       await self.flush()

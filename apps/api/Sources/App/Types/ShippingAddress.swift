@@ -18,7 +18,7 @@ struct ShippingAddress: Codable, Equatable {
     state: String,
     zip: String,
     country: String,
-    recipientTaxId: String? = nil
+    recipientTaxId: String? = nil,
   ) {
     self.name = name
     self.street = street

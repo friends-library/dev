@@ -122,7 +122,7 @@ private func toAppEdition(_ edition: Edition.Joined) -> AppEdition {
       utf8ShortTitle: document.utf8ShortTitle,
       trimmedUtf8ShortTitle: document.trimmedUtf8ShortTitle,
       description: document.description,
-      shortDescription: document.partialDescription
+      shortDescription: document.partialDescription,
     ),
     revision: impression.publishedRevision.rawValue,
     type: edition.type,
@@ -130,12 +130,12 @@ private func toAppEdition(_ edition: Edition.Joined) -> AppEdition {
     friend: .init(
       name: friend.name,
       nameSort: friend.alphabeticalName,
-      isCompilations: friend.isCompilations
+      isCompilations: friend.isCompilations,
     ),
     ebook: AppEdition.Ebook(
       loggedDownloadUrl: impression.files.ebook.app.logUrl.absoluteString,
       directDownloadUrl: impression.files.ebook.app.sourceUrl.absoluteString,
-      numPages: impression.paperbackVolumes.reduce(0, +)
+      numPages: impression.paperbackVolumes.reduce(0, +),
     ),
     isMostModernized: document.primaryEdition!.id == edition.id,
     audio: audio?.isPublished == true ? .init(
@@ -156,15 +156,15 @@ private func toAppEdition(_ edition: Edition.Joined) -> AppEdition {
             size: part.mp3SizeHq.rawValue,
             sizeLq: part.mp3SizeLq.rawValue,
             url: part.mp3File.hq.sourceUrl.absoluteString,
-            urlLq: part.mp3File.lq.sourceUrl.absoluteString
+            urlLq: part.mp3File.lq.sourceUrl.absoluteString,
           )
-        }
+        },
     ) : nil,
     images: AppEdition.Images(
       square: edition.images.square.all
         .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) },
       threeD: edition.images.threeD.all
-        .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) }
+        .map { .init(width: $0.width, height: $0.height, url: $0.url.absoluteString) },
     ),
     chapters: edition.chapters.sorted { $0.order < $1.order }.enumerated()
       .map { index, chapter in .init(
@@ -176,8 +176,8 @@ private func toAppEdition(_ edition: Edition.Joined) -> AppEdition {
         isSequenced: chapter.isSequenced,
         hasNonSequenceTitle: chapter.hasNonSequenceTitle,
         sequenceNumber: chapter.sequenceNumber,
-        nonSequenceTitle: chapter.nonSequenceTitle
-      ) }
+        nonSequenceTitle: chapter.nonSequenceTitle,
+      ) },
   )
 }
 

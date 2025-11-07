@@ -16,7 +16,7 @@ struct FriendQuote: Codable, Sendable {
     source: String,
     text: String,
     order: Int,
-    context: String? = nil
+    context: String? = nil,
   ) {
     self.id = id
     self.friendId = friendId

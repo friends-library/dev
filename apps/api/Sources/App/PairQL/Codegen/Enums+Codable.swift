@@ -224,7 +224,7 @@ extension NewsFeedItems.NewsFeedItem.Kind {
       try _CaseSpanishTranslation(
         isCompilation: isCompilation,
         friendName: friendName,
-        englishHtmlShortTitle: englishHtmlShortTitle
+        englishHtmlShortTitle: englishHtmlShortTitle,
       ).encode(to: encoder)
     case .book:
       try _NamedCase(case: "book").encode(to: encoder)
@@ -242,7 +242,7 @@ extension NewsFeedItems.NewsFeedItem.Kind {
       self = .spanishTranslation(
         isCompilation: value.isCompilation,
         friendName: value.friendName,
-        englishHtmlShortTitle: value.englishHtmlShortTitle
+        englishHtmlShortTitle: value.englishHtmlShortTitle,
       )
     case "book":
       self = .book
