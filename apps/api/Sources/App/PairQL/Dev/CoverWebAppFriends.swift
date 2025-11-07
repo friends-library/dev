@@ -58,11 +58,11 @@ extension CoverWebAppFriends: NoInputResolver {
                 pages: edition.impression.map(\.paperbackVolumes),
                 size: edition.impression?.paperbackSize,
                 isbn: edition.isbn?.code,
-                audioPartTitles: edition.audio.map { $0.parts.map(\.title) }
+                audioPartTitles: edition.audio.map { $0.parts.map(\.title) },
               )
-            }
+            },
           )
-        }
+        },
       )
     }
   }

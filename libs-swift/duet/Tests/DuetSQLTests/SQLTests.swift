@@ -12,7 +12,7 @@ final class SqlTests: XCTestCase {
       from: Thing.self,
       orderBy: .init(.string, .asc),
       limit: 2,
-      offset: 3
+      offset: 3,
     )
 
     let expectedQuery = """
@@ -165,7 +165,7 @@ final class SqlTests: XCTestCase {
       from: Thing.self,
       where: .id == 123,
       orderBy: .init(.createdAt, .asc),
-      limit: 1
+      limit: 1,
     )
 
     let expectedQuery = """
@@ -193,7 +193,7 @@ final class SqlTests: XCTestCase {
   func testBulkInsert() throws {
     let stmt = try SQL.insert(
       into: Thing.self,
-      values: [[.int: 1, .optionalInt: 2], [.optionalInt: 4, .int: 3]]
+      values: [[.int: 1, .optionalInt: 2], [.optionalInt: 4, .int: 3]],
     )
 
     let expectedQuery = """
@@ -211,7 +211,7 @@ final class SqlTests: XCTestCase {
     let statement = SQL.update(
       Thing.self,
       set: [.optionalInt: 1, .bool: true],
-      where: .string == "a"
+      where: .string == "a",
     )
 
     let query = """
@@ -241,7 +241,7 @@ final class SqlTests: XCTestCase {
       Thing.self,
       set: [.int: 1],
       where: .string == "a",
-      returning: .all
+      returning: .all,
     )
 
     let query = """
@@ -259,7 +259,7 @@ final class SqlTests: XCTestCase {
     let id = UUID()
     let statement = try SQL.insert(
       into: Thing.self,
-      values: [.int: 33, .string: "lol", .id: .uuid(id)]
+      values: [.int: 33, .string: "lol", .id: .uuid(id)],
     )
 
     let query = """
@@ -276,7 +276,7 @@ final class SqlTests: XCTestCase {
   func testOptionalInts() throws {
     let statement = try SQL.insert(
       into: Thing.self,
-      values: [.int: 22, .optionalInt: .int(nil)]
+      values: [.int: 22, .optionalInt: .int(nil)],
     )
 
     let query = """
@@ -293,7 +293,7 @@ final class SqlTests: XCTestCase {
   func testOptionalStrings() throws {
     let statement = try SQL.insert(
       into: Thing.self,
-      values: [.string: "howdy", .optionalString: .string(nil)]
+      values: [.string: "howdy", .optionalString: .string(nil)],
     )
 
     let query = """
@@ -313,7 +313,7 @@ final class SqlTests: XCTestCase {
       values: [
         .customEnum: .enum(Thing.CustomEnum.foo),
         .optionalCustomEnum: .enum(nil),
-      ]
+      ],
     )
 
     let query = """
@@ -331,7 +331,7 @@ final class SqlTests: XCTestCase {
     let date = try? Date(fromIsoString: "2021-12-14T17:16:16.896Z")
     let statement = try SQL.insert(
       into: Thing.self,
-      values: [.createdAt: .date(date), .updatedAt: .currentTimestamp]
+      values: [.createdAt: .date(date), .updatedAt: .currentTimestamp],
     )
 
     let query = """
@@ -353,7 +353,7 @@ final class SqlTests: XCTestCase {
       customEnum: .foo,
       optionalCustomEnum: .bar,
       optionalInt: 2,
-      optionalString: "opt_foo"
+      optionalString: "opt_foo",
     )
     let statement = SQL.update(Thing.self, set: thing.insertValues)
 

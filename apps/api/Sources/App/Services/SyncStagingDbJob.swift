@@ -9,7 +9,7 @@ public struct SyncStagingDbJob: ScheduledJob {
       do {
         let cmdOutput = try shellOut(
           to: "/usr/bin/bash",
-          arguments: ["\(Env.get("DEPLOY_DIR") ?? "")/apps/api/sync-staging-db.sh"]
+          arguments: ["\(Env.get("DEPLOY_DIR") ?? "")/apps/api/sync-staging-db.sh"],
         )
         await slackDebug("Completed prod->staging db sync\n```\n\(cmdOutput)\n```")
       } catch {
@@ -34,6 +34,6 @@ private func logError(_ error: ShellOutError) async {
     ```
     \(error.output)
     ```
-    """
+    """,
   )
 }

@@ -76,16 +76,16 @@ extension EditFriend: Resolver {
               id: $0.id,
               friendResidenceId: $0.friendResidenceId,
               start: $0.start,
-              end: $0.end
-            ) }
+              end: $0.end,
+            ) },
           )
         },
         quotes: friend.quotes.map {
           .init(id: $0.id, friendId: $0.friendId, source: $0.source, text: $0.text, order: $0.order)
         },
-        documents: friend.documents.concurrentMap { try await .init(model: $0) }
+        documents: friend.documents.concurrentMap { try await .init(model: $0) },
       ),
-      selectableDocuments: .load()
+      selectableDocuments: .load(),
     )
   }
 }

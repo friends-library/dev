@@ -24,16 +24,16 @@ extension Audio.Joined {
     AudioFiles(
       podcast: .init(
         hq: edition.downloadableFile(format: .audio(.podcast(.high))),
-        lq: edition.downloadableFile(format: .audio(.podcast(.low)))
+        lq: edition.downloadableFile(format: .audio(.podcast(.low))),
       ),
       mp3s: .init(
         hq: edition.downloadableFile(format: .audio(.mp3s(.high))),
-        lq: edition.downloadableFile(format: .audio(.mp3s(.low)))
+        lq: edition.downloadableFile(format: .audio(.mp3s(.low))),
       ),
       m4b: .init(
         hq: edition.downloadableFile(format: .audio(.m4b(.high))),
-        lq: edition.downloadableFile(format: .audio(.m4b(.low)))
-      )
+        lq: edition.downloadableFile(format: .audio(.m4b(.low))),
+      ),
     )
   }
 }

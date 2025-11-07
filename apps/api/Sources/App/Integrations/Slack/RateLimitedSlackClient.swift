@@ -19,7 +19,7 @@ struct RateLimitedSlackClient: Sendable {
 
   init(
     dailyLimit: Int = 2000,
-    send: @escaping @Sendable (FlpSlack.Message) async -> Void
+    send: @escaping @Sendable (FlpSlack.Message) async -> Void,
   ) {
     self.dailyLimit = dailyLimit
     self.execSend = send
@@ -59,7 +59,7 @@ struct RateLimitedSlackClient: Sendable {
             to: Env.JARED_CONTACT_FORM_EMAIL,
             from: "info@friendslibrary.com",
             subject: "[FLP Api] Exceeded daily slack limit",
-            textBody: "See server logs for dropped slacks"
+            textBody: "See server logs for dropped slacks",
           ))
         }
         self.drop(slack)

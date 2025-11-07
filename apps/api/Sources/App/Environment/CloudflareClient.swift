@@ -16,7 +16,7 @@ extension CloudflareClient {
         let response = try await HTTP.postFormUrlencoded(
           ["secret": Env.CLOUDFLARE_SECRET, "response": token],
           to: "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-          decoding: VerifyResponse.self
+          decoding: VerifyResponse.self,
         )
         if response.success {
           return .success

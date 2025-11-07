@@ -12,7 +12,7 @@ struct RelatedDocument: Codable, Sendable {
     id: Id = .init(),
     description: String,
     documentId: Document.Id,
-    parentDocumentId: Document.Id
+    parentDocumentId: Document.Id,
   ) {
     self.id = id
     self.description = description

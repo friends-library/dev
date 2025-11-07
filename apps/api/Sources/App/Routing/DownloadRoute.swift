@@ -14,7 +14,7 @@ enum DownloadRoute: RouteHandler {
         file: DownloadableFile(logPath: path),
         userAgent: request.headers.first(name: .userAgent) ?? "",
         ipAddress: request.ipAddress,
-        referrer: query?.referer ?? request.headers.first(name: .referer)
+        referrer: query?.referer ?? request.headers.first(name: .referer),
       )
     } catch {
       if shouldSlackError(from: path) {
@@ -33,7 +33,7 @@ enum DownloadRoute: RouteHandler {
     file: DownloadableFile,
     userAgent: String,
     ipAddress: String? = nil,
-    referrer: String? = nil
+    referrer: String? = nil,
   ) async throws -> Response {
     let response = Response()
     response.status = Redirect.temporary.status
@@ -77,7 +77,7 @@ enum DownloadRoute: RouteHandler {
 
         if dupe != nil {
           await slackDebug(
-            "Duplicate podcast download, edition: `\(file.editionId.lowercased)`, ip: `\(ipAddress)`"
+            "Duplicate podcast download, edition: `\(file.editionId.lowercased)`, ip: `\(ipAddress)`",
           )
           return
         }
@@ -95,7 +95,7 @@ enum DownloadRoute: RouteHandler {
         browser: device.browser,
         platform: device.platform,
         referrer: referrer,
-        ip: ipAddress
+        ip: ipAddress,
       )
 
       var location: IpApi.Response?
@@ -144,7 +144,7 @@ private func slackDownload(
   file: DownloadableFile,
   location: IpApi.Response?,
   device: UserAgentDeviceData,
-  referrer: String?
+  referrer: String?,
 ) async {
   guard let edition = try? await Edition.Joined.find(file.editionId) else {
     await slackError("Failed to fetch edition for download: \(file.editionId)")
@@ -162,7 +162,7 @@ private func slackDownload(
     let path = urlString.replacingOccurrences(
       of: #"https:\/\/([^/]+)\/"#,
       with: "",
-      options: .regularExpression
+      options: .regularExpression,
     )
     refererLink = "\nDownloaded from: \(Slack.Message.link(to: urlString, withText: path))"
   }
@@ -183,8 +183,8 @@ private func slackDownload(
       """,
       accessory: .image(
         url: edition.images.square.w450.url,
-        altText: "Image of \(document.title)"
-      )
+        altText: "Image of \(document.title)",
+      ),
     ),
   ]
 
@@ -193,7 +193,7 @@ private func slackDownload(
     if let countryCode = countryCodes[location.countryName ?? ""] {
       accessory = .image(
         url: URL(string: "https://flagcdn.com/w640/\(countryCode).png")!,
-        altText: "Flag of \(location.countryName ?? countryCode)"
+        altText: "Flag of \(location.countryName ?? countryCode)",
       )
     }
 
@@ -210,7 +210,7 @@ private func slackDownload(
       Zip: _\(location.postal ?? "`none`")_
       Region: _\(location.region ?? "`none`")_\(mapLink)
       """,
-      accessory: accessory
+      accessory: accessory,
     ))
 
     if let mapImageUrl = location.mapImageUrl {
@@ -223,7 +223,7 @@ private func slackDownload(
   let slack = FlpSlack.Message(
     blocks: blocks,
     fallbackText: "New download: \(file.logPath)",
-    channel: file.format.slackChannel
+    channel: file.format.slackChannel,
   )
 
   await Current.slackClient.send(slack)

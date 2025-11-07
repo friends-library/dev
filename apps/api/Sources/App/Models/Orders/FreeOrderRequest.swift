@@ -24,7 +24,7 @@ struct FreeOrderRequest: Codable, Sendable {
       city: self.addressCity,
       state: self.addressState,
       zip: self.addressZip,
-      country: self.addressCountry
+      country: self.addressCountry,
     )
   }
 
@@ -40,7 +40,7 @@ struct FreeOrderRequest: Codable, Sendable {
     addressState: String,
     addressZip: String,
     addressCountry: String,
-    source: String
+    source: String,
   ) {
     self.id = id
     self.name = name
@@ -66,7 +66,7 @@ extension FreeOrderRequest {
     requestedBooks: String,
     aboutRequester: String,
     address: ShippingAddress,
-    source: String
+    source: String,
   ) {
     self.init(
       id: id,
@@ -80,7 +80,7 @@ extension FreeOrderRequest {
       addressState: address.state,
       addressZip: address.zip,
       addressCountry: address.country,
-      source: source
+      source: source,
     )
   }
 }

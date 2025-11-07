@@ -11,7 +11,7 @@ struct CreateAudios: Migration {
         M20.editionId,
         .uuid,
         .references(Edition.M17.tableName, .id, onDelete: .cascade),
-        .required
+        .required,
       )
       .field(M20.reader, .string, .required)
       .field(M20.isIncomplete, .bool, .required)

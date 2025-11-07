@@ -31,7 +31,7 @@ extension TotalPublished: NoInputResolver {
         es: allDocuments
           .filter(\.hasNonDraftEdition)
           .filter { $0.friend.lang == .es }
-          .count
+          .count,
       ),
       audiobooks: .init(
         en: allAudios
@@ -41,8 +41,8 @@ extension TotalPublished: NoInputResolver {
         es: allAudios
           .filter { $0.edition.document.friend.lang == .es }
           .filter { $0.edition.isDraft == false }
-          .count
-      )
+          .count,
+      ),
     )
   }
 }

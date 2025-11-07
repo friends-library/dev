@@ -39,7 +39,7 @@ extension OrderEditions: NoInputResolver {
         title: edition.document.title,
         shortTitle: Asciidoc.trimmedUtf8ShortDocumentTitle(
           edition.document.title,
-          lang: edition.document.friend.lang
+          lang: edition.document.friend.lang,
         ),
         author: edition.document.friend.name,
         lang: edition.document.friend.lang,
@@ -47,7 +47,7 @@ extension OrderEditions: NoInputResolver {
         paperbackSize: impression.paperbackSize,
         paperbackVolumes: impression.paperbackVolumes,
         smallImgUrl: edition.images.threeD.w55.url.absoluteString,
-        largeImgUrl: edition.images.threeD.w110.url.absoluteString
+        largeImgUrl: edition.images.threeD.w110.url.absoluteString,
       )
     }.compactMap(\.self)
   }

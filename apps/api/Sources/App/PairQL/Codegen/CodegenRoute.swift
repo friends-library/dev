@@ -49,7 +49,7 @@ extension CodegenRoute {
 extension CodegenRoute.Output.Pair {
   init<P: Pair>(
     for type: P.Type,
-    with config: Config
+    with config: Config,
   ) throws {
     let codegen = CodeGen(config: config)
     let name = "\(P.self)"
@@ -89,7 +89,7 @@ extension CodegenRoute.Output.Pair {
       resultFetcher: resultFetcher,
       unwrappedFetcher: unwrappedFetcher,
       fnNameCamel: fnNameCamel,
-      fnNamePascal: fnNamePascal
+      fnNamePascal: fnNamePascal,
     )
   }
 }

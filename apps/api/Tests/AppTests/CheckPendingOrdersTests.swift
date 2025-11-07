@@ -18,7 +18,7 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
       return [.init(
         id: 33,
         status: .init(name: .productionDelayed),
-        lineItems: []
+        lineItems: [],
       )]
     }
 
@@ -28,7 +28,7 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
     XCTAssertEqual(retrieved.printJobStatus, .accepted)
     XCTAssertEqual(
       sent.slacks,
-      [.order("Verified acceptance of print job 33, status: `PRODUCTION_DELAYED`")]
+      [.order("Verified acceptance of print job 33, status: `PRODUCTION_DELAYED`")],
     )
   }
 
@@ -52,7 +52,7 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
 
     XCTAssertEqual(
       sent.slacks,
-      [.error("Unexpected missing print job id in orders: [\(order.id)]")]
+      [.error("Unexpected missing print job id in orders: [\(order.id)]")],
     )
   }
 
@@ -68,7 +68,7 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
         .init(
           id: 33,
           status: .init(name: .rejected),
-          lineItems: []
+          lineItems: [],
         ),
       ]
     }
@@ -79,7 +79,7 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
     XCTAssertEqual(retrieved.printJobStatus, .rejected)
     XCTAssertEqual(
       sent.slacks,
-      [.error("Print job 33 for order \(order.id.lowercased) rejected")]
+      [.error("Print job 33 for order \(order.id.lowercased) rejected")],
     )
   }
 }

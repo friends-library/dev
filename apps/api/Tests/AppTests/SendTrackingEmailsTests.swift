@@ -23,7 +23,7 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
       return [.init(
         id: 33,
         status: .init(name: .shipped),
-        lineItems: [.init(trackingUrls: ["/track/me"])]
+        lineItems: [.init(trackingUrls: ["/track/me"])],
       )]
     }
 
@@ -52,7 +52,7 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
     XCTAssertEqual(sent.emails.count, 0)
     XCTAssertEqual(
       sent.slacks,
-      [.error("Order \(self.order.id.lowercased) was found in status `CANCELED`!")]
+      [.error("Order \(self.order.id.lowercased) was found in status `CANCELED`!")],
     )
   }
 }

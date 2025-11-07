@@ -20,7 +20,7 @@ struct Edition: Codable, Sendable {
     editor: String?,
     isDraft: Bool = false,
     paperbackSplits: NonEmpty<[Int]>? = nil,
-    paperbackOverrideSize: PrintSizeVariant? = nil
+    paperbackOverrideSize: PrintSizeVariant? = nil,
   ) {
     self.id = id
     self.documentId = documentId

@@ -130,7 +130,7 @@ extension DocumentPage: Resolver {
 
     let rows = try await Current.db.customQuery(
       DocumentDownloads.self,
-      withBindings: document.editions.map { .uuid($0.id) }
+      withBindings: document.editions.map { .uuid($0.id) },
     )
     assert(rows.count == 1)
     let numDownloads = rows.first?.total ?? 0
@@ -139,7 +139,7 @@ extension DocumentPage: Resolver {
       document,
       downloads: [document.urlPath: numDownloads],
       numTotalBooks: publishedDocs.count,
-      in: context
+      in: context,
     )
   }
 }
@@ -149,7 +149,7 @@ extension DocumentPage.Output {
     _ document: Document.Joined,
     downloads: [String: Int],
     numTotalBooks: Int,
-    in context: AuthedContext
+    in context: AuthedContext,
   ) throws {
     let friend = document.friend
     let editions = document.editions
@@ -164,21 +164,21 @@ extension DocumentPage.Output {
         reader: audio.reader,
         sourcePath: .init(
           lq: audio.files.podcast.lq.sourcePath,
-          hq: audio.files.podcast.hq.sourcePath
+          hq: audio.files.podcast.hq.sourcePath,
         ),
         m4bFilesize: .init(lq: audio.m4bSizeLq, hq: audio.m4bSizeHq),
         mp3ZipFilesize: .init(lq: audio.mp3ZipSizeLq, hq: audio.mp3ZipSizeHq),
         m4bLoggedDownloadUrl: .init(
           lq: audio.files.m4b.lq.logUrl.absoluteString,
-          hq: audio.files.m4b.hq.logUrl.absoluteString
+          hq: audio.files.m4b.hq.logUrl.absoluteString,
         ),
         mp3ZipLoggedDownloadUrl: .init(
           lq: audio.files.mp3s.lq.logUrl.absoluteString,
-          hq: audio.files.mp3s.hq.logUrl.absoluteString
+          hq: audio.files.mp3s.hq.logUrl.absoluteString,
         ),
         podcastLoggedDownloadUrl: .init(
           lq: audio.files.podcast.lq.logUrl.absoluteString,
-          hq: audio.files.podcast.hq.logUrl.absoluteString
+          hq: audio.files.podcast.hq.logUrl.absoluteString,
         ),
         podcastImageUrl: primaryEdition.images.square.w1400.url.absoluteString,
         parts: audio.parts
@@ -188,17 +188,17 @@ extension DocumentPage.Output {
               title: part.title,
               playbackUrl: .init(
                 lq: part.mp3File.lq.sourceUrl.absoluteString,
-                hq: part.mp3File.hq.sourceUrl.absoluteString
+                hq: part.mp3File.hq.sourceUrl.absoluteString,
               ),
               loggedDownloadUrl: .init(
                 lq: part.mp3File.lq.logUrl.absoluteString,
-                hq: part.mp3File.hq.logUrl.absoluteString
+                hq: part.mp3File.hq.logUrl.absoluteString,
               ),
               sizeInBytes: .init(lq: part.mp3SizeLq, hq: part.mp3SizeHq),
               durationInSeconds: part.duration,
-              createdAt: part.createdAt
+              createdAt: part.createdAt,
             )
-          }
+          },
       )
     }
 
@@ -228,8 +228,8 @@ extension DocumentPage.Output {
             loggedDownloadUrls: .init(
               epub: impression.files.ebook.epub.logUrl.absoluteString,
               pdf: impression.files.ebook.pdf.logUrl.absoluteString,
-              speech: impression.files.ebook.speech.logUrl.absoluteString
-            )
+              speech: impression.files.ebook.speech.logUrl.absoluteString,
+            ),
           )
         },
         alternateLanguageDoc: document.altLanguageDocument.map {
@@ -241,8 +241,8 @@ extension DocumentPage.Output {
           paperbackVolumes: primaryEditionImpression.paperbackVolumes,
           isbn: isbn.code,
           numChapters: primaryEdition.chapters.count,
-          audiobook: audiobook
-        )
+          audiobook: audiobook,
+        ),
       ),
       otherBooksByFriend: friend.documents.filter(\.hasNonDraftEdition)
         .filter { $0.slug != document.slug }
@@ -258,10 +258,10 @@ extension DocumentPage.Output {
             audioDuration: edition.audio.map(\.humanDurationClock),
             htmlShortTitle: otherDoc.htmlShortTitle,
             documentSlug: otherDoc.slug,
-            createdAt: otherDoc.createdAt
+            createdAt: otherDoc.createdAt,
           )
         },
-      numTotalBooks: numTotalBooks
+      numTotalBooks: numTotalBooks,
     )
   }
 }
@@ -272,7 +272,7 @@ func expect<T>(_ value: T?, file: StaticString = #file, line: UInt = #line) thro
       id: "87b64b2a",
       requestId: "(unknown)",
       type: .serverError,
-      detail: "unexpected nil for \(T.self) from \(file):\(line)"
+      detail: "unexpected nil for \(T.self) from \(file):\(line)",
     )
   }
   return value

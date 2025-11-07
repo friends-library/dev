@@ -46,7 +46,7 @@ extension SubscribeToNarrowPath: Resolver {
       token: token,
       mixedQuotes: input.mixedQuotes,
       email: input.email.rawValue.lowercased(),
-      lang: input.lang
+      lang: input.lang,
     ).create()
 
     await slackInfo(
@@ -55,7 +55,7 @@ extension SubscribeToNarrowPath: Resolver {
       _Email:_ \(input.email.rawValue.lowercased())
       _Language:_ \(input.lang == .en ? "English" : "Spanish")
       _Mixed quotes:_ \(input.mixedQuotes ? "yes" : "no")
-      """
+      """,
     )
 
     switch input.lang {
@@ -77,7 +77,7 @@ func sendEnglishConfirm(to email: EmailAddress, confirming token: UUID) async th
     to: email.rawValue,
     from: EmailBuilder.fromAddress(lang: .en),
     subject: "Action Required: Confirm your email",
-    htmlBody: "Thanks for signing up to receive the Narrow Path daily emails! Please confirm your email address by <a href=\"\(confirmUrl)\">clicking here</a>."
+    htmlBody: "Thanks for signing up to receive the Narrow Path daily emails! Please confirm your email address by <a href=\"\(confirmUrl)\">clicking here</a>.",
   ))
 }
 
@@ -87,6 +87,6 @@ func sendSpanishConfirm(to email: EmailAddress, confirming token: UUID) async th
     to: email.rawValue,
     from: EmailBuilder.fromAddress(lang: .es),
     subject: "Acción requerida: Confirma tu correo electrónico",
-    htmlBody: "Gracias por registrarte para recibir los correos electrónicos del Camino Estrecho. Confirma tu dirección de correo electrónico haciendo <a href=\"\(confirmUrl)\">clic aquí</a>."
+    htmlBody: "Gracias por registrarte para recibir los correos electrónicos del Camino Estrecho. Confirma tu dirección de correo electrónico haciendo <a href=\"\(confirmUrl)\">clic aquí</a>.",
   ))
 }

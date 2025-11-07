@@ -92,17 +92,17 @@ extension ExplorePageBooks: Resolver {
         primaryEdition: .init(
           isbn: expect(primaryEdition.isbn).code,
           type: primaryEdition.type,
-          paperbackVolumes: impression.paperbackVolumes
+          paperbackVolumes: impression.paperbackVolumes,
         ),
         friendPrimaryResidence: friend.primaryResidence.map { residence in
           .init(
             region: residence.region,
             durations: residence.durations.map {
               .init(start: $0.start, end: $0.end)
-            }
+            },
           )
         },
-        createdAt: impression.createdAt
+        createdAt: impression.createdAt,
       )
     }
   }

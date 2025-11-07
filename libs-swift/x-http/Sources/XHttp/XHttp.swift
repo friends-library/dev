@@ -22,7 +22,7 @@ public enum HTTP {
     to urlString: String,
     headers: [String: String] = [:],
     auth: AuthType? = nil,
-    keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .useDefaultKeys
+    keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .useDefaultKeys,
   ) async throws -> (Data, HTTPURLResponse) {
     var request = try urlRequest(to: urlString, method: .post, headers: headers, auth: auth)
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -40,14 +40,14 @@ public enum HTTP {
     headers: [String: String] = [:],
     auth: AuthType? = nil,
     keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .useDefaultKeys,
-    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys,
   ) async throws -> Response {
     let (data, _) = try await postJson(
       body,
       to: urlString,
       headers: headers,
       auth: auth,
-      keyEncodingStrategy: keyEncodingStrategy
+      keyEncodingStrategy: keyEncodingStrategy,
     )
     return try decode(Response.self, from: data, using: keyDecodingStrategy)
   }
@@ -56,7 +56,7 @@ public enum HTTP {
     _ params: [String: String],
     to urlString: String,
     headers: [String: String] = [:],
-    auth: AuthType? = nil
+    auth: AuthType? = nil,
   ) async throws -> (Data, HTTPURLResponse) {
     var request = try urlRequest(to: urlString, method: .post, headers: headers, auth: auth)
     request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
@@ -70,7 +70,7 @@ public enum HTTP {
   public static func get(
     _ urlString: String,
     headers: [String: String] = [:],
-    auth: AuthType? = nil
+    auth: AuthType? = nil,
   ) async throws -> (Data, HTTPURLResponse) {
     let request = try urlRequest(to: urlString, method: .get, headers: headers, auth: auth)
     return try await convertResponse(data(for: request))
@@ -81,7 +81,7 @@ public enum HTTP {
     decoding: T.Type,
     headers: [String: String] = [:],
     auth: AuthType? = nil,
-    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys,
   ) async throws -> T {
     let (data, _) = try await get(urlString, headers: headers, auth: auth)
     return try decode(T.self, from: data, using: keyDecodingStrategy)
@@ -90,7 +90,7 @@ public enum HTTP {
   public static func post(
     _ urlString: String,
     headers: [String: String] = [:],
-    auth: AuthType? = nil
+    auth: AuthType? = nil,
   ) async throws -> (Data, HTTPURLResponse) {
     let request = try urlRequest(to: urlString, method: .post, headers: headers, auth: auth)
     return try await convertResponse(data(for: request))
@@ -101,7 +101,7 @@ public enum HTTP {
     decoding: T.Type,
     headers: [String: String] = [:],
     auth: AuthType? = nil,
-    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys,
   ) async throws -> T {
     let (data, _) = try await post(urlString, headers: headers, auth: auth)
     return try decode(T.self, from: data, using: keyDecodingStrategy)
@@ -113,13 +113,13 @@ public enum HTTP {
     decoding: T.Type,
     headers: [String: String] = [:],
     auth: AuthType? = nil,
-    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys,
   ) async throws -> T {
     let (data, _) = try await postFormUrlencoded(
       params,
       to: urlString,
       headers: headers,
-      auth: auth
+      auth: auth,
     )
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = keyDecodingStrategy
@@ -156,7 +156,7 @@ private func urlRequest(
   to urlString: String,
   method: HTTP.Method,
   headers: [String: String] = [:],
-  auth: HTTP.AuthType? = nil
+  auth: HTTP.AuthType? = nil,
 ) throws -> URLRequest {
   guard let url = URL(string: urlString) else {
     throw HttpError.invalidUrl(urlString)
@@ -198,7 +198,7 @@ private func convertResponse(_ result: (Data, URLResponse)) throws
 private func decode<T: Decodable>(
   _: T.Type,
   from data: Data,
-  using keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+  using keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys,
 ) throws -> T {
   do {
     let decoder = JSONDecoder()

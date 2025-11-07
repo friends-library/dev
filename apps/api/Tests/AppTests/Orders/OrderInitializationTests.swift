@@ -23,7 +23,7 @@ final class OrderInitializationTests: AppTestCase, @unchecked Sendable {
       orderId: .init(orderId),
       orderPaymentId: "pi_id",
       stripeClientSecret: "pi_secret",
-      createOrderToken: .init(tokenValue)
+      createOrderToken: .init(tokenValue),
     ))
   }
 

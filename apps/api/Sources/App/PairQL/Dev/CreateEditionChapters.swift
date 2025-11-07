@@ -33,7 +33,7 @@ extension EditionChapter {
       isIntermediateTitle: input.isIntermediateTitle,
       customId: input.customId,
       sequenceNumber: input.sequenceNumber,
-      nonSequenceTitle: input.nonSequenceTitle
+      nonSequenceTitle: input.nonSequenceTitle,
     )
   }
 }

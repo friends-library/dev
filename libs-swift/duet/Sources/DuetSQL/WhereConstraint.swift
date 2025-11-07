@@ -133,7 +133,7 @@ public extension SQL {
 
 public func + <M: Model>(
   lhs: SQL.WhereConstraint<M>,
-  rhs: SQL.WhereConstraint<M>
+  rhs: SQL.WhereConstraint<M>,
 ) -> SQL.WhereConstraint<M> {
   if lhs == .always {
     rhs
@@ -146,112 +146,112 @@ public func + <M: Model>(
 
 public func < <M: Model>(
   lhs: M.ColumnName,
-  rhs: Postgres.Data
+  rhs: Postgres.Data,
 ) -> SQL.WhereConstraint<M> {
   .lessThan(lhs, rhs)
 }
 
 public func <= <M: Model>(
   lhs: M.ColumnName,
-  rhs: Postgres.Data
+  rhs: Postgres.Data,
 ) -> SQL.WhereConstraint<M> {
   .lessThanOrEqualTo(lhs, rhs)
 }
 
 public func > <M: Model>(
   lhs: M.ColumnName,
-  rhs: Postgres.Data
+  rhs: Postgres.Data,
 ) -> SQL.WhereConstraint<M> {
   .greaterThan(lhs, rhs)
 }
 
 public func >= <M: Model>(
   lhs: M.ColumnName,
-  rhs: Postgres.Data
+  rhs: Postgres.Data,
 ) -> SQL.WhereConstraint<M> {
   .greaterThanOrEqualTo(lhs, rhs)
 }
 
 public func < <M: Model>(
   lhs: M.ColumnName,
-  rhs: Date
+  rhs: Date,
 ) -> SQL.WhereConstraint<M> {
   .lessThan(lhs, .date(rhs))
 }
 
 public func <= <M: Model>(
   lhs: M.ColumnName,
-  rhs: Date
+  rhs: Date,
 ) -> SQL.WhereConstraint<M> {
   .lessThanOrEqualTo(lhs, .date(rhs))
 }
 
 public func > <M: Model>(
   lhs: M.ColumnName,
-  rhs: Date
+  rhs: Date,
 ) -> SQL.WhereConstraint<M> {
   .greaterThan(lhs, .date(rhs))
 }
 
 public func >= <M: Model>(
   lhs: M.ColumnName,
-  rhs: Date
+  rhs: Date,
 ) -> SQL.WhereConstraint<M> {
   .greaterThanOrEqualTo(lhs, .date(rhs))
 }
 
 public func == <M: Model>(
   lhs: M.ColumnName,
-  rhs: Postgres.Data
+  rhs: Postgres.Data,
 ) -> SQL.WhereConstraint<M> {
   .equals(lhs, rhs)
 }
 
 public func == <M: Model>(
   lhs: M.ColumnName,
-  rhs: UUIDStringable
+  rhs: UUIDStringable,
 ) -> SQL.WhereConstraint<M> {
   .equals(lhs, .uuid(rhs))
 }
 
 public func == <M: Model>(
   lhs: M.ColumnName,
-  rhs: PostgresEnum
+  rhs: PostgresEnum,
 ) -> SQL.WhereConstraint<M> {
   .equals(lhs, .enum(rhs))
 }
 
 public func == <M: Model>(
   lhs: M.ColumnName,
-  rhs: String
+  rhs: String,
 ) -> SQL.WhereConstraint<M> {
   .equals(lhs, .string(rhs))
 }
 
 public func != <M: Model>(
   lhs: M.ColumnName,
-  rhs: Postgres.Data
+  rhs: Postgres.Data,
 ) -> SQL.WhereConstraint<M> {
   .not(.equals(lhs, rhs))
 }
 
 public func != <M: Model>(
   lhs: M.ColumnName,
-  rhs: UUIDStringable
+  rhs: UUIDStringable,
 ) -> SQL.WhereConstraint<M> {
   .not(.equals(lhs, .uuid(rhs)))
 }
 
 public func != <M: Model>(
   lhs: M.ColumnName,
-  rhs: PostgresEnum
+  rhs: PostgresEnum,
 ) -> SQL.WhereConstraint<M> {
   .not(.equals(lhs, .enum(rhs)))
 }
 
 public func != <M: Model>(
   lhs: M.ColumnName,
-  rhs: String
+  rhs: String,
 ) -> SQL.WhereConstraint<M> {
   .not(.equals(lhs, .string(rhs)))
 }
@@ -260,21 +260,21 @@ infix operator |=|
 
 public func |=| <M: Model>(
   lhs: M.ColumnName,
-  rhs: [UUIDStringable]
+  rhs: [UUIDStringable],
 ) -> SQL.WhereConstraint<M> {
   .in(lhs, rhs.map { .uuid($0) })
 }
 
 public func |=| <M: Model>(
   lhs: M.ColumnName,
-  rhs: [M.IdValue]
+  rhs: [M.IdValue],
 ) -> SQL.WhereConstraint<M> {
   .in(lhs, rhs.map { .uuid($0) })
 }
 
 public func |=| <M: Model>(
   lhs: M.ColumnName,
-  rhs: [Postgres.Data]
+  rhs: [Postgres.Data],
 ) -> SQL.WhereConstraint<M> {
   .in(lhs, rhs)
 }
@@ -283,7 +283,7 @@ infix operator .&&: AssignmentPrecedence
 
 public func .&& <M: Model>(
   lhs: SQL.WhereConstraint<M>,
-  rhs: SQL.WhereConstraint<M>
+  rhs: SQL.WhereConstraint<M>,
 ) -> SQL.WhereConstraint<M> {
   .and(lhs, rhs)
 }
@@ -292,7 +292,7 @@ infix operator .||: AssignmentPrecedence
 
 public func .|| <M: Model>(
   lhs: SQL.WhereConstraint<M>,
-  rhs: SQL.WhereConstraint<M>
+  rhs: SQL.WhereConstraint<M>,
 ) -> SQL.WhereConstraint<M> {
   .or(lhs, rhs)
 }
@@ -301,21 +301,21 @@ infix operator |!=|
 
 public func |!=| <M: Model>(
   lhs: M.ColumnName,
-  rhs: [M.IdValue]
+  rhs: [M.IdValue],
 ) -> SQL.WhereConstraint<M> {
   .not(.in(lhs, rhs.map { .uuid($0) }))
 }
 
 public func |!=| <M: Model>(
   lhs: M.ColumnName,
-  rhs: [Postgres.Data]
+  rhs: [Postgres.Data],
 ) -> SQL.WhereConstraint<M> {
   .not(.in(lhs, rhs))
 }
 
 public func |!=| <M: Model>(
   lhs: M.ColumnName,
-  rhs: [PostgresEnum]
+  rhs: [PostgresEnum],
 ) -> SQL.WhereConstraint<M> {
   .not(.in(lhs, rhs.map { .enum($0) }))
 }
@@ -324,7 +324,7 @@ infix operator <>
 
 public func <> <M: Model>(
   lhs: M.ColumnName,
-  rhs: Postgres.Data
+  rhs: Postgres.Data,
 ) -> SQL.WhereConstraint<M> {
   .not(.equals(lhs, rhs))
 }

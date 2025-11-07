@@ -21,7 +21,7 @@ extension Lulu.Api.Client {
     createPrintJob: createPrintJob(_:),
     listPrintJobs: listPrintJobs(_:),
     getPrintJobStatus: getPrintJobStatus(id:),
-    createPrintJobCostCalculation: printJobCost(lang:address:shippingLevel:items:)
+    createPrintJobCostCalculation: printJobCost(lang:address:shippingLevel:items:),
   )
 }
 
@@ -35,9 +35,9 @@ extension Lulu.Api.Client {
         totalCostInclTax: "0.00",
         totalTax: "0.00",
         shippingCost: .init(totalCostExclTax: "0.00"),
-        fulfillmentCost: .init(totalCostExclTax: "0.00")
+        fulfillmentCost: .init(totalCostExclTax: "0.00"),
       ))
-    }
+    },
   )
 }
 
@@ -48,7 +48,7 @@ extension Lulu.Api.Client {
     "\(Env.LULU_API_ENDPOINT)/print-jobs/\(id)/status/",
     decoding: Lulu.Api.PrintJob.Status.self,
     auth: .bearer(Lulu.Api.Client.ReusableToken.shared.get()),
-    keyDecodingStrategy: .convertFromSnakeCase
+    keyDecodingStrategy: .convertFromSnakeCase,
   )
 }
 
@@ -60,12 +60,12 @@ extension Lulu.Api.Client {
     "\(Env.LULU_API_ENDPOINT)/print-jobs/\(query)",
     decoding: Lulu.Api.ListPrintJobsResponse.self,
     auth: .bearer(Lulu.Api.Client.ReusableToken.shared.get()),
-    keyDecodingStrategy: .convertFromSnakeCase
+    keyDecodingStrategy: .convertFromSnakeCase,
   ).results
 }
 
 @Sendable private func createPrintJob(
-  _ body: Lulu.Api.CreatePrintJobBody
+  _ body: Lulu.Api.CreatePrintJobBody,
 ) async throws -> Lulu.Api.PrintJob {
   try await postJson(body, to: "print-jobs/", decoding: Lulu.Api.PrintJob.self)
 }
@@ -74,15 +74,15 @@ extension Lulu.Api.Client {
   lang: Lang,
   address: Lulu.Api.ShippingAddress,
   shippingLevel: Lulu.Api.ShippingOptionLevel,
-  items: [Lulu.Api.PrintJobCostCalculationsBody.LineItem]
+  items: [Lulu.Api.PrintJobCostCalculationsBody.LineItem],
 ) async throws -> Lulu.Api.PrintJobCostCalculationsResult {
   let data = try await postJson(
     Lulu.Api.PrintJobCostCalculationsBody(
       lineItems: items,
       shippingAddress: address,
-      shippingOption: shippingLevel
+      shippingOption: shippingLevel,
     ),
-    to: "print-job-cost-calculations/"
+    to: "print-job-cost-calculations/",
   )
   let decoder = JSONDecoder()
   decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -110,7 +110,7 @@ extension Lulu.Api.Client {
 private func postJson<Response: Decodable>(
   _ body: some Encodable,
   to path: String,
-  decoding: Response.Type
+  decoding: Response.Type,
 ) async throws -> Response {
   try await HTTP.postJson(
     body,
@@ -118,19 +118,19 @@ private func postJson<Response: Decodable>(
     decoding: Response.self,
     auth: .bearer(Lulu.Api.Client.ReusableToken.shared.get()),
     keyEncodingStrategy: .convertToSnakeCase,
-    keyDecodingStrategy: .convertFromSnakeCase
+    keyDecodingStrategy: .convertFromSnakeCase,
   )
 }
 
 private func postJson(
   _ body: some Encodable,
-  to path: String
+  to path: String,
 ) async throws -> Data {
   let (data, _) = try await HTTP.postJson(
     body,
     to: "\(Env.LULU_API_ENDPOINT)/\(path)",
     auth: .bearer(Lulu.Api.Client.ReusableToken.shared.get()),
-    keyEncodingStrategy: .convertToSnakeCase
+    keyEncodingStrategy: .convertToSnakeCase,
   )
   return data
 }

@@ -32,12 +32,12 @@ enum Asciidoc {
           .replacingOccurrences(
             of: #"^(The|A) "#,
             with: "",
-            options: .regularExpression
+            options: .regularExpression,
           )
           .replacingOccurrences(
             of: #"^Selection from the (.*)"#,
             with: "$1 (Selection)",
-            options: .regularExpression
+            options: .regularExpression,
           )
     }
 
@@ -49,17 +49,17 @@ enum Asciidoc {
         .replacingOccurrences(
           of: #"^Selección de(l| la) (.*)"#,
           with: "$2 (Selección)",
-          options: .regularExpression
+          options: .regularExpression,
         )
         .replacingOccurrences(
           of: #"^(El|La|Los|Una?) (?!(Camino|Verdad|Vida)\b)"#,
           with: "",
-          options: .regularExpression
+          options: .regularExpression,
         )
         .replacingOccurrences(
           of: #"^Vida "#,
           with: "La Vida ",
-          options: .regularExpression
+          options: .regularExpression,
         )
   }
 
@@ -84,7 +84,7 @@ enum Asciidoc {
       .replacingOccurrences(
         of: #"\bvolumen?\b "#,
         with: "Vol.\(HtmlEntities.Numbered.nonBreakingSpace.rawValue)",
-        options: [.regularExpression, .caseInsensitive]
+        options: [.regularExpression, .caseInsensitive],
       )
   }
 

@@ -14,7 +14,7 @@ struct OrderItem: Codable, Sendable {
     orderId: Order.Id,
     editionId: Edition.Id,
     quantity: Int,
-    unitPrice: Cents<Int>
+    unitPrice: Cents<Int>,
   ) {
     self.id = id
     self.orderId = orderId

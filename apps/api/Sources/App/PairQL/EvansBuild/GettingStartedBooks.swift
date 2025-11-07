@@ -57,7 +57,7 @@ extension GettingStartedBooks: Resolver {
         friendSlug: friend.slug,
         friendGender: friend.gender,
         htmlShortTitle: document.htmlShortTitle,
-        hasAudio: audio != nil
+        hasAudio: audio != nil,
       )
     }
   }

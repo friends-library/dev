@@ -17,7 +17,7 @@ struct CreateTokenScopes: AsyncMigration {
         TokenScope.M5.tokenId,
         .uuid,
         .required,
-        .references(Token.M4.tableName, "id", onDelete: .cascade)
+        .references(Token.M4.tableName, "id", onDelete: .cascade),
       )
       .field(TokenScope.M5.scope, scopes, .required)
       .field(.createdAt, .datetime, .required)

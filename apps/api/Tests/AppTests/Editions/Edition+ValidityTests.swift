@@ -34,7 +34,7 @@ final class EditionValidityTests: AppTestCase, @unchecked Sendable {
       editionId: entities.edition.id,
       order: 3, // <-- unexpected non-sequential order
       shortHeading: "",
-      isIntermediateTitle: false
+      isIntermediateTitle: false,
     ))
     await expect(entities.edition.model.isValid()).toBeFalse()
   }

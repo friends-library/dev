@@ -24,7 +24,7 @@ struct CreateTags: AsyncMigration {
         M15.documentId,
         .uuid,
         .references(Document.M14.tableName, .id, onDelete: .cascade),
-        .required
+        .required,
       )
       .field(M15.type, tags, .required)
       .field(.createdAt, .datetime, .required)

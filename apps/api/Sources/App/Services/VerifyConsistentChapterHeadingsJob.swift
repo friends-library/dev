@@ -41,7 +41,7 @@ private func verifyConsistentChapterHeadings(_ edition: Edition.Joined) async th
       ```
       - \(chapters.map(\.shortHeading).joined(separator: "\n- "))
       ```
-      """
+      """,
     )
   }
 }

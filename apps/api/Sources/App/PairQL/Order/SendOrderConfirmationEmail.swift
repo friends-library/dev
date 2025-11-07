@@ -15,7 +15,7 @@ extension SendOrderConfirmationEmail: Resolver {
 
     let link = Slack.Message.link(
       to: "https://admin.friendslibrary.com/orders/\(order.id.lowercased)",
-      withText: "Click here for details"
+      withText: "Click here for details",
     )
 
     await slackOrder("*Order submitted* \(link).")

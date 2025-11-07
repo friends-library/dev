@@ -36,7 +36,7 @@ struct EditionChapter: Codable, Sendable {
     isIntermediateTitle: Bool,
     customId: String? = nil,
     sequenceNumber: Int? = nil,
-    nonSequenceTitle: String? = nil
+    nonSequenceTitle: String? = nil,
   ) {
     self.id = id
     self.editionId = editionId

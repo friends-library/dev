@@ -66,7 +66,7 @@ enum NPResubscribeRoute: RouteHandler {
       return .init(
         status: .ok,
         headers: ["Content-Type": "text/html"],
-        body: .init(string: "<h1>\(subscriber.lang == .en ? "Success" : "Éxito")</h1>")
+        body: .init(string: "<h1>\(subscriber.lang == .en ? "Success" : "Éxito")</h1>"),
       )
     }
   }

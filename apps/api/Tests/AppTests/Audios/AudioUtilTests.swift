@@ -21,7 +21,7 @@ final class AudioUtilTests: XCTestCase {
     for (durations, expected) in cases {
       XCTAssertEqual(
         AudioUtil.humanDuration(partDurations: durations, style: .clock),
-        expected
+        expected,
       )
     }
   }
@@ -38,7 +38,7 @@ final class AudioUtilTests: XCTestCase {
     for (durations, expected, lang) in cases {
       XCTAssertEqual(
         AudioUtil.humanDuration(partDurations: durations, style: .abbrev(lang)),
-        expected
+        expected,
       )
     }
   }

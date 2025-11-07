@@ -19,7 +19,7 @@ extension CreateArtifactProductionVersion: Resolver {
       throw context.error(
         id: "4e50182e",
         type: .badRequest,
-        detail: "invalid version, must be 40 char full git sha"
+        detail: "invalid version, must be 40 char full git sha",
       )
     }
     let apf = try await ArtifactProductionVersion.create(.init(version: .init(input.version)))

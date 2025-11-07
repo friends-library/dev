@@ -8,7 +8,7 @@ struct AddShippingLevelGroundBus: AsyncMigration {
     try await addDbEnumCases(
       db: database,
       enumName: Order.M2.ShippingLevelEnum.name,
-      newCases: [M16.ShippingLevelEnum.caseGroundBus]
+      newCases: [M16.ShippingLevelEnum.caseGroundBus],
     )
   }
 

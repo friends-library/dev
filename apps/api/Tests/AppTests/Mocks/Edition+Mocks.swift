@@ -13,7 +13,7 @@ extension Edition {
     Edition(
       documentId: .init(),
       type: EditionType.allCases.shuffled().first!,
-      editor: Bool.random() ? "@random".random : nil
+      editor: Bool.random() ? "@random".random : nil,
     )
   }
 }

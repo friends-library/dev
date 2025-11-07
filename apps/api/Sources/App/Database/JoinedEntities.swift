@@ -23,7 +23,7 @@ extension Friend {
       _ model: Friend,
       residences: [FriendResidence.Joined],
       quotes: [FriendQuote],
-      documents: [Document.Joined] = []
+      documents: [Document.Joined] = [],
     ) {
       self.model = model
       self.residences = residences
@@ -66,7 +66,7 @@ extension Document {
       _ model: Document,
       friend: Friend.Joined,
       altLanguageDocument: Document.Joined? = nil,
-      tags: [DocumentTag.TagType]
+      tags: [DocumentTag.TagType],
     ) {
       self.model = model
       self.tags = tags
@@ -85,7 +85,7 @@ extension RelatedDocument {
     init(
       _ model: RelatedDocument,
       document: Document.Joined,
-      parentDocument: Document.Joined
+      parentDocument: Document.Joined,
     ) {
       self.model = model
       self.document = document
@@ -115,7 +115,7 @@ extension Edition {
       document: Document.Joined,
       chapters: [EditionChapter] = [],
       isbn: Isbn? = nil,
-      impression: EditionImpression.Joined? = nil
+      impression: EditionImpression.Joined? = nil,
     ) {
       self.model = model
       self.document = document
@@ -239,7 +239,7 @@ extension EditionImpression {
   }
 
   fileprivate func editionImpression(
-    _ id: EditionImpression.Id
+    _ id: EditionImpression.Id,
   ) async throws -> EditionImpression.Joined {
     if !self.loaded { try await self.load() }
     guard let impression = joinedImpressions[id] else {
@@ -315,7 +315,7 @@ extension EditionImpression {
       joined[model.id] = Friend.Joined(
         model,
         residences: joinedResidences[model.id] ?? [],
-        quotes: quotesMap[model.id] ?? []
+        quotes: quotesMap[model.id] ?? [],
       )
     }
 
@@ -328,7 +328,7 @@ extension EditionImpression {
         let joinedDocument = Document.Joined(
           model,
           friend: friend,
-          tags: documentTags[model.id] ?? []
+          tags: documentTags[model.id] ?? [],
         )
         joined[model.id] = joinedDocument
         friend.documents.append(joinedDocument)
@@ -347,7 +347,7 @@ extension EditionImpression {
         let joinedRelatedDocument = RelatedDocument.Joined(
           relatedDocument,
           document: document,
-          parentDocument: parentDocument
+          parentDocument: parentDocument,
         )
         parentDocument.relatedDocuments.append(joinedRelatedDocument)
       }
@@ -369,7 +369,7 @@ extension EditionImpression {
           model,
           document: document,
           chapters: chapterMap[model.id] ?? [],
-          isbn: isbnMap[model.id]
+          isbn: isbnMap[model.id],
         )
         joined[model.id] = joinedEdition
         document.editions.append(joinedEdition)

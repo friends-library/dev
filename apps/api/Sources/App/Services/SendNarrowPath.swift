@@ -35,7 +35,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
     let action = self.determineAction(
       sentQuotes: sentQuotes,
       allQuotes: allQuotes,
-      subscribers: subscribers
+      subscribers: subscribers,
     )
     switch action {
     case .reset(let lang):
@@ -82,7 +82,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
   func determineAction(
     sentQuotes: [NPSentQuote],
     allQuotes: [NPQuote],
-    subscribers: [NPSubscriber]
+    subscribers: [NPSubscriber],
   ) -> SendNarrowPath.Action {
     let unsentQuotes = allQuotes.filter { quote in
       !sentQuotes.contains {
@@ -130,7 +130,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
         .init(recipients: enMixedSubscribers.map(\.email), quote: enMixedQuote),
         .init(recipients: esFriendSubscribers.map(\.email), quote: esFriendQuote),
         .init(recipients: esMixedSubscribers.map(\.email), quote: esMixedQuote),
-      ]
+      ],
     )
   }
 }

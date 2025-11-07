@@ -32,7 +32,7 @@ struct Entities {
   var audioPart: AudioPart.Joined
 
   static func create(
-    beforePersist: (inout Entities.Unjoined) -> Void = { _ in }
+    beforePersist: (inout Entities.Unjoined) -> Void = { _ in },
   ) async -> Entities {
     let friend: Friend = .valid
 
@@ -83,7 +83,7 @@ struct Entities {
       editionImpression: editionImpression!,
       isbn: isbn!,
       audio: audio!,
-      audioPart: audioPart
+      audioPart: audioPart,
     )
 
     beforePersist(&entities)
@@ -109,19 +109,19 @@ extension Entities.Unjoined {
   func join() -> Entities {
     let friendResidence = FriendResidence.Joined(
       friendResidence,
-      durations: [self.friendResidenceDuration]
+      durations: [self.friendResidenceDuration],
     )
 
     let friend = Friend.Joined(
       friend,
       residences: [friendResidence],
-      quotes: [self.friendQuote]
+      quotes: [self.friendQuote],
     )
 
     let document = Document.Joined(
       document,
       friend: friend,
-      tags: [self.documentTag.type]
+      tags: [self.documentTag.type],
     )
     friend.documents.append(document)
 
@@ -129,7 +129,7 @@ extension Entities.Unjoined {
       edition,
       document: document,
       chapters: [self.editionChapter],
-      isbn: self.isbn
+      isbn: self.isbn,
     )
     document.editions.append(edition)
 
@@ -153,7 +153,7 @@ extension Entities.Unjoined {
       editionImpression: impression,
       isbn: self.isbn,
       audio: audio,
-      audioPart: audioPart
+      audioPart: audioPart,
     )
   }
 }

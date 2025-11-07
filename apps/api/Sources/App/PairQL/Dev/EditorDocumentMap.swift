@@ -13,7 +13,7 @@ extension EditorDocumentMap: NoInputResolver {
     return documents.reduce(into: [:]) { acc, document in
       acc[document.directoryPath] = Asciidoc.trimmedUtf8ShortDocumentTitle(
         document.title,
-        lang: document.friend.lang
+        lang: document.friend.lang,
       )
     }
   }

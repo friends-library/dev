@@ -18,7 +18,7 @@ struct NPQuote: Codable, Sendable {
     isFriend: Bool = true,
     authorName: String? = nil,
     friendId: Friend.Id? = nil,
-    documentId: Document.Id? = nil
+    documentId: Document.Id? = nil,
   ) {
     self.id = id
     self.lang = lang

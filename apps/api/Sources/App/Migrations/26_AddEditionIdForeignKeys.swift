@@ -13,7 +13,7 @@ struct AddEditionIdForeignKeys: AsyncMigration {
       FOREIGN KEY (\(unsafeRaw: OrderItem.M10.editionId.description))
       REFERENCES \(unsafeRaw: Edition.M17.tableName) (\(col: .id))
       ON DELETE NO ACTION;
-      """
+      """,
     ).all()
 
     _ = try await sql.raw(
@@ -23,7 +23,7 @@ struct AddEditionIdForeignKeys: AsyncMigration {
       FOREIGN KEY (\(unsafeRaw: Download.M10.editionId.description))
       REFERENCES \(unsafeRaw: Edition.M17.tableName) (\(col: .id))
       ON DELETE NO ACTION;
-      """
+      """,
     ).all()
   }
 
@@ -35,14 +35,14 @@ struct AddEditionIdForeignKeys: AsyncMigration {
       """
       ALTER TABLE \(unsafeRaw: OrderItem.M3.tableName)
       DROP CONSTRAINT \(unsafeRaw: M26.orderItemsEditionIdForeignKey);
-      """
+      """,
     ).all()
 
     _ = try await sql.raw(
       """
       ALTER TABLE \(unsafeRaw: Download.M1.tableName)
       DROP CONSTRAINT \(unsafeRaw: M26.downloadsEditionIdForeignKey);
-      """
+      """,
     ).all()
   }
 }

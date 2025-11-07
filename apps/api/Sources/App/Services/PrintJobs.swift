@@ -27,9 +27,9 @@ enum PrintJobs {
           interior: impression.files.paperback.interior[index].sourceUrl.absoluteString,
           podPackageId: Lulu.podPackageId(
             size: impression.paperbackSizeVariant.printSize,
-            pages: pages
+            pages: pages,
           ),
-          quantity: item.quantity
+          quantity: item.quantity,
         )
       }
     }.flatMap(\.self)
@@ -39,7 +39,7 @@ enum PrintJobs {
       shippingAddress: order.address.lulu,
       contactEmail: "jared@netrivet.com",
       externalId: order.id.rawValue.uuidString,
-      lineItems: lineItems
+      lineItems: lineItems,
     )
     return try await Current.luluClient.createPrintJob(payload)
   }
@@ -66,11 +66,11 @@ enum PrintJobs {
     for items: [ExploratoryItem],
     shippedTo address: ShippingAddress,
     email: EmailAddress,
-    lang: Lang
+    lang: Lang,
   ) async throws -> Result<ExploratoryMetadata, ShippingAddressError> {
     try await withThrowingTaskGroup(of: (
       Lulu.Api.PrintJobCostCalculationsResult?,
-      Order.ShippingLevel
+      Order.ShippingLevel,
     ).self) { group -> Result<ExploratoryMetadata, ShippingAddressError> in
       for level in Order.ShippingLevel.allCases {
         group.addTask {
@@ -84,10 +84,10 @@ enum PrintJobs {
                   .init(
                     pageCount: pages,
                     podPackageId: Lulu.podPackageId(size: item.printSize, pages: pages),
-                    quantity: item.quantity
+                    quantity: item.quantity,
                   )
                 }
-              }
+              },
             )
             return (result, level)
           } catch {
@@ -148,7 +148,7 @@ enum PrintJobs {
         shipping: toCents(cheapest.shippingCost.totalCostExclTax),
         taxes: toCents(cheapest.totalTax),
         fees: toCents(cheapest.fulfillmentCost.totalCostExclTax),
-        creditCardFeeOffset: self.creditCardFeeOffset(toCents(cheapest.totalCostInclTax))
+        creditCardFeeOffset: self.creditCardFeeOffset(toCents(cheapest.totalCostInclTax)),
       ))
     }
   }

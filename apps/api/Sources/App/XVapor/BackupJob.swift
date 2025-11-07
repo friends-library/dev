@@ -11,7 +11,7 @@ public struct BackupJob: AsyncScheduledJob, Sendable {
     dbName: String,
     pgDumpPath: String,
     excludeDataFromTables: [String] = [],
-    handler: @Sendable @escaping (Data) async throws -> Void
+    handler: @Sendable @escaping (Data) async throws -> Void,
   ) {
     self.dbName = dbName
     self.pgDumpPath = pgDumpPath

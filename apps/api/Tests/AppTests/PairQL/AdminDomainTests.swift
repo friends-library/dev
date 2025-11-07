@@ -18,9 +18,9 @@ final class AdminDomainTests: AppTestCase, @unchecked Sendable {
         editor: nil,
         isDraft: false,
         paperbackOverrideSize: nil,
-        paperbackSplits: nil
+        paperbackSplits: nil,
       )),
-      in: .authed
+      in: .authed,
     )
 
     expect(output).toEqual(.success)

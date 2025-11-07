@@ -19,9 +19,9 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
         items: [.init(volumes: .init(55), printSize: .m, quantity: 1)],
         email: "foo@bar",
         address: .mock,
-        lang: .en
+        lang: .en,
       ),
-      in: .mock
+      in: .mock,
     )
 
     guard case .success(var output) = result else {
@@ -35,7 +35,7 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
       shipping: 999,
       taxes: 333,
       fees: 150,
-      creditCardFeeOffset: 88
+      creditCardFeeOffset: 88,
     ))
   }
 
@@ -72,11 +72,11 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
             .absoluteString,
           podPackageId: Lulu.podPackageId(
             size: entities.editionImpression.paperbackSizeVariant.printSize,
-            pages: entities.editionImpression.paperbackVolumes.first
+            pages: entities.editionImpression.paperbackVolumes.first,
           ),
-          quantity: item.quantity
-        )]
-      )
+          quantity: item.quantity,
+        )],
+      ),
     )
   }
 
@@ -116,9 +116,9 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
               .absoluteString,
             podPackageId: Lulu.podPackageId(
               size: entities.editionImpression.paperbackSizeVariant.printSize,
-              pages: entities.editionImpression.paperbackVolumes.first
+              pages: entities.editionImpression.paperbackVolumes.first,
             ),
-            quantity: item.quantity
+            quantity: item.quantity,
           ),
           .init(
             title: entities.document.title + ", vol. 2",
@@ -127,12 +127,12 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
               .absoluteString,
             podPackageId: Lulu.podPackageId(
               size: entities.editionImpression.paperbackSizeVariant.printSize,
-              pages: entities.editionImpression.paperbackVolumes.first
+              pages: entities.editionImpression.paperbackVolumes.first,
             ),
-            quantity: item.quantity
+            quantity: item.quantity,
           ),
-        ]
-      )
+        ],
+      ),
     )
   }
 
@@ -148,7 +148,7 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
 
     let result = try await PrintJobs.getExploratoryMetadata(
       for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
-      shippedTo: .mock, email: "bob@email.com", lang: .en
+      shippedTo: .mock, email: "bob@email.com", lang: .en,
     )
 
     guard case .success(let meta) = result else {
@@ -178,7 +178,7 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
 
     let meta = try await PrintJobs.getExploratoryMetadata(
       for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
-      shippedTo: .mock, email: "", lang: .en
+      shippedTo: .mock, email: "", lang: .en,
     )
 
     guard case .success(let meta) = meta else {

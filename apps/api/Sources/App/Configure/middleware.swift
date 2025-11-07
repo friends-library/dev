@@ -27,7 +27,7 @@ private func corsMiddleware(_ app: Application) -> CORSMiddleware {
       .userAgent,
       .accessControlAllowOrigin,
       .referer,
-    ]
+    ],
   )
   return CORSMiddleware(configuration: corsConfiguration)
 }

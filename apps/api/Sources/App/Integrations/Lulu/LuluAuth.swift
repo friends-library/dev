@@ -26,12 +26,12 @@ extension Lulu.Api.Client {
         to: "\(Env.LULU_API_ENDPOINT)/auth/realms/glasstree/protocol/openid-connect/token",
         decoding: Lulu.Api.CredentialsResponse.self,
         auth: .basic(Env.LULU_CLIENT_KEY, Env.LULU_CLIENT_SECRET),
-        keyDecodingStrategy: .convertFromSnakeCase
+        keyDecodingStrategy: .convertFromSnakeCase,
       )
       self.requestInFlight = false
       token = (
         value: creds.accessToken,
-        expiration: Current.date().addingTimeInterval(creds.expiresIn - 5.0)
+        expiration: Current.date().addingTimeInterval(creds.expiresIn - 5.0),
       )
       return creds.accessToken
     }

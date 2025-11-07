@@ -58,7 +58,7 @@ let package = Package(
           "-Xfrontend", "-enable-actor-data-race-checks",
         ]),
         .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),
-      ]
+      ],
     ),
     .executableTarget(name: "Run", dependencies: [.target(name: "App")]),
     .testTarget(
@@ -70,14 +70,14 @@ let package = Package(
         .product(name: "XExpect", package: "x-expect"),
         .product(name: "XCTVapor", package: "vapor"),
         .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras"),
-      ]
+      ],
     ),
-  ]
+  ],
 )
 
 if ProcessInfo.processInfo.environment["CI"] != nil {
   package.targets[0].swiftSettings?.append(
-    .unsafeFlags(["-Xfrontend", "-warnings-as-errors"])
+    .unsafeFlags(["-Xfrontend", "-warnings-as-errors"]),
   )
 }
 
@@ -90,7 +90,7 @@ extension PackageDescription.Package.Dependency {
     let parts = commitish.split(separator: "@")
     return .package(
       url: "https://github.com/\(parts[0]).git",
-      from: .init(stringLiteral: "\(parts[1])")
+      from: .init(stringLiteral: "\(parts[1])"),
     )
   }
 }

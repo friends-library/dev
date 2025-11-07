@@ -71,7 +71,7 @@ final class FriendValidityTests: AppTestCase, @unchecked Sendable {
       friendId: entities.friend.id,
       source: "",
       text: "",
-      order: 3 // <-- unexpected non-sequential order
+      order: 3, // <-- unexpected non-sequential order
     ))
     let friend = try await Friend.Joined.find(entities.friend.id)
     await expect(friend.model.isValid()).toBeFalse()

@@ -13,9 +13,9 @@ final class ContactFormTests: AppTestCase, @unchecked Sendable {
         name: "Bob Villa",
         email: "bob@thisoldhouse.com",
         subject: .tech,
-        message: "hey there"
+        message: "hey there",
       ),
-      in: .mock
+      in: .mock,
     )
 
     expect(output).toEqual(.success)
@@ -41,16 +41,16 @@ final class ContactFormTests: AppTestCase, @unchecked Sendable {
         name: "Pablo Smith",
         email: "pablo@mexico.gov",
         subject: .other,
-        message: "hola"
+        message: "hola",
       ),
-      in: .mock
+      in: .mock,
     )
 
     let email = sent.emails.first
     XCTAssertEqual(sent.emails.count, 1)
     XCTAssertEqual(
       email?.subject,
-      "bibliotecadelosamigos.org formulario de contacto -- \(Current.date())"
+      "bibliotecadelosamigos.org formulario de contacto -- \(Current.date())",
     )
     XCTAssertEqual(email?.replyTo, "pablo@mexico.gov")
     XCTAssertEqual(email?.from, "Biblioteca de los Amigos <info@bibliotecadelosamigos.org>")

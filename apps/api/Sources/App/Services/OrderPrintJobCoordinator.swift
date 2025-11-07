@@ -27,7 +27,7 @@ enum OrderPrintJobCoordinator {
         let job = try await createPrintJob(order)
         if job.status.name != .created {
           await slackError(
-            "Unexpected print job status `\(job.status.name.rawValue)` for order \(order |> slackLink)"
+            "Unexpected print job status `\(job.status.name.rawValue)` for order \(order |> slackLink)",
           )
         } else {
           order.printJobStatus = .pending
@@ -75,7 +75,7 @@ enum OrderPrintJobCoordinator {
         order.printJobStatus = .rejected
         updated.append(order)
         await slackError(
-          "Print job \(printJob |> slackLink) for order \(order.id.lowercased) rejected"
+          "Print job \(printJob |> slackLink) for order \(order.id.lowercased) rejected",
         )
       case .paymentInProgress,
            .productionReady,
@@ -85,7 +85,7 @@ enum OrderPrintJobCoordinator {
         order.printJobStatus = .accepted
         updated.append(order)
         await slackOrder(
-          "Verified acceptance of print job \(printJob |> slackLink), status: `\(status)`"
+          "Verified acceptance of print job \(printJob |> slackLink), status: `\(status)`",
         )
       }
     }
@@ -155,7 +155,7 @@ private func updateOrders(_ orders: [Order]) async {
 }
 
 private func getOrdersWithPrintJobs(
-  status: Order.PrintJobStatus
+  status: Order.PrintJobStatus,
 ) async -> (orders: [Order], printJobs: [Lulu.Api.PrintJob])? {
   let orders: [Order]
   let printJobs: [Lulu.Api.PrintJob]
@@ -182,7 +182,7 @@ private func orderPrintJobIds(_ orders: [Order]) async -> NonEmpty<[Int64]>? {
   }
 
   let ids = try? NonEmpty<[Int64]>.fromArray(
-    orders.compactMap { $0.printJobId?.rawValue }.map(Int64.init)
+    orders.compactMap { $0.printJobId?.rawValue }.map(Int64.init),
   )
 
   guard let printJobIds = ids, printJobIds.count == orders.count else {

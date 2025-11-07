@@ -15,11 +15,11 @@ let package = Package(
         "-Xfrontend", "-warn-concurrency",
         "-Xfrontend", "-enable-actor-data-race-checks",
         "-Xfrontend", "-warnings-as-errors",
-      ])]
+      ])],
     ),
     .testTarget(
       name: "XHttpTests",
-      dependencies: ["XHttp"]
+      dependencies: ["XHttp"],
     ),
-  ]
+  ],
 )

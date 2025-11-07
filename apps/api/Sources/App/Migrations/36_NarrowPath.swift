@@ -25,12 +25,12 @@ struct NarrowPath: AsyncMigration {
       .field(
         NPQuote.M37.friendId,
         .uuid,
-        .references(Friend.M11.tableName, .id, onDelete: .setNull)
+        .references(Friend.M11.tableName, .id, onDelete: .setNull),
       )
       .field(
         NPQuote.M37.documentId,
         .uuid,
-        .references(Document.M14.tableName, .id, onDelete: .setNull)
+        .references(Document.M14.tableName, .id, onDelete: .setNull),
       )
       .field(.createdAt, .datetime, .required)
       .field(.updatedAt, .datetime, .required)
@@ -41,7 +41,7 @@ struct NarrowPath: AsyncMigration {
       .field(
         NPSentQuote.M38.quoteId,
         .uuid,
-        .references(NPQuote.M37.tableName, .id, onDelete: .cascade)
+        .references(NPQuote.M37.tableName, .id, onDelete: .cascade),
       )
       .field(.createdAt, .datetime, .required)
       .create()

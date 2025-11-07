@@ -45,7 +45,7 @@ extension FriendsPage: Resolver {
         born: friend.born,
         died: friend.died,
         primaryResidence: .init(city: residence.city, region: residence.region),
-        createdAt: friend.createdAt
+        createdAt: friend.createdAt,
       )
     }.compactMap(\.self)
   }

@@ -36,7 +36,7 @@ extension GetEditionImpression.Output.Files {
       epub: files.ebook.epub.sourcePath,
       pdf: files.ebook.pdf.sourcePath,
       speech: files.ebook.speech.sourcePath,
-      app: files.ebook.app.sourcePath
+      app: files.ebook.app.sourcePath,
     )
   }
 }

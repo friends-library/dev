@@ -96,7 +96,7 @@ extension FriendPage: Resolver {
 
     let downloads = try await Current.db.customQuery(
       AllDocumentDownloads.self,
-      withBindings: [.enum(input.lang), .uuid(friend.id)]
+      withBindings: [.enum(input.lang), .uuid(friend.id)],
     ).urlPathDict
 
     return try .init(friend, downloads: downloads, in: context)
@@ -112,7 +112,7 @@ extension FriendPage.Output {
       throw context.error(
         id: "0e8ded83",
         type: .badRequest,
-        detail: "friend `\(friend.lang)/\(friend.slug)` has no published documents"
+        detail: "friend `\(friend.lang)/\(friend.slug)` has no published documents",
       )
     }
 
@@ -127,7 +127,7 @@ extension FriendPage.Output {
       throw context.error(
         id: "01c3e020",
         type: .serverError,
-        detail: "non-compilations friend `\(friend.lang)/\(friend.slug)` has no residences"
+        detail: "non-compilations friend `\(friend.lang)/\(friend.slug)` has no residences",
       )
     }
 
@@ -156,16 +156,16 @@ extension FriendPage.Output {
             isbn: isbn.code,
             numPages: impression.paperbackVolumes,
             size: impression.paperbackSize,
-            type: primaryEdition.type
+            type: primaryEdition.type,
           ),
-          editionTypes: document.editions.map(\.type)
+          editionTypes: document.editions.map(\.type),
         )
       },
       residences: residences.map { residence in
         .init(
           city: residence.city,
           region: residence.region,
-          durations: residence.durations.map { .init(start: $0.start, end: $0.end) }
+          durations: residence.durations.map { .init(start: $0.start, end: $0.end) },
         )
       },
       quotes: quotes.map { .init(text: $0.text, source: $0.source) },
@@ -184,9 +184,9 @@ extension FriendPage.Output {
           editionType: edition.type,
           paperbackVolumes: expect(edition.impression).paperbackVolumes,
           isbn: expect(edition.isbn).code,
-          createdAt: doc.createdAt
+          createdAt: doc.createdAt,
         )
-      }
+      },
     )
   }
 }

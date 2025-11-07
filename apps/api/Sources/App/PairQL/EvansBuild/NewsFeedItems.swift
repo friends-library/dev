@@ -14,7 +14,7 @@ struct NewsFeedItems: Pair {
       case spanishTranslation(
         isCompilation: Bool,
         friendName: String,
-        englishHtmlShortTitle: String
+        englishHtmlShortTitle: String,
       )
     }
 
@@ -52,7 +52,7 @@ extension NewsFeedItems: Resolver {
         htmlShortTitle: document.htmlShortTitle,
         documentSlug: document.slug,
         friendSlug: friend.slug,
-        createdAt: impression.createdAt
+        createdAt: impression.createdAt,
       ))
     }
 
@@ -75,7 +75,7 @@ extension NewsFeedItems: Resolver {
         htmlShortTitle: document.htmlShortTitle,
         documentSlug: document.slug,
         friendSlug: friend.slug,
-        createdAt: audiobook.createdAt
+        createdAt: audiobook.createdAt,
       ))
     }
 
@@ -97,12 +97,12 @@ extension NewsFeedItems: Resolver {
           kind: .spanishTranslation(
             isCompilation: friend.isCompilations,
             friendName: friend.name,
-            englishHtmlShortTitle: altLangDoc.htmlShortTitle
+            englishHtmlShortTitle: altLangDoc.htmlShortTitle,
           ),
           htmlShortTitle: document.htmlShortTitle,
           documentSlug: document.slug,
           friendSlug: friend.slug,
-          createdAt: impression.createdAt
+          createdAt: impression.createdAt,
         ))
       }
     }
@@ -110,7 +110,7 @@ extension NewsFeedItems: Resolver {
     return Array(
       items
         .sorted(by: { $0.createdAt > $1.createdAt })
-        .prefix(24)
+        .prefix(24),
     )
   }
 }

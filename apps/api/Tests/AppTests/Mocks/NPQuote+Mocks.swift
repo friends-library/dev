@@ -14,7 +14,7 @@ extension NPQuote {
       lang: Bool.random() ? .en : .es,
       quote: "mock quote".random,
       isFriend: Bool.random(),
-      authorName: "mock author".random
+      authorName: "mock author".random,
     )
   }
 }

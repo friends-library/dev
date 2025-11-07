@@ -21,7 +21,7 @@ struct Audio: Codable, Sendable {
     mp3ZipSizeLq: Bytes,
     m4bSizeHq: Bytes,
     m4bSizeLq: Bytes,
-    isIncomplete: Bool = false
+    isIncomplete: Bool = false,
   ) {
     self.id = id
     self.editionId = editionId
@@ -50,7 +50,7 @@ extension Audio.Joined {
   var humanDurationAbbrev: String {
     AudioUtil.humanDuration(
       partDurations: parts.map(\.duration),
-      style: .abbrev(edition.document.friend.lang)
+      style: .abbrev(edition.document.friend.lang),
     )
   }
 }

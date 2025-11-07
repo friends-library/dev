@@ -17,7 +17,7 @@ enum JSON {
   static func decode<T: Decodable>(
     _: T.Type,
     from data: Data,
-    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys,
   ) -> T? {
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = keyDecodingStrategy

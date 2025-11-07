@@ -10,7 +10,7 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
       token: nil,
       mixedQuotes: true,
       email: "bob@\(Int.random)bob.com",
-      lang: .en
+      lang: .en,
     ))
     expect(subscriber.unsubscribedAt).toBeNil()
 
@@ -62,9 +62,9 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
         email: .init(rawValue: email),
         lang: .en,
         mixedQuotes: false,
-        turnstileToken: "turnstile-token-value"
+        turnstileToken: "turnstile-token-value",
       ),
-      in: .mock
+      in: .mock,
     )
 
     expect(output).toEqual(.success)
@@ -115,9 +115,9 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
         email: .init(rawValue: email),
         lang: .es,
         mixedQuotes: false,
-        turnstileToken: "turnstile-token-value"
+        turnstileToken: "turnstile-token-value",
       ),
-      in: .mock
+      in: .mock,
     )
 
     expect(output).toEqual(.success)
@@ -180,9 +180,9 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
           email: .init(rawValue: "you@example.com"),
           lang: .en,
           mixedQuotes: false,
-          turnstileToken: "turnstile-token-value"
+          turnstileToken: "turnstile-token-value",
         ),
-        in: .mock
+        in: .mock,
       )
     }.toContain("Bad Request")
   }

@@ -6,7 +6,7 @@ extension EditionChapter {
       editionId: .init(),
       order: 42,
       shortHeading: "@mock shortHeading",
-      isIntermediateTitle: true
+      isIntermediateTitle: true,
     )
   }
 
@@ -19,7 +19,7 @@ extension EditionChapter {
       editionId: .init(),
       order: Int.random,
       shortHeading: "@random".random,
-      isIntermediateTitle: Bool.random()
+      isIntermediateTitle: Bool.random(),
     )
   }
 }

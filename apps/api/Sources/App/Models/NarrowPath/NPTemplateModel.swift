@@ -25,7 +25,7 @@ extension NPEmail {
       from: self.fromAddress,
       templateAlias: "narrow-path",
       templateModel: self.postmarkModel,
-      messageStream: "narrow-path-\(self.lang)"
+      messageStream: "narrow-path-\(self.lang)",
     )
   }
 

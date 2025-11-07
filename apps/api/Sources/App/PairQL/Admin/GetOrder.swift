@@ -77,13 +77,13 @@ extension GetOrder: Resolver {
             image: .init(
               width: edition.images.threeD.w250.width,
               height: edition.images.threeD.w250.height,
-              url: edition.images.threeD.w250.url.absoluteString
-            )
-          )
+              url: edition.images.threeD.w250.url.absoluteString,
+            ),
+          ),
         )
       },
       address: order.address,
-      createdAt: order.createdAt
+      createdAt: order.createdAt,
     )
   }
 }

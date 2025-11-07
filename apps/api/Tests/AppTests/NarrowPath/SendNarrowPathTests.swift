@@ -11,7 +11,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     let action = SendNarrowPath().determineAction(
       sentQuotes: [],
       allQuotes: [self.enFriendId1, self.enFriendId2, self.esFriendId4],
-      subscribers: self.allSubscribers
+      subscribers: self.allSubscribers,
     )
 
     switch action {
@@ -32,7 +32,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     let action = SendNarrowPath().determineAction(
       sentQuotes: [],
       allQuotes: [self.enFriendId2, self.enFriendId1, self.enOtherId3, self.esFriendId4],
-      subscribers: self.allSubscribers
+      subscribers: self.allSubscribers,
     )
 
     switch action {
@@ -52,7 +52,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     let action = SendNarrowPath().determineAction(
       sentQuotes: [.init(quoteId: self.enFriendId1.id)],
       allQuotes: [self.enFriendId1, self.esFriendId4],
-      subscribers: self.allSubscribers
+      subscribers: self.allSubscribers,
     )
     expect(action).toEqual(.reset(.en))
   }
@@ -61,7 +61,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     let action = SendNarrowPath().determineAction(
       sentQuotes: [.init(quoteId: self.esFriendId4.id)],
       allQuotes: [self.enFriendId1, self.esFriendId4],
-      subscribers: self.allSubscribers
+      subscribers: self.allSubscribers,
     )
     expect(action).toEqual(.reset(.es))
   }
@@ -85,7 +85,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
       isFriend: true,
       authorName: "George Fox",
       friendId: nil,
-      documentId: nil
+      documentId: nil,
     ).create()
     let quoteEs = try await NPQuote(
       lang: .es,
@@ -93,7 +93,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
       isFriend: true,
       authorName: "Jorge Zorro",
       friendId: nil,
-      documentId: nil
+      documentId: nil,
     ).create()
     let quoteEs2 = try await NPQuote(
       lang: .es,
@@ -101,7 +101,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
       isFriend: true,
       authorName: "Jorge Zorro",
       friendId: nil,
-      documentId: nil
+      documentId: nil,
     ).create()
     try await Current.db.create([self.enFriendsSub, self.esFriendsSub])
 
@@ -138,7 +138,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
           "text_footer_blurb": "Find free ebooks, audiobooks and more from early Quakers at https://friendslibrary.com",
           "unsubscribe_text": "Unsubscribe",
         ],
-        messageStream: "narrow-path-en"
+        messageStream: "narrow-path-en",
       ),
       .init(
         to: "es.friends",
@@ -157,7 +157,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
           "text_footer_blurb": "Puedes encontrar libros electrónicos y audiolibros gratuitos de los primeros Cuáqueros en https://bibliotecadelosamigos.org",
           "unsubscribe_text": "Cancelar suscripción",
         ],
-        messageStream: "narrow-path-es"
+        messageStream: "narrow-path-es",
       ),
     ])
 
@@ -171,35 +171,35 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     lang: .en,
     quote: "en-f-1",
     isFriend: true,
-    friendId: .init()
+    friendId: .init(),
   )
   let enFriendId2 = NPQuote(
     id: 2,
     lang: .en,
     quote: "en-f-2",
     isFriend: true,
-    friendId: .init()
+    friendId: .init(),
   )
   let enOtherId3 = NPQuote(
     id: 3,
     lang: .en,
     quote: "en-o-3",
     isFriend: false,
-    friendId: nil
+    friendId: nil,
   )
   let esFriendId4 = NPQuote(
     id: 4,
     lang: .es,
     quote: "es-f-4",
     isFriend: true,
-    friendId: .init()
+    friendId: .init(),
   )
   let esOtherId5 = NPQuote(
     id: 5,
     lang: .es,
     quote: "es-o-5",
     isFriend: false,
-    friendId: nil
+    friendId: nil,
   )
   let enFriendsSub = NPSubscriber(token: nil, email: "en.friends", lang: .en)
   let enMixedSub = NPSubscriber(token: nil, mixedQuotes: true, email: "en.mixed", lang: .en)

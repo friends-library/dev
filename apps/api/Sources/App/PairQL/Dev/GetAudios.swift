@@ -75,14 +75,14 @@ extension GetAudios: NoInputResolver {
             title: part.title,
             order: part.order,
             mp3SizeHq: part.mp3SizeHq.rawValue,
-            mp3SizeLq: part.mp3SizeLq.rawValue
+            mp3SizeLq: part.mp3SizeLq.rawValue,
           )
         },
         edition: .init(
           id: audio.edition.id,
           path: audio.edition.directoryPath,
           type: audio.edition.type,
-          coverImagePath: audio.edition.images.square.w1400.path
+          coverImagePath: audio.edition.images.square.w1400.path,
         ),
         document: .init(
           filename: audio.edition.document.filename,
@@ -90,15 +90,15 @@ extension GetAudios: NoInputResolver {
           slug: audio.edition.document.slug,
           description: audio.edition.document.description,
           path: audio.edition.document.directoryPath,
-          tags: audio.edition.document.tags
+          tags: audio.edition.document.tags,
         ),
         friend: .init(
           lang: audio.edition.document.friend.lang,
           name: audio.edition.document.friend.name,
           slug: audio.edition.document.friend.slug,
           alphabeticalName: audio.edition.document.friend.alphabeticalName,
-          isCompilations: audio.edition.document.friend.isCompilations
-        )
+          isCompilations: audio.edition.document.friend.isCompilations,
+        ),
       )
     }
   }

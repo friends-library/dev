@@ -51,14 +51,14 @@ enum FlpSlack {
       text: String,
       channel: Channel,
       emoji: Slack.Emoji = .robotFace,
-      username: String = "FLP Bot"
+      username: String = "FLP Bot",
     ) {
       self.channel = channel
       self.message = .init(
         text: text,
         channel: channel.string,
         username: username,
-        emoji: emoji
+        emoji: emoji,
       )
     }
 
@@ -67,7 +67,7 @@ enum FlpSlack {
       fallbackText: String,
       channel: Channel,
       emoji: Slack.Emoji = .robotFace,
-      username: String = "FLP Bot"
+      username: String = "FLP Bot",
     ) {
       self.channel = channel
       self.message = .init(
@@ -75,7 +75,7 @@ enum FlpSlack {
         fallbackText: fallbackText,
         channel: channel.string,
         username: username,
-        emoji: emoji
+        emoji: emoji,
       )
     }
   }

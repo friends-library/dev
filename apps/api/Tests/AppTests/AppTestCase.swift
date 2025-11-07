@@ -90,7 +90,7 @@ func sync(
   function: StaticString = #function,
   line: UInt = #line,
   column: UInt = #column,
-  _ f: @Sendable @escaping () async throws -> Void
+  _ f: @Sendable @escaping () async throws -> Void,
 ) {
   let exp = XCTestExpectation(description: "sync:\(function):\(line):\(column)")
   Task {

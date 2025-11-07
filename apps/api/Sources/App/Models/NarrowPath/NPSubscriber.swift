@@ -19,7 +19,7 @@ struct NPSubscriber: Codable, Sendable {
     token: UUID? = Current.uuid(),
     mixedQuotes: Bool = false,
     email: String,
-    lang: Lang
+    lang: Lang,
   ) {
     self.id = id
     self.email = email

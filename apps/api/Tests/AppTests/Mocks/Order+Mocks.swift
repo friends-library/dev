@@ -20,7 +20,7 @@ extension Order {
       addressCity: "@mock addressCity",
       addressState: "@mock addressState",
       addressZip: "@mock addressZip",
-      addressCountry: "@mock addressCountry"
+      addressCountry: "@mock addressCountry",
     )
   }
 
@@ -43,7 +43,7 @@ extension Order {
       addressCity: "",
       addressState: "",
       addressZip: "",
-      addressCountry: ""
+      addressCountry: "",
     )
   }
 
@@ -66,7 +66,7 @@ extension Order {
       addressCity: "@random".random,
       addressState: "@random".random,
       addressZip: "@random".random,
-      addressCountry: "@random".random
+      addressCountry: "@random".random,
     )
   }
 }

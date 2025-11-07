@@ -11,7 +11,7 @@ extension AudioPart {
       chapters: NonEmpty<[Int]>(42),
       order: 42,
       mp3SizeHq: .init(rawValue: 42),
-      mp3SizeLq: .init(rawValue: 42)
+      mp3SizeLq: .init(rawValue: 42),
     )
   }
 
@@ -23,7 +23,7 @@ extension AudioPart {
       chapters: NonEmpty<[Int]>(0),
       order: 0,
       mp3SizeHq: .init(rawValue: 0),
-      mp3SizeLq: .init(rawValue: 0)
+      mp3SizeLq: .init(rawValue: 0),
     )
   }
 
@@ -35,7 +35,7 @@ extension AudioPart {
       chapters: NonEmpty<[Int]>(Int.random),
       order: Int.random,
       mp3SizeHq: .init(rawValue: Int.random),
-      mp3SizeLq: .init(rawValue: Int.random)
+      mp3SizeLq: .init(rawValue: Int.random),
     )
   }
 }

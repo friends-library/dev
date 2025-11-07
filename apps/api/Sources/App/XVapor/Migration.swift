@@ -9,7 +9,7 @@ public extension Migration {
     fixingPriorIncompleteMigration completingPriorMigration: Bool = false,
     db: Database,
     enumName: String,
-    newCases: [String]
+    newCases: [String],
   ) async throws {
     if #available(macOS 12, *) {
       let sql = db as! SQLDatabase
@@ -25,7 +25,7 @@ public extension Migration {
               unsafeRaw: UUID().uuidString
                 .lowercased()
             )', '\(unsafeRaw: enumName)', '\(unsafeRaw: newCase)');
-            """
+            """,
           ).all()
         }
 
@@ -39,7 +39,7 @@ public extension Migration {
     in tableName: String,
     from oldColumn: FieldKey,
     to newColumn: FieldKey,
-    on database: Database
+    on database: Database,
   ) async throws {
     if #available(macOS 12, *) {
       let sql = database as! SQLDatabase
@@ -50,7 +50,7 @@ public extension Migration {
           unsafeRaw: newColumn
             .description
         )";
-        """
+        """,
       ).all()
     }
   }

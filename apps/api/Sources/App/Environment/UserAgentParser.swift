@@ -14,7 +14,7 @@ extension UserAgentParser {
         isMobile: false,
         os: "botOS 3.3",
         browser: "bot 3.3",
-        platform: "bot"
+        platform: "bot",
       )
     } else {
       .init(
@@ -22,7 +22,7 @@ extension UserAgentParser {
         isMobile: false,
         os: "Windows 10.0",
         browser: "Chrome",
-        platform: "Windows"
+        platform: "Windows",
       )
     }
   }

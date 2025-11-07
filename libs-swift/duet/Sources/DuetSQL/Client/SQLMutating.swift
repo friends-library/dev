@@ -11,7 +11,7 @@ public protocol SQLMutating: Sendable {
     where constraints: SQL.WhereConstraint<M>,
     orderBy order: SQL.Order<M>?,
     limit: Int?,
-    offset: Int?
+    offset: Int?,
   ) async throws -> [M]
 
   @discardableResult
@@ -20,7 +20,7 @@ public protocol SQLMutating: Sendable {
     where: SQL.WhereConstraint<M>,
     orderBy: SQL.Order<M>?,
     limit: Int?,
-    offset: Int?
+    offset: Int?,
   ) async throws -> [M]
 }
 

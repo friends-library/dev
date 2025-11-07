@@ -144,7 +144,7 @@ extension DownloadableFile {
 
     guard let rows = try? await Current.db.customQuery(
       DownloadData.self,
-      withBindings: [.uuid(editionUuid)]
+      withBindings: [.uuid(editionUuid)],
     ), let data = rows.first else {
       throw ParseLogPathError.editionNotFound(logPath)
     }
@@ -223,15 +223,15 @@ extension DownloadableFile {
     let edition = Edition.DirectoryPathData(
       document: .init(
         friend: .init(lang: data.lang, slug: data.friendSlug),
-        slug: data.documentSlug
+        slug: data.documentSlug,
       ),
-      type: data.editionType
+      type: data.editionType,
     )
     self.init(
       format: format,
       editionId: data.editionId,
       edition: edition,
-      documentFilename: data.documentFilename
+      documentFilename: data.documentFilename,
     )
   }
 
@@ -269,7 +269,7 @@ extension DownloadableFile {
 
 private func validatePaperbackVolume(
   _ volumes: NonEmpty<[Int]>,
-  _ index: Int
+  _ index: Int,
 ) -> Bool {
   index >= 0 && index < volumes.count
 }

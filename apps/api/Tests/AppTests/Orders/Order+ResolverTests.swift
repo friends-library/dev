@@ -40,8 +40,8 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
       items: [.init(
         editionId: item.editionId,
         quantity: item.quantity,
-        unitPrice: item.unitPrice
-      )]
+        unitPrice: item.unitPrice,
+      )],
     )
 
     return (input, item)
@@ -147,7 +147,7 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
       orderPaymentId: "stripe_pi_id",
       orderId: order.id.lowercased,
       userAgent: "operafox",
-      stateHistory: ["foo", "bar"]
+      stateHistory: ["foo", "bar"],
     )
 
     let output = try await BrickOrder.resolve(with: input, in: .mock)
@@ -174,12 +174,12 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
             orderPaymentId: "stripe_pi_id",
             orderId: orderId,
             userAgent: "operafox",
-            stateHistory: ["foo", "bar"]
-          ), .pretty
+            stateHistory: ["foo", "bar"],
+          ), .pretty,
         )!)
         ```
         """),
-      ]
+      ],
     )
   }
 }

@@ -19,7 +19,7 @@ extension BrickOrder: Resolver {
       do {
         let refund = try await Current.stripeClient.createRefund(
           paymentIntentId,
-          Env.STRIPE_SECRET_KEY
+          Env.STRIPE_SECRET_KEY,
         )
         await slackError("Created stripe refund `\(refund.id)` \(forOrder)")
       } catch {
@@ -28,7 +28,7 @@ extension BrickOrder: Resolver {
       do {
         let pi = try await Current.stripeClient.cancelPaymentIntent(
           paymentIntentId,
-          Env.STRIPE_SECRET_KEY
+          Env.STRIPE_SECRET_KEY,
         )
         await slackError("Canceled stripe payment intent `\(pi.id)` \(forOrder)")
       } catch {

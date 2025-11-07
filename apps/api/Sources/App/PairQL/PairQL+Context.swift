@@ -25,7 +25,7 @@ struct AuthedContext: ResolverContext {
       throw error(
         id: "7bdaa820",
         type: .unauthorized,
-        detail: "Not authorized to `.\(scope)`"
+        detail: "Not authorized to `.\(scope)`",
       )
     }
   }

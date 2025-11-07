@@ -57,7 +57,7 @@ final class NarrowPathEmailTests: AppTestCase, @unchecked Sendable {
     let doc = try await document(
       "The Journal of George Fox -- Volume 1", // <-- asciidoc-ish title will be modifiedkj
       "journal",
-      friend.id
+      friend.id,
     )
     let quote = NPQuote(lang: .en, quote: "", friendId: friend.id, documentId: doc.id)
     let email = try await quote.email()
@@ -81,7 +81,7 @@ final class NarrowPathEmailTests: AppTestCase, @unchecked Sendable {
       quote: "",
       authorName: "Thomas Greer",
       friendId: nil, // <-- no friend id
-      documentId: doc.id // <-- but HAS doc id
+      documentId: doc.id, // <-- but HAS doc id
     )
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
@@ -104,7 +104,7 @@ final class NarrowPathEmailTests: AppTestCase, @unchecked Sendable {
       quote: "",
       authorName: "Liz Hooton",
       friendId: nil, // <-- no friend id
-      documentId: doc.id // <-- but HAS doc id, from compilation
+      documentId: doc.id, // <-- but HAS doc id, from compilation
     )
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
@@ -158,7 +158,7 @@ final class NarrowPathEmailTests: AppTestCase, @unchecked Sendable {
       quote: "",
       authorName: "Mary Lamley",
       friendId: nil, // <-- no friend id
-      documentId: doc.id // <-- but HAS doc id
+      documentId: doc.id, // <-- but HAS doc id
     )
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
@@ -181,7 +181,7 @@ final class NarrowPathEmailTests: AppTestCase, @unchecked Sendable {
       quote: "",
       authorName: "Liz Rodriquez",
       friendId: nil, // <-- no friend id
-      documentId: doc.id // <-- but HAS doc id, from compilation
+      documentId: doc.id, // <-- but HAS doc id, from compilation
     )
     let email = try await quote.email()
     expect(email.postmarkModel["text_cite"]).toEqual("""
@@ -203,7 +203,7 @@ private func friend(
   _ name: String,
   _ slug: String,
   lang: Lang = .en,
-  gender: Friend.Gender = .male
+  gender: Friend.Gender = .male,
 ) async throws -> Friend {
   try await Friend(
     lang: lang,
@@ -213,14 +213,14 @@ private func friend(
     description: "",
     born: nil,
     died: nil,
-    published: nil
+    published: nil,
   ).create()
 }
 
 private func document(
   _ title: String,
   _ slug: String,
-  _ friendId: Friend.Id
+  _ friendId: Friend.Id,
 ) async throws -> Document {
   try await Document(
     friendId: friendId,
@@ -233,6 +233,6 @@ private func document(
     incomplete: false,
     description: "",
     partialDescription: "",
-    featuredDescription: nil
+    featuredDescription: nil,
   ).create()
 }
