@@ -1,0 +1,4 @@
+{
+  "name": "@friends-library/storybook",
+  "implicitDependencies": ["@friends-library/evans"]
+}

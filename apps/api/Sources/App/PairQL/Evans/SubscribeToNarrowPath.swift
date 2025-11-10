@@ -18,19 +18,7 @@ struct SubscribeToNarrowPath: Pair {
 
 extension SubscribeToNarrowPath: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
-    switch await Current.cloudflareClient.verifyTurnstileToken(input.turnstileToken) {
-    case .success:
-      break
-    case .failure:
-      await slackError("Rejected turnstile token for email: `\(input.email)`")
-      throw Abort(.badRequest)
-    case .error(let error):
-      await slackError("""
-      *Error verifying turnstile token*
-      Data: `\(JSON.encode(input) ?? "nil")`
-      Error: \(String(reflecting: error))
-      """)
-    }
+    try await checkSpam(input)
 
     let existing = try? await NPSubscriber.query()
       .where(.email == input.email.rawValue.lowercased())
@@ -49,14 +37,16 @@ extension SubscribeToNarrowPath: Resolver {
       lang: input.lang,
     ).create()
 
-    await slackInfo(
-      """
-      *New Narrow Path subscriber:*
-      _Email:_ \(input.email.rawValue.lowercased())
-      _Language:_ \(input.lang == .en ? "English" : "Spanish")
-      _Mixed quotes:_ \(input.mixedQuotes ? "yes" : "no")
-      """,
-    )
+    Task {
+      await slackInfo(
+        """
+        *New Narrow Path subscriber:*
+        _Email:_ \(input.email.rawValue.lowercased())
+        _Language:_ \(input.lang == .en ? "English" : "Spanish")
+        _Mixed quotes:_ \(input.mixedQuotes ? "yes" : "no")
+        """,
+      )
+    }
 
     switch input.lang {
     case .en:
@@ -70,6 +60,23 @@ extension SubscribeToNarrowPath: Resolver {
 }
 
 // helpers
+
+func checkSpam(_ input: SubscribeToNarrowPath.Input) async throws {
+  switch await Current.cloudflareClient.verifyTurnstileToken(input.turnstileToken) {
+  case .success:
+    break
+  case .failure:
+    await slackError("Turnstile token rejected for Narrow Path subscribe: `\(input.email)`")
+    throw Abort(.badRequest)
+  case .error(let error):
+    await slackError("""
+    *ERROR verifying turnstile token for Narrow Path subscription*
+    Email: `\(input.email)`
+    Lang: \(input.lang)
+    Error: \(String(reflecting: error))
+    """)
+  }
+}
 
 func sendEnglishConfirm(to email: EmailAddress, confirming token: UUID) async throws {
   let confirmUrl = "\(Env.SELF_URL)/confirm-email/en/\(token.lowercased)"

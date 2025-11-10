@@ -1,4 +1,5 @@
 import PairQL
+import Vapor
 import XCore
 import XPostmark
 
@@ -14,6 +15,7 @@ struct SubmitContactForm: Pair {
     let email: String
     let subject: Subject
     let message: String
+    let turnstileToken: String
   }
 }
 
@@ -21,26 +23,59 @@ struct SubmitContactForm: Pair {
 
 extension SubmitContactForm: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
-    await Current.postmarkClient.send(XPostmark.Email(
-      to: input |> emailTo,
-      from: EmailBuilder.fromAddress(lang: input.lang),
-      replyTo: input.email,
-      subject: input.lang |> subject,
-      textBody: input |> emailBody,
-    ))
-    await slackInfo(
-      """
-      *Contact form submission:*
-      _Name:_ \(input.name)
-      _Email:_ \(input.email)
-      _Message:_ \(input.message)
-      """,
-    )
+    try await checkSpam(input)
+
+    let task = Task {
+      await Current.postmarkClient.send(XPostmark.Email(
+        to: input |> emailTo,
+        from: EmailBuilder.fromAddress(lang: input.lang),
+        replyTo: input.email,
+        subject: input.lang |> subject,
+        textBody: input |> emailBody,
+      ))
+
+      await slackInfo(
+        """
+        *Contact form submission:*
+        _Name:_ \(input.name)
+        _Email:_ \(input.email)
+        _Message:_ \(input.message)
+        """,
+      )
+    }
+
+    if Env.mode == .test {
+      await task.value
+    }
+
     return .success
   }
 }
 
 // helpers
+
+private func checkSpam(_ input: SubmitContactForm.Input) async throws {
+  switch await Current.cloudflareClient.verifyTurnstileToken(input.turnstileToken) {
+  case .success:
+    break
+  case .failure:
+    await slackInfo("""
+    *Turnstile token rejected for contact form submission*
+    Name: \(input.name)
+    Email: \(input.email)
+    Subject: \(input.subject)
+    """)
+    throw Abort(.badRequest)
+  case .error(let error):
+    await slackError("""
+    *ERROR verifying turnstile token for contact form*
+    Name: \(input.name)
+    Email: \(input.email)
+    Subject: \(input.subject)
+    Error: \(String(reflecting: error))
+    """)
+  }
+}
 
 private func emailBody(_ input: SubmitContactForm.Input) -> String {
   var lines = ["Name: \(input.name)"]

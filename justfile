@@ -107,6 +107,7 @@ codegen-ts:
 
 codegen-swift:
   @cd apps/api && SWIFT_DETERMINISTIC_HASHING=1 CODEGEN_SWIFT=1 swift test --filter Codegen
+  @just format
 
 codegen: codegen-ts codegen-swift
 

@@ -104,6 +104,10 @@ just build   # Build all apps
 - **Testing**: Comprehensive test coverage with Vitest/Jest/XCTest
 - **Git**: Content repos are Git submodules with individual CI pipelines
 
+## Code Style
+
+- **Swift**: Do not use `// MARK:` comments or similar section markers in Swift code
+
 ## External Services
 
 - **Algolia** - Search functionality

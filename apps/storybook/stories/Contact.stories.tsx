@@ -22,6 +22,7 @@ export const Default: Story = props({
   state: `default`,
   onSubmit: async () => {},
   success: true,
+  setTurnstileToken: () => {},
 });
 
 export const Submitting: Story = props({

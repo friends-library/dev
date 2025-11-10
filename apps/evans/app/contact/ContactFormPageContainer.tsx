@@ -16,6 +16,7 @@ export const Container: React.FC<Props> = ({ _buildTime }) => {
   const [subject, setSubject] = useState<'tech' | 'other'>(`tech`);
   const [success, setSuccess] = useState<boolean>(false);
   const [state, setState] = useState<'default' | 'submitting' | 'submitted'>(`default`);
+  const [turnstileToken, setTurnstileToken] = useState<string>(``);
   return (
     <ContactFormPage
       name={name}
@@ -38,6 +39,7 @@ export const Container: React.FC<Props> = ({ _buildTime }) => {
           email,
           message,
           subject,
+          turnstileToken,
         });
         setSuccess(result.isSuccess);
         if (result.isSuccess) {
@@ -45,6 +47,7 @@ export const Container: React.FC<Props> = ({ _buildTime }) => {
         }
         setState(`submitted`);
       }}
+      setTurnstileToken={setTurnstileToken}
       _buildTime={_buildTime}
     />
   );
