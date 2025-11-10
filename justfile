@@ -66,7 +66,10 @@ nx-reset:
 test-typescript:
   @pnpm exec nx run-many --targets=test --exclude=duet,x-http,x-kit,x-postmark,x-slack,x-stripe,apps/api,ts-interop,x-expect
 
-clean: nx-reset
+clean-swift-build:
+  @find . -type d -name ".build" -exec rm -rf {} +
+
+clean: nx-reset clean-swift-build
   @rm -rf apps/admin/node_modules/.vite
   @rm -rf apps/evans/.next/
 
