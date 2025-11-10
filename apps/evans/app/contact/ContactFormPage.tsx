@@ -2,11 +2,13 @@ import React from 'react';
 import NextBgImage, { bgColor } from 'next-bg-image';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
+import Turnstile from 'react-turnstile';
 import { makeScroller } from '../../lib/scroll';
 import ContactFormTextBlock from './ContactFormTextBlock';
 import BooksBg from '@/public/images/books-diagonal.jpg';
 import Button from '@/components/core/Button';
 import Dual from '@/components/core/Dual';
+import { TURNSTILE_SITE_KEY } from '@/lib/env';
 
 interface Props {
   name: string;
@@ -20,6 +22,7 @@ interface Props {
   state: 'default' | 'submitting' | 'submitted';
   success: boolean;
   onSubmit(): Promise<unknown>;
+  setTurnstileToken(token: string): unknown;
   _buildTime?: string;
 }
 
@@ -35,6 +38,7 @@ export const ContactForm: React.FC<Props> = ({
   setEmail,
   state,
   success,
+  setTurnstileToken,
   _buildTime,
 }) => (
   <NextBgImage
@@ -163,6 +167,12 @@ export const ContactForm: React.FC<Props> = ({
               id="message"
             ></textarea>
           </fieldset>
+          <Turnstile
+            sitekey={TURNSTILE_SITE_KEY}
+            size="invisible"
+            refreshExpired="auto"
+            onVerify={setTurnstileToken}
+          />
           <Button
             className="my-2"
             style={{ maxWidth: `16rem` }}

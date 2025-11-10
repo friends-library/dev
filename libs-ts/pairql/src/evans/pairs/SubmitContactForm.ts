@@ -7,6 +7,7 @@ export namespace SubmitContactForm {
     email: string;
     subject: 'tech' | 'other';
     message: string;
+    turnstileToken: string;
   }
 
   export type Output = void;
