@@ -37,11 +37,11 @@ enum CodegenRoute: RouteHandler {
 // domains
 
 extension CodegenRoute {
-  enum Dev {}
-  enum Order {}
-  enum Admin {}
-  enum Evans {}
-  enum EvansBuild {}
+  enum Dev: Sendable {}
+  enum Order: Sendable {}
+  enum Admin: Sendable {}
+  enum Evans: Sendable {}
+  enum EvansBuild: Sendable {}
 }
 
 // extensions

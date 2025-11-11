@@ -3,11 +3,6 @@ import Foundation
 @_exported import CasePaths
 @_exported import URLRouting
 
-#if os(Linux)
-  extension JSONEncoder: @retroactive @unchecked Sendable {}
-  extension JSONDecoder.DateDecodingStrategy: @unchecked Sendable {}
-#endif
-
 public protocol PairRoute: Equatable {}
 
 public typealias PairNestable = Codable & Equatable & Sendable
