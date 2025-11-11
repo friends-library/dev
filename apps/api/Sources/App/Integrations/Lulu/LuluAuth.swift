@@ -1,10 +1,6 @@
 import Foundation
 import XHttp
 
-#if os(Linux)
-  extension JSONDecoder.KeyDecodingStrategy: @unchecked Sendable {}
-#endif
-
 extension Lulu.Api.Client {
   @globalActor
   actor ReusableToken {

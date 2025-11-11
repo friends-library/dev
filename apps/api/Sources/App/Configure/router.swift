@@ -38,6 +38,6 @@ public extension Configure {
   }
 }
 
-protocol RouteHandler {
+protocol RouteHandler: Sendable {
   @Sendable static func handler(_ request: Request) async throws -> Response
 }

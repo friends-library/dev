@@ -1,9 +1,5 @@
 import ConcurrencyExtras
-#if os(Linux)
-  @preconcurrency import Foundation
-#else
-  import Foundation
-#endif
+import Foundation
 
 struct RateLimitedSlackClient: Sendable {
   private struct State {
