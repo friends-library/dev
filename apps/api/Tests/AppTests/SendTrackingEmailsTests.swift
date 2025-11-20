@@ -49,7 +49,9 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
 
     let retrieved = try await Current.db.find(self.order.id)
     XCTAssertEqual(retrieved.printJobStatus, .canceled)
-    XCTAssertEqual(sent.emails.count, 0)
+    XCTAssertEqual(sent.emails.count, 1)
+    XCTAssert(sent.emails[0].subject.contains("Print job error"))
+    XCTAssertEqual(sent.emails[0].to, Env.JARED_CONTACT_FORM_EMAIL)
     XCTAssertEqual(
       sent.slacks,
       [.error("Order \(self.order.id.lowercased) was found in status `CANCELED`!")],
