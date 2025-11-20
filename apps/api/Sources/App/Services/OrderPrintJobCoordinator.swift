@@ -13,7 +13,7 @@ enum OrderPrintJobCoordinator {
         .where(.printJobStatus == .enum(Order.PrintJobStatus.presubmit))
         .all()
     } catch {
-      await slackError("Error querying presubmit orders: \(error)")
+      await notifyErr("27fad259", "Error querying presubmit orders: \(error)")
       return
     }
 
@@ -26,7 +26,8 @@ enum OrderPrintJobCoordinator {
       do {
         let job = try await createPrintJob(order)
         if job.status.name != .created {
-          await slackError(
+          await notifyErr(
+            "96a0baa6",
             "Unexpected print job status `\(job.status.name.rawValue)` for order \(order |> slackLink)",
           )
         } else {
@@ -36,7 +37,10 @@ enum OrderPrintJobCoordinator {
           await slackOrder("Created print job \(job |> slackLink) for order \(order |> slackLink)")
         }
       } catch {
-        await slackError("Error creating print job for order \(order |> slackLink): \(error)")
+        await notifyErr(
+          "015b6291",
+          "Error creating print job for order \(order |> slackLink): \(error)",
+        )
       }
     }
 
@@ -44,7 +48,7 @@ enum OrderPrintJobCoordinator {
       do {
         try await Current.db.update(updated)
       } catch {
-        await slackError("Error updating orders: \(error)")
+        await notifyErr("4ffa0b87", "Error updating orders: \(error)")
       }
     }
   }
@@ -57,7 +61,10 @@ enum OrderPrintJobCoordinator {
     var updated: [Order] = []
     for var order in orders {
       guard let printJob = printJobs.first(where: order |> belongsToPrintJob) else {
-        await slackError("Failed to find print job belonging to order \(order |> slackLink)")
+        await notifyErr(
+          "8292d78f",
+          "Failed to find print job belonging to order \(order |> slackLink)",
+        )
         continue
       }
 
@@ -65,16 +72,23 @@ enum OrderPrintJobCoordinator {
       switch printJob.status.name {
       case .created:
         if order.createdAt < Date(subtractingDays: 1) {
-          await slackError("Print job \(printJob |> slackLink) stuck in `created` state!")
+          await notifyErr(
+            "095989fa",
+            "Print job \(printJob |> slackLink) stuck in `created` state!",
+          )
         }
       case .unpaid:
-        await slackError("Print job \(printJob |> slackLink) found in state `\(status)`!")
+        await notifyErr(
+          "8d4dbd48",
+          "Print job \(printJob |> slackLink) found in state `\(status)`!",
+        )
       case .rejected,
            .canceled,
            .error:
         order.printJobStatus = .rejected
         updated.append(order)
-        await slackError(
+        await notifyErr(
+          "7434ada4",
           "Print job \(printJob |> slackLink) for order \(order.id.lowercased) rejected",
         )
       case .paymentInProgress,
@@ -101,18 +115,24 @@ enum OrderPrintJobCoordinator {
     var updated: [Order] = []
     for var order in orders {
       guard let printJob = printJobs.first(where: order |> belongsToPrintJob) else {
-        await slackError("Failed to find print job belonging to order \(order |> slackLink)")
+        await notifyErr(
+          "f0ca012a",
+          "Failed to find print job belonging to order \(order |> slackLink)",
+        )
         continue
       }
 
       let status = printJob.status.name.rawValue
       switch printJob.status.name {
       case .unpaid:
-        await slackError("Print job \(printJob |> slackLink) found in status `\(status)`!")
+        await notifyErr(
+          "89de00c5",
+          "Print job \(printJob |> slackLink) found in status `\(status)`!",
+        )
       case .canceled, .rejected:
         order.printJobStatus = printJob.status.name == .canceled ? .canceled : .rejected
         updated.append(order)
-        await slackError("Order \(order |> slackLink) was found in status `\(status)`!")
+        await notifyErr("c214d3a7", "Order \(order |> slackLink) was found in status `\(status)`!")
       case .shipped:
         order.printJobStatus = .shipped
         updated.append(order)
@@ -140,7 +160,7 @@ private func sendOrderShippedEmail(_ order: Order, _ printJob: Lulu.Api.PrintJob
     let email = try await EmailBuilder.orderShipped(order, trackingUrl: trackingUrl)
     await Current.postmarkClient.send(email)
   } catch {
-    await slackError("Error sending order shipped email for order \(order.id): \(error)")
+    await notifyErr("8190eb37", "Error sending order shipped email for order \(order.id): \(error)")
   }
 }
 
@@ -150,7 +170,7 @@ private func updateOrders(_ orders: [Order]) async {
     try await Current.db.update(orders)
   } catch {
     let ids = orders.map(\.id.rawValue.uuidString).joined(separator: ", ")
-    await slackError("Error updating orders: [\(ids)]")
+    await notifyErr("15cc926e", "Error updating orders: [\(ids)]")
   }
 }
 
@@ -170,7 +190,7 @@ private func getOrdersWithPrintJobs(
 
     printJobs = try await Current.luluClient.listPrintJobs(printJobIds)
   } catch {
-    await slackError("Error querying orders & print jobs: \(error)")
+    await notifyErr("441b5e97", "Error querying orders & print jobs: \(error)")
     return nil
   }
   return (orders: orders, printJobs: printJobs)
@@ -187,7 +207,7 @@ private func orderPrintJobIds(_ orders: [Order]) async -> NonEmpty<[Int64]>? {
 
   guard let printJobIds = ids, printJobIds.count == orders.count else {
     let ids = orders.map { "\($0.id)" }.joined(separator: ", ")
-    await slackError("Unexpected missing print job id in orders: [\(ids)]")
+    await notifyErr("93da8586", "Unexpected missing print job id in orders: [\(ids)]")
     return nil
   }
 
@@ -212,4 +232,14 @@ private func slackLink(_ printJob: Lulu.Api.PrintJob) -> String {
   let sandbox = Env.mode == .staging ? "sandbox." : ""
   let url = "https://developers.\(sandbox)lulu.com/print-jobs/detail/\(printJob.id)"
   return Slack.Message.link(to: url, withText: "\(printJob.id)")
+}
+
+func notifyErr(_ id: String, _ slackMessage: String) async {
+  await Current.postmarkClient.send(.init(
+    to: Env.JARED_CONTACT_FORM_EMAIL,
+    from: "info@friendslibrary.com",
+    subject: "[FLP Api] Print job error \(id)",
+    textBody: slackMessage,
+  ))
+  await slackError(slackMessage)
 }
