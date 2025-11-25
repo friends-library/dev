@@ -190,6 +190,15 @@ private func getOrdersWithPrintJobs(
 
     printJobs = try await Current.luluClient.listPrintJobs(printJobIds)
   } catch {
+    // don't log/notify near daily lulu signature expiration time
+    if "\(error)".contains("Signature has expired") {
+      let hour = Calendar.current.component(.hour, from: Date())
+      let minute = Calendar.current.component(.minute, from: Date())
+      if hour == 8, (10 ... 20).contains(minute) {
+        return nil
+      }
+    }
+
     await notifyErr("441b5e97", "Error querying orders & print jobs: \(error)")
     return nil
   }
