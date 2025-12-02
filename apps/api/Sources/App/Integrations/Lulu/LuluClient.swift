@@ -11,7 +11,7 @@ extension Lulu.Api {
       Lang,
       ShippingAddress,
       ShippingOptionLevel,
-      [PrintJobCostCalculationsBody.LineItem]
+      [PrintJobCostCalculationsBody.LineItem],
     ) async throws -> PrintJobCostCalculationsResult
   }
 }

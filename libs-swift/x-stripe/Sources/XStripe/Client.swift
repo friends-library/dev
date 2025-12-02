@@ -22,31 +22,31 @@ public extension Stripe {
         Int,
         Stripe.Api.Currency,
         [String: String],
-        String
+        String,
       ) async throws -> Stripe.Api.PaymentIntent,
       cancelPaymentIntent: @Sendable @escaping (
         String,
-        String
+        String,
       ) async throws -> Stripe.Api.PaymentIntent,
       createRefund: @Sendable @escaping (
         String,
-        String
+        String,
       ) async throws -> Stripe.Api.Refund,
       getCheckoutSession: @Sendable @escaping (
         String,
-        String
+        String,
       ) async throws -> Stripe.Api.CheckoutSession,
       createCheckoutSession: @Sendable @escaping (
         CheckoutSessionData,
-        String
+        String,
       ) async throws -> Stripe.Api.CheckoutSession,
       getSubscription: @Sendable @escaping (
         String,
-        String
+        String,
       ) async throws -> Stripe.Api.Subscription,
       createBillingPortalSession: @Sendable @escaping (
         String,
-        String
+        String,
       ) async throws -> Stripe.Api.BillingPortalSession,
     ) {
       self.createPaymentIntent = createPaymentIntent
