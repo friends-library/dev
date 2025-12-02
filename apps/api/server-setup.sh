@@ -9,35 +9,24 @@ ufw enable
 
 su jared
 mkdir -p ~/.ssh
-# copy over authorized keys
-rsync --archive --chown=jared:jared ~/.ssh /home/jared
 # back to root
 exit
+# copy over authorized keys
+rsync --archive --chown=jared:jared ~/.ssh /home/jared
 # don't ask `jared` for sudo password
 echo "jared ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# add 1GB of SWAP space (compiling swift takes a lot of memory)
-# especially important for SMALL droplets, since compiling swift takes LOTS of memory
-# the `1G` amount below should possibly be increased, if going to a larger droplet
-# @see https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-20-04
-sudo fallocate -l 1G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
-sudo sysctl vm.swappiness=10
-sudo sysctl vm.vfs_cache_pressure=50
-echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
-echo "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 
 # other programs
+sudo apt update
 sudo apt install -y unzip
 sudo apt install -y tree
 sudo apt install -y ripgrep
 
 # install postgresql
-sudo apt update
-sudo apt install -y postgresql postgresql-contrib
+su jared
+# use directions here: https://www.postgresql.org/download/linux/ubuntu/
+# to get correct version (currently 17)
 
 # switch to created postgres user
 sudo -i -u postgres
@@ -75,18 +64,7 @@ psql -d staging_test
 sudo vim /etc/apt/apt.conf.d/50unattended-upgrades
 # add `"postgresql-";` (no backticks) INSIDE the "Package-Blacklist" block
 
-# generate an ssh key to access github
-su jared
-ssh-keygen -t rsa -C "jared@netrivet.com"
-# add pub key to github, test with `ssh -T git@github.com`
-
-# node things
-curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-sudo apt-get install -y nodejs
-# update npm
-sudo npm install -g npm
-# install pm2
-sudo npm install -g pm2
+# install nodejs for pm2 (follow nodejs.org directions)
 
 # nginx
 sudo apt install -y nginx
@@ -140,34 +118,13 @@ sudo certbot --nginx -d api.friendslibrary.com
 sudo certbot --nginx -d api--staging.friendslibrary.com
 sudo systemctl reload nginx
 
-# install swift
-# follow latest directions from swift website, i currently have
-# swift 5.3.3 installed in /usr/swift/bin
-
-# install vapor deps 
-sudo apt-get install -y make openssl libssl-dev libsqlite3-dev
-# install vapor (Optional, i had trouble with `make install`)
-cd ~
-git clone https://github.com/vapor/toolbox.git vapor-toolbox
-cd vapor-toolbox
-make install
-
-# install `xcbeautify` for running tests
-cd ~
-git clone https://github.com/thii/xcbeautify.git
-cd xcbeautify
-make install
-sudo mv /home/jared/xcbeautify/.build/x86_64-unknown-linux-gnu/release/xcbeautify /usr/local/bin/
-rm -rf ~/xcbeautify
-
-# if you want cron-based postgres backups uploaded to S3, see ./server-setup-aws.sh
-
 # set timezone to EST for scheduled jobs, etc.
 sudo timedatectl set-timezone America/New_York
 
 
-# DB BACKUPS
+# DO SPACES (s3) DB BACKUPS
 # install aws cli @see https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html
+sudo apt install -y unzip
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
@@ -185,28 +142,6 @@ aws configure
 ```
 # then
 crontab -e
-# add line `0 4 * * * /usr/bin/bash /home/jared/backup-db.sh` to start backups
+# add line `30 3 * * * /usr/bin/bash /home/jared/backup/backup-db.sh` to start backups
 
 
-# customize
-echo "alias grep=rg" >> ~/.bashrc
-echo "alias run='npm run \"\$@\"'" >> ~/.bashrc
-
-vim ~/.gitconfig
-# then add below:
-```
-[user]
-    name = Jared Henderson
-    email = jared@netrivet.com
-[core]
-    editor = vim
-[alias]
-    lg = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-    resetone = reset HEAD~1
-    co = checkout
-    save = !git add -A && git commit -m 'SAVEPOINT'
-    st = stash
-    s = status
-    br = branch
-    l = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -n 5
-```

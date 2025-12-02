@@ -302,14 +302,14 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
         "download/\(id)/audio/podcast/hq/podcast.rss",
         "\(self.selfUrl)/download/\(id)/audio/podcast/hq/podcast.rss",
         "\(edition.directoryPath.replace("^en/", ""))/podcast.rss",
-        "\(self.websiteUrl)/\(edition.directoryPath.replace("^en/", ""))/podcast.rss"
+        "\(self.websiteUrl)/\(edition.directoryPath.replace("^en/", ""))/podcast.rss",
       ),
       (
         .audio(.podcast(.low)),
         "download/\(id)/audio/podcast/lq/podcast.rss",
         "\(self.selfUrl)/download/\(id)/audio/podcast/lq/podcast.rss",
         "\(edition.directoryPath.replace("^en/", ""))/lq/podcast.rss",
-        "\(self.websiteUrl)/\(edition.directoryPath.replace("^en/", ""))/lq/podcast.rss"
+        "\(self.websiteUrl)/\(edition.directoryPath.replace("^en/", ""))/lq/podcast.rss",
       ),
     ]
 
