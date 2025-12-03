@@ -184,7 +184,13 @@ extension EditionImpression {
 @globalActor actor JoinedEntityCache {
   static let shared = JoinedEntityCache()
 
-  private var loaded = false
+  private enum State {
+    case notLoaded
+    case loading
+    case loaded
+  }
+
+  private var state: State = .notLoaded
   private var joinedFriends: [Friend.Id: Friend.Joined] = [:]
   private var joinedDocuments: [Document.Id: Document.Joined] = [:]
   private var joinedEditions: [Edition.Id: Edition.Joined] = [:]
@@ -193,7 +199,7 @@ extension EditionImpression {
   private var joinedAudioParts: [AudioPart.Id: AudioPart.Joined] = [:]
 
   func flush() {
-    self.loaded = false
+    self.state = .notLoaded
     self.joinedFriends = [:]
     self.joinedDocuments = [:]
     self.joinedEditions = [:]
@@ -203,12 +209,12 @@ extension EditionImpression {
   }
 
   fileprivate func friends() async throws -> [Friend.Joined] {
-    if !self.loaded { try await self.load() }
+    try await self.ensureLoaded()
     return Array(self.joinedFriends.values)
   }
 
   fileprivate func friend(_ id: Friend.Id) async throws -> Friend.Joined {
-    if !self.loaded { try await self.load() }
+    try await self.ensureLoaded()
     guard let friend = joinedFriends[id] else {
       throw DuetSQLError.notFound("Friend: \(id.lowercased)")
     }
@@ -216,12 +222,12 @@ extension EditionImpression {
   }
 
   fileprivate func documents() async throws -> [Document.Joined] {
-    if !self.loaded { try await self.load() }
+    try await self.ensureLoaded()
     return Array(self.joinedDocuments.values)
   }
 
   fileprivate func document(_ id: Document.Id) async throws -> Document.Joined {
-    if !self.loaded { try await self.load() }
+    try await self.ensureLoaded()
     guard let document = joinedDocuments[id] else {
       throw DuetSQLError.notFound("Document: \(id.lowercased)")
     }
@@ -229,19 +235,19 @@ extension EditionImpression {
   }
 
   fileprivate func editions() async throws -> [Edition.Joined] {
-    if !self.loaded { try await self.load() }
+    try await self.ensureLoaded()
     return Array(self.joinedEditions.values)
   }
 
   fileprivate func editionImpressions() async throws -> [EditionImpression.Joined] {
-    if !self.loaded { try await self.load() }
+    try await self.ensureLoaded()
     return Array(self.joinedImpressions.values)
   }
 
   fileprivate func editionImpression(
     _ id: EditionImpression.Id,
   ) async throws -> EditionImpression.Joined {
-    if !self.loaded { try await self.load() }
+    try await self.ensureLoaded()
     guard let impression = joinedImpressions[id] else {
       throw DuetSQLError.notFound("EditionImpression: \(id.lowercased)")
     }
@@ -249,12 +255,12 @@ extension EditionImpression {
   }
 
   fileprivate func audios() async throws -> [Audio.Joined] {
-    if !self.loaded { try await self.load() }
+    try await self.ensureLoaded()
     return Array(self.joinedAudios.values)
   }
 
   fileprivate func audio(_ id: Audio.Id) async throws -> Audio.Joined {
-    if !self.loaded { try await self.load() }
+    try await self.ensureLoaded()
     guard let audio = joinedAudios[id] else {
       throw DuetSQLError.notFound("Audio: \(id.lowercased)")
     }
@@ -262,11 +268,26 @@ extension EditionImpression {
   }
 
   fileprivate func edition(_ id: Edition.Id) async throws -> Edition.Joined {
-    if !self.loaded { try await self.load() }
+    try await self.ensureLoaded()
     guard let edition = joinedEditions[id] else {
       throw DuetSQLError.notFound("Edition: \(id.lowercased)")
     }
     return edition
+  }
+
+  private func ensureLoaded() async throws {
+    switch self.state {
+    case .loaded:
+      return
+    case .loading:
+      while case .loading = self.state {
+        try? await Task.sleep(nanoseconds: 200_000_000) // 200ms
+      }
+      return
+    case .notLoaded:
+      self.state = .loading
+      try await self.load()
+    }
   }
 
   private func load() async throws {
@@ -402,7 +423,7 @@ extension EditionImpression {
     }
 
     // swiftformat:disable redundantSelf
-    self.loaded = true
+    self.state = .loaded
   }
 }
 
