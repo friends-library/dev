@@ -22,7 +22,6 @@ extension Configure {
 // extensions
 
 extension Vapor.Environment {
-
   // SAFETY: only set in this file during initial sync configuration of app
   // before app starts handling requests on other threads
   // long-term it would be better to handle this differently
