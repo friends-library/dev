@@ -16,6 +16,16 @@ rsync --archive --chown=jared:jared ~/.ssh /home/jared
 # don't ask `jared` for sudo password
 echo "jared ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+# for very small VM, postgres can gett OOM-killed, add swap
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+sudo sysctl vm.swappiness=10
+sudo sysctl vm.vfs_cache_pressure=50
+echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+echo "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
 
 # other programs
 sudo apt update

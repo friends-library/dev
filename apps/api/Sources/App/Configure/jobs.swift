@@ -17,6 +17,7 @@ public extension Configure {
     app.queues.schedule(VerifyEntityValidityJob()).daily().at(8, 15)
     app.queues.schedule(VerifyCloudAssets()).weekly().on(.friday).at(6, 30)
     app.queues.schedule(SendNarrowPath()).daily().at(5, 00)
+    app.queues.schedule(CrashReporterJob()).hourly().at(30)
 
     try app.queues.startScheduledJobs()
   }

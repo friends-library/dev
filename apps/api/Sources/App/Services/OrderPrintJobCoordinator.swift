@@ -13,7 +13,7 @@ enum OrderPrintJobCoordinator {
         .where(.printJobStatus == .enum(Order.PrintJobStatus.presubmit))
         .all()
     } catch {
-      await notifyErr("27fad259", "Error querying presubmit orders: \(error)")
+      await notifyErr("27fad259", "Error querying presubmit orders", error)
       return
     }
 
@@ -39,7 +39,8 @@ enum OrderPrintJobCoordinator {
       } catch {
         await notifyErr(
           "015b6291",
-          "Error creating print job for order \(order |> slackLink): \(error)",
+          "Error creating print job for order \(order |> slackLink)",
+          error,
         )
       }
     }
@@ -48,7 +49,7 @@ enum OrderPrintJobCoordinator {
       do {
         try await Current.db.update(updated)
       } catch {
-        await notifyErr("4ffa0b87", "Error updating orders: \(error)")
+        await notifyErr("4ffa0b87", "Error updating orders", error)
       }
     }
   }
@@ -160,7 +161,7 @@ private func sendOrderShippedEmail(_ order: Order, _ printJob: Lulu.Api.PrintJob
     let email = try await EmailBuilder.orderShipped(order, trackingUrl: trackingUrl)
     await Current.postmarkClient.send(email)
   } catch {
-    await notifyErr("8190eb37", "Error sending order shipped email for order \(order.id): \(error)")
+    await notifyErr("8190eb37", "Error sending order shipped email for order \(order.id)", error)
   }
 }
 
@@ -170,7 +171,7 @@ private func updateOrders(_ orders: [Order]) async {
     try await Current.db.update(orders)
   } catch {
     let ids = orders.map(\.id.rawValue.uuidString).joined(separator: ", ")
-    await notifyErr("15cc926e", "Error updating orders: [\(ids)]")
+    await notifyErr("15cc926e", "Error updating orders: [\(ids)]", error)
   }
 }
 
@@ -199,7 +200,7 @@ private func getOrdersWithPrintJobs(
       }
     }
 
-    await notifyErr("441b5e97", "Error querying orders & print jobs: \(error)")
+    await notifyErr("441b5e97", "Error querying orders & print jobs", error)
     return nil
   }
   return (orders: orders, printJobs: printJobs)
@@ -243,12 +244,20 @@ private func slackLink(_ printJob: Lulu.Api.PrintJob) -> String {
   return Slack.Message.link(to: url, withText: "\(printJob.id)")
 }
 
-func notifyErr(_ id: String, _ slackMessage: String) async {
+func notifyErr(_ id: String, _ slackMessage: String, _ error: (any Error)? = nil) async {
+  var message = slackMessage
+  if let error {
+    if "\(error)".contains("leakage of sensitive data") {
+      message += ", Error: `\(String(reflecting: error))`"
+    } else {
+      message += ", Error: `\(error)`"
+    }
+  }
   await Current.postmarkClient.send(.init(
     to: Env.JARED_CONTACT_FORM_EMAIL,
     from: "info@friendslibrary.com",
     subject: "[FLP Api] Print job error \(id)",
-    textBody: slackMessage,
+    textBody: message,
   ))
-  await slackError(slackMessage)
+  await slackError(message)
 }
