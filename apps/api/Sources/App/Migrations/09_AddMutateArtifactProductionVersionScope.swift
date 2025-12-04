@@ -1,21 +1,19 @@
 import Fluent
 import Vapor
 
-struct AddMutateArtifactProductionVersionScope: Migration {
+struct AddMutateArtifactProductionVersionScope: AsyncMigration {
 
-  func prepare(on database: Database) -> Future<Void> {
+  func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: AddMutateArtifactProductionVersionScope UP")
-    return database.enum(TokenScope.M5.dbEnumName)
+    _ = try await database.enum(TokenScope.M5.dbEnumName)
       .case(TokenScope.M9.Scope.mutateArtifactProductionVersions)
       .update()
-      .transform(to: ())
   }
 
-  func revert(on database: Database) -> Future<Void> {
+  func revert(on database: Database) async throws {
     Current.logger.info("Running migration: AddMutateArtifactProductionVersionScope DOWN")
-    return database.enum(TokenScope.M5.dbEnumName)
+    _ = try await database.enum(TokenScope.M5.dbEnumName)
       .deleteCase(TokenScope.M9.Scope.mutateArtifactProductionVersions)
       .update()
-      .transform(to: ())
   }
 }

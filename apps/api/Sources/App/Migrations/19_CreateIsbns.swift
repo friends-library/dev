@@ -1,11 +1,11 @@
 import Fluent
 
-struct CreateIsbns: Migration {
+struct CreateIsbns: AsyncMigration {
   private typealias M19 = Isbn.M19
 
-  func prepare(on database: Database) -> Future<Void> {
+  func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: CreateIsbns UP")
-    return database.schema(M19.tableName)
+    try await database.schema(M19.tableName)
       .id()
       .field(M19.code, .string, .required)
       .field(
@@ -19,8 +19,8 @@ struct CreateIsbns: Migration {
       .create()
   }
 
-  func revert(on database: Database) -> Future<Void> {
+  func revert(on database: Database) async throws {
     Current.logger.info("Running migration: CreateIsbns DOWN")
-    return database.schema(M19.tableName).delete()
+    try await database.schema(M19.tableName).delete()
   }
 }

@@ -1,11 +1,11 @@
 import Fluent
 
-struct CreateAudios: Migration {
+struct CreateAudios: AsyncMigration {
   private typealias M20 = Audio.M20
 
-  func prepare(on database: Database) -> Future<Void> {
+  func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: CreateAudios UP")
-    return database.schema(M20.tableName)
+    try await database.schema(M20.tableName)
       .id()
       .field(
         M20.editionId,
@@ -27,8 +27,8 @@ struct CreateAudios: Migration {
       .create()
   }
 
-  func revert(on database: Database) -> Future<Void> {
+  func revert(on database: Database) async throws {
     Current.logger.info("Running migration: CreateAudios DOWN")
-    return database.schema(M20.tableName).delete()
+    try await database.schema(M20.tableName).delete()
   }
 }

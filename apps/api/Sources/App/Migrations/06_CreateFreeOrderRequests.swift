@@ -1,11 +1,11 @@
 import Fluent
 import Vapor
 
-struct CreateFreeOrderRequests: Migration {
+struct CreateFreeOrderRequests: AsyncMigration {
 
-  func prepare(on database: Database) -> Future<Void> {
+  func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: CreateFreeOrderRequests UP")
-    return database.schema(FreeOrderRequest.M6.tableName)
+    try await database.schema(FreeOrderRequest.M6.tableName)
       .id()
       .field(FreeOrderRequest.M6.name, .string, .required)
       .field(FreeOrderRequest.M6.email, .string, .required)
@@ -23,8 +23,8 @@ struct CreateFreeOrderRequests: Migration {
       .create()
   }
 
-  func revert(on database: Database) -> Future<Void> {
+  func revert(on database: Database) async throws {
     Current.logger.info("Running migration: CreateFreeOrderRequests DOWN")
-    return database.schema(FreeOrderRequest.M6.tableName).delete()
+    try await database.schema(FreeOrderRequest.M6.tableName).delete()
   }
 }
