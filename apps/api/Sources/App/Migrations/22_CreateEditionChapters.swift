@@ -1,12 +1,12 @@
 import Fluent
 
-struct CreateEditionChaptersTable: Migration {
+struct CreateEditionChaptersTable: AsyncMigration {
   private typealias M22 = EditionChapter.M22
-  var name: String { "App.CreateEditionChapters" } // renamed to avoid pairql
+  var name: String { "App.CreateEditionChapters" }
 
-  func prepare(on database: Database) -> Future<Void> {
+  func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: CreateEditionChaptersTable UP")
-    return database.schema(M22.tableName)
+    try await database.schema(M22.tableName)
       .id()
       .field(
         M22.editionId,
@@ -26,8 +26,8 @@ struct CreateEditionChaptersTable: Migration {
       .create()
   }
 
-  func revert(on database: Database) -> Future<Void> {
+  func revert(on database: Database) async throws {
     Current.logger.info("Running migration: CreateEditionChaptersTable DOWN")
-    return database.schema(M22.tableName).delete()
+    try await database.schema(M22.tableName).delete()
   }
 }

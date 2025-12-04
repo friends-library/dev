@@ -1,11 +1,11 @@
 import Fluent
 
-struct CreateRelatedDocuments: Migration {
+struct CreateRelatedDocuments: AsyncMigration {
   private typealias M23 = RelatedDocument.M23
 
-  func prepare(on database: Database) -> Future<Void> {
+  func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: CreateRelatedDocuments UP")
-    return database.schema(M23.tableName)
+    try await database.schema(M23.tableName)
       .id()
       .field(
         M23.parentDocumentId,
@@ -25,8 +25,8 @@ struct CreateRelatedDocuments: Migration {
       .create()
   }
 
-  func revert(on database: Database) -> Future<Void> {
+  func revert(on database: Database) async throws {
     Current.logger.info("Running migration: CreateRelatedDocuments DOWN")
-    return database.schema(M23.tableName).delete()
+    try await database.schema(M23.tableName).delete()
   }
 }

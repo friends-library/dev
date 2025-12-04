@@ -2,20 +2,17 @@ import Queues
 import ShellOut
 import Vapor
 
-public struct SyncStagingDbJob: ScheduledJob {
-
-  public func run(context: QueueContext) -> EventLoopFuture<Void> {
-    future(of: Void.self, on: context.eventLoop) {
-      do {
-        let cmdOutput = try shellOut(
-          to: "/usr/bin/bash",
-          arguments: ["\(Env.get("DEPLOY_DIR") ?? "")/apps/api/sync-staging-db.sh"],
-        )
-        await slackDebug("Completed prod->staging db sync\n```\n\(cmdOutput)\n```")
-      } catch {
-        let error = error as! ShellOutError
-        await logError(error)
-      }
+struct SyncStagingDbJob: AsyncScheduledJob {
+  func run(context: QueueContext) async throws {
+    do {
+      let cmdOutput = try shellOut(
+        to: "/usr/bin/bash",
+        arguments: ["/home/jared/sync-staging-db.sh"],
+      )
+      await slackDebug("Completed prod->staging db sync\n```\n\(cmdOutput)\n```")
+    } catch {
+      let error = error as! ShellOutError
+      await logError(error)
     }
   }
 }

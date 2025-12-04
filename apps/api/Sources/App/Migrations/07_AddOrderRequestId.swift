@@ -1,11 +1,11 @@
 import Fluent
 import Vapor
 
-struct AddOrderRequestId: Migration {
+struct AddOrderRequestId: AsyncMigration {
 
-  func prepare(on database: Database) -> Future<Void> {
+  func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: AddOrderRequestId UP")
-    return database.schema(Order.M2.tableName)
+    try await database.schema(Order.M2.tableName)
       .field(
         Order.M7.freeOrderRequestId,
         .uuid,
@@ -18,9 +18,9 @@ struct AddOrderRequestId: Migration {
       .update()
   }
 
-  func revert(on database: Database) -> Future<Void> {
+  func revert(on database: Database) async throws {
     Current.logger.info("Running migration: AddOrderRequestId DOWN")
-    return database.schema(Order.M2.tableName)
+    try await database.schema(Order.M2.tableName)
       .deleteField(Order.M7.freeOrderRequestId)
       .update()
   }

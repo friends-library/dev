@@ -1,12 +1,12 @@
 import Fluent
 import Vapor
 
-struct CreateFriendQuotes: Migration {
+struct CreateFriendQuotes: AsyncMigration {
   private typealias M13 = FriendQuote.M13
 
-  func prepare(on database: Database) -> Future<Void> {
+  func prepare(on database: Database) async throws {
     Current.logger.info("Running migration: CreateFriendQuotes UP")
-    return database.schema(M13.tableName)
+    try await database.schema(M13.tableName)
       .id()
       .field(
         M13.friendId,
@@ -24,8 +24,8 @@ struct CreateFriendQuotes: Migration {
       .create()
   }
 
-  func revert(on database: Database) -> Future<Void> {
+  func revert(on database: Database) async throws {
     Current.logger.info("Running migration: CreateFriendQuotes DOWN")
-    return database.schema(M13.tableName).delete()
+    try await database.schema(M13.tableName).delete()
   }
 }
