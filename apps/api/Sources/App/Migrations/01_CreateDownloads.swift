@@ -69,3 +69,5 @@ struct CreateDownloads: AsyncMigration {
     try await database.enum(M1.AudioQualityEnum.name).delete()
   }
 }
+
+typealias Future = EventLoopFuture
