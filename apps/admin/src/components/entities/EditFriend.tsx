@@ -186,6 +186,7 @@ export const EditFriend: React.FC<Props> = ({
                     value={String(duration.start)}
                     onChange={replace(
                       `residences[${residenceIndex}].durations[${durationIndex}].start`,
+                      Number,
                     )}
                   />
                   <TextInput
@@ -195,6 +196,7 @@ export const EditFriend: React.FC<Props> = ({
                     value={String(duration.end)}
                     onChange={replace(
                       `residences[${residenceIndex}].durations[${durationIndex}].end`,
+                      Number,
                     )}
                   />
                 </div>
