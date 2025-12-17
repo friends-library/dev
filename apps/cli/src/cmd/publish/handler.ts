@@ -94,7 +94,12 @@ export default async function publish(argv: PublishOptions): Promise<void> {
       await replaceEditionChapters(dpc);
 
       logDebug(`Uploading generated files to cloud storage...`);
-      await uploadFiles(data.uploads, cloudPaths);
+      try {
+        await uploadFiles(data.uploads, cloudPaths);
+      } catch (uploadErr) {
+        await rollbackSaveEditionImpression(data.impression);
+        throw uploadErr;
+      }
 
       successes.push(dpc.path);
     } catch (err) {
