@@ -1,4 +1,5 @@
 {
+  "originHash" : "01af1661b3fa8c661269a532283240769b7d7ab7cced1c6cde28355fee4c449d",
   "pins" : [
     {
       "identity" : "runtime",
@@ -8,25 +9,7 @@
         "revision" : "b90e9ab1c66a964a9edf32fe38ea2774c0e5821b",
         "version" : "2.2.7"
       }
-    },
-    {
-      "identity" : "swift-custom-dump",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-custom-dump",
-      "state" : {
-        "revision" : "edd66cace818e1b1c6f1b3349bb1d8e00d6f8b01",
-        "version" : "1.0.0"
-      }
-    },
-    {
-      "identity" : "xctest-dynamic-overlay",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
-      "state" : {
-        "revision" : "39de59b2d47f7ef3ca88a039dff3084688fe27f4",
-        "version" : "1.5.2"
-      }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

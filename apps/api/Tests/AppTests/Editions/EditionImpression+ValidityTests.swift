@@ -1,34 +1,33 @@
-import XCTest
-import XExpect
+import Testing
 
 @testable import App
 
-final class EditionImpressionValidityTests: XCTestCase {
-  func testOutOfBoundPaperbackVolumesInvalid() async {
+@Suite struct EditionImpressionValidityTests {
+  @Test func `out of bound paperback volumes invalid`() async {
     var impression = EditionImpression.valid
     impression.paperbackVolumes = .init(0)
-    await expect(impression.isValid()).toBeFalse()
+    #expect(await impression.isValid() == false)
     impression.paperbackVolumes = .init(100, 999_999)
-    await expect(impression.isValid()).toBeFalse()
+    #expect(await impression.isValid() == false)
   }
 
-  func testOutOfBoundsAdocLengthInvalid() async {
+  @Test func `out of bounds adoc length invalid`() async {
     var impression = EditionImpression.valid
     impression.adocLength = 100
-    await expect(impression.isValid()).toBeFalse()
+    #expect(await impression.isValid() == false)
     impression.adocLength = 33_333_333_333
-    await expect(impression.isValid()).toBeFalse()
+    #expect(await impression.isValid() == false)
   }
 
-  func testNonGitCommitFullShaPublishedRevisionInvalid() async {
+  @Test func `non-git-commit full sha published revision invalid`() async {
     var impression = EditionImpression.valid
     impression.publishedRevision = "not a sha"
-    await expect(impression.isValid()).toBeFalse()
+    #expect(await impression.isValid() == false)
   }
 
-  func testNonGitCommitFullShaProductionToolchainRevisionInvalid() async {
+  @Test func `non-git-commit full sha production toolchain revision invalid`() async {
     var impression = EditionImpression.valid
     impression.productionToolchainRevision = "not a sha"
-    await expect(impression.isValid()).toBeFalse()
+    #expect(await impression.isValid() == false)
   }
 }

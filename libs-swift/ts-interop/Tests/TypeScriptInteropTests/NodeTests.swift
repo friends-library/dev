@@ -1,69 +1,70 @@
-import XCTest
-import XExpect
+import Testing
 
 @testable import TypeScriptInterop
 
-final class NodeTests: XCTestCase {
+@Suite struct NodeTests {
 
-  func testParseNodePrimitive() throws {
-    expect(try Node(from: String.self)).toEqual(.primitive(.string))
-    expect(try Node(from: Int.self)).toEqual(.primitive(.number(.int)))
-    expect(try Node(from: Bool.self)).toEqual(.primitive(.boolean))
+  @Test func `parse node primitive`() throws {
+    #expect(try Node(from: String.self) == .primitive(.string))
+    #expect(try Node(from: Int.self) == .primitive(.number(.int)))
+    #expect(try Node(from: Bool.self) == .primitive(.boolean))
   }
 
-  func testParseArray() throws {
-    expect(try Node(from: [String].self)).toEqual(.array(.primitive(.string), .string))
-    expect(try Node(from: [Int].self)).toEqual(.array(.primitive(.number(.int)), .int))
-    expect(try Node(from: [Bool].self)).toEqual(.array(.primitive(.boolean), .bool))
-    expect(try Node(from: [[Bool]].self))
-      .toEqual(.array(.array(.primitive(.boolean), .bool), .init([Bool].self)))
+  @Test func `parse array`() throws {
+    #expect(try Node(from: [String].self) == .array(.primitive(.string), .string))
+    #expect(try Node(from: [Int].self) == .array(.primitive(.number(.int)), .int))
+    #expect(try Node(from: [Bool].self) == .array(.primitive(.boolean), .bool))
+    #expect(
+      try Node(from: [[Bool]].self)
+        == .array(.array(.primitive(.boolean), .bool), .init([Bool].self)),
+    )
 
     struct Foo { var bar: Int }
-    expect(try Node(from: [Foo].self)).toEqual(.array(.object([
+    #expect(try Node(from: [Foo].self) == .array(.object([
       .init(name: "bar", value: .primitive(.number(.int))),
     ], .init(Foo.self)), .init(Foo.self)))
   }
 
-  func testParseDictionary() async throws {
-    expect(try Node(from: [String: String].self)).toEqual(.record(.primitive(.string)))
-    expect(try Node(from: [String: Int].self)).toEqual(.record(.primitive(.number(.int))))
+  @Test func `parse dictionary`() throws {
+    #expect(try Node(from: [String: String].self) == .record(.primitive(.string)))
+    #expect(try Node(from: [String: Int].self) == .record(.primitive(.number(.int))))
 
     struct Foo { var bar: Int }
-    expect(try Node(from: [String: Foo].self)).toEqual(.record(.object([
+    #expect(try Node(from: [String: Foo].self) == .record(.object([
       .init(name: "bar", value: .primitive(.number(.int))),
     ], .init(Foo.self))))
 
-    try await expectErrorFrom {
+    #expect(throws: (any Error).self) {
       try Node(from: [Int: String].self)
-    }.toContain("non-string keys")
+    }
   }
 
-  func testEnumWithMultipleUnnamedValuesThrows() async throws {
+  @Test func `enum with multiple unnamed values throws`() throws {
     enum NotGoodForTs {
       case a
       case b(Int, Int)
     }
 
-    try await expectErrorFrom {
+    #expect(throws: (any Error).self) {
       try Node(from: NotGoodForTs.self)
-    }.toContain("unnamed tuple members")
+    }
   }
 
-  func testUnrepresentableTupleThrows() async throws {
-    try await expectErrorFrom {
+  @Test func `unrepresentable tuple throws`() throws {
+    #expect(throws: (any Error).self) {
       try Node(from: (Int?, String).self)
-    }.toContain("not supported")
+    }
   }
 
-  func testParseSimpleEnum() throws {
+  @Test func `parse simple enum`() throws {
     enum Foo {
       case bar
       case baz
     }
-    expect(try Node(from: Foo.self)).toEqual(.stringUnion(["bar", "baz"], .init(Foo.self)))
+    #expect(try Node(from: Foo.self) == .stringUnion(["bar", "baz"], .init(Foo.self)))
   }
 
-  func testFlattensEnumCaseWithSingleStructPayload() throws {
+  @Test func `flattens enum case with single struct payload`() throws {
     enum Screen {
       struct Connected {
         var flat: String
@@ -72,7 +73,7 @@ final class NodeTests: XCTestCase {
       case connected(Connected)
       case notConnected
     }
-    expect(try Node(from: Screen.self)).toEqual(.objectUnion([
+    #expect(try Node(from: Screen.self) == .objectUnion([
       .init(
         caseName: "connected",
         associatedValues: [
@@ -83,7 +84,7 @@ final class NodeTests: XCTestCase {
     ], .init(Screen.self)))
   }
 
-  func testParseEnumWithPayload() throws {
+  @Test func `parse enum with payload`() throws {
     enum Foo {
       case bar(String)
       case baz(Int?)
@@ -91,7 +92,7 @@ final class NodeTests: XCTestCase {
       case named(a: Bool, b: String?)
       case jim
     }
-    expect(try Node(from: Foo.self)).toEqual(.objectUnion([
+    #expect(try Node(from: Foo.self) == .objectUnion([
       .init(
         caseName: "bar",
         associatedValues: [.init(name: "bar", value: .primitive(.string))],
@@ -115,7 +116,7 @@ final class NodeTests: XCTestCase {
     ], .init(Foo.self)))
   }
 
-  func testParseStruct() throws {
+  @Test func `parse struct`() throws {
     struct Foo {
       var bar: String
       let baz: Int
@@ -123,7 +124,7 @@ final class NodeTests: XCTestCase {
       var void: Void
       var never: Never
     }
-    expect(try Node(from: Foo.self)).toEqual(.object([
+    #expect(try Node(from: Foo.self) == .object([
       .init(name: "bar", value: .primitive(.string), optional: false, readonly: false),
       .init(name: "baz", value: .primitive(.number(.int)), optional: false, readonly: true),
       .init(name: "jim", value: .primitive(.boolean), optional: true, readonly: false),

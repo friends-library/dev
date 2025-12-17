@@ -1,14 +1,14 @@
 import TaggedTime
-import XCTest
+import Testing
 
 @testable import App
 
-let MINUTE = Seconds<Double>(rawValue: 60.0)
-let HOUR = Seconds<Double>(rawValue: 60.0 * 60.0)
+private let MINUTE = Seconds<Double>(rawValue: 60.0)
+private let HOUR = Seconds<Double>(rawValue: 60.0 * 60.0)
 
-final class AudioUtilTests: XCTestCase {
+@Suite struct AudioUtilTests {
 
-  func testClockStyle() {
+  @Test func `clock style`() {
     let cases: [([Seconds<Double>], String)] = [
       ([MINUTE, MINUTE, MINUTE, 5.2], "3:05"),
       ([HOUR * 3, MINUTE * 5, 5], "3:05:05"),
@@ -19,14 +19,14 @@ final class AudioUtilTests: XCTestCase {
       ([3], "3"),
     ]
     for (durations, expected) in cases {
-      XCTAssertEqual(
-        AudioUtil.humanDuration(partDurations: durations, style: .clock),
-        expected,
+      #expect(
+        AudioUtil.humanDuration(partDurations: durations, style: .clock)
+          == expected,
       )
     }
   }
 
-  func testAbbrevStyle() {
+  @Test func `abbrev style`() {
     let cases: [([Seconds<Double>], String, Lang)] = [
       ([HOUR * 3], "3 hr", .en),
       ([HOUR * 3], "3 h", .es),
@@ -36,9 +36,9 @@ final class AudioUtilTests: XCTestCase {
       ([MINUTE * 13], "13 min", .es),
     ]
     for (durations, expected, lang) in cases {
-      XCTAssertEqual(
-        AudioUtil.humanDuration(partDurations: durations, style: .abbrev(lang)),
-        expected,
+      #expect(
+        AudioUtil.humanDuration(partDurations: durations, style: .abbrev(lang))
+          == expected,
       )
     }
   }

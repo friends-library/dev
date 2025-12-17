@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 6.0
 
 import PackageDescription
 
@@ -9,7 +9,6 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/wickwirew/Runtime.git", from: "2.2.7"),
-    .package(path: "../x-expect"),
   ],
   targets: [
     .executableTarget(
@@ -34,7 +33,6 @@ let package = Package(
       dependencies: [
         "TypeScriptInteropCLI",
         "TypeScriptInterop",
-        .product(name: "XExpect", package: "x-expect"),
       ],
     ),
   ],

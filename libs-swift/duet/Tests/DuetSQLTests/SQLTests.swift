@@ -1,12 +1,11 @@
 import Tagged
-import XCTest
-import XExpect
+import Testing
 
 @testable import DuetSQL
 
-final class SqlTests: XCTestCase {
+@Suite struct SqlTests {
 
-  func testLimitOffset() throws {
+  @Test func `limit offset`() throws {
     let stmt = SQL.select(
       .all,
       from: Thing.self,
@@ -22,22 +21,22 @@ final class SqlTests: XCTestCase {
     OFFSET 3;
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [])
   }
 
-  func testCountNoWhere() throws {
+  @Test func `count no where`() throws {
     let stmt = SQL.count(Thing.self)
 
     let expectedQuery = """
     SELECT COUNT(*) FROM "things";
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [])
   }
 
-  func testCountWhere() throws {
+  @Test func `count where`() throws {
     let stmt = SQL.count(Thing.self, where: .string == "a")
 
     let expectedQuery = """
@@ -45,11 +44,11 @@ final class SqlTests: XCTestCase {
     WHERE "string" = $1;
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual(["a"])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == ["a"])
   }
 
-  func testWhereIn() throws {
+  @Test func `where in`() throws {
     let ids: [Thing.IdValue] = [
       .init(rawValue: UUID(uuidString: "6b9cfcdc-22a8-4c40-9ea8-eb409725dc34")!),
       .init(rawValue: UUID(uuidString: "c5bfe387-1e7a-426a-87ff-1aa472057acc")!),
@@ -62,11 +61,11 @@ final class SqlTests: XCTestCase {
     WHERE "id" IN ($1, $2);
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual(ids.map { .uuid($0.rawValue) })
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == ids.map { .uuid($0.rawValue) })
   }
 
-  func testWhereInEmptyValues() throws {
+  @Test func `where in empty values`() throws {
     let ids: [Thing.IdValue] = []
 
     let stmt = SQL.select(.all, from: Thing.self, where: .id |=| ids)
@@ -76,19 +75,19 @@ final class SqlTests: XCTestCase {
     WHERE FALSE;
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [])
   }
 
-  func testAlwaysRemovedFromWhereClause() throws {
+  @Test func `always removed from where clause`() throws {
     var stmt = SQL.select(.all, from: Thing.self)
 
     var expectedQuery = """
     SELECT * FROM "things";
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [])
 
     stmt = SQL.select(.all, from: Thing.self, where: .and(.always, .int == 3))
 
@@ -97,22 +96,22 @@ final class SqlTests: XCTestCase {
     WHERE "int" = $1;
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([3])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [3])
   }
 
-  func testSimpleSelect() throws {
+  @Test func `simple select`() throws {
     let stmt = SQL.select(.all, from: Thing.self)
 
     let expectedQuery = """
     SELECT * FROM "things";
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [])
   }
 
-  func testSelectWithLimit() throws {
+  @Test func `select with limit`() throws {
     let stmt = SQL.select(.all, from: Thing.self, limit: 4)
 
     let expectedQuery = """
@@ -120,11 +119,11 @@ final class SqlTests: XCTestCase {
     LIMIT 4;
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [])
   }
 
-  func testSelectWithSingleWhere() throws {
+  @Test func `select with single where`() throws {
     let stmt = SQL.select(.all, from: Thing.self, where: .id == 123)
 
     let expectedQuery = """
@@ -132,11 +131,11 @@ final class SqlTests: XCTestCase {
     WHERE "id" = $1;
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([123])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [123])
   }
 
-  func testSelectWithMultipleWheres() throws {
+  @Test func `select with multiple wheres`() throws {
     let stmt = SQL.select(.all, from: Thing.self, where: .id == 123 .&& .int == 789)
 
     let expectedQuery = """
@@ -144,11 +143,11 @@ final class SqlTests: XCTestCase {
     WHERE ("id" = $1 AND "int" = $2);
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([123, 789])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [123, 789])
   }
 
-  func testDeleteWithConstraint() throws {
+  @Test func `delete with constraint`() throws {
     let stmt = SQL.delete(from: Thing.self, where: .id == 123)
 
     let expectedQuery = """
@@ -156,11 +155,11 @@ final class SqlTests: XCTestCase {
     WHERE "id" = $1;
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([123])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [123])
   }
 
-  func testDeleteWithOrderByAndLimit() throws {
+  @Test func `delete with order by and limit`() throws {
     let stmt = SQL.delete(
       from: Thing.self,
       where: .id == 123,
@@ -175,22 +174,22 @@ final class SqlTests: XCTestCase {
     LIMIT 1;
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([123])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [123])
   }
 
-  func testDeleteAll() throws {
+  @Test func `delete all`() throws {
     let stmt = SQL.delete(from: Thing.self)
 
     let expectedQuery = """
     DELETE FROM "things";
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [])
   }
 
-  func testBulkInsert() throws {
+  @Test func `bulk insert`() throws {
     let stmt = try SQL.insert(
       into: Thing.self,
       values: [[.int: 1, .optionalInt: 2], [.optionalInt: 4, .int: 3]],
@@ -203,11 +202,11 @@ final class SqlTests: XCTestCase {
     ($1, $2), ($3, $4);
     """
 
-    expect(stmt.query).toEqual(expectedQuery)
-    expect(stmt.bindings).toEqual([1, 2, 3, 4])
+    #expect(stmt.query == expectedQuery)
+    #expect(stmt.bindings == [1, 2, 3, 4])
   }
 
-  func testUpdate() {
+  @Test func update() {
     let statement = SQL.update(
       Thing.self,
       set: [.optionalInt: 1, .bool: true],
@@ -220,11 +219,11 @@ final class SqlTests: XCTestCase {
     WHERE "string" = $3;
     """
 
-    expect(statement.query).toEqual(query)
-    expect(statement.bindings).toEqual([true, 1, "a"])
+    #expect(statement.query == query)
+    #expect(statement.bindings == [true, 1, "a"])
   }
 
-  func testUpdateWithoutWhere() {
+  @Test func `update without where`() {
     let statement = SQL.update(Thing.self, set: [.int: 1])
 
     let query = """
@@ -232,11 +231,11 @@ final class SqlTests: XCTestCase {
     SET "int" = $1;
     """
 
-    expect(statement.query).toEqual(query)
-    expect(statement.bindings).toEqual([1])
+    #expect(statement.query == query)
+    #expect(statement.bindings == [1])
   }
 
-  func testUpdateReturning() {
+  @Test func `update producing`() {
     let statement = SQL.update(
       Thing.self,
       set: [.int: 1],
@@ -251,11 +250,11 @@ final class SqlTests: XCTestCase {
     RETURNING *;
     """
 
-    expect(statement.query).toEqual(query)
-    expect(statement.bindings).toEqual([1, "a"])
+    #expect(statement.query == query)
+    #expect(statement.bindings == [1, "a"])
   }
 
-  func testBasicInsert() throws {
+  @Test func `basic insert`() throws {
     let id = UUID()
     let statement = try SQL.insert(
       into: Thing.self,
@@ -269,11 +268,11 @@ final class SqlTests: XCTestCase {
     ($1, $2, $3);
     """
 
-    expect(statement.query).toEqual(query)
-    expect(statement.bindings).toEqual([.uuid(id), 33, "lol"])
+    #expect(statement.query == query)
+    #expect(statement.bindings == [.uuid(id), 33, "lol"])
   }
 
-  func testOptionalInts() throws {
+  @Test func `optional ints`() throws {
     let statement = try SQL.insert(
       into: Thing.self,
       values: [.int: 22, .optionalInt: .int(nil)],
@@ -286,11 +285,11 @@ final class SqlTests: XCTestCase {
     ($1, $2);
     """
 
-    expect(statement.query).toEqual(query)
-    expect(statement.bindings).toEqual([22, .int(nil)])
+    #expect(statement.query == query)
+    #expect(statement.bindings == [22, .int(nil)])
   }
 
-  func testOptionalStrings() throws {
+  @Test func `optional strings`() throws {
     let statement = try SQL.insert(
       into: Thing.self,
       values: [.string: "howdy", .optionalString: .string(nil)],
@@ -303,11 +302,11 @@ final class SqlTests: XCTestCase {
     ($1, $2);
     """
 
-    expect(statement.query).toEqual(query)
-    expect(statement.bindings).toEqual([.string(nil), "howdy"])
+    #expect(statement.query == query)
+    #expect(statement.bindings == [.string(nil), "howdy"])
   }
 
-  func testEnums() throws {
+  @Test func enums() throws {
     let statement = try SQL.insert(
       into: Thing.self,
       values: [
@@ -323,11 +322,11 @@ final class SqlTests: XCTestCase {
     ($1, $2);
     """
 
-    expect(statement.query).toEqual(query)
-    expect(statement.bindings).toEqual([.enum(Thing.CustomEnum.foo), .enum(nil)])
+    #expect(statement.query == query)
+    #expect(statement.bindings == [.enum(Thing.CustomEnum.foo), .enum(nil)])
   }
 
-  func testDates() throws {
+  @Test func dates() throws {
     let date = try? Date(fromIsoString: "2021-12-14T17:16:16.896Z")
     let statement = try SQL.insert(
       into: Thing.self,
@@ -341,11 +340,11 @@ final class SqlTests: XCTestCase {
     ($1, $2);
     """
 
-    expect(statement.query).toEqual(query)
-    expect(statement.bindings).toEqual([.date(date), .currentTimestamp])
+    #expect(statement.query == query)
+    #expect(statement.bindings == [.date(date), .currentTimestamp])
   }
 
-  func testUpdateRemovesIdAndCreatedAtFromInsertValues() throws {
+  @Test func `update removes id and created at from insert values`() throws {
     let thing = Thing(
       string: "foo",
       int: 1,
@@ -362,6 +361,6 @@ final class SqlTests: XCTestCase {
     SET "int" = $1, "updated_at" = $2, "bool" = $3, "optional_string" = $4, "custom_enum" = $5, "optional_custom_enum" = $6, "version" = $7, "string" = $8, "optional_int" = $9;
     """
 
-    expect(statement.query).toEqual(query)
+    #expect(statement.query == query)
   }
 }

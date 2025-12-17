@@ -1,45 +1,44 @@
-import XCTest
-import XExpect
+import Testing
 
 @testable import App
 
-final class EditionChapterValidityTests: XCTestCase {
-  func testOrderLessThan1OrSuperBigInvalid() async {
+@Suite struct EditionChapterValidityTests {
+  @Test func `order less than 1 or super big invalid`() async {
     var chapter = EditionChapter.valid
     chapter.order = 0
-    await expect(chapter.isValid()).toBeFalse()
+    #expect(await chapter.isValid() == false)
     chapter.order = 400
-    await expect(chapter.isValid()).toBeFalse()
+    #expect(await chapter.isValid() == false)
   }
 
-  func testWierdValueForSequenceNumberInvalid() async {
+  @Test func `weird value for sequence number invalid`() async {
     var chapter = EditionChapter.valid
     chapter.sequenceNumber = 0
-    await expect(chapter.isValid()).toBeFalse()
+    #expect(await chapter.isValid() == false)
     chapter.sequenceNumber = 201
-    await expect(chapter.isValid()).toBeFalse()
+    #expect(await chapter.isValid() == false)
   }
 
-  func testEmptyOrNonCapitalizedShortHeadingInvalid() async {
+  @Test func `empty or non-capitalized short heading invalid`() async {
     var chapter = EditionChapter.valid
     chapter.shortHeading = ""
-    await expect(chapter.isValid()).toBeFalse()
+    #expect(await chapter.isValid() == false)
     chapter.shortHeading = "bad lowercased"
-    await expect(chapter.isValid()).toBeFalse()
+    #expect(await chapter.isValid() == false)
   }
 
-  func testEmptyOrNonCapitalizedNonSequenceTitleInvalid() async {
+  @Test func `empty or non-capitalized non-sequence title invalid`() async {
     var chapter = EditionChapter.valid
     chapter.nonSequenceTitle = ""
-    await expect(chapter.isValid()).toBeFalse()
+    #expect(await chapter.isValid() == false)
     chapter.nonSequenceTitle = "bad lowercased"
-    await expect(chapter.isValid()).toBeFalse()
+    #expect(await chapter.isValid() == false)
   }
 
-  func testSequenceNumberAndNonSequenceTitleBothNullInvalid() async {
+  @Test func `sequence number and non-sequence title both null invalid`() async {
     var chapter = EditionChapter.valid
     chapter.sequenceNumber = nil
     chapter.nonSequenceTitle = nil
-    await expect(chapter.isValid()).toBeFalse()
+    #expect(await chapter.isValid() == false)
   }
 }
