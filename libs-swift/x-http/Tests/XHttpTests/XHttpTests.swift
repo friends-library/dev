@@ -1,9 +1,9 @@
-import XCTest
+import Testing
 
 @testable import XHttp
 
-final class XHttpTests: XCTestCase {
-  func testGetDecoding() async throws {
+@Suite struct XHttpTests {
+  @Test func `get decoding`() async throws {
     struct XkcdComic: Decodable, Equatable {
       let num: Int
       let title: String
@@ -16,9 +16,9 @@ final class XHttpTests: XCTestCase {
       decoding: XkcdComic.self,
     )
 
-    XCTAssertEqual(
-      bobbyTables,
-      XkcdComic(num: 327, title: "Exploits of a Mom", month: "10", year: "2007"),
+    #expect(
+      bobbyTables
+        == XkcdComic(num: 327, title: "Exploits of a Mom", month: "10", year: "2007"),
     )
   }
 }

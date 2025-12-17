@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:6.0
 import PackageDescription
 
 let package = Package(
@@ -10,7 +10,6 @@ let package = Package(
   ],
   dependencies: [
     .package(path: "../x-kit"),
-    .package(path: "../x-expect"),
     .package("vapor/fluent-kit@1.48.2"),
     .package("jaredh159/swift-tagged@0.8.2"),
     .package("wickwirew/Runtime@2.2.7"),
@@ -49,11 +48,11 @@ let package = Package(
     ),
     .testTarget(
       name: "DuetSQLTests",
-      dependencies: ["DuetSQL", .product(name: "XExpect", package: "x-expect")],
+      dependencies: ["DuetSQL"],
     ),
     .testTarget(
       name: "DuetTests",
-      dependencies: ["Duet", .product(name: "XExpect", package: "x-expect")],
+      dependencies: ["Duet"],
     ),
   ],
 )

@@ -1,23 +1,23 @@
-import XCTest
+import Testing
 
 @testable import App
 
-final class FriendTests: XCTestCase {
-  func testAlphabeticalName() {
+@Suite struct FriendTests {
+  @Test func `alphabetical name`() {
     var friend = Friend.empty
     friend.name = "Jared Henderson"
-    XCTAssertEqual(friend.alphabeticalName, "Henderson, Jared")
+    #expect(friend.alphabeticalName == "Henderson, Jared")
   }
 
-  func testAlphabeticalMaidenName() {
+  @Test func `alphabetical maiden name`() {
     var friend = Friend.empty
     friend.name = "Catherine (Payton) Phillips"
-    XCTAssertEqual(friend.alphabeticalName, "Phillips, Catherine (Payton)")
+    #expect(friend.alphabeticalName == "Phillips, Catherine (Payton)")
   }
 
-  func testAlphabeticalNameWithInitials() {
+  @Test func `alphabetical name with initials`() {
     var friend = Friend.empty
     friend.name = "Sarah R. Grubb"
-    XCTAssertEqual(friend.alphabeticalName, "Grubb, Sarah R.")
+    #expect(friend.alphabeticalName == "Grubb, Sarah R.")
   }
 }

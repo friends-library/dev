@@ -1,9 +1,9 @@
-import XCTest
+import Testing
 
 @testable import Duet
 
-final class DuetTests: XCTestCase {
-  func testExample() throws {
-    XCTAssertTrue(true)
+@Suite struct DuetTests {
+  @Test func example() {
+    #expect(true)
   }
 }

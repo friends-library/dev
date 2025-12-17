@@ -1,10 +1,9 @@
 import DuetSQL
-import XCTest
-import XExpect
+import Testing
 
-final class PostgresTests: XCTestCase {
-  func testStringApostrophesEscaped() {
+@Suite struct PostgresTests {
+  @Test func `string apostrophes escaped`() {
     let string = Postgres.Data.string("don't")
-    expect(string.param).toEqual("'don''t'")
+    #expect(string.param == "'don''t'")
   }
 }

@@ -1,11 +1,10 @@
-import XCTest
-import XExpect
+import Testing
 
 @testable import DuetSQL
 
-final class WhereConstraintTests: XCTestCase {
+@Suite struct WhereConstraintTests {
 
-  func testIsSatisfiedBy() throws {
+  @Test func `is satisfied by`() throws {
     let cases: [(Thing, SQL.WhereConstraint<Thing>, Bool)] = [
       (.init(string: "bar"), .string == "bar", true),
       (.init(string: "not_bar"), .string == "bar", false),
@@ -35,12 +34,12 @@ final class WhereConstraintTests: XCTestCase {
       (.init(createdAt: .distantFuture), .createdAt < .currentTimestamp, false),
     ]
     for (thing, constraint, expected) in cases {
-      expect(constraint.isSatisfied(by: thing)).toEqual(expected)
-      expect(thing.satisfies(constraint: constraint)).toEqual(expected)
+      #expect(constraint.isSatisfied(by: thing) == expected)
+      #expect(thing.satisfies(constraint: constraint) == expected)
     }
   }
 
-  func testSQLFromWhereConstraint() throws {
+  @Test func `SQL from where constraint`() throws {
     let cases: [(SQL.WhereConstraint<Thing>, String, [Postgres.Data])] = [
       (.like(.string, "%foo%"), #""string" LIKE $1"#, ["%foo%"]),
       (.ilike(.string, "%foo%"), #""string" ILIKE $1"#, ["%foo%"]),
@@ -83,8 +82,8 @@ final class WhereConstraintTests: XCTestCase {
 
     for (constraint, expectedSQL, expectedBindings) in cases {
       var bindings: [Postgres.Data] = []
-      expect(constraint.sql(boundTo: &bindings)).toEqual(expectedSQL)
-      expect(bindings).toEqual(expectedBindings)
+      #expect(constraint.sql(boundTo: &bindings) == expectedSQL)
+      #expect(bindings == expectedBindings)
     }
   }
 }

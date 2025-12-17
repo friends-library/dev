@@ -1,5 +1,5 @@
-import XCTest
-import XExpect
+import Foundation
+import Testing
 
 @testable import TypeScriptInterop
 
@@ -20,7 +20,7 @@ extension EnumCodableGen.EnumType.Case.Value.Name: ExpressibleByStringLiteral {
   }
 }
 
-final class CodableTests: XCTestCase {
+@Suite struct CodableTests {
   let bazType = EnumType(
     name: "Baz",
     cases: [
@@ -43,7 +43,7 @@ final class CodableTests: XCTestCase {
     ],
   )
 
-  func testAssociatedValuesWithSameNameAsCase() throws {
+  @Test func `associated values with same name as case`() throws {
     enum DupeNames {
       case a(a: String, b: Bool)
       case b(b: String)
@@ -51,111 +51,112 @@ final class CodableTests: XCTestCase {
     }
 
     let conformance = try (EnumType(from: DupeNames.self)).codableConformance()
-    expect(conformance).toContain("self = .a(a: value.a, b: value.b)")
-    expect(conformance).toContain("self = .b(b: value.b)")
+    #expect(conformance.contains("self = .a(a: value.a, b: value.b)"))
+    #expect(conformance.contains("self = .b(b: value.b)"))
   }
 
-  func testExtractEnumType() throws {
-    expect(try EnumType(from: Baz.self)).toEqual(self.bazType)
+  @Test func `extract enum type`() throws {
+    #expect(try EnumType(from: Baz.self) == self.bazType)
   }
 
-  func testFullyQualifiedTypeNames() throws {
+  @Test func `fully qualified type names`() throws {
     let nested = try EnumType(from: Rofl.Nested.self)
     let firstLine = nested.codableConformance().split(separator: "\n").first!
-    expect(firstLine).toEqual("extension Rofl.Nested {")
-    expect(typeName(Rofl.Nested.self)).toEqual("Rofl.Nested")
+    #expect(firstLine == "extension Rofl.Nested {")
+    #expect(typeName(Rofl.Nested.self) == "Rofl.Nested")
   }
 
-  func testCodableConformanceCodegen() {
-    expect(self.bazType.codableConformance()).toEqual(
-      """
-      extension Baz {
-        private struct _NamedCase: Codable {
-          var `case`: String
-          static func extract(from decoder: Decoder) throws -> String {
+  @Test func `codable conformance codegen`() {
+    #expect(
+      self.bazType.codableConformance() ==
+        """
+        extension Baz {
+          private struct _NamedCase: Codable {
+            var `case`: String
+            static func extract(from decoder: Decoder) throws -> String {
+              let container = try decoder.singleValueContainer()
+              return try container.decode(_NamedCase.self).case
+            }
+          }
+
+          private struct _TypeScriptDecodeError: Error {
+            var message: String
+          }
+
+          private struct _CaseBar: Codable {
+            var `case` = "bar"
+            var bar: String
+          }
+
+          private struct _CaseBaz: Codable {
+            var `case` = "baz"
+            var one: String
+            var two: Int
+          }
+
+          private struct _CaseNested: Codable {
+            var `case` = "nested"
+            var foo: String
+            var bar: Int
+            var id: UUID
+          }
+
+          private struct _CaseQux: Codable {
+            var `case` = "qux"
+            var q: Bool?
+          }
+
+          func encode(to encoder: Encoder) throws {
+            switch self {
+            case .bar(let bar):
+              try _CaseBar(bar: bar).encode(to: encoder)
+            case .baz(let one, let two):
+              try _CaseBaz(one: one, two: two).encode(to: encoder)
+            case .nested(let unflat):
+              try _CaseNested(foo: unflat.foo, bar: unflat.bar, id: unflat.id).encode(to: encoder)
+            case .qux(let q):
+              try _CaseQux(q: q).encode(to: encoder)
+            case .foo:
+              try _NamedCase(case: "foo").encode(to: encoder)
+            }
+          }
+
+          init(from decoder: Decoder) throws {
+            let caseName = try _NamedCase.extract(from: decoder)
             let container = try decoder.singleValueContainer()
-            return try container.decode(_NamedCase.self).case
+            switch caseName {
+            case "bar":
+              let value = try container.decode(_CaseBar.self)
+              self = .bar(value.bar)
+            case "baz":
+              let value = try container.decode(_CaseBaz.self)
+              self = .baz(one: value.one, two: value.two)
+            case "nested":
+              let value = try container.decode(_CaseNested.self)
+              self = .nested(.init(foo: value.foo, bar: value.bar, id: value.id))
+            case "qux":
+              let value = try container.decode(_CaseQux.self)
+              self = .qux(q: value.q)
+            case "foo":
+              self = .foo
+            default:
+              throw _TypeScriptDecodeError(message: "Unexpected case name: `\\(caseName)`")
+            }
           }
         }
-
-        private struct _TypeScriptDecodeError: Error {
-          var message: String
-        }
-
-        private struct _CaseBar: Codable {
-          var `case` = "bar"
-          var bar: String
-        }
-
-        private struct _CaseBaz: Codable {
-          var `case` = "baz"
-          var one: String
-          var two: Int
-        }
-
-        private struct _CaseNested: Codable {
-          var `case` = "nested"
-          var foo: String
-          var bar: Int
-          var id: UUID
-        }
-
-        private struct _CaseQux: Codable {
-          var `case` = "qux"
-          var q: Bool?
-        }
-
-        func encode(to encoder: Encoder) throws {
-          switch self {
-          case .bar(let bar):
-            try _CaseBar(bar: bar).encode(to: encoder)
-          case .baz(let one, let two):
-            try _CaseBaz(one: one, two: two).encode(to: encoder)
-          case .nested(let unflat):
-            try _CaseNested(foo: unflat.foo, bar: unflat.bar, id: unflat.id).encode(to: encoder)
-          case .qux(let q):
-            try _CaseQux(q: q).encode(to: encoder)
-          case .foo:
-            try _NamedCase(case: "foo").encode(to: encoder)
-          }
-        }
-
-        init(from decoder: Decoder) throws {
-          let caseName = try _NamedCase.extract(from: decoder)
-          let container = try decoder.singleValueContainer()
-          switch caseName {
-          case "bar":
-            let value = try container.decode(_CaseBar.self)
-            self = .bar(value.bar)
-          case "baz":
-            let value = try container.decode(_CaseBaz.self)
-            self = .baz(one: value.one, two: value.two)
-          case "nested":
-            let value = try container.decode(_CaseNested.self)
-            self = .nested(.init(foo: value.foo, bar: value.bar, id: value.id))
-          case "qux":
-            let value = try container.decode(_CaseQux.self)
-            self = .qux(q: value.q)
-          case "foo":
-            self = .foo
-          default:
-            throw _TypeScriptDecodeError(message: "Unexpected case name: `\\(caseName)`")
-          }
-        }
-      }
-      """,
+        """,
     )
   }
 
-  func testEncodeDecodeFromCodeGen() throws {
+  @Test func `encode decode from codegen`() throws {
     var json = """
     {
       "bar" : "foo",
       "case" : "bar"
     }
     """
-    expect(jsonEncode(Baz.bar("foo"))).toEqual(json)
-    expect(jsonDecode(json, as: Baz.self)).toEqual(Baz.bar("foo"))
+    #expect(jsonEncode(Baz.bar("foo")) == json)
+    #expect(jsonDecode(json, as: Baz.self) == Baz.bar("foo"))
 
     json = """
     {
@@ -163,16 +164,16 @@ final class CodableTests: XCTestCase {
       "q" : true
     }
     """
-    expect(jsonEncode(Baz.qux(q: true))).toEqual(json)
-    expect(jsonDecode(json, as: Baz.self)).toEqual(Baz.qux(q: true))
+    #expect(jsonEncode(Baz.qux(q: true)) == json)
+    #expect(jsonDecode(json, as: Baz.self) == Baz.qux(q: true))
 
     json = """
     {
       "case" : "qux"
     }
     """
-    expect(jsonEncode(Baz.qux(q: nil))).toEqual(json)
-    expect(jsonDecode(json, as: Baz.self)).toEqual(Baz.qux(q: nil))
+    #expect(jsonEncode(Baz.qux(q: nil)) == json)
+    #expect(jsonDecode(json, as: Baz.self) == Baz.qux(q: nil))
 
     json = """
     {
@@ -181,8 +182,8 @@ final class CodableTests: XCTestCase {
       "two" : 1
     }
     """
-    expect(jsonEncode(Baz.baz(one: "foo", two: 1))).toEqual(json)
-    expect(jsonDecode(json, as: Baz.self)).toEqual(Baz.baz(one: "foo", two: 1))
+    #expect(jsonEncode(Baz.baz(one: "foo", two: 1)) == json)
+    #expect(jsonDecode(json, as: Baz.self) == Baz.baz(one: "foo", two: 1))
 
     json = """
     {
@@ -193,16 +194,16 @@ final class CodableTests: XCTestCase {
     }
     """
     let id = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
-    expect(jsonEncode(Baz.nested(.init(foo: "bar", bar: 3, id: id)))).toEqual(json)
-    expect(jsonDecode(json, as: Baz.self)).toEqual(Baz.nested(.init(foo: "bar", bar: 3, id: id)))
+    #expect(jsonEncode(Baz.nested(.init(foo: "bar", bar: 3, id: id))) == json)
+    #expect(jsonDecode(json, as: Baz.self) == Baz.nested(.init(foo: "bar", bar: 3, id: id)))
 
     json = """
     {
       "case" : "foo"
     }
     """
-    expect(jsonEncode(Baz.foo)).toEqual(json)
-    expect(jsonDecode(json, as: Baz.self)).toEqual(Baz.foo)
+    #expect(jsonEncode(Baz.foo) == json)
+    #expect(jsonDecode(json, as: Baz.self) == Baz.foo)
 
     // test discriminant is actually used, ignoring excess properties
     json = """
@@ -214,7 +215,7 @@ final class CodableTests: XCTestCase {
       "q" : true,
     }
     """
-    expect(jsonDecode(json, as: Baz.self)).toEqual(Baz.foo)
+    #expect(jsonDecode(json, as: Baz.self) == Baz.foo)
   }
 }
 

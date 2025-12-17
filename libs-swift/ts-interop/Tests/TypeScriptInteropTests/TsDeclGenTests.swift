@@ -1,10 +1,10 @@
-import XCTest
-import XExpect
+import Foundation
+import Testing
 
 @testable import TypeScriptInterop
 
-final class CodeGenTests: XCTestCase {
-  func testGenericEnum() throws {
+@Suite struct CodeGenTests {
+  @Test func `generic enum`() throws {
     enum RequestState<T, E> {
       case idle
       case loading
@@ -14,47 +14,50 @@ final class CodeGenTests: XCTestCase {
     struct Wrap {
       var req: RequestState<Bool, String>
     }
-    expect(try CodeGen().declaration(for: Wrap.self)).toEqual(
-      """
-      export interface Wrap {
-        req: {
-          case: 'succeeded';
-          succeeded: boolean;
-        } | {
-          case: 'failed';
-          failed: string;
-        } | {
-          case: 'idle';
-        } | {
-          case: 'loading';
-        };
-      }
-      """,
+    #expect(
+      try CodeGen().declaration(for: Wrap.self) ==
+        """
+        export interface Wrap {
+          req: {
+            case: 'succeeded';
+            succeeded: boolean;
+          } | {
+            case: 'failed';
+            failed: string;
+          } | {
+            case: 'idle';
+          } | {
+            case: 'loading';
+          };
+        }
+        """,
     )
   }
 
-  func testRootAliases() throws {
+  @Test func `root aliases`() throws {
     struct Foo { var bar: Int }
     let codegen = CodeGen(config: .init(aliasing: [.init(Foo.self)]))
-    expect(try codegen.declaration(for: Foo.self, as: "Input")).toEqual(
-      """
-      export type Input = Foo
-      """,
+    #expect(
+      try codegen.declaration(for: Foo.self, as: "Input") ==
+        """
+        export type Input = Foo
+        """,
     )
   }
 
-  func testFoundationTypes() throws {
+  @Test func `foundation types`() throws {
     struct FoundationTypes {
       var date: Date
       var uuid: UUID
     }
-    expect(try CodeGen().declaration(for: FoundationTypes.self)).toEqual(
-      """
-      export interface FoundationTypes {
-        date: Date;
-        uuid: UUID;
-      }
-      """,
+    #expect(
+      try CodeGen().declaration(for: FoundationTypes.self) ==
+        """
+        export interface FoundationTypes {
+          date: Date;
+          uuid: UUID;
+        }
+        """,
     )
 
     let config = Config(aliasing: [
@@ -62,27 +65,28 @@ final class CodeGenTests: XCTestCase {
       .init(UUID.self, as: "string"),
     ])
 
-    expect(
-      try CodeGen(config: config).declaration(for: FoundationTypes.self),
-    ).toEqual(
-      """
-      export interface FoundationTypes {
-        date: IsoDateString;
-        uuid: string;
-      }
-      """,
+    #expect(
+      try CodeGen(config: config).declaration(for: FoundationTypes.self)
+        == """
+        export interface FoundationTypes {
+          date: IsoDateString;
+          uuid: string;
+        }
+        """,
     )
 
-    expect(
-      try CodeGen(config: config).declaration(for: Date.self),
-    ).toEqual("export type Date = IsoDateString")
+    #expect(
+      try CodeGen(config: config).declaration(for: Date.self)
+        == "export type Date = IsoDateString",
+    )
 
-    expect(
-      try CodeGen(config: config).declaration(for: UUID.self),
-    ).toEqual("export type UUID = string")
+    #expect(
+      try CodeGen(config: config).declaration(for: UUID.self)
+        == "export type UUID = string",
+    )
   }
 
-  func testScreen() throws {
+  @Test func screen() throws {
     enum Screen {
       struct Connected {
         var foo: String
@@ -92,19 +96,20 @@ final class CodeGenTests: XCTestCase {
       case connected(Connected)
     }
 
-    expect(try CodeGen().declaration(for: Screen.self)).toEqual(
-      """
-      export type Screen = {
-        case: 'connected';
-        foo: string;
-      } | {
-        case: 'notConnected';
-      }
-      """,
+    #expect(
+      try CodeGen().declaration(for: Screen.self) ==
+        """
+        export type Screen = {
+          case: 'connected';
+          foo: string;
+        } | {
+          case: 'notConnected';
+        }
+        """,
     )
   }
 
-  func testEnumWithNamedAssociatedValues() throws {
+  @Test func `enum with named associated values`() throws {
     enum Bar {
       case a
       case b(foo: String, bar: Int)
@@ -115,25 +120,26 @@ final class CodeGenTests: XCTestCase {
       var bar: Bar
     }
 
-    expect(try CodeGen().declaration(for: Foo.self)).toEqual(
-      """
-      export interface Foo {
-        bar: {
-          case: 'b';
-          foo: string;
-          bar: number;
-        } | {
-          case: 'c';
-          c: string;
-        } | {
-          case: 'a';
-        };
-      }
-      """,
+    #expect(
+      try CodeGen().declaration(for: Foo.self) ==
+        """
+        export interface Foo {
+          bar: {
+            case: 'b';
+            foo: string;
+            bar: number;
+          } | {
+            case: 'c';
+            c: string;
+          } | {
+            case: 'a';
+          };
+        }
+        """,
     )
   }
 
-  func testDictionaries() throws {
+  @Test func dictionaries() throws {
     struct Bar {
       var lol: Int
       var rofl: Bool?
@@ -143,20 +149,21 @@ final class CodeGenTests: XCTestCase {
       var complexDict: [String: Bar]?
     }
 
-    expect(try CodeGen().declaration(for: Foo.self)).toEqual(
-      """
-      export interface Foo {
-        dict: { [key: string]: number };
-        complexDict?: { [key: string]: {
-          lol: number;
-          rofl?: boolean;
-        } };
-      }
-      """,
+    #expect(
+      try CodeGen().declaration(for: Foo.self) ==
+        """
+        export interface Foo {
+          dict: { [key: string]: number };
+          complexDict?: { [key: string]: {
+            lol: number;
+            rofl?: boolean;
+          } };
+        }
+        """,
     )
   }
 
-  func testKitchenSink() throws {
+  @Test func `kitchen sink`() throws {
     struct Foo {
       enum Bar {
         case a, b
@@ -189,43 +196,44 @@ final class CodeGenTests: XCTestCase {
       var nested: Nested
     }
 
-    expect(try CodeGen(config: .init(letsReadOnly: true)).declaration(for: Foo.self)).toEqual(
-      """
-      export interface Foo {
-        readonly foo: string;
-        value: {
-          case: 'string';
-          string: string;
-        } | {
-          case: 'optInt';
-          optInt?: number;
-        } | {
-          case: 'named';
-          a: number;
-          b: string;
-        } | {
-          case: 'bare';
-        };
-        inline: {
-          a: string;
-        };
-        tinyArray: Array<{
-          a: string;
-        }>;
-        baz?: number;
-        bar: 'a' | 'b';
-        readonly rofl?: string[];
-        nested: {
-          readonly a: string;
-          readonly b: number;
-          readonly reallyLongPropertyName: number;
-        };
-      }
-      """,
+    #expect(
+      try CodeGen(config: .init(letsReadOnly: true)).declaration(for: Foo.self) ==
+        """
+        export interface Foo {
+          readonly foo: string;
+          value: {
+            case: 'string';
+            string: string;
+          } | {
+            case: 'optInt';
+            optInt?: number;
+          } | {
+            case: 'named';
+            a: number;
+            b: string;
+          } | {
+            case: 'bare';
+          };
+          inline: {
+            a: string;
+          };
+          tinyArray: Array<{
+            a: string;
+          }>;
+          baz?: number;
+          bar: 'a' | 'b';
+          readonly rofl?: string[];
+          nested: {
+            readonly a: string;
+            readonly b: number;
+            readonly reallyLongPropertyName: number;
+          };
+        }
+        """,
     )
   }
 
-  func testAliasedArrays() throws {
+  @Test func `aliased arrays`() throws {
     struct Foo {
       var a: [Wrapped<Int>]
       var b: Wrapped<Int>
@@ -233,23 +241,25 @@ final class CodeGenTests: XCTestCase {
     let expanded = try CodeGen(config: .init(compact: false)).declaration(for: Foo.self)
     let compact = try CodeGen(config: .init(compact: true)).declaration(for: Foo.self)
 
-    expect(expanded).toEqual(
-      """
-      export interface Foo {
-        a: Wrapped[];
-        b: Wrapped;
-      }
-      """,
+    #expect(
+      expanded ==
+        """
+        export interface Foo {
+          a: Wrapped[];
+          b: Wrapped;
+        }
+        """,
     )
 
-    expect(compact).toEqual(
-      """
-      export interface Foo { a: Wrapped[]; b: Wrapped; }
-      """,
+    #expect(
+      compact ==
+        """
+        export interface Foo { a: Wrapped[]; b: Wrapped; }
+        """,
     )
   }
 
-  func testInliningStructDeclsAndMaxLineLen() throws {
+  @Test func `inlining struct decls and max line len`() throws {
     struct Tiny {
       var a: String
       var b: Int
@@ -260,44 +270,48 @@ final class CodeGenTests: XCTestCase {
     }
 
     let normal = try CodeGen(config: .init(compact: false)).declaration(for: Foo.self)
-    expect(normal).toEqual(
-      """
-      export interface Foo {
-        inline: {
-          a: string;
-          b: number;
-        };
-      }
-      """,
+    #expect(
+      normal ==
+        """
+        export interface Foo {
+          inline: {
+            a: string;
+            b: number;
+          };
+        }
+        """,
     )
 
     let alias = try CodeGen(config: .init(aliasing: [.init(Tiny.self)]))
       .declaration(for: Foo.self)
 
-    expect(alias).toEqual(
-      """
-      export interface Foo {
-        inline: Tiny;
-      }
-      """,
+    #expect(
+      alias ==
+        """
+        export interface Foo {
+          inline: Tiny;
+        }
+        """,
     )
 
     let alias2 = try CodeGen(config: .init(aliasing: [.init(Tiny.self, as: "TinyStruct")]))
       .declaration(for: Foo.self)
 
-    expect(alias2).toEqual(
-      """
-      export interface Foo {
-        inline: TinyStruct;
-      }
-      """,
+    #expect(
+      alias2 ==
+        """
+        export interface Foo {
+          inline: TinyStruct;
+        }
+        """,
     )
 
     let compact = try CodeGen(config: .init(compact: true)).declaration(for: Foo.self)
-    expect(compact).toEqual(
-      """
-      export interface Foo { inline: { a: string; b: number; }; }
-      """,
+    #expect(
+      compact ==
+        """
+        export interface Foo { inline: { a: string; b: number; }; }
+        """,
     )
   }
 

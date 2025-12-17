@@ -1,9 +1,9 @@
-import XCTest
+import Testing
 
 @testable import TypeScriptInteropCLI
 
-final class TypeScriptInteropTests: XCTestCase {
-  func testExample() throws {
-    XCTAssertEqual(TypeScriptInterop().text, "Hello, World!")
+@Suite struct TypeScriptInteropTests {
+  @Test func example() throws {
+    #expect(TypeScriptInterop().text == "Hello, World!")
   }
 }

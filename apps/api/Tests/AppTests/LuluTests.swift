@@ -1,11 +1,11 @@
 import NonEmpty
 import TaggedMoney
-import XCTest
+import Testing
 
 @testable import App
 
-final class LuluTests: XCTestCase {
-  func testPrices() throws {
+@Suite struct LuluTests {
+  @Test func prices() {
     let cases: [(PrintSize, NonEmpty<[Int]>, Cents<Int>)] = [
       (.s, .init(10), 214),
       (.s, .init(100), 265),
@@ -17,11 +17,11 @@ final class LuluTests: XCTestCase {
     ]
 
     for (size, pages, expected) in cases {
-      XCTAssertEqual(Lulu.paperbackPrice(size: size, volumes: pages), expected)
+      #expect(Lulu.paperbackPrice(size: size, volumes: pages) == expected)
     }
   }
 
-  func testPodPackageId() throws {
+  @Test func `pod package id`() {
     let cases: [(PrintSize, Int, String)] = [
       (.s, 31, "0425X0687BWSTDSS060UW444GXX"),
       (.s, 32, "0425X0687BWSTDPB060UW444GXX"),
@@ -31,7 +31,7 @@ final class LuluTests: XCTestCase {
     ]
 
     for (size, pages, expected) in cases {
-      XCTAssertEqual(Lulu.podPackageId(size: size, pages: pages), expected)
+      #expect(Lulu.podPackageId(size: size, pages: pages) == expected)
     }
   }
 }

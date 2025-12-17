@@ -1,9 +1,9 @@
-import XCTest
+import Testing
 
 @testable import App
 
-class StateAbbreviationTests: XCTestCase {
-  func testShippingAddressAbbreviatesFullStateNames() {
+@Suite struct StateAbbreviationTests {
+  @Test func `shipping address abbreviates full state names`() {
     let tests = [
       ("US", "New York", "NY"),
       ("US", "  North Carolina ", "NC"),
@@ -30,7 +30,7 @@ class StateAbbreviationTests: XCTestCase {
         zip: "zip",
         country: country,
       )
-      XCTAssertEqual(address.state, expected)
+      #expect(address.state == expected)
     }
   }
 }

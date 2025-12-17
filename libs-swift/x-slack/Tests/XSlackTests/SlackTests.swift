@@ -1,26 +1,27 @@
-import XCTest
+import Foundation
+import Testing
 
 @testable import XSlack
 
-final class SlackTests: XCTestCase {
-  func testJsonEncodeTextSlack() {
-    XCTAssertEqual(
-      json(.init(text: "foo", channel: "#debug", username: "FLP Bot")),
-      """
-      {
-        "channel" : "#debug",
-        "icon_emoji" : "robot_face",
-        "text" : "foo",
-        "unfurl_links" : false,
-        "unfurl_media" : false,
-        "username" : "FLP Bot"
-      }
-      """,
+@Suite struct SlackTests {
+  @Test func `json encode text slack`() {
+    #expect(
+      json(.init(text: "foo", channel: "#debug", username: "FLP Bot"))
+        == """
+        {
+          "channel" : "#debug",
+          "icon_emoji" : "robot_face",
+          "text" : "foo",
+          "unfurl_links" : false,
+          "unfurl_media" : false,
+          "username" : "FLP Bot"
+        }
+        """,
     )
   }
 
-  func testJsonEncodeBlocks() {
-    XCTAssertEqual(
+  @Test func `json encode blocks`() {
+    #expect(
       json(.init(
         blocks: [
           .header(text: "foo"),
@@ -37,46 +38,46 @@ final class SlackTests: XCTestCase {
         fallbackText: "a test slack",
         channel: "#debug",
         username: "FLP Bot",
-      )),
-      """
-      {
-        "blocks" : [
-          {
-            "text" : {
-              "text" : "foo",
-              "type" : "plain_text"
+      ))
+        == """
+        {
+          "blocks" : [
+            {
+              "text" : {
+                "text" : "foo",
+                "type" : "plain_text"
+              },
+              "type" : "header"
             },
-            "type" : "header"
-          },
-          {
-            "type" : "divider"
-          },
-          {
-            "alt_text" : "cat",
-            "image_url" : "https:\\/\\/cat.com\\/cat.png",
-            "type" : "image"
-          },
-          {
-            "accessory" : {
+            {
+              "type" : "divider"
+            },
+            {
               "alt_text" : "cat",
               "image_url" : "https:\\/\\/cat.com\\/cat.png",
               "type" : "image"
             },
-            "text" : {
-              "text" : "section",
-              "type" : "mrkdwn"
-            },
-            "type" : "section"
-          }
-        ],
-        "channel" : "#debug",
-        "icon_emoji" : "robot_face",
-        "text" : "a test slack",
-        "unfurl_links" : false,
-        "unfurl_media" : false,
-        "username" : "FLP Bot"
-      }
-      """,
+            {
+              "accessory" : {
+                "alt_text" : "cat",
+                "image_url" : "https:\\/\\/cat.com\\/cat.png",
+                "type" : "image"
+              },
+              "text" : {
+                "text" : "section",
+                "type" : "mrkdwn"
+              },
+              "type" : "section"
+            }
+          ],
+          "channel" : "#debug",
+          "icon_emoji" : "robot_face",
+          "text" : "a test slack",
+          "unfurl_links" : false,
+          "unfurl_media" : false,
+          "username" : "FLP Bot"
+        }
+        """,
     )
   }
 }
