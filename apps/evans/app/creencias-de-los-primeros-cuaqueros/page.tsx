@@ -887,7 +887,7 @@ const Page: NextPage = async () => (
       <MdxP>
         Pero si llegan a experimentar otra semilla o poder que gobierne sus mentes, que
         cree en ellos corazones nuevos y limpios, que regule y sujete sus voluntades, que
-        someta y dome sus pasiones, que límite sus deseos y dirija sus afectos e
+        someta y dome sus pasiones, que limite sus deseos y dirija sus afectos e
         inclinaciones completamente hacia lo que es bueno, que corrija sus espíritus
         enteramente, y les enseñe a poner su mirada en las cosas de arriba, dándoles una
         aversión a todo mal, y un gran amor por la virtud y la bondad; al estar así
@@ -1100,7 +1100,7 @@ const Page: NextPage = async () => (
         Sin embargo, no negamos la presciencia de Dios, quien conoce todas las cosas
         pasadas, presentes y futuras, estando todas ellas presentes ante Él a la vez; de
         modo que se puede decir con verdad que aquellos que creen en Cristo con esa fe
-        viva y activa que obra por amor y impulsa a la obediencia, y que perseveran en
+        viva y activa que obra por amor e impulsa a la obediencia, y que perseveran en
         ella hasta el fin, y así experimentan Su salvación, están en Aquel en quien la
         elección existía antes de que el mundo comenzara. Asimismo, aquellos que no creen,
         sino que más bien rechazan las ofertas de Su amor, y, al persistir en la
@@ -1114,7 +1114,7 @@ const Page: NextPage = async () => (
         Suyo.
         <FootnoteRef number={166} />
         Si aquel que recibió un solo talento lo hubiera utilizado y hecho dos, no dudamos
-        que esto habría sido aceptado por el señor; porque creemos que nadie está
+        que esto habría sido aceptado por el Señor; porque creemos que nadie está
         absolutamente excluido desde la eternidad de recibir algún talento, y que además
         se concede un tiempo en el que es posible incrementarlo. Así que, aunque la gracia
         puede obrar más poderosamente en algunos que en otros, todos quedan sin excusa.
@@ -1131,10 +1131,10 @@ const Page: NextPage = async () => (
         porque concuerda con la doctrina de la elección y la reprobación individual; de
         modo que los que abrazan una, se ven obligados a creer en la otra. Pero, al margen
         de esto, ciertamente tiende más a relajar a las personas que a estimularlas a
-        aquel cuidado a aquel cuidado y diligencia necesarios, y a la constante y
-        perseverante vigilancia en la oración, a la que nuestro Señor tanto nos exhortó, y
-        a la que los apóstoles tan solícitamente instaron a los santos en todo lugar a
-        permanecer, como siendo algo de absoluta necesidad.
+        aquel cuidado y diligencia necesarios, y a la constante y perseverante vigilancia
+        en la oración, a la que nuestro Señor tanto nos exhortó, y a la que los apóstoles
+        tan solícitamente instaron a los santos en todo lugar a permanecer, como siendo
+        algo de absoluta necesidad.
       </MdxP>
       <MdxP>
         ¿Cuál es el significado de esas promesas de recompensa en el libro de Apocalipsis
@@ -1200,7 +1200,7 @@ const Page: NextPage = async () => (
         Su Padre, y así permanecía en Su amor.
         <FootnoteRef number={172} />
         Pero aunque no podemos abrazar la opinión de nuestros opositores, y debemos
-        mantenernos firmes en las declaraciones de la escritura que demuestran ampliamente
+        mantenernos firmes en las declaraciones de la Escritura que demuestran ampliamente
         cómo un hombre puede avanzar en la gracia, y sin embargo, por falta de una
         vigilancia cuidadosa y constante en esa gracia, puede apartarse; también creemos
         que existe tal estado y crecimiento en la gracia mediante una atención vigilante a
@@ -1269,7 +1269,7 @@ const Page: NextPage = async () => (
         verdaderamente lavados por Cristo en ese santo lavacro que nos da derecho a una
         parte con Él.
         <FootnoteRef number={183} />
-        Ahora creemos que{` `}
+        Ahora, creemos que{` `}
         <em>
           nuestro principal deber es experimentar este bautismo espiritual e interno de
           Cristo,
@@ -1363,8 +1363,8 @@ const Page: NextPage = async () => (
         esta, con el paso del tiempo, fue tan adornada y engalanada, que su esplendor
         distinguido se volvió atractivo para otros. Bajo esta degeneración surgió la
         práctica del bautismo infantil, que es una invención completamente humana, sin
-        ninguna autoridad en las Escritura ni por precepto ni por práctica; aunque quienes
-        lo practican a menudo nos reprochan por negarlo.
+        ninguna autoridad en las Escrituras ni por precepto ni por práctica; aunque
+        quienes lo practican a menudo nos reprochan por negarlo.
       </MdxP>
       <MdxH3 id="pan-y-vino">Pan y Vino</MdxH3>
       <MdxP>
