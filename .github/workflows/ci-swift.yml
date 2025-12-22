@@ -101,6 +101,14 @@ jobs:
             cd ~/builds/production && ls -r api_* | grep -v $(basename $(readlink -f current)) | tail -n +8 | xargs rm
             cd ~/builds/staging && ls -r api_* | tail -n  +4 | xargs rm
             pm2 restart staging > /dev/null
+      - name: slack api deploy ready
+        if: github.event_name != 'pull_request'
+        run: |
+          curl -X POST \
+            -H "Content-type: application/json; charset=utf-8" \
+            -H "Authorization: Bearer ${{ secrets.SLACK_API_TOKEN_WORKSPACE_MAIN }}" \
+            -d '{"channel":"#info","text":"FLP api *DEPLOY READY*","username":"FLP Bot","icon_emoji":":robot_face:"}' \
+            https://slack.com/api/chat.postMessage
 
   test-api:
     runs-on: namespace-profile-default
