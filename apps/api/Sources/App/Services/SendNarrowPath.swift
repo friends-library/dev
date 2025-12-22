@@ -39,6 +39,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
     )
     switch action {
     case .reset(let lang):
+      await slackInfo("Narrow path `\(lang)` quotes exhausted, resetting cycle")
       try await NPSentQuote.query()
         .where(.quoteId |=| allQuotes.filter { $0.lang == lang }.map(\.id))
         .delete()
