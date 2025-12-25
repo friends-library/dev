@@ -3,7 +3,7 @@ import type { Lang, EditionType } from '@friends-library/types';
 export interface LintResult {
   line: number;
   column: number | false;
-  type: 'error' | 'warning' | 'notice';
+  type: `error` | `warning` | `notice`;
   rule: string;
   message: string;
   recommendation?: string;

@@ -11,7 +11,7 @@ interface Props {
   width?: number | string;
   textColor?: string;
   style?: Record<string, string | number>;
-  bg?: 'gold' | 'blue' | 'green' | 'maroon' | 'primary' | null;
+  bg?: `gold` | `blue` | `green` | `maroon` | `primary` | null;
   children?: React.ReactNode;
 }
 

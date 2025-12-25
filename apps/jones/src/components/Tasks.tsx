@@ -32,7 +32,7 @@ const Welcome: React.FC<Props> = ({ tasks, changeScreen, createTask }) => (
   </div>
 );
 
-const mapState = (state: State): Pick<Props, 'tasks'> => ({
+const mapState = (state: State): Pick<Props, `tasks`> => ({
   tasks: Object.values(state.tasks.present),
 });
 

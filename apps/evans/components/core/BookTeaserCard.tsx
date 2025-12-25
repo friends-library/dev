@@ -9,7 +9,7 @@ import Album from '@/components/core/Album';
 import Button from '@/components/core/Button';
 import { LANG } from '@/lib/env';
 
-export type Props = Omit<CoverData, 'printSize'> & {
+export type Props = Omit<CoverData, `printSize`> & {
   className?: string;
   audioDuration?: string;
   htmlShortTitle: string;

@@ -41,14 +41,14 @@ export function assertAllNodesHaveTokens(node: AstNode): void {
     if (node.startToken && node.endToken) {
       // ¯\_(ツ)_/¯
     }
-  } catch (e) {
+  } catch {
     node.print();
     throw new Error(`Node missing tokens in assertAllNodesHaveTokens()`);
   }
   node.children.forEach((child) => assertAllNodesHaveTokens(child));
 }
 
-export function simplifyToken(token: Token): Pick<Token, 'type' | 'literal'> {
+export function simplifyToken(token: Token): Pick<Token, `type` | `literal`> {
   return {
     type: token.type,
     literal: token.literal,

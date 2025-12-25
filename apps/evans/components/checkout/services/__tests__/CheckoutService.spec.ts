@@ -28,7 +28,7 @@ describe(`CheckoutService()`, () => {
         feesInCents: number;
         creditCardFeeOffsetInCents: number;
       }> = {},
-    ): ReturnType<InstanceType<typeof CheckoutApi>['getExploratoryMetadata']> {
+    ): ReturnType<InstanceType<typeof CheckoutApi>[`getExploratoryMetadata`]> {
       return Promise.resolve({
         status: `success`,
         metadata: {

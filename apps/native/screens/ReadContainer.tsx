@@ -29,8 +29,8 @@ export interface SyncProps {
 }
 
 interface OwnProps {
-  navigation: StackNavigationProp<StackParamList, 'Read'>;
-  route: RouteProp<StackParamList, 'Read'>;
+  navigation: StackNavigationProp<StackParamList, `Read`>;
+  route: RouteProp<StackParamList, `Read`>;
 }
 
 const propSelector: PropSelector<OwnProps, SyncProps> = (ownProps) => (state) => {
@@ -52,7 +52,7 @@ const propSelector: PropSelector<OwnProps, SyncProps> = (ownProps) => (state) =>
 
 type ContainerState =
   | { state: `loading` }
-  | { state: `error`; reason: 'no_internet' | 'unknown' }
+  | { state: `error`; reason: `no_internet` | `unknown` }
   | { state: `ready`; html: string; css: string; initialPosition: number };
 
 const ReadContainer: React.FC<OwnProps> = (ownProps) => {

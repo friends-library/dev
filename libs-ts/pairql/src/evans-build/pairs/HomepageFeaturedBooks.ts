@@ -2,7 +2,7 @@
 
 export namespace HomepageFeaturedBooks {
   export interface Input {
-    lang: 'en' | 'es';
+    lang: `en` | `es`;
     slugs: Array<{
       friendSlug: string;
       documentSlug: string;
@@ -19,7 +19,7 @@ export namespace HomepageFeaturedBooks {
     isCompilation: boolean;
     friendName: string;
     friendSlug: string;
-    friendGender: 'male' | 'female' | 'mixed';
+    friendGender: `male` | `female` | `mixed`;
     documentSlug: string;
     featuredDescription: string;
   }>;

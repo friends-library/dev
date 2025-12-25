@@ -29,7 +29,7 @@ export default class BufferedLexer implements Lexer {
     return this._tokens.shift() ?? this.EOD;
   }
 
-  private pushEndToken(last: Token | undefined, type: 'EOF' | 'EOD' | 'EOL'): void {
+  private pushEndToken(last: Token | undefined, type: `EOF` | `EOD` | `EOL`): void {
     this._tokens.push({
       type,
       literal: ``,

@@ -66,7 +66,7 @@ main();
 function validatePrintJobOutput(output: unknown): number {
   try {
     var json = JSON.stringify(output);
-  } catch (error) {
+  } catch {
     throw new Error(`Got non-stringifiable JSON output: ${output}`);
   }
   if (output === null || typeof output !== `object` || Array.isArray(output)) {
@@ -93,7 +93,7 @@ function validatePrintJobOutput(output: unknown): number {
 function validateFriendSlugOutput(output: unknown): string {
   try {
     var json = JSON.stringify(output);
-  } catch (error) {
+  } catch {
     throw new Error(`Got non-stringifiable JSON output: ${output}`);
   }
   if (!Array.isArray(output)) {

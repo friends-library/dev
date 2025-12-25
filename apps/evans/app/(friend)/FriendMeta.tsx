@@ -3,7 +3,7 @@ import cx from 'classnames';
 
 interface Props {
   title: string;
-  color: 'green' | 'blue' | 'maroon' | 'gold';
+  color: `green` | `blue` | `maroon` | `gold`;
   className?: string;
   children: React.ReactNode;
 }

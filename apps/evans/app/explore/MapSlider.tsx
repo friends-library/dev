@@ -16,7 +16,7 @@ interface Props {
 
 const MapSlider: React.FC<Props> = ({ className, region, setRegion }) => {
   const winWidth = useWindowWidth();
-  const [focus, setFocus] = useState<'UK' | 'US'>(`UK`);
+  const [focus, setFocus] = useState<`UK` | `US`>(`UK`);
   const [controlled, setControlled] = useState<boolean>(false);
   const toggleFocus: () => unknown = () => setFocus(focus === `UK` ? `US` : `UK`);
 
@@ -70,7 +70,7 @@ const MapSlider: React.FC<Props> = ({ className, region, setRegion }) => {
 
 export default MapSlider;
 
-function position(area: 'US' | 'UK', winWidth: number): Record<string, number | string> {
+function position(area: `US` | `UK`, winWidth: number): Record<string, number | string> {
   if (winWidth >= SCREEN_MD) {
     return {};
   }

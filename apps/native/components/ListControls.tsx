@@ -107,7 +107,7 @@ export const propSelector: PropSelector<OwnProps, Props> =
   };
 
 type OwnProps = {
-  listType: 'ebook' | 'audio';
+  listType: `ebook` | `audio`;
 };
 
 const ListControlsContainer: React.FC<OwnProps> = (ownProps) => {

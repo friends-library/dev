@@ -49,8 +49,8 @@ export default function format(
 function pformat(
   code: string,
   opts: {
-    parser: 'css' | 'html';
-    htmlWhitespaceSensitivity?: 'css' | 'strict' | 'ignore';
+    parser: `css` | `html`;
+    htmlWhitespaceSensitivity?: `css` | `strict` | `ignore`;
   },
 ): string {
   // ensure we're loading the version we think we are

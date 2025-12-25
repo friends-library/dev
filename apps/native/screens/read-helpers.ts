@@ -7,7 +7,7 @@ import { MODE } from '../env';
 export async function readScreenProps(
   edition: EditionResource,
   networkConnected: boolean,
-): Promise<Result<{ html: string; css: string }, 'unknown' | 'no_internet'>> {
+): Promise<Result<{ html: string; css: string }, `unknown` | `no_internet`>> {
   const entity = EbookEntity.fromResource(edition);
   // first we try the local filesystem
   const [fsData, fsCss] = await Promise.all([

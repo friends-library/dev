@@ -6,7 +6,7 @@ export namespace UpsertEditionImpression {
     id: UUID;
     editionId: UUID;
     adocLength: number;
-    paperbackSizeVariant: 's' | 'm' | 'xl' | 'xlCondensed';
+    paperbackSizeVariant: `s` | `m` | `xl` | `xlCondensed`;
     paperbackVolumes: number[];
     publishedRevision: string;
     productionToolchainRevision: string;

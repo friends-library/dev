@@ -6,13 +6,13 @@ export namespace GetOrder {
   export interface Output {
     id: UUID;
     printJobStatus:
-      | 'presubmit'
-      | 'pending'
-      | 'accepted'
-      | 'rejected'
-      | 'shipped'
-      | 'canceled'
-      | 'bricked';
+      | `presubmit`
+      | `pending`
+      | `accepted`
+      | `rejected`
+      | `shipped`
+      | `canceled`
+      | `bricked`;
     printJobId?: number;
     amountInCents: number;
     shippingInCents: number;
@@ -21,14 +21,14 @@ export namespace GetOrder {
     feesInCents: number;
     paymentId: string;
     email: string;
-    lang: 'en' | 'es';
-    source: 'website' | 'internal';
+    lang: `en` | `es`;
+    source: `website` | `internal`;
     items: Array<{
       id: UUID;
       quantity: number;
       unitPriceInCents: number;
       edition: {
-        type: 'updated' | 'original' | 'modernized';
+        type: `updated` | `original` | `modernized`;
         documentTitle: string;
         authorName: string;
         image: {

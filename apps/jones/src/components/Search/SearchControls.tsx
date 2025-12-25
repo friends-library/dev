@@ -215,7 +215,7 @@ class Component extends React.Component<Props, State> {
 
 const mapState = (
   state: AppState,
-): Pick<Props, 'words' | 'regexp' | 'caseSensitive'> => ({
+): Pick<Props, `words` | `regexp` | `caseSensitive`> => ({
   words: state.search.words,
   regexp: state.search.regexp,
   caseSensitive: state.search.caseSensitive,

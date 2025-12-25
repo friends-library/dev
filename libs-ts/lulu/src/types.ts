@@ -4,7 +4,7 @@ export interface PrintSizeDetails {
   abbrev: PrintSize;
   maxPages: number;
   minPages: number;
-  luluName: 'Pocket Book' | 'Digest' | 'US Trade';
+  luluName: `Pocket Book` | `Digest` | `US Trade`;
   dims: {
     height: number;
     width: number;

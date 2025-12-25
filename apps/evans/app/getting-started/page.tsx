@@ -184,7 +184,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 // helpers
 
-function toPathBlock(books: Array<Book>): PathBlockProps['books'] {
+function toPathBlock(books: Array<Book>): PathBlockProps[`books`] {
   return books.map((book) => ({
     ...book,
     friendUrl: getFriendUrl(book.friendSlug, book.friendGender),

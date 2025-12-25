@@ -127,7 +127,7 @@ const DownloadLinks: React.FC<Props> = ({
                         link.remove();
                         window.URL.revokeObjectURL(url);
                         setDownloading(false);
-                      } catch (error) {
+                      } catch {
                         setDownloading(false);
                         window.location.href = mp3ZipLoggedDownloadUrl[quality];
                       }

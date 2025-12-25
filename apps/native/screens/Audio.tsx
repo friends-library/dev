@@ -153,8 +153,8 @@ export const AudioScreen: React.FC<Props> = ({
 const ARTWORK_WIDTH = Dimensions.get(`window`).width * 0.8;
 
 interface OwnProps {
-  navigation: StackNavigationProp<StackParamList, 'Listen'>;
-  route: RouteProp<StackParamList, 'Listen'>;
+  navigation: StackNavigationProp<StackParamList, `Listen`>;
+  route: RouteProp<StackParamList, `Listen`>;
 }
 
 const propSelector: PropSelector<{ editionId: EditionId }, Props> =

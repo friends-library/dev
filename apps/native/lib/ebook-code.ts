@@ -6,13 +6,13 @@ import tw from './tailwind';
 import { search } from './search';
 
 export type Message =
-  | { type: 'update_position'; position: number }
-  | { type: 'debug'; value: string }
-  | { type: 'search_results'; results: SearchResult[] }
-  | { type: 'set_footnote_visibility'; visible: boolean }
-  | { type: 'toggle_header_visibility' };
+  | { type: `update_position`; position: number }
+  | { type: `debug`; value: string }
+  | { type: `search_results`; results: SearchResult[] }
+  | { type: `set_footnote_visibility`; visible: boolean }
+  | { type: `toggle_header_visibility` };
 
-const htmlClassList: Window['htmlClassList'] = (
+const htmlClassList: Window[`htmlClassList`] = (
   colorScheme,
   showingHeader,
   fontSize,

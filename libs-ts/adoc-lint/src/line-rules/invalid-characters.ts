@@ -108,7 +108,7 @@ function fixable(name: string, line: string, column: number): string | false {
 
 function nbsp(line: string, column: number): string {
   if (column === 1) {
-    return line.replace(/^ +/, ``); // eslint-disable-line no-irregular-whitespace
+    return line.replace(/^ +/, ``);
   }
   if (line.substring(column - 11, column - 1) === `footnote:[`) {
     return line.replace(/footnote:\[./, `footnote:[`);

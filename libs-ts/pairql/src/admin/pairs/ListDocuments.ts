@@ -10,7 +10,7 @@ export namespace ListDocuments {
       id: UUID;
       name: string;
       alphabeticalName: string;
-      lang: 'en' | 'es';
+      lang: `en` | `es`;
     };
   }>;
 }

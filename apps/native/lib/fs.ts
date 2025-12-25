@@ -191,7 +191,7 @@ export class FileSystem {
 
   public async readFile(
     { fsPath: path }: FsPath,
-    encoding: 'utf8' | 'ascii' | 'binary' | 'base64' = `utf8`,
+    encoding: `utf8` | `ascii` | `binary` | `base64` = `utf8`,
   ): Promise<string | null> {
     try {
       return await RNFS.readFile(
@@ -212,7 +212,7 @@ export class FileSystem {
   public async writeFile(
     { fsPath: path }: FsPath,
     contents: string,
-    encoding: 'utf8' | 'ascii' | 'binary' | 'base64' = `utf8`,
+    encoding: `utf8` | `ascii` | `binary` | `base64` = `utf8`,
   ): Promise<void> {
     // android 10 doesn't truncate the file on re-write, causing JSON parse issues
     // when the file is re-written with shorter content

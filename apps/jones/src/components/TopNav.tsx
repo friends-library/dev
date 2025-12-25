@@ -96,7 +96,7 @@ class Component extends React.Component<Props> {
   }
 }
 
-const mapState = (state: AppState): Omit<Props, 'requestGitHubUser' | 'logout'> => {
+const mapState = (state: AppState): Omit<Props, `requestGitHubUser` | `logout`> => {
   if (state.github.token === null) {
     throw new Error(`No github token found`);
   }

@@ -6,7 +6,7 @@ import FrontInner from './FrontInner';
 import Spine from './Spine';
 
 type Props = CoverProps & {
-  perspective?: 'back' | 'front' | 'spine' | 'angle-front' | 'angle-back';
+  perspective?: `back` | `front` | `spine` | `angle-front` | `angle-back`;
   className?: string;
   shadow?: boolean;
   onlyFront?: boolean;

@@ -4,7 +4,7 @@ import cx from 'classnames';
 export interface Props {
   text: string;
   source: string;
-  color: 'green' | 'blue' | 'maroon' | 'gold';
+  color: `green` | `blue` | `maroon` | `gold`;
   className?: string;
   isFullWidth?: boolean;
 }

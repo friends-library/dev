@@ -94,7 +94,7 @@ export function friendResidence(friendId: UUID): T.EditableFriendResidence {
 
 export function friendResidenceDuration(
   friendResidenceId: UUID,
-): T.EditableFriendResidence['durations'][number] {
+): T.EditableFriendResidence[`durations`][number] {
   return {
     id: clientGeneratedId(),
     friendResidenceId: removeClientGeneratedIdPrefix(friendResidenceId),
@@ -129,7 +129,7 @@ export function document(friend: T.EditableFriend): T.EditableDocument {
 }
 
 export function documentTag(
-  type: T.EditableDocumentTag['type'],
+  type: T.EditableDocumentTag[`type`],
   documentId: UUID,
 ): T.EditableDocumentTag {
   return {
@@ -152,7 +152,7 @@ export function token(): T.EditToken.Output {
 
 export function tokenScope(
   tokenId: UUID,
-  scope: T.EditableTokenScope['scope'],
+  scope: T.EditableTokenScope[`scope`],
 ): T.EditableTokenScope {
   return {
     id: clientGeneratedId(),

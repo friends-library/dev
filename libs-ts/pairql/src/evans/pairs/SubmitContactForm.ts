@@ -2,10 +2,10 @@
 
 export namespace SubmitContactForm {
   export interface Input {
-    lang: 'en' | 'es';
+    lang: `en` | `es`;
     name: string;
     email: string;
-    subject: 'tech' | 'other';
+    subject: `tech` | `other`;
     message: string;
     turnstileToken: string;
   }

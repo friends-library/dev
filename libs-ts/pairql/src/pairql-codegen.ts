@@ -130,7 +130,7 @@ type CodegenOutput = {
   pairs: Record<string, CodegenPair>;
 };
 
-function resultFetcher(pair: CodegenPair, context: 'onlyResult' | 'both'): string {
+function resultFetcher(pair: CodegenPair, context: `onlyResult` | `both`): string {
   return (
     `public ` +
     pair.resultFetcher.replace(

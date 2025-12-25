@@ -224,7 +224,7 @@ function getStoredTrack(
       return null;
     }
     return parsed;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

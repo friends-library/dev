@@ -5,24 +5,24 @@ export namespace GetPrintJobExploratoryMetadata {
   export interface Input {
     items: Array<{
       volumes: [number, ...number[]];
-      printSize: 's' | 'm' | 'xl';
+      printSize: `s` | `m` | `xl`;
       quantity: number;
     }>;
     email: string;
     address: ShippingAddress;
-    lang: 'en' | 'es';
+    lang: `en` | `es`;
   }
 
   export type Output =
     | {
-        case: 'success';
+        case: `success`;
         metadata: ExploratoryMetadata;
       }
     | {
-        case: 'shippingAddressError';
+        case: `shippingAddressError`;
         message: string;
       }
     | {
-        case: 'shippingNotPossible';
+        case: `shippingNotPossible`;
       };
 }

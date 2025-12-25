@@ -63,7 +63,7 @@ export async function createOrder(
     freeOrderRequestId: requestId.trim() || undefined,
     paymentId: `internal--complimentary--${uuid().split(`-`).shift()}`,
     items: items.map((item) => {
-      const inputItem: T.CreateOrder.Input['items'][number] = {
+      const inputItem: T.CreateOrder.Input[`items`][number] = {
         editionId: item.editionId,
         quantity: item.quantity,
         unitPrice: item.unitPrice,

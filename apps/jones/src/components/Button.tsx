@@ -7,7 +7,7 @@ interface Props {
   height?: number;
   href?: string;
   onClick?: (event: any) => any;
-  target?: '_blank' | '_self';
+  target?: `_blank` | `_self`;
   className?: string;
   children: React.ReactNode;
 }

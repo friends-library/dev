@@ -59,7 +59,7 @@ export interface Task {
   isNew: boolean;
   pullRequest?: {
     number: number;
-    status?: 'open' | 'merged' | 'closed';
+    status?: `open` | `merged` | `closed`;
   };
   collapsed: { [key: string]: boolean };
   sidebarOpen: boolean;

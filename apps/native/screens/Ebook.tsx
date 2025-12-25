@@ -176,12 +176,12 @@ export const Ebook: React.FC<Props> = ({
 };
 
 interface OwnProps {
-  navigation: StackNavigationProp<StackParamList, 'Ebook'>;
-  route: RouteProp<StackParamList, 'Ebook'>;
+  navigation: StackNavigationProp<StackParamList, `Ebook`>;
+  route: RouteProp<StackParamList, `Ebook`>;
 }
 
 const propSelector: PropSelector<
-  { editionId: EditionId; navigation: OwnProps['navigation'] },
+  { editionId: EditionId; navigation: OwnProps[`navigation`] },
   Props
 > =
   ({ editionId, navigation }, dispatch) =>

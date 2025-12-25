@@ -60,7 +60,7 @@ async function sendAndLog({
   emoji,
 }: SlackData): Promise<void> {
   if (!shouldLog()) return;
-  const logMethod: 'error' | 'log' = prodChannel === `errors` ? `error` : `log`;
+  const logMethod: `error` | `log` = prodChannel === `errors` ? `error` : `log`;
 
   let channel = prodChannel || `debug`;
   if (log.env !== `production`) {

@@ -93,7 +93,7 @@ export function getTestCases<T>(
 
 function consume(
   lines: string[],
-  type: 'comment' | 'empty' | 'adoc-delim' | 'text-delim',
+  type: `comment` | `empty` | `adoc-delim` | `text-delim`,
 ) {
   const consumed = lines.shift();
   if (consumed === undefined) {

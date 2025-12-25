@@ -20,10 +20,10 @@ export interface ShippingAddress {
 }
 
 export type ShippingLevel =
-  | 'mail'
-  | 'priorityMail'
-  | 'groundHd'
-  | 'groundBus'
-  | 'ground'
-  | 'expedited'
-  | 'express';
+  | `mail`
+  | `priorityMail`
+  | `groundHd`
+  | `groundBus`
+  | `ground`
+  | `expedited`
+  | `express`;

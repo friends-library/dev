@@ -2,7 +2,7 @@
 import type { DocumentTag } from '../shared';
 
 export namespace AllFriendPages {
-  export type Input = 'en' | 'es';
+  export type Input = `en` | `es`;
 
   export type Output = {
     [key: string]: {
@@ -11,7 +11,7 @@ export namespace AllFriendPages {
       name: string;
       slug: string;
       description: string;
-      gender: 'male' | 'female' | 'mixed';
+      gender: `male` | `female` | `mixed`;
       isCompilations: boolean;
       documents: Array<{
         id: UUID;
@@ -25,10 +25,10 @@ export namespace AllFriendPages {
         primaryEdition: {
           isbn: string;
           numPages: [number, ...number[]];
-          size: 's' | 'm' | 'xl';
-          type: 'updated' | 'original' | 'modernized';
+          size: `s` | `m` | `xl`;
+          type: `updated` | `original` | `modernized`;
         };
-        editionTypes: Array<'updated' | 'original' | 'modernized'>;
+        editionTypes: Array<`updated` | `original` | `modernized`>;
         customCss?: string;
         customHtml?: string;
       }>;
@@ -52,8 +52,8 @@ export namespace AllFriendPages {
         isCompilation: boolean;
         friendName: string;
         friendSlug: string;
-        friendGender: 'male' | 'female' | 'mixed';
-        editionType: 'updated' | 'original' | 'modernized';
+        friendGender: `male` | `female` | `mixed`;
+        editionType: `updated` | `original` | `modernized`;
         paperbackVolumes: [number, ...number[]];
         isbn: string;
         customCss?: string;

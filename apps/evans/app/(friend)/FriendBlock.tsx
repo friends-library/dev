@@ -4,7 +4,7 @@ import { Male, Female } from './Silhouettes';
 
 interface Props {
   name: string;
-  gender: 'male' | 'female' | 'mixed';
+  gender: `male` | `female` | `mixed`;
   blurb: string;
 }
 

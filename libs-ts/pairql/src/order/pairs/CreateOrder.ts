@@ -4,8 +4,8 @@ import type { ShippingLevel } from '../shared';
 export namespace CreateOrder {
   export interface Input {
     id?: UUID;
-    lang: 'en' | 'es';
-    source: 'website' | 'internal';
+    lang: `en` | `es`;
+    source: `website` | `internal`;
     paymentId: string;
     amount: number;
     taxes: number;

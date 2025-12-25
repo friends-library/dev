@@ -22,7 +22,7 @@ import CartItem from '@/components/checkout/models/CartItem';
 export interface Props {
   friendName: string;
   friendSlug: string;
-  friendGender: 'male' | 'female' | 'mixed';
+  friendGender: `male` | `female` | `mixed`;
   title: string;
   htmlTitle: string;
   htmlShortTitle: string;

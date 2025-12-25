@@ -3,11 +3,11 @@
 export namespace DeleteEntities {
   export type Input =
     | {
-        case: 'editionImpression';
+        case: `editionImpression`;
         id: UUID;
       }
     | {
-        case: 'editionChapters';
+        case: `editionChapters`;
         id: UUID;
       };
 

@@ -28,7 +28,7 @@ function main(): void {
     `export const LANG: Lang = \\\`${LANG}\\\`;`,
     `export const PRIMARY_COLOR_HEX = \\\`${PRIMARY_COLOR_HEX}\\\`;`,
     `export const APP_NAME = \\\`${APP_NAME}\\\`;`,
-    `export const MODE: 'release' | 'beta' | 'dev' = \\\`${MODE}\\\`;`,
+    `export const MODE: \\\`release\\\` | \\\`beta\\\` | \\\`dev\\\` = \\\`${MODE}\\\`;`,
     `export const API_URL = \\\`${API_URL}\\\`;`,
   ];
 
@@ -144,7 +144,7 @@ function getAppIdentifier(): string {
   return `${base}.${LANG}.${MODE}`;
 }
 
-function getEnv(): [Lang, 'dev' | 'beta' | 'release'] {
+function getEnv(): [Lang, `dev` | `beta` | `release`] {
   const env = fs.readFileSync(`${APP_DIR}/.env`, `utf8`).trim();
   const langMatch = env.match(/LANG=(\w+)/);
   if (!langMatch || !langMatch[1]) {

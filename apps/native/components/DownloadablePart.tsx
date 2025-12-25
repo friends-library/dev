@@ -20,21 +20,21 @@ import { EDITION_META_MAX_WIDTH } from '../screens/constants';
 import { Sans } from './Text';
 
 type CommonProps = {
-  part: Pick<AudioPart, 'title'>;
+  part: Pick<AudioPart, `title`>;
   download: () => any;
   play: () => any;
 };
 
 type PartState =
-  | 'downloading'
-  | 'downloaded'
-  | 'queued_for_download'
-  | 'playing'
-  | 'not_downloaded';
+  | `downloading`
+  | `downloaded`
+  | `queued_for_download`
+  | `playing`
+  | `not_downloaded`;
 
 export type Props =
-  | (CommonProps & { state: Exclude<PartState, 'downloading'> })
-  | (CommonProps & { state: 'downloading'; progress: number });
+  | (CommonProps & { state: Exclude<PartState, `downloading`> })
+  | (CommonProps & { state: `downloading`; progress: number });
 
 const winWidth = Dimensions.get(`window`).width;
 

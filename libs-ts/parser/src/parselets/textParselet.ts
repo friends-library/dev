@@ -80,7 +80,7 @@ export default textParselet;
 function handlePassthru(
   node: AstNode,
   parser: Parser,
-): `proceed` | 'return' | 'continue' {
+): `proceed` | `return` | `continue` {
   if (!parser.currentIs(t.TRIPLE_PLUS)) {
     return `proceed`;
   }

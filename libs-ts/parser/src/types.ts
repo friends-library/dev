@@ -53,7 +53,7 @@ export const TOKEN = {
   EOX: `EOX`, // special matcher token: `EOX` -- not technically a token type
 } as const;
 
-export type TokenType = Exclude<keyof typeof TOKEN, 'EOX'>;
+export type TokenType = Exclude<keyof typeof TOKEN, `EOX`>;
 export type TokenTypeMatcher = TokenType | `EOX`;
 export type TokenSpec = TokenTypeMatcher | [type: TokenTypeMatcher, literal: string];
 
@@ -121,7 +121,7 @@ export type EntityType = keyof typeof ENTITY;
 
 export interface Context {
   classList: string[];
-  type?: 'quote' | 'verse' | 'epigraph' | 'discrete';
+  type?: `quote` | `verse` | `epigraph` | `discrete`;
   id?: string;
   quoteAttribution?: Token[];
   quoteSource?: Token[];
@@ -215,7 +215,7 @@ export type Camelcase<T extends string> = ToCamel<Lowercase<T>>;
 type ContextualNode = `${NodeType}_IN_${NodeType}`;
 
 export type Visitor<Output = unknown, Context = unknown> = {
-  [N in NodeType | ContextualNode | 'node' as `${Camelcase<string & N>}`]?: Visitable<
+  [N in NodeType | ContextualNode | `node` as `${Camelcase<string & N>}`]?: Visitable<
     Output,
     Context
   >;

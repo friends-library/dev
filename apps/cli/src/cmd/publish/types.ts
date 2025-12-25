@@ -2,7 +2,7 @@ import type { FsDocPrecursor } from '@friends-library/dpc-fs';
 import type { T } from '../../api-client';
 
 export type Edition = T.GetEdition.Output;
-export type CloudFiles = T.GetEditionImpression.Output['cloudFiles'];
+export type CloudFiles = T.GetEditionImpression.Output[`cloudFiles`];
 
 export interface PendingUploads {
   paperback: {

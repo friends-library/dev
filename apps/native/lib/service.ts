@@ -85,7 +85,7 @@ export default class Service {
   }
 
   public static async networkFetchEditions(): Promise<
-    { type: 'success'; json: any } | { type: 'error' }
+    { type: `success`; json: any } | { type: `error` }
   > {
     try {
       const res = await fetch(`${API_URL}/app-editions/v1/${LANG}`);
@@ -159,7 +159,7 @@ export default class Service {
   }
 
   public static async refreshNetworkFileIfChanged(
-    priority: 'immediate' | 'background',
+    priority: `immediate` | `background`,
     file: FsPath,
     networkUrl: string,
     knownLocalMd5?: string,

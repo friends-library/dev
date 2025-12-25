@@ -4,7 +4,7 @@ import { Front } from '@friends-library/cover-component';
 import Logo from './Logo';
 import { toCoverProps, type CoverData } from '@/lib/cover';
 
-type Props = Omit<CoverData, 'description' | 'paperbackVolumes' | 'printSize'> & {
+type Props = Omit<CoverData, `description` | `paperbackVolumes` | `printSize`> & {
   className?: string;
   scaler?: number;
   scope?: string;

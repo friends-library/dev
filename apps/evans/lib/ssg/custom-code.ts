@@ -77,7 +77,7 @@ const _cache: Map<`${string}/${string}`, Promise<CustomCode>> = new Map();
 async function fetchCode(
   friendSlug: string,
   documentSlug: string,
-  type: 'css' | 'html',
+  type: `css` | `html`,
 ): Promise<string | undefined> {
   const url = [
     `https://raw.githubusercontent.com`,

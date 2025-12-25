@@ -6,7 +6,7 @@ import FullscreenError from './FullscreenError';
 
 const EbookError: React.FC<{
   colorScheme: EbookColorScheme;
-  reason: 'no_internet' | 'unknown';
+  reason: `no_internet` | `unknown`;
 }> = ({ reason, colorScheme }) => (
   <FullscreenError
     errorMsg={message(reason)}
@@ -17,7 +17,7 @@ const EbookError: React.FC<{
 
 export default EbookError;
 
-function message(reason: 'no_internet' | 'unknown'): string | undefined {
+function message(reason: `no_internet` | `unknown`): string | undefined {
   if (reason === `no_internet`) {
     return LANG === `en`
       ? `Unable to download, no internet connection.`

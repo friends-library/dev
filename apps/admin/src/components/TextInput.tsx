@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 
 interface Props {
-  type: 'text' | 'email' | 'textarea' | 'number';
+  type: `text` | `email` | `textarea` | `number`;
   label: string;
   value: string | null;
   onChange: (newValue: string) => unknown;

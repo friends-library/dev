@@ -13,8 +13,8 @@ import { Sans } from '../components/Text';
 import { LANG } from '../env';
 
 interface Props {
-  navigation: StackNavigationProp<StackParamList, 'EBookList' | 'AudioBookList'>;
-  route: RouteProp<StackParamList, 'EBookList' | 'AudioBookList'>;
+  navigation: StackNavigationProp<StackParamList, `EBookList` | `AudioBookList`>;
+  route: RouteProp<StackParamList, `EBookList` | `AudioBookList`>;
 }
 
 const BookList: React.FC<Props> = ({ navigation, route }) => {
@@ -67,7 +67,7 @@ const BookList: React.FC<Props> = ({ navigation, route }) => {
 
 export default BookList;
 
-function emptyMsg(type: 'audio' | 'ebook'): string {
+function emptyMsg(type: `audio` | `ebook`): string {
   if (LANG === `en`) {
     return `No ${type === `audio` ? `audio` : ``}books matched your search.`;
   }

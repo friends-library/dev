@@ -9,7 +9,7 @@ import Button from '@/components/core/Button';
 
 interface Props {
   className?: string;
-  gender: 'male' | 'female';
+  gender: `male` | `female`;
   name: string;
   born?: number;
   died?: number;
@@ -17,7 +17,7 @@ interface Props {
   numBooks: number;
   url: string;
   featured?: boolean;
-  color: 'blue' | 'green' | 'maroon' | 'gold';
+  color: `blue` | `green` | `maroon` | `gold`;
 }
 
 const FriendCard: React.FC<Props> = ({

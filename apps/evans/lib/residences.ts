@@ -1,6 +1,6 @@
 import invariant from '@/lib/invariant';
 
-type Map = 'UK' | 'US' | 'Europe';
+type Map = `UK` | `US` | `Europe`;
 
 interface Position {
   top: number;
@@ -23,9 +23,9 @@ export default function getResidences<T extends { city: string; region: string }
   });
 }
 
-function deriveMap(positions: Position[]): 'UK' | 'US' | 'Europe' {
+function deriveMap(positions: Position[]): `UK` | `US` | `Europe` {
   if (positions.length === 0) return `UK`;
-  const dict = positions.reduce<Record<'UK' | 'US' | 'Europe', Map[]>>(
+  const dict = positions.reduce<Record<`UK` | `US` | `Europe`, Map[]>>(
     (acc, pos) => {
       acc[pos.map] = (acc[pos.map] || []).concat([pos.map]);
       return acc;

@@ -8,7 +8,7 @@ import FootnoteVisitor from './FootnoteVisitor';
 import PrimitivesVisitor from './PrimitivesVisitor';
 
 type Output = Array<string[]>;
-type Context = { target: 'pdf' | 'ebook'; lang: Lang };
+type Context = { target: `pdf` | `ebook`; lang: Lang };
 
 const documentVisitor: Visitor<Output, Context> = {
   chapter: {

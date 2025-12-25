@@ -15,8 +15,8 @@ import ArrowBent from '@/public/images/arrow-bend.png';
 import { toCoverProps } from '@/lib/cover';
 
 export interface Props {
-  slug: 'history' | 'doctrinal' | 'spiritual-life' | 'journal';
-  color: 'blue' | 'gold' | 'maroon' | 'green';
+  slug: `history` | `doctrinal` | `spiritual-life` | `journal`;
+  color: `blue` | `gold` | `maroon` | `green`;
   title: string;
   children: React.ReactNode;
   books: Array<{

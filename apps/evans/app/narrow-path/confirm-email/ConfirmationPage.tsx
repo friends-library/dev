@@ -7,7 +7,7 @@ import Dual from '@/components/core/Dual';
 import NarrowPathImg from '@/public/images/narrow-path.jpg';
 
 interface Props {
-  result: 'success' | 'failure';
+  result: `success` | `failure`;
 }
 
 const ConfirmationPage: React.FC<Props> = ({ result }) => (

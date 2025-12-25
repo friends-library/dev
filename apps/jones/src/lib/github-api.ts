@@ -34,7 +34,7 @@ export function deleteBranch(owner: string, repo: RepoSlug, branch: BranchName):
 export async function pullRequestStatus(
   repo: RepoSlug,
   number: number,
-): Promise<'open' | 'merged' | 'closed'> {
+): Promise<`open` | `merged` | `closed`> {
   const res = await gh.pulls.get({ owner: ORG, repo, pull_number: number });
   if (res.data.merged_at !== null) {
     return `merged`;
@@ -133,7 +133,7 @@ async function hasFork(repo: RepoSlug, user: string): Promise<boolean> {
       repo,
     });
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 }

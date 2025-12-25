@@ -30,7 +30,7 @@ const playback = createSlice({
     set: (state, action: PayloadAction<PlaybackState>) => {
       return action.payload;
     },
-    setState: (state, action: PayloadAction<PlaybackState['state']>) => {
+    setState: (state, action: PayloadAction<PlaybackState[`state`]>) => {
       state.state = action.payload;
     },
   },

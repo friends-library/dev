@@ -17,18 +17,18 @@ export type ReducerReplace = (
 ) => (value: unknown) => unknown;
 
 export type EditableEntity =
-  | { case: 'token'; entity: T.EditableToken }
-  | { case: 'tokenScope'; entity: T.EditableTokenScope }
-  | { case: 'audio'; entity: T.EditableAudio }
-  | { case: 'audioPart'; entity: T.EditableAudioPart }
-  | { case: 'document'; entity: T.EditableDocument }
-  | { case: 'documentTag'; entity: T.EditableDocumentTag }
-  | { case: 'edition'; entity: T.EditableEdition }
-  | { case: 'friend'; entity: T.EditableFriend }
-  | { case: 'friendQuote'; entity: T.EditableFriendQuote }
-  | { case: 'friendResidence'; entity: T.EditableFriendResidence }
-  | { case: 'friendResidenceDuration'; entity: T.EditableFriendResidenceDuration }
-  | { case: 'relatedDocument'; entity: T.EditableRelatedDocument };
+  | { case: `token`; entity: T.EditableToken }
+  | { case: `tokenScope`; entity: T.EditableTokenScope }
+  | { case: `audio`; entity: T.EditableAudio }
+  | { case: `audioPart`; entity: T.EditableAudioPart }
+  | { case: `document`; entity: T.EditableDocument }
+  | { case: `documentTag`; entity: T.EditableDocumentTag }
+  | { case: `edition`; entity: T.EditableEdition }
+  | { case: `friend`; entity: T.EditableFriend }
+  | { case: `friendQuote`; entity: T.EditableFriendQuote }
+  | { case: `friendResidence`; entity: T.EditableFriendResidence }
+  | { case: `friendResidenceDuration`; entity: T.EditableFriendResidenceDuration }
+  | { case: `relatedDocument`; entity: T.EditableRelatedDocument };
 
 export type CreateOperation = {
   type: `create`;

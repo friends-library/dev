@@ -4,7 +4,7 @@ import type { Props as TestimonialProps } from './Testimonial';
 import Testimonial from './Testimonial';
 
 interface Props {
-  testimonials: Omit<TestimonialProps, 'color'>[];
+  testimonials: Omit<TestimonialProps, `color`>[];
 }
 
 const TestimonialsBlock: React.FC<Props> = ({ testimonials }) => {
@@ -38,7 +38,7 @@ const TestimonialsBlock: React.FC<Props> = ({ testimonials }) => {
 
 export default TestimonialsBlock;
 
-function color(index: number): TestimonialProps['color'] {
+function color(index: number): TestimonialProps[`color`] {
   switch (index) {
     case 0:
       return `maroon`;

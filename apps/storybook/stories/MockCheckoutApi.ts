@@ -2,8 +2,8 @@ import CheckoutApi from '@evans/checkout/services/CheckoutApi';
 
 type Base = CheckoutApi;
 type Resolved<T extends (...args: any[]) => any> = Awaited<ReturnType<T>>;
-type ExploratoryMetadata = Resolved<Base['getExploratoryMetadata']>;
-type CreateOrderInitialization = Resolved<Base['createOrderInitialization']>;
+type ExploratoryMetadata = Resolved<Base[`getExploratoryMetadata`]>;
+type CreateOrderInitialization = Resolved<Base[`createOrderInitialization`]>;
 
 type Responses = {
   createOrder: boolean[];
@@ -21,7 +21,7 @@ export default class MockCheckoutApi extends CheckoutApi {
   }
 
   public override async getExploratoryMetadata(): ReturnType<
-    Base['getExploratoryMetadata']
+    Base[`getExploratoryMetadata`]
   > {
     const response = this.responses.getExploratoryMetadata.shift();
     if (response) {
@@ -41,7 +41,7 @@ export default class MockCheckoutApi extends CheckoutApi {
   }
 
   public override async createOrderInitialization(): ReturnType<
-    Base['createOrderInitialization']
+    Base[`createOrderInitialization`]
   > {
     const response: CreateOrderInitialization = {
       success: true,
@@ -55,20 +55,20 @@ export default class MockCheckoutApi extends CheckoutApi {
     return this.maybeDelay(response);
   }
 
-  public override async createOrder(): ReturnType<Base['createOrder']> {
+  public override async createOrder(): ReturnType<Base[`createOrder`]> {
     return this.maybeDelay(this.responses.createOrder.shift() ?? true);
   }
 
-  public override async chargeCreditCard(): ReturnType<Base['chargeCreditCard']> {
+  public override async chargeCreditCard(): ReturnType<Base[`chargeCreditCard`]> {
     return this.maybeDelay({ status: `success` } as const);
   }
 
-  public override async brickOrder(): ReturnType<Base['brickOrder']> {
+  public override async brickOrder(): ReturnType<Base[`brickOrder`]> {
     // ¯\_(ツ)_/¯
   }
 
   public override async sendOrderConfirmationEmail(): ReturnType<
-    Base['sendOrderConfirmationEmail']
+    Base[`sendOrderConfirmationEmail`]
   > {
     return true;
   }

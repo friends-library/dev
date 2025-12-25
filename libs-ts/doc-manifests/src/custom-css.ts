@@ -1,7 +1,7 @@
 import type { DocPrecursor, ArtifactType } from '@friends-library/types';
 
 export function getCustomCss(
-  customCss: DocPrecursor['customCode']['css'],
+  customCss: DocPrecursor[`customCode`][`css`],
   type: ArtifactType,
 ): string | undefined {
   const cssChunks = [customCss.all ?? ``];

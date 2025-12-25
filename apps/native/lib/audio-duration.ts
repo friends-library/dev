@@ -7,7 +7,7 @@ import type { Lang } from '@friends-library/types';
 // the legacy REST endpoints, this file can be removed.
 export function audioHumanDuration(
   partDurations: number[],
-  style: 'clock' | 'abbrev' = `clock`,
+  style: `clock` | `abbrev` = `clock`,
   lang: Lang = `en`,
 ): string {
   const units = durationUnits(partDurations);

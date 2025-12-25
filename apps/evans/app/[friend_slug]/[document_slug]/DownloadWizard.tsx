@@ -5,7 +5,7 @@ import ChooseEdition from './ChooseEdition';
 import ChooseFormat from './ChooseFormat';
 import Downloading from './Downloading';
 
-export type DownloadType = 'pdf' | 'epub' | 'speech';
+export type DownloadType = `pdf` | `epub` | `speech`;
 
 interface Props {
   editions: EditionType[];
@@ -17,7 +17,7 @@ interface Props {
 const DownloadWizard: React.FC<Props> = ({ editions, onSelect, top, left }) => {
   const initialEdition = editions.length === 1 ? editions[0] : undefined;
   const [edition, setEdition] = useState<EditionType | undefined>(initialEdition);
-  const [format, setFormat] = useState<'epub' | 'pdf' | 'speech' | undefined>();
+  const [format, setFormat] = useState<`epub` | `pdf` | `speech` | undefined>();
   const [downloaded, setDownloaded] = useState<boolean>(false);
   const selectionComplete = edition && format;
 

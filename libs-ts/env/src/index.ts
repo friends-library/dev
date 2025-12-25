@@ -30,7 +30,7 @@ const req: <T extends string>(...keys: T[]) => { [k in T]: string } = (...keys) 
 
 function has(key: string): boolean {
   try {
-    /* eslint-disable-next-line no-unused-expressions */
+    /* eslint-disable-next-line @typescript-eslint/no-unused-expressions */
     req(key)[key];
     return true;
   } catch {

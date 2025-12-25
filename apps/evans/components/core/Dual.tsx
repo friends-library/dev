@@ -5,10 +5,10 @@ interface Props {
   className?: string;
   href?: string;
   children: [JSX.Element, JSX.Element];
-  el?: 'div' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'span' | 'a';
+  el?: `div` | `p` | `h1` | `h2` | `h3` | `h4` | `span` | `a`;
 }
 
-type PartialProps = Omit<Props, 'el'>;
+type PartialProps = Omit<Props, `el`>;
 
 const DualComponent: React.FC<Props> = (props) => {
   const { el, children, ...forwardProps } = props;

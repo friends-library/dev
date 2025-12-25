@@ -2,7 +2,7 @@
 
 export namespace GettingStartedBooks {
   export interface Input {
-    lang: 'en' | 'es';
+    lang: `en` | `es`;
     slugs: Array<{
       friendSlug: string;
       documentSlug: string;
@@ -12,14 +12,14 @@ export namespace GettingStartedBooks {
   export type Output = Array<{
     title: string;
     slug: string;
-    editionType: 'updated' | 'original' | 'modernized';
+    editionType: `updated` | `original` | `modernized`;
     isbn: string;
     customCss?: string;
     customHtml?: string;
     isCompilation: boolean;
     friendName: string;
     friendSlug: string;
-    friendGender: 'male' | 'female' | 'mixed';
+    friendGender: `male` | `female` | `mixed`;
     htmlShortTitle: string;
     hasAudio: boolean;
   }>;

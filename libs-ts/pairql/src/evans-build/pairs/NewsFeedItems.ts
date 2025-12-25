@@ -1,21 +1,21 @@
 // auto-generated, do not edit
 
 export namespace NewsFeedItems {
-  export type Input = 'en' | 'es';
+  export type Input = `en` | `es`;
 
   export type Output = Array<{
     kind:
       | {
-          case: 'spanishTranslation';
+          case: `spanishTranslation`;
           isCompilation: boolean;
           friendName: string;
           englishHtmlShortTitle: string;
         }
       | {
-          case: 'book';
+          case: `book`;
         }
       | {
-          case: 'audiobook';
+          case: `audiobook`;
         };
     htmlShortTitle: string;
     documentSlug: string;

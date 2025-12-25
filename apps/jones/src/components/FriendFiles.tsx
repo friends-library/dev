@@ -230,7 +230,7 @@ class FriendFiles extends React.Component<Props> {
 
 const mapState = (
   state: AppState,
-): Pick<Props, 'taskId' | 'documents' | 'editingFile' | 'collapsed'> => {
+): Pick<Props, `taskId` | `documents` | `editingFile` | `collapsed`> => {
   const task = requireCurrentTask(state);
   return {
     taskId: task.id,

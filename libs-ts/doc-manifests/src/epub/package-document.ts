@@ -68,7 +68,8 @@ function attrs(data: Record<string, any>): string {
 
 interface Item {
   href: string;
-  'media-type': 'text/css' | 'application/xhtml+xml' | 'image/png' | 'image/jpeg';
+  // eslint-disable-next-line quotes
+  'media-type': `text/css` | `application/xhtml+xml` | `image/png` | `image/jpeg`;
   properties?: string;
 }
 

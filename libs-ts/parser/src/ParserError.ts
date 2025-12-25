@@ -63,7 +63,7 @@ function isCI(): boolean {
   }
 }
 
-function c(type: 'magenta' | 'gray' | 'red' | 'reset'): string {
+function c(type: `magenta` | `gray` | `red` | `reset`): string {
   if (isBrowser() || isCI()) {
     return ``;
   }

@@ -13,7 +13,7 @@ import BgImage from '@/public/images/books-diagonal.jpg';
 interface Props {
   friendName: string;
   residences: string[];
-  map: 'UK' | 'US' | 'Europe';
+  map: `UK` | `US` | `Europe`;
   markers: {
     label: string;
     top: number;

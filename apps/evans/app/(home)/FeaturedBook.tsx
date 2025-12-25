@@ -18,7 +18,7 @@ interface Props {
   isCompilation: boolean;
   friendName: string;
   friendSlug: string;
-  friendGender: 'male' | 'female' | 'mixed';
+  friendGender: `male` | `female` | `mixed`;
   documentSlug: string;
   featuredDescription: string;
   isCurrent: boolean;

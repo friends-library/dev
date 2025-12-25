@@ -99,7 +99,6 @@ describe(`processAsciidoc()`, () => {
   });
 
   it(`removes leading para spaces`, () => {
-    // eslint-disable-next-line no-irregular-whitespace
     const adoc = `=== Ch1\n\n      Babylon is the spiritual fabric of iniquity`;
     const processed = processAsciidoc(adoc);
     expect(processed).toBe(`== Ch1\n\nBabylon is the spiritual fabric of iniquity`);

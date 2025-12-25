@@ -510,7 +510,7 @@ function tokens(adoc: string): Token[] {
   return new Lexer({ adoc }).tokens();
 }
 
-function simpleTokens(adoc: string, all = false): Pick<Token, 'type' | 'literal'>[] {
+function simpleTokens(adoc: string, all = false): Pick<Token, `type` | `literal`>[] {
   const toks = tokens(adoc).map(simplifyToken);
 
   if (all) {

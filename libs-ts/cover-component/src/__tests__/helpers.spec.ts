@@ -44,7 +44,7 @@ describe(`prepareTitle()`, () => {
     expect(prepared).toBe(`Foo – Bar`);
   });
 
-  const cases: [string, string, string, 'front' | 'spine'][] = [
+  const cases: [string, string, string, `front` | `spine`][] = [
     [
       `Works of Isaac Penington, Volume 2`,
       `Isaac Penington`,

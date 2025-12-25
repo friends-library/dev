@@ -25,7 +25,7 @@ export function stop(port: number): void {
 }
 
 export interface ScreenshotTaker {
-  (path: string, type: 'ebook' | 'audio' | `threeD`): Promise<Buffer>;
+  (path: string, type: `ebook` | `audio` | `threeD`): Promise<Buffer>;
 }
 
 interface BrowserCloser {
@@ -46,7 +46,7 @@ export async function screenshot(
   const page = await browser.newPage();
 
   return [
-    async (path: string, type: 'ebook' | 'audio' | 'threeD'): Promise<Buffer> => {
+    async (path: string, type: `ebook` | `audio` | `threeD`): Promise<Buffer> => {
       // @TODO, get these magic numbers from API, until then, must keep in sync with API
       const widthThreeD = 1120.0;
       const heightThreeD = widthThreeD / (1120.0 / 1640.0);

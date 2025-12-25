@@ -78,7 +78,7 @@ const SearchBlock: React.FC<Props> = ({ books, initialFilters, initialUsed }) =>
 
 export default SearchBlock;
 
-function match(books: Props['books'], filters: string[], search: string): Props['books'] {
+function match(books: Props[`books`], filters: string[], search: string): Props[`books`] {
   if (!filters.length && search.length < 2) {
     return [];
   }
@@ -112,7 +112,7 @@ function match(books: Props['books'], filters: string[], search: string): Props[
   });
 }
 
-function regionMatches(region: string, book: Props['books'][0]): boolean {
+function regionMatches(region: string, book: Props[`books`][0]): boolean {
   const compare = book.region.toLowerCase().replace(/ /g, `-`);
   return region === compare;
 }

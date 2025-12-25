@@ -3,7 +3,7 @@ import type { Audio } from './types';
 import api from '../../api-client';
 
 export default async function queryFilteredAudios(
-  lang: Lang | 'both',
+  lang: Lang | `both`,
   pattern?: string,
   limit?: number,
 ): Promise<Audio[]> {

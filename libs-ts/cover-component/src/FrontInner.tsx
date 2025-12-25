@@ -7,16 +7,16 @@ import FrontMain from './FrontMain';
 
 type Props = Pick<
   CoverProps,
-  | 'customCss'
-  | 'isbn'
-  | 'customHtml'
-  | 'lang'
-  | 'author'
-  | 'showGuides'
-  | 'title'
-  | 'isCompilation'
-  | 'scope'
-  | 'scaler'
+  | `customCss`
+  | `isbn`
+  | `customHtml`
+  | `lang`
+  | `author`
+  | `showGuides`
+  | `title`
+  | `isCompilation`
+  | `scope`
+  | `scaler`
 > & {
   style?: { [k in string]: number | string };
 };

@@ -13,9 +13,9 @@ export const Container: React.FC<Props> = ({ _buildTime }) => {
   const [name, setName] = useState<string>(``);
   const [email, setEmail] = useState<string>(``);
   const [message, setMessage] = useState<string>(``);
-  const [subject, setSubject] = useState<'tech' | 'other'>(`tech`);
+  const [subject, setSubject] = useState<`tech` | `other`>(`tech`);
   const [success, setSuccess] = useState<boolean>(false);
-  const [state, setState] = useState<'default' | 'submitting' | 'submitted'>(`default`);
+  const [state, setState] = useState<`default` | `submitting` | `submitted`>(`default`);
   const [turnstileToken, setTurnstileToken] = useState<string>(``);
   return (
     <ContactFormPage

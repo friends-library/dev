@@ -19,7 +19,7 @@ import getSrcFsData from './audio-fs-data';
 import queryFilteredAudios from './query-filtered-audios';
 
 interface Argv {
-  lang: Lang | 'both';
+  lang: Lang | `both`;
   limit: number;
   dryRun: boolean;
   skipLargeUploads: boolean;

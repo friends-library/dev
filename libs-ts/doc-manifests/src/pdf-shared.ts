@@ -2,7 +2,7 @@ import { utf8ShortTitle } from '@friends-library/adoc-utils';
 import type { DocPrecursor } from '@friends-library/types';
 
 export function runningHead(
-  dpc: Pick<DocPrecursor, 'meta' | 'config'>,
+  dpc: Pick<DocPrecursor, `meta` | `config`>,
   numChapters: number,
 ): string {
   const { meta, config } = dpc;

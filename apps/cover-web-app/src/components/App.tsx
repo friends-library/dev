@@ -19,10 +19,10 @@ import Toolbar from './Toolbar';
 import CodeEditor from './CodeEditor';
 import './App.css';
 
-type Perspective = 'front' | 'spine' | 'back' | 'angle-front' | 'angle-back';
-export type Scale = 'fit' | '1' | '1-4' | '1-3' | '1-2' | '4-5' | '3-5';
-export type Mode = 'pdf' | '3d' | 'ebook';
-export type BookSize = 'actual' | 's' | 'm' | 'xl';
+type Perspective = `front` | `spine` | `back` | `angle-front` | `angle-back`;
+export type Scale = `fit` | `1` | `1-4` | `1-3` | `1-2` | `4-5` | `3-5`;
+export type Mode = `pdf` | `3d` | `ebook`;
+export type BookSize = `actual` | `s` | `m` | `xl`;
 
 interface State {
   friendIndex: number;
@@ -36,7 +36,7 @@ interface State {
   bookSize: BookSize;
   fauxVol?: 1 | 2;
   perspective: Perspective;
-  capturing: 'ebook' | 'audio' | `threeD` | null;
+  capturing: `ebook` | `audio` | `threeD` | null;
   customBlurbs: Record<string, string>;
   customHtml: Record<string, string>;
   customCss: Record<string, string>;
@@ -526,6 +526,6 @@ export default class App extends React.Component<Record<string, never>, State> {
   }
 }
 
-type Direction = 'FORWARD' | 'BACKWARD';
+type Direction = `FORWARD` | `BACKWARD`;
 const FORWARD = `FORWARD`;
 const BACKWARD = `BACKWARD`;

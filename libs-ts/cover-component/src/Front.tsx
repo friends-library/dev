@@ -3,7 +3,7 @@ import type { CoverProps } from '@friends-library/types';
 import { wrapClasses } from './css/helpers';
 import FrontInner from './FrontInner';
 
-type Props = Omit<CoverProps, 'blurb' | 'pages'> & {
+type Props = Omit<CoverProps, `blurb` | `pages`> & {
   className?: string;
   shadow?: boolean;
 };

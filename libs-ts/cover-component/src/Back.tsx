@@ -6,7 +6,7 @@ import Brackets from './Brackets';
 import LogoSpanish from './LogoSpanish';
 import Logo from './Logo';
 
-type Props = Pick<CoverProps, 'blurb' | 'customHtml' | 'isbn' | 'lang' | 'edition'> & {
+type Props = Pick<CoverProps, `blurb` | `customHtml` | `isbn` | `lang` | `edition`> & {
   bgOnly?: boolean;
   style?: { [k in string]: number | string };
 };

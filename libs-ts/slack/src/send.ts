@@ -55,16 +55,16 @@ function getClient(channel: string): WebClient {
   return clientBot;
 }
 
-function workspaceClient(workspace: 'BOT' | 'MAIN'): WebClient {
+function workspaceClient(workspace: `BOT` | `MAIN`): WebClient {
   const varname = `SLACK_API_TOKEN_WORKSPACE_${workspace}`;
   const token = env.require(varname)[varname];
   return new WebClient(token);
 }
 
 interface SectionBlock {
-  type: 'section';
+  type: `section`;
   text: {
-    type: 'mrkdwn';
+    type: `mrkdwn`;
     text: string;
   };
 }

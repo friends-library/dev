@@ -23,7 +23,7 @@ export namespace GetAudios {
     edition: {
       id: UUID;
       path: string;
-      type: 'updated' | 'original' | 'modernized';
+      type: `updated` | `original` | `modernized`;
       coverImagePath: string;
     };
     document: {
@@ -33,18 +33,18 @@ export namespace GetAudios {
       description: string;
       path: string;
       tags: Array<
-        | 'journal'
-        | 'letters'
-        | 'exhortation'
-        | 'doctrinal'
-        | 'treatise'
-        | 'history'
-        | 'allegory'
-        | 'spiritualLife'
+        | `journal`
+        | `letters`
+        | `exhortation`
+        | `doctrinal`
+        | `treatise`
+        | `history`
+        | `allegory`
+        | `spiritualLife`
       >;
     };
     friend: {
-      lang: 'en' | 'es';
+      lang: `en` | `es`;
       name: string;
       slug: string;
       alphabeticalName: string;

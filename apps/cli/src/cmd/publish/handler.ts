@@ -365,7 +365,7 @@ function fillInKnownEntityData(
 }
 
 async function saveEditionImpression(
-  impression: PublishData['impression'],
+  impression: PublishData[`impression`],
 ): Promise<CloudFiles> {
   if (isEqual(impression.current, impression.previous)) {
     logDebug(`skipping save EditionImpression, all properties unchanged...`);
@@ -382,7 +382,7 @@ async function saveEditionImpression(
 }
 
 async function rollbackSaveEditionImpression(
-  impression: PublishData['impression'],
+  impression: PublishData[`impression`],
 ): Promise<void> {
   logAction(`attempting to roll back save EditionImpression...`);
 

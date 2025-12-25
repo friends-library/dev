@@ -5,7 +5,7 @@ import type { EbookColorScheme } from '../types';
 import tw from '../lib/tailwind';
 import { Serif } from './Text';
 
-const FullscreenLoading: React.FC<{ colorScheme?: EbookColorScheme | 'transparent' }> = ({
+const FullscreenLoading: React.FC<{ colorScheme?: EbookColorScheme | `transparent` }> = ({
   colorScheme = `transparent`,
 }) => {
   const [opacity, setOpacity] = useState(`0`);

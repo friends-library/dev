@@ -6,7 +6,7 @@ import type { Props as AddressProps } from './ShippingAddress';
 export function useAddress(
   initial: Partial<AddressWithEmail>,
 ): [
-  props: Omit<AddressProps, 'autoFocusFirst'>,
+  props: Omit<AddressProps, `autoFocusFirst`>,
   address: AddressWithEmail,
   isValid: boolean,
 ] {

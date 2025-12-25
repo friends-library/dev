@@ -16,7 +16,7 @@ export default class CartStore extends EventEmitter {
       if (stored) {
         this.cart = Cart.fromJson(stored);
       }
-    } catch (e) {
+    } catch {
       // ¯\_(ツ)_/¯
     }
 

@@ -1,9 +1,9 @@
 import React from 'react';
 
 type AppState =
-  | { view: 'app' }
-  | { view: 'modal:checkout' }
-  | { view: 'modal:request-free'; book: string };
+  | { view: `app` }
+  | { view: `modal:checkout` }
+  | { view: `modal:request-free`; book: string };
 
 export type AppAction =
   | { type: `show--app` }

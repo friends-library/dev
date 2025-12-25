@@ -90,7 +90,7 @@ class App extends React.Component<Props> {
   }
 }
 
-const mapState = (state: State): Pick<Props, 'loggedIn' | 'screen'> => ({
+const mapState = (state: State): Pick<Props, `loggedIn` | `screen`> => ({
   loggedIn: Boolean(state.github.token),
   screen: state.screen,
 });

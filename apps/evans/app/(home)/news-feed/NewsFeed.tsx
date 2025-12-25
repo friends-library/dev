@@ -6,7 +6,7 @@ import type NewsFeedItem from './NewsFeedItem';
 import NewsFeedYear from './NewsFeedYear';
 import Dual from '@/components/core/Dual';
 
-type ItemProps = Omit<React.ComponentProps<typeof NewsFeedItem>, 'alt'>;
+type ItemProps = Omit<React.ComponentProps<typeof NewsFeedItem>, `alt`>;
 
 interface Props {
   items: (ItemProps & { year: string })[];
@@ -39,7 +39,7 @@ const NewsFeed: React.FC<Props> = ({ items, className }) => {
 
 export default NewsFeed;
 
-function groupYears(items: Props['items']): { year: string; items: ItemProps[] }[] {
+function groupYears(items: Props[`items`]): { year: string; items: ItemProps[] }[] {
   let idx = -1;
   const years: string[] = [];
   const groups: { year: string; items: ItemProps[] }[] = [];

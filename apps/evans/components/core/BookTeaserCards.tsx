@@ -5,7 +5,7 @@ import type { EditionType } from '@/lib/types';
 import BookTeaserCard from './BookTeaserCard';
 import { shortDate } from '@/lib/dates';
 
-type Book = Omit<CoverData, 'printSize'> & {
+type Book = Omit<CoverData, `printSize`> & {
   audioDuration?: string;
   htmlShortTitle: string;
   documentUrl: string;
@@ -17,11 +17,11 @@ export interface Props {
   className?: string;
   id?: string;
   title: string;
-  titleEl: 'h2' | 'h3' | 'h4';
+  titleEl: `h2` | `h3` | `h4`;
   bgColor: string;
   titleTextColor: string;
   books: Book[];
-  sortBy?: 'edition,title' | 'createdAt';
+  sortBy?: `edition,title` | `createdAt`;
   withDateBadges?: boolean;
 }
 
@@ -80,7 +80,7 @@ type SortableBook = {
 };
 
 function makeSorter(
-  strategy: 'edition,title' | 'createdAt',
+  strategy: `edition,title` | `createdAt`,
 ): (a: SortableBook, b: SortableBook) => -1 | 0 | 1 {
   return (a, b) => {
     if (strategy === `createdAt`) {

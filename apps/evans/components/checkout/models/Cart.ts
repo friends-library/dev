@@ -39,7 +39,7 @@ export default class Cart extends EventEmitter {
         validAddress,
         validEmail,
       );
-    } catch (err) {
+    } catch {
       return new Cart([]);
     }
   }

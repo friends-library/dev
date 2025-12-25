@@ -197,7 +197,7 @@ const FontSizeButton: React.FC<FontSizeButtonProps> = ({
 
 interface JustificationButtonProps {
   colorScheme: EbookColorScheme;
-  type: 'left' | 'justify';
+  type: `left` | `justify`;
   isRight?: boolean;
   disabled?: boolean;
   onPress: () => unknown;

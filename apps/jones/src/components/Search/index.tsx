@@ -186,7 +186,7 @@ class Search extends React.Component<Props, State> {
   }
 }
 
-const mapState = (state: AppState): Omit<Props, 'replaceAll' | 'cancelSearch'> => {
+const mapState = (state: AppState): Omit<Props, `replaceAll` | `cancelSearch`> => {
   const {
     search: { searching, regexp, caseSensitive, words },
   } = state;

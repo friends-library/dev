@@ -1,10 +1,10 @@
 import type { EditionType, Lang } from '@friends-library/types';
 
-export type PlayerState = 'STOPPED' | 'PLAYING' | 'PAUSED' | 'DUCKED';
+export type PlayerState = `STOPPED` | `PLAYING` | `PAUSED` | `DUCKED`;
 
-export type BookSortMethod = 'duration' | 'published' | 'author' | 'title';
+export type BookSortMethod = `duration` | `published` | `author` | `title`;
 
-export type EbookColorScheme = 'white' | 'black' | 'sepia';
+export type EbookColorScheme = `white` | `black` | `sepia`;
 
 /**
  * While refactoring evans to nextjs/pairql, I changed the
@@ -12,7 +12,7 @@ export type EbookColorScheme = 'white' | 'black' | 'sepia';
  * too risky to quickly change it here, without a careful
  * migration, so native now has it's own legacy type.
  */
-export type AudioQuality = 'HQ' | 'LQ';
+export type AudioQuality = `HQ` | `LQ`;
 
 /**
  * string in format: `"<document-id>--<EditionType>"`
@@ -109,8 +109,8 @@ export type StackParamList = {
   Ebook: { editionId: EditionId };
   Listen: { editionId: EditionId };
   Settings: undefined;
-  AudioBookList: { listType: 'audio' };
-  EBookList: { listType: 'ebook' };
+  AudioBookList: { listType: `audio` };
+  EBookList: { listType: `ebook` };
 };
 
 export interface BookListItem {
@@ -156,12 +156,12 @@ export interface SearchResult {
   numResultsInElement: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-unused-vars
 function deriveAudioType(edition: EditionResource) {
   return edition.audio!;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-unused-vars
 function deriveAudioPartType(edition: EditionResource) {
   return edition.audio!.parts[0]!;
 }

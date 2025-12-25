@@ -116,7 +116,7 @@ class Sidebar extends React.Component<Props> {
   }
 }
 
-const mapState = (state: State): Pick<Props, 'open' | 'width'> => {
+const mapState = (state: State): Pick<Props, `open` | `width`> => {
   const task = requireCurrentTask(state);
   return {
     open: task.sidebarOpen,

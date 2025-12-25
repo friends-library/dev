@@ -78,7 +78,7 @@ const WorkNav: React.FC<Props> = ({ task, goToTasks, friendName }) => (
   </Wrap>
 );
 
-const mapState = (state: AppState): Omit<Props, 'goToTasks'> => {
+const mapState = (state: AppState): Omit<Props, `goToTasks`> => {
   const task = requireCurrentTask(state);
   return {
     task,

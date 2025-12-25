@@ -263,7 +263,7 @@ class Task extends React.Component<Props, State> {
 const mapState = (
   state: AppState,
   { task }: OwnProps,
-): Pick<Props, 'task' | 'repo' | 'taskHasWork'> => {
+): Pick<Props, `task` | `repo` | `taskHasWork`> => {
   const repo = state.repos.find((r) => r.id === task.repoId);
   if (!repo) {
     throw new Error(`Could not find repo with id ${task.repoId}`);

@@ -101,7 +101,7 @@ class Work extends React.Component<Props> {
   }
 }
 
-const mapState = (state: AppState): Pick<Props, 'task'> => ({
+const mapState = (state: AppState): Pick<Props, `task`> => ({
   task: requireCurrentTask(state),
 });
 
@@ -118,7 +118,7 @@ const mapDispatch = {
 
 export default connect(mapState, mapDispatch)(Work);
 
-const ClosedWarning: React.FC<{ status: 'closed' | 'merged' }> = ({ status }) => (
+const ClosedWarning: React.FC<{ status: `closed` | `merged` }> = ({ status }) => (
   <div style={{ color: `red`, padding: `1em 3em` }}>
     <h1>
       <span role="img" aria-label="Embarrassed face.">
