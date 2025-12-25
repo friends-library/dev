@@ -1,16 +1,16 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`copyright() > english copyright 1`] = `
 "
-  <div class=\\"copyright-page\\">
+  <div class="copyright-page">
     <ul>
       <li>Public domain in the USA</li>
       
-      <li id=\\"isbn\\">ISBN: <code>978-1-64476-029-1</code></li>
-      <li>Text revision <code><a href=\\"\\">327ceb2</a></code> — January 22nd, 2021</li>
-      <li>Created and freely distributed by <a href=\\"https://www.friendslibrary.com\\">Friends Library Publishing</a></li>
-      <li>Find more free books from early Quakers at <a href=\\"https://www.friendslibrary.com\\">friendslibrary.com</a></li>
-      <li>Contact the publishers at <a href=\\"mailto:info@friendslibrary.com\\">info@friendslibrary.com</a></li>
+      <li id="isbn">ISBN: <code>978-1-64476-029-1</code></li>
+      <li>Text revision <code><a href="">327ceb2</a></code> — January 22nd, 2021</li>
+      <li>Created and freely distributed by <a href="https://www.friendslibrary.com">Friends Library Publishing</a></li>
+      <li>Find more free books from early Quakers at <a href="https://www.friendslibrary.com">friendslibrary.com</a></li>
+      <li>Contact the publishers at <a href="mailto:info@friendslibrary.com">info@friendslibrary.com</a></li>
     </ul>
   </div>
   "
@@ -18,15 +18,15 @@ exports[`copyright() > english copyright 1`] = `
 
 exports[`copyright() > spanish copyright 1`] = `
 "
-  <div class=\\"copyright-page\\">
+  <div class="copyright-page">
     <ul>
       <li>Dominio público en los Estados Unidos de América</li>
       
-      <li id=\\"isbn\\">ISBN: <code>978-1-64476-029-1</code></li>
-      <li>Revisión de texto <code><a href=\\"\\">327ceb2</a></code> — 22 de Enero, 2021</li>
-      <li>Creado y distribuido gratuitamente por <a href=\\"https://www.bibliotecadelosamigos.org\\">La Biblioteca de los Amigos</a></li>
-      <li>Encuentre más libros gratis de los primeros Cuáqueros en <a href=\\"https://www.bibliotecadelosamigos.org\\">bibliotecadelosamigos.org</a></li>
-      <li>Puede contactarnos en <a href=\\"mailto:info@bibliotecadelosamigos.org\\">info@bibliotecadelosamigos.org</a></li>
+      <li id="isbn">ISBN: <code>978-1-64476-029-1</code></li>
+      <li>Revisión de texto <code><a href="">327ceb2</a></code> — 22 de Enero, 2021</li>
+      <li>Creado y distribuido gratuitamente por <a href="https://www.bibliotecadelosamigos.org">La Biblioteca de los Amigos</a></li>
+      <li>Encuentre más libros gratis de los primeros Cuáqueros en <a href="https://www.bibliotecadelosamigos.org">bibliotecadelosamigos.org</a></li>
+      <li>Puede contactarnos en <a href="mailto:info@bibliotecadelosamigos.org">info@bibliotecadelosamigos.org</a></li>
     </ul>
   </div>
   "
