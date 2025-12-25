@@ -20,6 +20,8 @@ When running any `swift test` commands, always prepend `SWIFT_DETERMINISTIC_HASH
 
 Never make git commits unless I specifically ask you to.
 
+See [docs/dependencies.md](docs/dependencies.md) for dependency update guidelines.
+
 ## Monorepo Structure
 
 ```
