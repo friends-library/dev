@@ -20,7 +20,7 @@ const FullscreenError: React.FC<{
       })}
       size={19}
     >
-      {errorMsg ?? LANG === `en`
+      {(errorMsg ?? LANG === `en`)
         ? `Unexpected error. Please try again, or contact us at info@friendslibrary.com if the problem persists.`
         : `Ha ocurrido un error inesperado. Vuelve a intentarlo o ponte en contacto con nosotros en info@bibliotecadelosamigos.org si el problema persiste.`}
     </Serif>

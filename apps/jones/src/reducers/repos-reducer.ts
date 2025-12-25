@@ -20,9 +20,9 @@ export default createReducer([], {
         friendName:
           repo.name === `compilations` || repo.name === `compilaciones`
             ? repo.name.replace(/^c/, `C`)
-            : repo.description
+            : (repo.description
                 ?.replace(/^.. (.+) source documents$/, `$1`)
-                .replace(/ \((d\.|\d)[^)]*\d\)/, ``) ?? ``,
+                .replace(/ \((d\.|\d)[^)]*\d\)/, ``) ?? ``),
       }));
   },
 });
