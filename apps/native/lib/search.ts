@@ -8,7 +8,7 @@ type Match = {
 
 export function search(query: string, source: string, offset = 0): Match[] {
   'show source'; // prevent hermes [bytecode]
-  function prepareContext(text: string, dir: 'before' | 'after'): string {
+  function prepareContext(text: string, dir: `before` | `after`): string {
     const BEFORE_MAX = 30;
     const AFTER_MAX = 55;
     let trimmed = ``;

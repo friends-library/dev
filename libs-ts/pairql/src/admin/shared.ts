@@ -36,20 +36,20 @@ export interface EditableDocument {
   description: string;
   partialDescription: string;
   featuredDescription?: string;
-  friend: { id: UUID; name: string; lang: 'en' | 'es' };
+  friend: { id: UUID; name: string; lang: `en` | `es` };
   editions: EditableEdition[];
   tags: Array<{
     id: UUID;
     documentId: UUID;
     type:
-      | 'journal'
-      | 'letters'
-      | 'exhortation'
-      | 'doctrinal'
-      | 'treatise'
-      | 'history'
-      | 'allegory'
-      | 'spiritualLife';
+      | `journal`
+      | `letters`
+      | `exhortation`
+      | `doctrinal`
+      | `treatise`
+      | `history`
+      | `allegory`
+      | `spiritualLife`;
   }>;
   relatedDocuments: Array<{
     id: UUID;
@@ -63,22 +63,22 @@ export interface EditableDocumentTag {
   id: UUID;
   documentId: UUID;
   type:
-    | 'journal'
-    | 'letters'
-    | 'exhortation'
-    | 'doctrinal'
-    | 'treatise'
-    | 'history'
-    | 'allegory'
-    | 'spiritualLife';
+    | `journal`
+    | `letters`
+    | `exhortation`
+    | `doctrinal`
+    | `treatise`
+    | `history`
+    | `allegory`
+    | `spiritualLife`;
 }
 
 export interface EditableEdition {
   id: UUID;
   documentId: UUID;
-  type: 'updated' | 'original' | 'modernized';
+  type: `updated` | `original` | `modernized`;
   paperbackSplits?: number[];
-  paperbackOverrideSize?: 's' | 'm' | 'xl' | 'xlCondensed';
+  paperbackOverrideSize?: `s` | `m` | `xl` | `xlCondensed`;
   editor?: string;
   isbn?: string;
   isDraft: boolean;
@@ -87,10 +87,10 @@ export interface EditableEdition {
 
 export interface EditableFriend {
   id: UUID;
-  lang: 'en' | 'es';
+  lang: `en` | `es`;
   name: string;
   slug: string;
-  gender: 'male' | 'female' | 'mixed';
+  gender: `male` | `female` | `mixed`;
   born?: number;
   died?: number;
   description: string;
@@ -143,37 +143,37 @@ export interface EditableTokenScope {
   id: UUID;
   tokenId: UUID;
   scope:
-    | 'all'
-    | 'queryDownloads'
-    | 'mutateDownloads'
-    | 'queryOrders'
-    | 'mutateOrders'
-    | 'queryArtifactProductionVersions'
-    | 'mutateArtifactProductionVersions'
-    | 'queryEntities'
-    | 'mutateEntities'
-    | 'queryTokens'
-    | 'mutateTokens';
+    | `all`
+    | `queryDownloads`
+    | `mutateDownloads`
+    | `queryOrders`
+    | `mutateOrders`
+    | `queryArtifactProductionVersions`
+    | `mutateArtifactProductionVersions`
+    | `queryEntities`
+    | `mutateEntities`
+    | `queryTokens`
+    | `mutateTokens`;
 }
 
 export type EntityType =
-  | 'friendQuote'
-  | 'friendResidence'
-  | 'friendResidenceDuration'
-  | 'document'
-  | 'documentTag'
-  | 'relatedDocument'
-  | 'edition'
-  | 'audio'
-  | 'audioPart'
-  | 'token'
-  | 'tokenScope'
-  | 'friend';
+  | `friendQuote`
+  | `friendResidence`
+  | `friendResidenceDuration`
+  | `document`
+  | `documentTag`
+  | `relatedDocument`
+  | `edition`
+  | `audio`
+  | `audioPart`
+  | `token`
+  | `tokenScope`
+  | `friend`;
 
 export interface SelectableDocument {
   id: UUID;
   title: string;
-  lang: 'en' | 'es';
+  lang: `en` | `es`;
   friendAlphabeticalName: string;
 }
 
@@ -218,47 +218,47 @@ export interface UpsertDocumentTag {
   id: UUID;
   documentId: UUID;
   type:
-    | 'journal'
-    | 'letters'
-    | 'exhortation'
-    | 'doctrinal'
-    | 'treatise'
-    | 'history'
-    | 'allegory'
-    | 'spiritualLife';
+    | `journal`
+    | `letters`
+    | `exhortation`
+    | `doctrinal`
+    | `treatise`
+    | `history`
+    | `allegory`
+    | `spiritualLife`;
 }
 
 export interface UpsertEdition {
   id: UUID;
   documentId: UUID;
-  type: 'updated' | 'original' | 'modernized';
+  type: `updated` | `original` | `modernized`;
   editor?: string;
   isDraft: boolean;
-  paperbackOverrideSize?: 's' | 'm' | 'xl' | 'xlCondensed';
+  paperbackOverrideSize?: `s` | `m` | `xl` | `xlCondensed`;
   paperbackSplits?: number[];
 }
 
 export type UpsertEntity =
-  | { case: 'audio'; entity: UpsertAudio }
-  | { case: 'audioPart'; entity: UpsertAudioPart }
-  | { case: 'document'; entity: UpsertDocument }
-  | { case: 'documentTag'; entity: UpsertDocumentTag }
-  | { case: 'edition'; entity: UpsertEdition }
-  | { case: 'friend'; entity: UpsertFriend }
-  | { case: 'friendQuote'; entity: UpsertFriendQuote }
-  | { case: 'friendResidence'; entity: UpsertFriendResidence }
-  | { case: 'friendResidenceDuration'; entity: UpsertFriendResidenceDuration }
-  | { case: 'relatedDocument'; entity: UpsertRelatedDocument }
-  | { case: 'token'; entity: UpsertToken }
-  | { case: 'tokenScope'; entity: UpsertTokenScope };
+  | { case: `audio`; entity: UpsertAudio }
+  | { case: `audioPart`; entity: UpsertAudioPart }
+  | { case: `document`; entity: UpsertDocument }
+  | { case: `documentTag`; entity: UpsertDocumentTag }
+  | { case: `edition`; entity: UpsertEdition }
+  | { case: `friend`; entity: UpsertFriend }
+  | { case: `friendQuote`; entity: UpsertFriendQuote }
+  | { case: `friendResidence`; entity: UpsertFriendResidence }
+  | { case: `friendResidenceDuration`; entity: UpsertFriendResidenceDuration }
+  | { case: `relatedDocument`; entity: UpsertRelatedDocument }
+  | { case: `token`; entity: UpsertToken }
+  | { case: `tokenScope`; entity: UpsertTokenScope };
 
 export interface UpsertFriend {
   id: UUID;
   description: string;
   died?: number;
   born?: number;
-  gender: 'male' | 'female' | 'mixed';
-  lang: 'en' | 'es';
+  gender: `male` | `female` | `mixed`;
+  lang: `en` | `es`;
   name: string;
   slug: string;
   published?: ISODateString;
@@ -305,15 +305,15 @@ export interface UpsertTokenScope {
   id: UUID;
   tokenId: UUID;
   scope:
-    | 'all'
-    | 'queryDownloads'
-    | 'mutateDownloads'
-    | 'queryOrders'
-    | 'mutateOrders'
-    | 'queryArtifactProductionVersions'
-    | 'mutateArtifactProductionVersions'
-    | 'queryEntities'
-    | 'mutateEntities'
-    | 'queryTokens'
-    | 'mutateTokens';
+    | `all`
+    | `queryDownloads`
+    | `mutateDownloads`
+    | `queryOrders`
+    | `mutateOrders`
+    | `queryArtifactProductionVersions`
+    | `mutateArtifactProductionVersions`
+    | `queryEntities`
+    | `mutateEntities`
+    | `queryTokens`
+    | `mutateTokens`;
 }

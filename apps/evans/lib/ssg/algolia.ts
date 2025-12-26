@@ -82,7 +82,7 @@ function friendRecord(friend: Api.AllFriendPages.Output[string]): Record<string,
 
 function documentRecord(
   url: string,
-  document: Api.DocumentPage.Output['document'],
+  document: Api.DocumentPage.Output[`document`],
 ): Record<string, string | undefined> {
   return {
     objectID: `document--${document.ogImageUrl}`,

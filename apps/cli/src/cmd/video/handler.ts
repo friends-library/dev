@@ -13,7 +13,7 @@ import { metadata } from './metadata';
 import * as posterApp from './poster-server';
 
 interface Argv {
-  lang: Lang | 'both';
+  lang: Lang | `both`;
   limit: number;
   dryRun: boolean;
   posterServerPort: number;

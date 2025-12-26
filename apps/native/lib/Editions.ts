@@ -11,15 +11,15 @@ import logError, { safeStringify } from './errors';
 
 type EditionMap = Record<EditionId, EditionResource>;
 type Resources =
-  | { state: 'loading' }
-  | { state: 'loaded'; map: EditionMap }
-  | { state: 'error' };
+  | { state: `loading` }
+  | { state: `loaded`; map: EditionMap }
+  | { state: `error` };
 
 class Editions {
   private resources: Resources = { state: `loading` };
   private changeListeners: Array<() => unknown> = [];
 
-  public state(): 'loading' | 'loaded' | 'error' {
+  public state(): `loading` | `loaded` | `error` {
     return this.resources.state;
   }
 

@@ -2,7 +2,7 @@
 
 export namespace DocumentPage {
   export interface Input {
-    lang: 'en' | 'es';
+    lang: `en` | `es`;
     friendSlug: string;
     documentSlug: string;
   }
@@ -11,7 +11,7 @@ export namespace DocumentPage {
     document: {
       friendName: string;
       friendSlug: string;
-      friendGender: 'male' | 'female' | 'mixed';
+      friendGender: `male` | `female` | `mixed`;
       title: string;
       htmlTitle: string;
       htmlShortTitle: string;
@@ -24,9 +24,9 @@ export namespace DocumentPage {
       ogImageUrl: string;
       editions: Array<{
         id: UUID;
-        type: 'updated' | 'original' | 'modernized';
+        type: `updated` | `original` | `modernized`;
         isbn: string;
-        printSize: 's' | 'm' | 'xl';
+        printSize: `s` | `m` | `xl`;
         numPages: [number, ...number[]];
         loggedDownloadUrls: {
           epub: string;
@@ -39,8 +39,8 @@ export namespace DocumentPage {
         slug: string;
       };
       primaryEdition: {
-        editionType: 'updated' | 'original' | 'modernized';
-        printSize: 's' | 'm' | 'xl';
+        editionType: `updated` | `original` | `modernized`;
+        printSize: `s` | `m` | `xl`;
         paperbackVolumes: [number, ...number[]];
         isbn: string;
         numChapters: number;
@@ -97,7 +97,7 @@ export namespace DocumentPage {
     otherBooksByFriend: Array<{
       title: string;
       slug: string;
-      editionType: 'updated' | 'original' | 'modernized';
+      editionType: `updated` | `original` | `modernized`;
       description: string;
       paperbackVolumes: [number, ...number[]];
       isbn: string;

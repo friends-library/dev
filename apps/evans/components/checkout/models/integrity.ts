@@ -25,7 +25,7 @@ export function isAddress(obj: unknown): obj is Address {
       return false;
     }
     return true;
-  } catch (err) {
+  } catch {
     return false;
   }
 }
@@ -63,7 +63,7 @@ export function isItem(item: unknown): item is CartItemData {
     }
 
     return true;
-  } catch (err) {
+  } catch {
     return false;
   }
 }

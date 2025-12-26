@@ -3,7 +3,7 @@ import type { File, SearchResult, SearchResultContext } from '../type';
 
 export function searchFiles(
   searchTerm: string,
-  files: Array<Omit<File, 'sha'>>,
+  files: Array<Omit<File, `sha`>>,
   words = true,
   caseSensitive = false,
   regexp = false,
@@ -61,7 +61,7 @@ export function searchFiles(
 }
 
 function getContext(
-  result: Omit<SearchResult, 'context'>,
+  result: Omit<SearchResult, `context`>,
   lines: string[],
 ): { lineNumber: number; content: string }[] {
   const context: SearchResultContext[] = [];

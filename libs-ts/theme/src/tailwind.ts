@@ -3,7 +3,7 @@ import type { Config } from 'tailwindcss';
 import type { Lang } from '@friends-library/types';
 import * as c from './color';
 
-export default function tailwindPreset(lang: Lang = `en`): Omit<Config, 'content'> {
+export default function tailwindPreset(lang: Lang = `en`): Omit<Config, `content`> {
   return {
     theme: {
       fontFamily: {

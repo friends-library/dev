@@ -4,7 +4,7 @@ import { ThreeD } from '@friends-library/cover-component';
 import { toCoverProps, type CoverData } from '@/lib/cover';
 import Rotate from '@/components/custom-icons/Rotate';
 
-type Perspective = 'back' | 'front' | 'spine' | 'angle-front' | 'angle-back';
+type Perspective = `back` | `front` | `spine` | `angle-front` | `angle-back`;
 
 interface Props {
   coverData: CoverData;

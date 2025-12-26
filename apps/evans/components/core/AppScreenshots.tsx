@@ -15,7 +15,7 @@ import AppSplash_en from '@/public/images/app/app-splash.en.jpg';
 import AppSplash_es from '@/public/images/app/app-splash.es.jpg';
 
 interface Props {
-  emphasizing: 'listen' | 'read';
+  emphasizing: `listen` | `read`;
 }
 
 const AppScreenshots: (props: Props) => React.JSX.Element = ({ emphasizing: show }) => (

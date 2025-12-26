@@ -4,7 +4,7 @@ import { Male, Female } from '@/app/(friend)/Silhouettes';
 
 interface Props {
   className?: string;
-  gender: 'male' | 'female';
+  gender: `male` | `female`;
   bgColor: string;
   fgColor: string;
 }

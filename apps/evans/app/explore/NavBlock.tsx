@@ -4,7 +4,7 @@ import { t } from '@friends-library/locale';
 import { LANG } from '@/lib/env';
 
 const NavBlock: React.FC = () => {
-  const enLinks: Omit<LinkProps, 'index'>[] = [
+  const enLinks: Omit<LinkProps, `index`>[] = [
     { label: `Updated Editions`, bg: `maroon`, block: `UpdatedEditionsBlock` },
     { label: `Audio Books`, bg: `blue`, block: `AudioBooksBlock` },
     { label: `Region`, bg: `gold`, block: `RegionBlock` },
@@ -12,7 +12,7 @@ const NavBlock: React.FC = () => {
     { label: `Time Period`, bg: `maroon`, block: `TimelineBlock` },
     { label: `Search`, bg: `blue`, block: `SearchBlock` },
   ];
-  const esLinks: Omit<LinkProps, 'index'>[] = [
+  const esLinks: Omit<LinkProps, `index`>[] = [
     { label: `Libros`, bg: `maroon`, block: `UpdatedEditionsBlock` },
     { label: t`Audio Books`, bg: `blue`, block: `AudioBooksBlock` },
     { label: `Libros Nuevos`, bg: `green`, block: `NewBooksBlock` },
@@ -32,7 +32,7 @@ export default NavBlock;
 interface LinkProps {
   label: string;
   block: string;
-  bg: 'maroon' | 'blue' | 'gold' | 'green';
+  bg: `maroon` | `blue` | `gold` | `green`;
   index: number;
 }
 

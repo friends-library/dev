@@ -5,7 +5,7 @@ import FS from './fs';
 import Editions from './Editions';
 
 export function coverImage(
-  type: 'square' | 'threeD',
+  type: `square` | `threeD`,
   editionId: EditionId,
   layoutSize: number,
 ): {

@@ -6,7 +6,7 @@ interface Scrollable {
   scrollTo(opts: {
     top: number;
     left: number;
-    behavior: 'smooth' | 'instant' | 'auto';
+    behavior: `smooth` | `instant` | `auto`;
   }): unknown;
 }
 
@@ -69,9 +69,9 @@ export interface Element extends Scrollable {
     opts?:
       | boolean
       | {
-          behavior?: 'auto' | 'smooth';
-          block?: 'start' | 'center' | 'end' | 'nearest';
-          inline?: 'start' | 'center' | 'end' | 'nearest';
+          behavior?: `auto` | `smooth`;
+          block?: `start` | `center` | `end` | `nearest`;
+          inline?: `start` | `center` | `end` | `nearest`;
         },
   ): unknown;
 }

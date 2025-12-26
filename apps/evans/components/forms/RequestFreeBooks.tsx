@@ -9,7 +9,7 @@ import { useAddress } from './hooks';
 import Button from '@/components/core/Button';
 import { AppDispatch } from '@/lib/app-state';
 
-type AddressProps = Omit<ShippingAddressProps, 'autoFocusFirst'>;
+type AddressProps = Omit<ShippingAddressProps, `autoFocusFirst`>;
 
 type CommonProps = { onClose(): unknown; initialTitles: string };
 type Props =
@@ -127,7 +127,7 @@ export const RequestFreeBooks: React.FC<Props> = (props) => {
 const RequestFreeBooksContainer: React.FC<{ currentPageBook: string }> = ({
   currentPageBook,
 }) => {
-  const [state, setState] = useState<Props['state']>(`default`);
+  const [state, setState] = useState<Props[`state`]>(`default`);
   const [addressProps, address, addressValid] = useAddress({});
   const dispatch = useContext(AppDispatch);
   const close: () => unknown = () => dispatch({ type: `show--app` });
@@ -189,7 +189,7 @@ export default RequestFreeBooksContainer;
 const Heading: React.FC<{
   children: React.ReactNode;
   className?: string;
-  size?: 'text-xl' | 'text-2xl';
+  size?: `text-xl` | `text-2xl`;
 }> = ({ className, children, size = `text-xl` }) => (
   <h1 className={cx(className, size, `uppercase text-flgold mb-3 mt-1 text-center`)}>
     {children}

@@ -55,7 +55,7 @@ export const Sans: React.FC<TextProps> = ({
 interface ProseProps {
   size?: number;
   tailwindClasses?: string;
-  variant?: 'italic' | 'bold';
+  variant?: `italic` | `bold`;
   children: React.ReactNode;
 }
 

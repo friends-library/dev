@@ -9,8 +9,8 @@ interface TocItem {
 }
 
 interface Landmark {
-  type: 'toc' | 'titlepage' | 'bodymatter';
-  href: 'nav.xhtml' | 'half-title.xhtml' | 'chapter-1.xhtml';
+  type: `toc` | `titlepage` | `bodymatter`;
+  href: `nav.xhtml` | `half-title.xhtml` | `chapter-1.xhtml`;
   text: string;
 }
 

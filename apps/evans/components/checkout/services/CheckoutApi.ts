@@ -35,7 +35,7 @@ export default class CheckoutApi {
   }
 
   public async getExploratoryMetadata(
-    items: T.GetPrintJobExploratoryMetadata.Input['items'],
+    items: T.GetPrintJobExploratoryMetadata.Input[`items`],
     address: T.ShippingAddress & { email: string },
   ): Promise<
     | { status: `success`; metadata: T.ExploratoryMetadata }
@@ -64,8 +64,8 @@ export default class CheckoutApi {
   }
 
   public async createOrder(
-    order: Omit<T.CreateOrder.Input, 'items'>,
-    items: T.CreateOrder.Input['items'],
+    order: Omit<T.CreateOrder.Input, `items`>,
+    items: T.CreateOrder.Input[`items`],
     token: string,
   ): Promise<boolean> {
     this.token = token;

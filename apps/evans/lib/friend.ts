@@ -2,7 +2,7 @@ import { LANG } from '@/lib/env';
 
 export function getFriendUrl(
   friendSlug: string,
-  gender: 'male' | 'female' | 'mixed',
+  gender: `male` | `female` | `mixed`,
 ): string {
   if (gender === `mixed`) return `/${friendSlug}`;
   let firstPart = `friend`;

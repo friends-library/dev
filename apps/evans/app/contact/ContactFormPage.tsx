@@ -17,9 +17,9 @@ interface Props {
   setEmail(email: string): unknown;
   message: string;
   setMessage(message: string): unknown;
-  subject: 'tech' | 'other';
-  setSubject(subject: 'tech' | 'other'): unknown;
-  state: 'default' | 'submitting' | 'submitted';
+  subject: `tech` | `other`;
+  setSubject(subject: `tech` | `other`): unknown;
+  state: `default` | `submitting` | `submitted`;
   success: boolean;
   onSubmit(): Promise<unknown>;
   setTurnstileToken(token: string): unknown;

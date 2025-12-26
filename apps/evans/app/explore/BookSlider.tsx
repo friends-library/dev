@@ -144,7 +144,7 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
 
 export default BookSlider;
 
-const Arrow: React.FC<{ direction: 'left' | 'right'; onClick(): unknown }> = ({
+const Arrow: React.FC<{ direction: `left` | `right`; onClick(): unknown }> = ({
   direction,
   onClick,
 }) => (

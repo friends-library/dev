@@ -12,9 +12,9 @@ interface CommonProps {
 }
 
 type Props =
-  | ({ type: 'submit' } & CommonProps)
-  | ({ type: 'button'; onClick: () => unknown } & CommonProps)
-  | ({ type: 'link'; to: string } & CommonProps);
+  | ({ type: `submit` } & CommonProps)
+  | ({ type: `button`; onClick: () => unknown } & CommonProps)
+  | ({ type: `link`; to: string } & CommonProps);
 
 const Button: React.FC<Props> = ({
   className,

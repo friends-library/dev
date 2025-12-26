@@ -11,7 +11,7 @@ import { NODE as n } from '../types';
 export default abstract class AbstractAstNode implements AstNodeInterface {
   public children: AstNode[] = [];
   public value = ``;
-  public meta: AstNodeInterface['meta'] = {};
+  public meta: AstNodeInterface[`meta`] = {};
   private _context: Context | undefined;
 
   protected _startToken: Token | undefined;

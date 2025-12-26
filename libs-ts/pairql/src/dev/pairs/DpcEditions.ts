@@ -5,7 +5,7 @@ export namespace DpcEditions {
 
   export type Output = Array<{
     id: UUID;
-    type: 'updated' | 'original' | 'modernized';
+    type: `updated` | `original` | `modernized`;
     editor?: string;
     directoryPath: string;
     paperbackSplits?: number[];
@@ -22,7 +22,7 @@ export namespace DpcEditions {
       name: string;
       alphabeticalName: string;
       slug: string;
-      lang: 'en' | 'es';
+      lang: `en` | `es`;
     };
   }>;
 }

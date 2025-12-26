@@ -4,7 +4,7 @@ import { utils as u, wrap, chapterMarkup as c } from '../utils';
 
 const PrimitivesVisitor: Visitor<
   Array<string[]>,
-  { target: 'pdf' | 'ebook'; lang: Lang }
+  { target: `pdf` | `ebook`; lang: Lang }
 > = {
   entity: {
     enter({ node }) {

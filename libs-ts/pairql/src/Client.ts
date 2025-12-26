@@ -99,7 +99,7 @@ export default abstract class Client {
       const text = await res.text();
       try {
         var json = JSON.parse(text);
-      } catch (error) {
+      } catch {
         return this.errorResult(`JSON parse error, body=${text}`, 500);
       }
       if (res.status >= 300) {

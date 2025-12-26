@@ -15,7 +15,7 @@ export default class Lexer implements LexerInterface {
   public lines: Line[] = [];
   public lastToken?: Token;
   public bufferedToken?: Token;
-  private passThruState?: 'block' | 'inline';
+  private passThruState?: `block` | `inline`;
 
   public constructor(...inputs: AsciidocFile[]) {
     this.inputs = inputs;

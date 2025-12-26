@@ -15,7 +15,7 @@ import Maroon600 from '@/public/images/waves/maroon-600.svg';
 import Maroon800 from '@/public/images/waves/maroon-800.svg';
 
 interface Props {
-  color: 'blue' | 'maroon' | 'green' | 'gold';
+  color: `blue` | `maroon` | `green` | `gold`;
   className?: string;
   id?: string;
   children: React.ReactNode;

@@ -22,7 +22,7 @@ const ABBREV_MAP: Record<string, string> = {
 };
 
 export function colorSchemeSubtleDropshadowStyle(
-  dir: 'above' | 'below',
+  dir: `above` | `below`,
   colorScheme: EbookColorScheme,
 ): Record<string, any> {
   return {

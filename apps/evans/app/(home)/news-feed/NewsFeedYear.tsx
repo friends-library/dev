@@ -3,7 +3,7 @@ import NewsFeedItem from './NewsFeedItem';
 
 interface Props {
   year: string;
-  items: Omit<React.ComponentProps<typeof NewsFeedItem>[], 'alt'>;
+  items: Omit<React.ComponentProps<typeof NewsFeedItem>[], `alt`>;
 }
 
 const NewsFeedYear: React.FC<Props> = ({ year, items }) => (

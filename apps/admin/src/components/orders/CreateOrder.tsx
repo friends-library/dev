@@ -356,7 +356,7 @@ function makeQuantityIncrement(
   item: OrderItem,
   items: OrderItem[],
   setItems: (items: OrderItem[]) => unknown,
-  dir: '+' | '-',
+  dir: `+` | `-`,
 ): () => void {
   return () => {
     const newQty = Math.max(1, item.quantity + (dir === `+` ? 1 : -1 * 1));

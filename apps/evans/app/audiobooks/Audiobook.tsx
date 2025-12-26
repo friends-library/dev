@@ -10,7 +10,7 @@ import Button from '@/components/core/Button';
 interface Props {
   className?: string;
   htmlShortTitle: string;
-  bgColor: 'blue' | 'maroon' | 'gold' | 'green';
+  bgColor: `blue` | `maroon` | `gold` | `green`;
   editionType: EditionType;
   isbn: string;
   title: string;

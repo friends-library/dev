@@ -11,7 +11,7 @@ export default async function getSrcFsData(audio: Audio): Promise<AudioFsData> {
   const basename = audio.document.filename;
   const errors: string[] = [];
   const cachedDataDir = `${AUDIOS_PATH}/${audio.edition.path}/_cached_audio_data`;
-  const data: Omit<AudioFsData, 'm4bs' | 'mp3Zips'> = {
+  const data: Omit<AudioFsData, `m4bs` | `mp3Zips`> = {
     relPath: audio.edition.path,
     abspath: `${AUDIOS_PATH}/${audio.edition.path}`,
     derivedPath: `${derivedDir()}/${audio.edition.path}`,

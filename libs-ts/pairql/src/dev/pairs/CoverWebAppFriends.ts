@@ -8,7 +8,7 @@ export namespace CoverWebAppFriends {
     alphabeticalName: string;
     description: string;
     documents: Array<{
-      lang: 'en' | 'es';
+      lang: `en` | `es`;
       title: string;
       isCompilation: boolean;
       directoryPath: string;
@@ -17,9 +17,9 @@ export namespace CoverWebAppFriends {
         id: UUID;
         path: string;
         isDraft: boolean;
-        type: 'updated' | 'original' | 'modernized';
+        type: `updated` | `original` | `modernized`;
         pages?: [number, ...number[]];
-        size?: 's' | 'm' | 'xl';
+        size?: `s` | `m` | `xl`;
         isbn?: string;
         audioPartTitles?: string[];
       }>;

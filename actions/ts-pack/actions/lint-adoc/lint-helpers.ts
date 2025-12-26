@@ -9,7 +9,7 @@ export interface Annotation {
   start_column?: number;
   end_column?: number;
   message: string;
-  annotation_level: 'failure';
+  annotation_level: `failure`;
 }
 
 export function toAnnotation(lint: LintResult, path: string): Annotation {

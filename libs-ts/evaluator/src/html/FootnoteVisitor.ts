@@ -1,7 +1,7 @@
 import type { Visitor, AstNode } from '@friends-library/parser';
 import { wrap, chapterMarkup as c } from '../utils';
 
-const FootnoteVisitor: Visitor<Array<string[]>, { target: 'pdf' | 'ebook' }> = {
+const FootnoteVisitor: Visitor<Array<string[]>, { target: `pdf` | `ebook` }> = {
   blockInFootnote: {
     dispatch({ node, context }) {
       if (!node.isPoetryBlock()) {
@@ -72,7 +72,7 @@ export function footnoteMarker(numTotalFootnotes: number, footnoteIndex: number)
   return marker;
 }
 
-function isEbook(context: { target: 'pdf' | 'ebook' }): boolean {
+function isEbook(context: { target: `pdf` | `ebook` }): boolean {
   return context.target === `ebook`;
 }
 

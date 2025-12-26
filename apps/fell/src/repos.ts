@@ -26,7 +26,9 @@ export async function getRepos(
   );
 
   return branches
-    .map((repoBranch, idx) => (repoBranch === branch ? notExcluded[idx] ?? false : false))
+    .map((repoBranch, idx) =>
+      repoBranch === branch ? (notExcluded[idx] ?? false) : false,
+    )
     .filter(isNotFalse);
 }
 

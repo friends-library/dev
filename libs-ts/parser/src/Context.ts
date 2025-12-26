@@ -2,7 +2,7 @@ import type { Token, Context as ContextInterface } from './types';
 
 export default class Context implements ContextInterface {
   public classList: string[] = [];
-  public type?: 'quote' | 'verse' | 'epigraph' | 'discrete';
+  public type?: `quote` | `verse` | `epigraph` | `discrete`;
   public id?: string;
   public quoteAttribution?: Token[];
   public quoteSource?: Token[];

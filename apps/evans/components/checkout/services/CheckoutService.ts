@@ -145,18 +145,18 @@ export default class CheckoutService {
     return Object.values(this.metadata).reduce((sum, fee) => sum + fee);
   }
 
-  private createOrderArgs(): Parameters<InstanceType<typeof CheckoutApi>['createOrder']> {
+  private createOrderArgs(): Parameters<InstanceType<typeof CheckoutApi>[`createOrder`]> {
     const { shipping, taxes, ccFeeOffset, fees } = this.metadata;
     if (!this.cart.address) throw new Error(`Missing address in createOrderArgs()`);
     if (!this.cart.email) throw new Error(`Missing email in createOrderArgs()`);
     const items = this.cart.items
       .filter((i) => i.quantity > 0)
-      .map((item): T.CreateOrder.Input['items'][0] => ({
+      .map((item): T.CreateOrder.Input[`items`][0] => ({
         editionId: item.editionId,
         quantity: item.quantity,
         unitPrice: item.price(),
       }));
-    const order: Omit<T.CreateOrder.Input, 'items'> = {
+    const order: Omit<T.CreateOrder.Input, `items`> = {
       id: this.orderId,
       paymentId: this.paymentIntentId,
       amount: this.cart.subTotal() + this.sumFees(),

@@ -3,17 +3,17 @@ import type { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export { type EditionType };
 export type HeroIcon = typeof ArrowRightIcon;
-export type Period = 'early' | 'mid' | 'late';
+export type Period = `early` | `mid` | `late`;
 
 export type Params<T> = { params: T };
 
 export type Region =
-  | 'Eastern US'
-  | 'Western US'
-  | 'England'
-  | 'Scotland'
-  | 'Ireland'
-  | 'Other';
+  | `Eastern US`
+  | `Western US`
+  | `England`
+  | `Scotland`
+  | `Ireland`
+  | `Other`;
 
 export type NewsFeedType =
   | `book`

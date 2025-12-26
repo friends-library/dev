@@ -50,7 +50,7 @@ function isChapterSubtitleBlurb(node: AstNode): boolean {
   );
 }
 
-function classAttr(el: 'p' | 'h3', node: AstNode): string {
+function classAttr(el: `p` | `h3`, node: AstNode): string {
   let htmlAttr = u.classAttr(node) || u.classAttr(node.parent);
   if (el === `h3`) {
     return htmlAttr;

@@ -5,7 +5,7 @@ import type { HitProps } from './SearchHits';
 
 interface Props {
   title: string;
-  icon: 'fa-book' | 'fa-users' | 'fa-file-text';
+  icon: `fa-book` | `fa-users` | `fa-file-text`;
   searchResults?: { nbHits: number };
   HitComponent: React.FC<HitProps>;
 }

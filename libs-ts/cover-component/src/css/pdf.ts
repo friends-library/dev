@@ -3,7 +3,7 @@ import type { CoverProps } from '@friends-library/types';
 import { dynamifyCss, docDims, PRINT_BLEED, pdfSpineWidth } from './helpers';
 
 export default function pdf(
-  { size, pages }: Pick<CoverProps, 'size' | 'pages'>,
+  { size, pages }: Pick<CoverProps, `size` | `pages`>,
   scaler?: number,
   scope?: string,
 ): [string, string] {

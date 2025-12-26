@@ -5,7 +5,7 @@ import Dual from '@/components/core/Dual';
 import BgImage from '@/public/images/books-diagonal-2.jpg';
 
 interface Props {
-  items: React.ComponentProps<typeof NewsFeed>['items'];
+  items: React.ComponentProps<typeof NewsFeed>[`items`];
 }
 
 const NewsFeedBlock: React.FC<Props> = ({ items }) => (

@@ -110,7 +110,9 @@ export const EditFriend: React.FC<Props> = ({
             enabled={friend.published !== undefined}
             setEnabled={(enabled) =>
               replace(`published`)(
-                enabled ? initialFriend.published ?? new Date().toISOString() : undefined,
+                enabled
+                  ? (initialFriend.published ?? new Date().toISOString())
+                  : undefined,
               )
             }
           />

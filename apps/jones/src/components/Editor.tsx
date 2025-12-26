@@ -184,7 +184,7 @@ class Editor extends React.Component<Props> {
   }
 }
 
-const mapState = (state: State): Omit<StateProps, 'size'> => {
+const mapState = (state: State): Omit<StateProps, `size`> => {
   const task = requireCurrentTask(state);
   const file = task.files[task.editingFile || ``];
   return {

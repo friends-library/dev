@@ -59,7 +59,7 @@ export function wrapClasses(
     fauxVolumeNum,
   }: Pick<
     CoverProps,
-    'edition' | 'lang' | 'size' | 'scope' | 'scaler' | 'showGuides' | 'fauxVolumeNum'
+    `edition` | `lang` | `size` | `scope` | `scaler` | `showGuides` | `fauxVolumeNum`
   >,
   customClasses?: string | string[] | Record<string, boolean>,
 ): string {
@@ -107,7 +107,7 @@ export function spineAuthorDisplay(
   author: string,
   size: PrintSize,
   isCompilation: boolean,
-): 'block' | 'none' {
+): `block` | `none` {
   if (isCompilation) {
     return `none`;
   }

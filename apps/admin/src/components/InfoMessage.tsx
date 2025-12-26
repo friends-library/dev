@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 
 interface Props {
-  type: 'error' | 'success';
+  type: `error` | `success`;
   className?: string;
   children: React.ReactNode;
 }

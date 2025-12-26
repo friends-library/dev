@@ -3,7 +3,7 @@
 export namespace SubscribeToNarrowPath {
   export interface Input {
     email: string;
-    lang: 'en' | 'es';
+    lang: `en` | `es`;
     mixedQuotes: boolean;
     turnstileToken: string;
   }

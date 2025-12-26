@@ -8,14 +8,14 @@ export namespace ListOrders {
     amountInCents: number;
     addressName: string;
     printJobStatus:
-      | 'presubmit'
-      | 'pending'
-      | 'accepted'
-      | 'rejected'
-      | 'shipped'
-      | 'canceled'
-      | 'bricked';
-    source: 'website' | 'internal';
+      | `presubmit`
+      | `pending`
+      | `accepted`
+      | `rejected`
+      | `shipped`
+      | `canceled`
+      | `bricked`;
+    source: `website` | `internal`;
     createdAt: ISODateString;
   }>;
 }

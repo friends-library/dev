@@ -227,6 +227,6 @@ ace.define(
       this.$id = `ace/mode/adoc`;
     }).call(Mode.prototype);
 
-    exports.Mode = Mode; // eslint-disable-line no-param-reassign
+    exports.Mode = Mode;
   },
 );

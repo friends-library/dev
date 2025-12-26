@@ -5,7 +5,7 @@ let package = Package(
   name: "api",
   platforms: [.macOS(.v12)],
   dependencies: [
-    .github("vapor/vapor@4.119.1"),
+    .github("vapor/vapor@4.120.0"),
     .github("vapor/fluent@4.9.0"),
     .github("vapor/fluent-postgres-driver@2.8.0"),
     .github("m-barthelemy/vapor-queues-fluent-driver@1.2.0"),

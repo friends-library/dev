@@ -2,7 +2,7 @@ import type { BlockRule, LintResult } from '../types';
 
 interface Delimiter {
   line: number;
-  type: 'start' | 'end';
+  type: `start` | `end`;
   flagged: boolean;
 }
 

@@ -432,7 +432,7 @@ function dateFields(
   dateStr: string,
   formatter: Intl.DateTimeFormat,
   lang: Lang,
-): Pick<FeedItem, 'month' | 'year' | 'day' | 'createdAt'> {
+): Pick<FeedItem, `month` | `year` | `day` | `createdAt`> {
   const date = new Date(dateStr);
   let month = formatter.format(date);
   if (lang === `es`) {

@@ -25,7 +25,7 @@ interface Audiobook {
   isCompilation: boolean;
   friendName: string;
   friendSlug: string;
-  friendGender: 'male' | 'female' | 'mixed';
+  friendGender: `male` | `female` | `mixed`;
   duration: string;
   badgeText?: string;
   shortDescription: string;

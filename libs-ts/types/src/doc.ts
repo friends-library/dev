@@ -15,8 +15,8 @@ export interface DocPrecursor {
   blurb: string;
   config: { [key: string]: any };
   customCode: {
-    css: { [k in ArtifactType | 'all' | 'pdf' | 'ebook']?: string };
-    html: { [k in ArtifactType | 'all' | 'pdf' | 'ebook']?: string };
+    css: { [k in ArtifactType | `all` | `pdf` | `ebook`]?: string };
+    html: { [k in ArtifactType | `all` | `pdf` | `ebook`]?: string };
   };
   meta: {
     title: string;

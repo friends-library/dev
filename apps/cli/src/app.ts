@@ -17,7 +17,7 @@ import * as docx from './cmd/docx';
 import * as parse from './cmd/parse';
 import * as artifactProductionVersion from './cmd/artifact-production-version';
 
-/* eslint-disable no-unused-expressions */
+/* eslint-disable-next-line @typescript-eslint/no-unused-expressions */
 yargs
   .scriptName(`fl`)
   .command(make)

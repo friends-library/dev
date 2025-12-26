@@ -12,7 +12,7 @@ import { LANG } from '../env';
 interface Props {
   editionId: EditionId;
   layoutWidth: number;
-  type: 'square' | 'threeD';
+  type: `square` | `threeD`;
   style?: ViewStyle;
 }
 
@@ -56,7 +56,7 @@ const CoverImage: React.FC<Props> = ({ editionId, layoutWidth, style = {}, type 
 
 export default CoverImage;
 
-function bgStyle(type: 'square' | 'threeD', editionId: EditionId): Record<string, any> {
+function bgStyle(type: `square` | `threeD`, editionId: EditionId): Record<string, any> {
   if (type !== `square`) {
     return {};
   }

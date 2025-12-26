@@ -18,7 +18,7 @@ function getEditor(): any {
     if (editor) {
       return editor;
     }
-  } catch (e) {
+  } catch {
     // ¯\_(ツ)_/¯
   }
 
@@ -39,7 +39,7 @@ export function clearSearchResultHighlights(): void {
         session.removeMarker(marker.id);
       }
     });
-  } catch (e) {
+  } catch {
     // ¯\_(ツ)_/¯
   }
 }
@@ -77,7 +77,7 @@ export function goToSearchResult(
       // highlight selected search result
       const marker = session.addMarker(range, `search-result`, `text`);
       editor.on(`focus`, () => session.removeMarker(marker));
-    } catch (e) {
+    } catch {
       // ¯\_(ツ)_/¯
     }
   });

@@ -3,7 +3,7 @@ import type { File } from '../../type';
 import { searchFiles } from '../search';
 
 describe(`searchFiles()`, () => {
-  let files: Array<Omit<File, 'sha'>>;
+  let files: Array<Omit<File, `sha`>>;
 
   beforeEach(() => {
     const adoc = `

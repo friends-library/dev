@@ -30,7 +30,7 @@ export type Props =
   | {
       state: `error`;
       colorScheme: T.EbookColorScheme;
-      reason: 'no_internet' | 'unknown';
+      reason: `no_internet` | `unknown`;
     }
   | {
       state: `ready`;

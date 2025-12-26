@@ -14,7 +14,7 @@ import env from '@friends-library/env';
 
 type LocalFilePath = string;
 type CloudFilePath = string;
-type Acl = 'public-read' | 'private';
+type Acl = `public-read` | `private`;
 type UploadOpts = { delete?: boolean; acl?: Acl };
 
 let clientInstance: S3Client | null = null;
@@ -79,7 +79,7 @@ export async function filesize(cloudFilePath: CloudFilePath): Promise<number | n
   try {
     const { ContentLength } = await metaData(cloudFilePath);
     return ContentLength || null;
-  } catch (err) {
+  } catch {
     return null;
   }
 }
@@ -88,7 +88,7 @@ export async function md5File(cloudFilePath: CloudFilePath): Promise<string | nu
   try {
     const { ETag } = await metaData(cloudFilePath);
     return ETag ? ETag.replace(/"/g, ``) : null;
-  } catch (err) {
+  } catch {
     return null;
   }
 }

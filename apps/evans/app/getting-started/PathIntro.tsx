@@ -5,7 +5,7 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   title: string;
-  color: 'blue' | 'maroon' | 'gold' | 'green';
+  color: `blue` | `maroon` | `gold` | `green`;
   slug: string;
   children: React.ReactNode;
 }

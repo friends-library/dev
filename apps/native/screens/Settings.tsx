@@ -14,8 +14,8 @@ import { humansize } from '../lib/utils';
 import { BUILD_SEMVER_STRING, APP_NAME, MODE } from '../env';
 
 interface Props {
-  navigation: StackNavigationProp<StackParamList, 'Settings'>;
-  route: RouteProp<StackParamList, 'Settings'>;
+  navigation: StackNavigationProp<StackParamList, `Settings`>;
+  route: RouteProp<StackParamList, `Settings`>;
 }
 
 const Settings: React.FC<Props> = () => {

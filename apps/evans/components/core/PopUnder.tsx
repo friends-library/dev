@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 
 interface Props {
-  bgColor: 'flblue' | 'flprimary';
+  bgColor: `flblue` | `flprimary`;
   className?: string;
   style?: Record<string, string | number>;
   alignRight?: boolean;

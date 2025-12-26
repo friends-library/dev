@@ -180,7 +180,7 @@ class EditTask extends React.Component<Props, State> {
   }
 }
 
-const mapState = (state: AppState): Pick<Props, 'friends' | 'task'> => ({
+const mapState = (state: AppState): Pick<Props, `friends` | `task`> => ({
   friends: state.repos.map((r) => ({
     repoId: r.id,
     name: r.friendName,

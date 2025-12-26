@@ -69,7 +69,7 @@ function getFriends(): Promise<T.CoverWebAppFriends.Output> {
 function customCode(
   relPath: string,
   docsRoot: string,
-): Pick<CoverProps, 'customCss' | 'customHtml'> {
+): Pick<CoverProps, `customCss` | `customHtml`> {
   let customCss = ``;
   let customHtml = ``;
   const cssPath = `${docsRoot}/${relPath}/paperback-cover.css`;

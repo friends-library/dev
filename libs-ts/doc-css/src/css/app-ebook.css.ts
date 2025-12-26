@@ -441,8 +441,8 @@ export default css`
     font-weight: 400;
     padding: 0.85em 2em;
     text-transform: uppercase;
-    font-family: Cabin, 'HelveticaNeue-Light', 'Helvetica Neue', Helvetica, Arial,
-      sans-serif;
+    font-family:
+      Cabin, 'HelveticaNeue-Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
     border-radius: 9999px;
   }

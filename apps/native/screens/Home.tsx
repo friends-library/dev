@@ -15,8 +15,8 @@ import FullscreenLoading from '../components/FullscreenLoading';
 import { LANG } from '../env';
 
 interface Props {
-  navigation: StackNavigationProp<StackParamList, 'Home'>;
-  route: RouteProp<StackParamList, 'Home'>;
+  navigation: StackNavigationProp<StackParamList, `Home`>;
+  route: RouteProp<StackParamList, `Home`>;
 }
 
 const Home: React.FC<Props> = ({ navigation }) => {

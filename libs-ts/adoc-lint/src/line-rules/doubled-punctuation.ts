@@ -105,7 +105,7 @@ function specialCase(double: string, line: string, column: number): boolean {
     if (typeof num === `number`) {
       return true;
     }
-  } catch (e) {
+  } catch {
     // ¯\_(ツ)_/¯
   }
 

@@ -9,7 +9,7 @@ interface Props {
   small?: boolean;
   open?: boolean;
   textColor?: string;
-  lineColor?: 'flgray-400' | 'flprimary';
+  lineColor?: `flgray-400` | `flprimary`;
   inNav?: boolean;
 }
 

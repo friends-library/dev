@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-type Screen = 'sm' | 'md' | 'lg' | 'xl';
+type Screen = `sm` | `md` | `lg` | `xl`;
 
 const Heading: React.FC<{
   className?: string;

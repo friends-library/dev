@@ -5,7 +5,7 @@ import BookTeaserCards, {
 } from '@/components/core/BookTeaserCards';
 
 interface Props {
-  books: BookTeaserCardsProps['books'];
+  books: BookTeaserCardsProps[`books`];
 }
 
 const NewBooksBlock: React.FC<Props> = ({ books }) => (

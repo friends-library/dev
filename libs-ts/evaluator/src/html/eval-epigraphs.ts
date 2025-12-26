@@ -14,7 +14,7 @@ export default function evalEpigraphs(document: DocumentNode, lang: Lang): strin
   return (output[0] || []).join(`\n`);
 }
 
-const visitor: Visitor<Array<string[]>, { target: 'pdf'; lang: Lang }> = {
+const visitor: Visitor<Array<string[]>, { target: `pdf`; lang: Lang }> = {
   collection: {
     enter({ output }) {
       c.reset();

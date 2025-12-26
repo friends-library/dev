@@ -1,4 +1,3 @@
-/* eslint-disable no-template-curly-in-string */
 import 'brace/ext/language_tools';
 
 // @ts-ignore

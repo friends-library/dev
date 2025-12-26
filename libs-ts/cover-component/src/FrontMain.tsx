@@ -5,7 +5,7 @@ import { getHtmlFragments, overridable, initials, prepareTitle } from './helpers
 
 type Props = Pick<
   CoverProps,
-  'title' | 'customHtml' | 'author' | 'showGuides' | 'lang' | 'isCompilation'
+  `title` | `customHtml` | `author` | `showGuides` | `lang` | `isCompilation`
 >;
 
 const FrontMain: React.FC<Props> = ({

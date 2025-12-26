@@ -13,7 +13,7 @@ interface Config {
 export default class AstNode extends AbstractAstNode implements AstNodeInterface {
   public override children: AstNodeInterface[] = [];
   public override value = ``;
-  public override meta: AstNodeInterface['meta'] = {};
+  public override meta: AstNodeInterface[`meta`] = {};
 
   public constructor(
     private _type: NodeType,

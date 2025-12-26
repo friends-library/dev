@@ -66,7 +66,7 @@ function workItemDescription(item: WorkItem): string {
 
 export default Progress;
 
-const Status: React.FC<{ status: WorkItem['status'] }> = ({ status }) => {
+const Status: React.FC<{ status: WorkItem[`status`] }> = ({ status }) => {
   switch (status) {
     case `succeeded`:
     case `rollback succeeded`:

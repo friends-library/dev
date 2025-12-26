@@ -19,7 +19,7 @@ function client(): DevClient {
   return new DevClient(env, () => token);
 }
 
-function getEnv(): 'staging' | 'dev' | 'prod' {
+function getEnv(): `staging` | `dev` | `prod` {
   if (process.env.NETLIFY && process.env.CONTEXT !== `production`) {
     return `staging`;
   } else if (process.env.API_DEV) {
@@ -29,7 +29,7 @@ function getEnv(): 'staging' | 'dev' | 'prod' {
   }
 }
 
-function tokenKey(env: 'staging' | 'dev' | 'prod'): string {
+function tokenKey(env: `staging` | `dev` | `prod`): string {
   switch (env) {
     case `dev`:
       return `FLP_API_TOKEN_DEV`;

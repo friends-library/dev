@@ -45,7 +45,7 @@ export function initials(
 export function prepareTitle(
   title: string,
   name: string,
-  context: 'front' | 'spine',
+  context: `front` | `spine`,
 ): string {
   const isCompilation = [`Compilations`, `Compilaciones`].includes(name);
   const volumeRemovable = isCompilation || title.includes(name);

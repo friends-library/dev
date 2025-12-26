@@ -19,12 +19,12 @@ export function makePdf(props: CoverProps): void {
 }
 
 export function scalerAndScope(
-  size: CoverProps['size'],
-  pages: CoverProps['pages'],
+  size: CoverProps[`size`],
+  pages: CoverProps[`pages`],
   scale: Scale,
   mode: Mode,
   showCode: boolean,
-): Pick<CoverProps, 'scaler' | 'scope'> {
+): Pick<CoverProps, `scaler` | `scope`> {
   switch (scale) {
     case `1`:
       return {};
@@ -44,8 +44,8 @@ export function scalerAndScope(
 }
 
 function fitScaler(
-  size: CoverProps['size'],
-  pages: CoverProps['pages'],
+  size: CoverProps[`size`],
+  pages: CoverProps[`pages`],
   mode: Mode,
   showCode: boolean,
 ): number | undefined {

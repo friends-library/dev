@@ -11,7 +11,7 @@ import CoverImage from './CoverImage';
 import { Sans, Serif } from './Text';
 
 interface Props {
-  type: 'audio' | 'ebook';
+  type: `audio` | `ebook`;
   editionId: EditionId;
   onPress: () => unknown;
   title: string;
@@ -71,7 +71,7 @@ export const Continue: React.FC<Props> = ({
 );
 
 interface OwnProps {
-  type: 'audio' | 'ebook';
+  type: `audio` | `ebook`;
   editionId: EditionId;
   onPress: () => unknown;
 }

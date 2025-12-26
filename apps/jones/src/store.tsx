@@ -33,7 +33,7 @@ async function loadState(): Promise<Partial<State> | null> {
         future: [],
       },
     };
-  } catch (err) {
+  } catch {
     return null;
   }
 }
@@ -41,7 +41,7 @@ async function loadState(): Promise<Partial<State> | null> {
 const saveState = (state: State): void => {
   try {
     localForage.setItem(`jones`, state);
-  } catch (err) {
+  } catch {
     // ¯\_(ツ)_/¯
   }
 };

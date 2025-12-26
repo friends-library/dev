@@ -4,7 +4,7 @@ import documentVisitor from './DocumentVisitor';
 import PdfSrcResult from './result/PdfSrcResult';
 import EbookSrcResult from './result/EbookSrcResult';
 
-type PartialDpc = Pick<DocPrecursor, 'asciidocFiles' | 'lang'>;
+type PartialDpc = Pick<DocPrecursor, `asciidocFiles` | `lang`>;
 
 export function toEbookSrcHtml(dpc: PartialDpc): EbookSrcResult {
   return toSrcHtml(dpc, `ebook`);
@@ -14,12 +14,12 @@ export function toPdfSrcHtml(dpc: PartialDpc): PdfSrcResult {
   return toSrcHtml(dpc, `pdf`);
 }
 
-function toSrcHtml(dpc: PartialDpc, target: 'pdf'): PdfSrcResult;
-function toSrcHtml(dpc: PartialDpc, target: 'ebook'): EbookSrcResult;
+function toSrcHtml(dpc: PartialDpc, target: `pdf`): PdfSrcResult;
+function toSrcHtml(dpc: PartialDpc, target: `ebook`): EbookSrcResult;
 
 function toSrcHtml(
   dpc: PartialDpc,
-  target: 'pdf' | 'ebook',
+  target: `pdf` | `ebook`,
 ): PdfSrcResult | EbookSrcResult {
   const document = Parser.parseDocument(...dpc.asciidocFiles);
   const output: Array<string[]> = [];

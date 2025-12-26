@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { t } from '@friends-library/locale';
 
 interface Props {
-  step: 'Order' | 'Delivery' | 'Payment' | 'Confirmation';
+  step: `Order` | `Delivery` | `Payment` | `Confirmation`;
 }
 
 const Progress: React.FC<Props> = ({ step }) => (

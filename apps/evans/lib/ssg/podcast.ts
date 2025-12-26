@@ -23,7 +23,7 @@ interface Podcast {
 }
 
 export function generatePodcastFeeds(
-  document: Api.DocumentPage.Output['document'],
+  document: Api.DocumentPage.Output[`document`],
 ): void {
   const audiobook = document.primaryEdition.audiobook;
   if (!audiobook) {
@@ -131,7 +131,7 @@ export function podcastXml(podcast: Podcast): string {
 }
 
 export function subtitle(
-  podcast: Pick<Podcast, 'isCompilation' | 'title' | 'friendName' | 'reader'>,
+  podcast: Pick<Podcast, `isCompilation` | `title` | `friendName` | `reader`>,
   lang = LANG,
 ): string {
   if (lang === `es`) {
@@ -145,7 +145,7 @@ export function subtitle(
 }
 
 export function episodeDescription(
-  podcast: Pick<Podcast, 'title' | 'friendName'>,
+  podcast: Pick<Podcast, `title` | `friendName`>,
   partTitle: string,
   partNumber: number,
   numParts: number,

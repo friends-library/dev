@@ -9,10 +9,10 @@ interface Props {
   DevotionalBlurb: React.FC;
   DoctrineBlurb: React.FC;
   books: {
-    history: PathBlockProps['books'];
-    doctrine: PathBlockProps['books'];
-    spiritualLife: PathBlockProps['books'];
-    journals: PathBlockProps['books'];
+    history: PathBlockProps[`books`];
+    doctrine: PathBlockProps[`books`];
+    spiritualLife: PathBlockProps[`books`];
+    journals: PathBlockProps[`books`];
   };
 }
 

@@ -13,7 +13,7 @@ import invariant from '@/lib/invariant';
 import Dual from '@/components/core/Dual';
 import Button from '@/components/core/Button';
 
-type Props = Omit<CoverProps, 'pages' | 'blurb'> & {
+type Props = Omit<CoverProps, `pages` | `blurb`> & {
   htmlShortTitle: string;
   tags: string[];
   numDownloads: number;

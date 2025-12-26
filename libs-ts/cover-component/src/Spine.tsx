@@ -7,16 +7,16 @@ import { pdfSpineWidth, spineAuthorDisplay } from './css/helpers';
 
 type Props = Pick<
   CoverProps,
-  | 'lang'
-  | 'isCompilation'
-  | 'edition'
-  | 'title'
-  | 'pages'
-  | 'customHtml'
-  | 'author'
-  | 'showGuides'
-  | 'size'
-  | 'scaler'
+  | `lang`
+  | `isCompilation`
+  | `edition`
+  | `title`
+  | `pages`
+  | `customHtml`
+  | `author`
+  | `showGuides`
+  | `size`
+  | `scaler`
 > & { styles?: { [k in string]: string | number } };
 
 const Spine: React.FC<Props> = ({

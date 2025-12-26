@@ -13,8 +13,8 @@ import { logDebug } from '../../sub-log';
 
 type SinglePages = { [K in PrintSizeVariant]: number };
 type SingleFiles = { [K in PrintSizeVariant]: string };
-type MultiPages = Omit<{ [K in PrintSizeVariant]: number[] }, 's'> | undefined;
-type MultiFiles = Omit<{ [K in PrintSizeVariant]: string[] }, 's'> | undefined;
+type MultiPages = Omit<{ [K in PrintSizeVariant]: number[] }, `s`> | undefined;
+type MultiFiles = Omit<{ [K in PrintSizeVariant]: string[] }, `s`> | undefined;
 
 export async function publish(
   dpc: FsDocPrecursor,
@@ -41,7 +41,7 @@ export async function publish(
   if (!dpc.printSize) {
     try {
       [size, condense] = choosePrintSize(singlePages, splitPages);
-    } catch (error) {
+    } catch {
       throw new Error(`${dpc.path} exceeds max allowable size, must be split`);
     }
   }
@@ -181,7 +181,7 @@ function canSkipLargerSizes(
   try {
     const [size, condense] = choosePrintSize(pages, undefined);
     return size === variant && condense === false;
-  } catch (err) {
+  } catch {
     return false;
   }
 }

@@ -27,7 +27,7 @@ export async function handler({ exec }: { exec: boolean }): Promise<void> {
   }
 
   green(`watching for jobs at ${path}`);
-  // eslint-disable-next-line no-constant-condition
+
   while (true) {
     if (fs.existsSync(path)) {
       magenta(`Received job, initiating...`);
