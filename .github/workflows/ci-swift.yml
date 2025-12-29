@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-libs:
-    runs-on: namespace-profile-default
+    runs-on: ubuntu-latest
     container: ghcr.io/gertrude-app/api-ci-build:6.2.1
     steps:
       - name: checkout
@@ -28,7 +28,7 @@ jobs:
         run: cd libs-swift/x-stripe && swift build
 
   test-libs:
-    runs-on: namespace-profile-default
+    runs-on: ubuntu-latest
     container: ghcr.io/gertrude-app/api-ci-build:6.2.1
     steps:
       - name: checkout
@@ -43,7 +43,7 @@ jobs:
         run: cd libs-swift/x-slack && swift test
 
   build-api:
-    runs-on: namespace-profile-default
+    runs-on: ubuntu-latest
     container: ghcr.io/gertrude-app/api-ci-build:6.2.1
     steps:
       - name: checkout
@@ -111,7 +111,7 @@ jobs:
             https://slack.com/api/chat.postMessage
 
   test-api:
-    runs-on: namespace-profile-default
+    runs-on: ubuntu-latest
     container: ghcr.io/gertrude-app/api-ci-build:6.2.1
     env:
       DATABASE_HOST: postgres
