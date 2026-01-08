@@ -10,11 +10,11 @@ magenta(`\nStarting db sync process\n`);
 exec.exit(`rm -f ./sync.sql.gz ./sync.sql`);
 gray(`  • Dumping remote database...`);
 // -Z 9 enables maximum compression for pg_dump
-exec.exit(`ssh fql "pg_dump flp --file sync.sql.gz -Z 9"`);
+exec.exit(`ssh fapi "pg_dump flp --file sync.sql.gz -Z 9"`);
 gray(`  • Downloading gzipped dump...`);
-exec.exit(`scp fql:~/sync.sql.gz .`);
+exec.exit(`scp fapi:~/sync.sql.gz .`);
 gray(`  • Deleting remote dump file...`);
-exec.exit(`ssh fql "rm sync.sql.gz"`);
+exec.exit(`ssh fapi "rm sync.sql.gz"`);
 gray(`  • Unzipping local dump file...`);
 exec.exit(`gunzip ./sync.sql.gz`);
 gray(`  • Killing any running instances of Postico...`);
