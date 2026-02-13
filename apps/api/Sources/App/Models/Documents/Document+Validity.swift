@@ -35,11 +35,6 @@ extension Document {
       return false
     }
 
-    if published?.isValidEarlyQuakerYear == false {
-      logInvalid("Published date is not a valid early Quaker year")
-      return false
-    }
-
     if let originalTitle {
       if !originalTitle.firstLetterIsUppercase {
         logInvalid("Original title does not start with uppercase letter")
@@ -57,7 +52,18 @@ extension Document {
       return false
     }
 
-    guard let joined = try? await joined() else { return true }
+    guard let joined = try? await joined() else {
+      if published?.isValidEarlyQuakerYear == false {
+        logInvalid("Published date is not a valid early Quaker year")
+        return false
+      }
+      return true
+    }
+
+    if !joined.friend.outOfBand, published?.isValidEarlyQuakerYear == false {
+      logInvalid("Published date is not a valid early Quaker year")
+      return false
+    }
 
     if joined.hasNonDraftEdition {
       if description.count < 5 || partialDescription.count < 5 {

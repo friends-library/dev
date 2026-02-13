@@ -20,7 +20,7 @@ extension PublishedFriendSlugs: Resolver {
         if let gender = input.gender, friend.gender != gender {
           return false
         }
-        return friend.lang == input.lang && friend.hasNonDraftDocument
+        return friend.lang == input.lang && friend.hasNonDraftNonOobDocument
       }
       .map(\.slug)
   }

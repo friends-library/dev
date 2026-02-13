@@ -10,6 +10,7 @@ struct Friend: Codable, Sendable, Equatable {
   var born: Int?
   var died: Int?
   var published: Date?
+  var outOfBand: Bool
   var createdAt = Current.date()
   var updatedAt = Current.date()
   var deletedAt: Date?
@@ -38,6 +39,7 @@ struct Friend: Codable, Sendable, Equatable {
     born: Int?,
     died: Int?,
     published: Date?,
+    outOfBand: Bool = false,
   ) {
     self.id = id
     self.lang = lang
@@ -48,6 +50,7 @@ struct Friend: Codable, Sendable, Equatable {
     self.born = born
     self.died = died
     self.published = published
+    self.outOfBand = outOfBand
   }
 }
 
@@ -82,6 +85,10 @@ extension Friend.DirectoryPathData: DirectoryPathable {
 extension Friend.Joined {
   var hasNonDraftDocument: Bool {
     documents.first { $0.hasNonDraftEdition } != nil
+  }
+
+  var hasNonDraftNonOobDocument: Bool {
+    !model.outOfBand && self.hasNonDraftDocument
   }
 
   var directoryPathData: Friend.DirectoryPathData {

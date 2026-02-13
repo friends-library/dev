@@ -16,6 +16,10 @@ extension Friend {
       return false
     }
 
+    if outOfBand {
+      return true
+    }
+
     if description.count < 50, published != nil {
       return false
     }

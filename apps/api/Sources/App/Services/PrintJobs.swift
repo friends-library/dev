@@ -16,10 +16,10 @@ enum PrintJobs {
       return impression.paperbackVolumes.enumerated().map { index, pages in
         let titleSuffix = impression.paperbackVolumes.count > 1 ? ", vol. \(index + 1)" : ""
         var cover = impression.files.paperback.cover[index].sourceUrl.absoluteString
-        if impression.edition.document.friend.name == "Gerhard Tersteegen" {
-          let lang = impression.edition.document.friend.lang
+        if impression.edition.document.friend.outOfBand {
+          let dirPath = impression.edition.document.friend.directoryPath
           cover =
-            "https://flp-assets.nyc3.digitaloceanspaces.com/\(lang)/gerhard-tersteegen/custom-cover.pdf"
+            "https://flp-assets.nyc3.digitaloceanspaces.com/\(dirPath)/custom-cover.pdf"
         }
         return Lulu.Api.CreatePrintJobBody.LineItem(
           title: edition.document.title + titleSuffix,

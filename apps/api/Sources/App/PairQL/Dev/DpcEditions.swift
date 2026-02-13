@@ -24,6 +24,7 @@ struct DpcEditions: Pair {
 
     struct FriendOutput: PairNestable {
       let isCompilations: Bool
+      let outOfBand: Bool
       let name: String
       let alphabeticalName: String
       let slug: String
@@ -56,6 +57,7 @@ extension DpcEditions: NoInputResolver {
         ),
         friend: .init(
           isCompilations: friend.isCompilations,
+          outOfBand: friend.outOfBand,
           name: friend.name,
           alphabeticalName: friend.alphabeticalName,
           slug: friend.slug,

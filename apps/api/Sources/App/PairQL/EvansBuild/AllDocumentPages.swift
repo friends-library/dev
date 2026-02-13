@@ -11,7 +11,7 @@ extension AllDocumentPages: Resolver {
   static func resolve(with lang: Lang, in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
     let documents = try await Document.Joined.all()
-      .filter { $0.friend.lang == lang && $0.hasNonDraftEdition }
+      .filter { $0.friend.lang == lang && $0.hasNonDraftEdition && !$0.friend.outOfBand }
 
     let downloads = try await Current.db.customQuery(
       AllDocumentDownloads.self,

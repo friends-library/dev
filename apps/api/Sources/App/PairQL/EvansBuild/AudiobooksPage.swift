@@ -36,6 +36,7 @@ extension AudiobooksPage: Resolver {
       let friend = document.friend
       let parts = audiobook.parts
       guard friend.lang == input,
+            !friend.outOfBand,
             !edition.isDraft,
             !parts.isEmpty,
             edition.impression != nil else {

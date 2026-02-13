@@ -29,6 +29,8 @@ extension Friend: Model {
       .int(died)
     case .published:
       .date(published)
+    case .outOfBand:
+      .bool(outOfBand)
     case .createdAt:
       .date(createdAt)
     case .updatedAt:
@@ -52,6 +54,7 @@ extension Friend {
     case born
     case died
     case published
+    case outOfBand
     case createdAt
     case updatedAt
     case deletedAt
@@ -70,6 +73,7 @@ extension Friend {
       .born: .int(born),
       .died: .int(died),
       .published: .date(published),
+      .outOfBand: .bool(outOfBand),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
     ]

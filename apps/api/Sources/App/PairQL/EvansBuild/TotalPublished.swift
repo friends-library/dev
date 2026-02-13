@@ -25,21 +25,25 @@ extension TotalPublished: NoInputResolver {
     return .init(
       books: .init(
         en: allDocuments
-          .filter(\.hasNonDraftEdition)
+          .filter { $0.hasNonDraftEdition && !$0.friend.outOfBand }
           .count(where: { $0.friend.lang == .en }),
 
         es: allDocuments
-          .filter(\.hasNonDraftEdition)
+          .filter { $0.hasNonDraftEdition && !$0.friend.outOfBand }
           .count(where: { $0.friend.lang == .es }),
 
       ),
       audiobooks: .init(
         en: allAudios
-          .filter { $0.edition.document.friend.lang == .en }
+          .filter {
+            $0.edition.document.friend.lang == .en && !$0.edition.document.friend.outOfBand
+          }
           .count(where: { $0.edition.isDraft == false }),
 
         es: allAudios
-          .filter { $0.edition.document.friend.lang == .es }
+          .filter {
+            $0.edition.document.friend.lang == .es && !$0.edition.document.friend.outOfBand
+          }
           .count(where: { $0.edition.isDraft == false }),
 
       ),

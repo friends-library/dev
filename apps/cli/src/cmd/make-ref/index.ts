@@ -49,6 +49,7 @@ function dpcFromPath(doc: string, isolate?: number): DocPrecursor {
     asciidocFiles: [],
     documentSlug: `ref-doc`,
     isCompilation: false,
+    outOfBand: false,
     friendSlug: `thomas-kite`,
     friendInitials: [`T`, `S`],
     editionId: `9986cb73-f240-4651-8c0c-636566f8c169`,

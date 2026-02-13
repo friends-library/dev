@@ -21,7 +21,7 @@ extension PublishedDocumentSlugs: Resolver {
     let allFriends = try await Friend.Joined.all()
       .filter { $0.lang == input }
 
-    return allFriends.filter(\.hasNonDraftDocument).map { friend in
+    return allFriends.filter(\.hasNonDraftNonOobDocument).map { friend in
       friend.documents.filter(\.hasNonDraftEdition).map { document in
         Slugs(friendSlug: friend.slug, documentSlug: document.slug)
       }
