@@ -28,7 +28,7 @@ extension Isbn: Model {
 extension Isbn {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case code
     case editionId

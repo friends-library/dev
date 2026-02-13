@@ -30,8 +30,8 @@ extension AllDocumentPages: Resolver {
 }
 
 struct AllDocumentDownloads: CustomQueryable {
-  static func query(numBindings: Int) -> String {
-    """
+  static func query(bindings: [Postgres.Data]) -> SQL.Statement {
+    var stmt = SQL.Statement("""
     SELECT
       \(Document.tableName).\(Document.columnName(.slug)) AS document_slug,
       \(Friend.tableName).\(Friend.columnName(.slug)) AS friend_slug,
@@ -44,12 +44,22 @@ struct AllDocumentDownloads: CustomQueryable {
     JOIN \(Friend.tableName)
       ON \(Document.tableName).\(Document.columnName(.friendId)) = \(Friend.tableName).id
     WHERE
-      \(Friend.tableName).\(Friend.columnName(.lang)) = $1
-      AND ($2::UUID IS NULL OR \(Friend.tableName).id = $2::UUID)
+      \(Friend.tableName).\(Friend.columnName(.lang)) =
+    """)
+    stmt.components.append(.binding(bindings[0]))
+    stmt.components.append(.sql("\n    AND ("))
+    stmt.components.append(.binding(bindings[1]))
+    stmt.components.append(.sql("""
+    ::UUID IS NULL OR \(Friend.tableName).id =
+    """))
+    stmt.components.append(.binding(bindings[1]))
+    stmt.components.append(.sql("""
+    ::UUID)
     GROUP BY
       \(Document.tableName).\(Document.columnName(.slug)),
       \(Friend.tableName).\(Friend.columnName(.slug))
-    """
+    """))
+    return stmt
   }
 
   var friendSlug: String

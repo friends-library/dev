@@ -31,7 +31,7 @@ extension NPSentQuote: Model {
 extension NPSentQuote {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case createdAt
     case quoteId

@@ -1,4 +1,5 @@
 import DuetSQL
+import Foundation
 import Tagged
 
 struct Thing: Codable {
@@ -74,7 +75,7 @@ extension Thing {
 
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case string
     case version

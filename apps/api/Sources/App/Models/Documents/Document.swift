@@ -1,6 +1,6 @@
 import DuetSQL
 
-struct Document: Codable, Sendable {
+struct Document: Codable, Sendable, Equatable {
   var id: Id
   var friendId: Friend.Id
   var altLanguageId: Id?

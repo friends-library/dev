@@ -1,6 +1,6 @@
 import Foundation
 
-struct NPQuote: Codable, Sendable {
+struct NPQuote: Codable, Sendable, Equatable {
   var id: Id
   var lang: Lang
   var isFriend: Bool

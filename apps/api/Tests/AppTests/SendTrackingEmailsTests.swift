@@ -15,7 +15,7 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
   }
 
   func testCheckSendTrackingEmailsHappyPath() async throws {
-    try await Current.db.deleteAll(Order.self)
+    try await Current.db.delete(all: Order.self)
     try await Current.db.create(self.order)
 
     Current.luluClient.listPrintJobs = { ids in
@@ -38,7 +38,7 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
   }
 
   func testOrderCanceledUpdatesOrderAndSlacks() async throws {
-    _ = try await Current.db.query(Order.self).delete()
+    _ = try await Current.db.query(Order.self).delete(in: Current.db)
     try await Current.db.create(self.order)
 
     Current.luluClient.listPrintJobs = { _ in

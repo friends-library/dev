@@ -28,7 +28,7 @@ enum PostmarkWebhookRoute: RouteHandler {
     let subscriber = try? await Current.db.query(NPSubscriber.self)
       .where(.email == event.Recipient)
       .where(.lang == lang)
-      .first()
+      .first(in: Current.db)
 
     guard var subscriber else {
       await slackError("Postmark webhook event for unknown subscriber: `\(event)`")

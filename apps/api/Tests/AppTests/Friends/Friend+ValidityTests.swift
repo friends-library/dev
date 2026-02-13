@@ -67,7 +67,7 @@ final class FriendValidityTests: AppTestCase, @unchecked Sendable {
     let entities = await Entities.create {
       $0.friendQuote.order = 1
     }
-    try await FriendQuote.create(.init(
+    try await Current.db.create(FriendQuote(
       friendId: entities.friend.id,
       source: "",
       text: "",

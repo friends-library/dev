@@ -93,7 +93,7 @@ extension EvansBuildRoute: RouteResponder {
   static func respond(to route: Self, in context: Context) async throws -> Response {
     switch route {
     case .authed(let token, let authedRoute):
-      let token = try await Token.query().where(.value == token).first()
+      let token = try await Token.query().where(.value == token).first(in: Current.db)
       let authed = try await AuthedContext(requestId: context.requestId, scopes: token.scopes())
       switch authedRoute {
       case .allDocumentPages(let lang):

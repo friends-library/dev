@@ -77,47 +77,47 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     }
 
     // setup database
-    try await NPSentQuote.query().delete()
-    try await NPSubscriber.query().delete()
-    let quoteEn = try await NPQuote(
+    try await Current.db.delete(all: NPSentQuote.self)
+    try await Current.db.delete(all: NPSubscriber.self)
+    let quoteEn = try await Current.db.create(NPQuote(
       lang: .en,
       quote: "q1",
       isFriend: true,
       authorName: "George Fox",
       friendId: nil,
       documentId: nil,
-    ).create()
-    let quoteEs = try await NPQuote(
+    ))
+    let quoteEs = try await Current.db.create(NPQuote(
       lang: .es,
       quote: "q2",
       isFriend: true,
       authorName: "Jorge Zorro",
       friendId: nil,
       documentId: nil,
-    ).create()
-    let quoteEs2 = try await NPQuote(
+    ))
+    let quoteEs2 = try await Current.db.create(NPQuote(
       lang: .es,
       quote: "q3",
       isFriend: true,
       authorName: "Jorge Zorro",
       friendId: nil,
       documentId: nil,
-    ).create()
+    ))
     try await Current.db.create([self.enFriendsSub, self.esFriendsSub])
 
     // both spanish quotes have been sent, which exercizes the .reset path
     // these will be deleted, we should end up with one sent spanish quote
-    try await NPSentQuote.create([
-      .init(id: 7, quoteId: quoteEs.id),
-      .init(id: 8, quoteId: quoteEs2.id),
+    try await Current.db.create([
+      NPSentQuote(id: 7, quoteId: quoteEs.id),
+      NPSentQuote(id: 8, quoteId: quoteEs2.id),
     ])
 
     // act
     try await SendNarrowPath().exec()
 
     // this proves the spanish sent quotes were reset
-    await expect(try? NPSentQuote.find(7)).toBeNil()
-    await expect(try? NPSentQuote.find(8)).toBeNil()
+    await expect(try? Current.db.find(NPSentQuote.Id(7))).toBeNil()
+    await expect(try? Current.db.find(NPSentQuote.Id(8))).toBeNil()
 
     // correct emails were sent
     await expect(sentEmails.value).toEqual([
@@ -162,7 +162,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     ])
 
     // and we recorded the sent quotes
-    let sentQuotes = try await NPSentQuote.query().all()
+    let sentQuotes = try await NPSentQuote.query().all(in: Current.db)
     expect(Set(sentQuotes.map(\.quoteId))).toEqual(Set([quoteEn.id, quoteEs2.id]))
   }
 

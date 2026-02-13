@@ -16,8 +16,8 @@ final class OrderEmailsTests: AppTestCase, @unchecked Sendable {
     item.quantity = 1
     item.orderId = order.id
     item.editionId = entities.edition.id
-    try! await order.create()
-    try! await item.create()
+    try! await Current.db.create(order)
+    try! await Current.db.create(item)
     return (order, entities.document.title)
   }
 

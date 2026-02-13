@@ -1,6 +1,6 @@
 import Duet
 
-struct FriendQuote: Codable, Sendable {
+struct FriendQuote: Codable, Sendable, Equatable {
   var id: Id
   var friendId: Friend.Id
   var source: String

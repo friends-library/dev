@@ -20,7 +20,7 @@ extension DeleteEntities: Resolver {
     case .editionChapters(let editionId):
       try await Current.db.query(EditionChapter.self)
         .where(.editionId == editionId)
-        .delete()
+        .delete(in: Current.db)
     }
     return .success
   }

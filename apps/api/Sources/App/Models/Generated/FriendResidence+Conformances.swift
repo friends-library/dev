@@ -30,7 +30,7 @@ extension FriendResidence: Model {
 extension FriendResidence {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case friendId
     case city

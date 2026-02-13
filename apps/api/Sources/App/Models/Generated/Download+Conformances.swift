@@ -58,7 +58,7 @@ extension Download: Model {
 extension Download {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case editionId
     case format

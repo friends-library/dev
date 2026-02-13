@@ -1,7 +1,7 @@
 import DuetSQL
 import Tagged
 
-struct Token: Codable, Sendable {
+struct Token: Codable, Sendable, Equatable {
   var id: Id
   var value: Value
   var description: String
@@ -29,6 +29,6 @@ extension Token {
   func scopes() async throws -> [TokenScope] {
     try await TokenScope.query()
       .where(.tokenId == self.id)
-      .all()
+      .all(in: Current.db)
   }
 }

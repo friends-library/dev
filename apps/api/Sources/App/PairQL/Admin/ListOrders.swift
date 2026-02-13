@@ -20,7 +20,7 @@ struct ListOrders: Pair {
 extension ListOrders: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
-    let orders = try await Order.query().all()
+    let orders = try await Order.query().all(in: Current.db)
     return orders.map { order in
       .init(
         id: order.id,

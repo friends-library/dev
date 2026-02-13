@@ -8,7 +8,7 @@ struct BackfillLocationData: AsyncMigration {
 
     let downloads = try await Current.db.query(Download.self)
       .where(.not(.isNull(.ip)))
-      .all()
+      .all(in: Current.db)
 
     let data = backfillLocationData(downloads)
     let numFillable = data.updates.reduce(into: 0) { acc, update in

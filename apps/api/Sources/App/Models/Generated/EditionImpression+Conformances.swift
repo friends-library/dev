@@ -34,7 +34,7 @@ extension EditionImpression: Model {
 extension EditionImpression {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case editionId
     case adocLength

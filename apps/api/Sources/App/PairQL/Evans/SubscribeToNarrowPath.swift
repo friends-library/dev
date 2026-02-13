@@ -23,19 +23,19 @@ extension SubscribeToNarrowPath: Resolver {
     let existing = try? await NPSubscriber.query()
       .where(.email == input.email.rawValue.lowercased())
       .where(.lang == input.lang)
-      .first()
+      .first(in: Current.db)
     if existing != nil {
       await slackError("NP subscribe duplicate email error: `\(input.email)`")
       throw Abort(.badRequest, reason: "Email already subscribed")
     }
 
     let token = Current.uuid()
-    try await NPSubscriber(
+    try await Current.db.create(NPSubscriber(
       token: token,
       mixedQuotes: input.mixedQuotes,
       email: input.email.rawValue.lowercased(),
       lang: input.lang,
-    ).create()
+    ))
 
     Task {
       await slackInfo(

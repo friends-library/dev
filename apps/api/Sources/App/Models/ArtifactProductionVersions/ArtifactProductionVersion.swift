@@ -1,6 +1,6 @@
 import Foundation
 
-struct ArtifactProductionVersion: Codable, Sendable {
+struct ArtifactProductionVersion: Codable, Sendable, Equatable {
   var id: Id
   var version: GitCommitSha
   var createdAt = Current.date()

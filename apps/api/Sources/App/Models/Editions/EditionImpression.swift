@@ -2,7 +2,7 @@ import DuetSQL
 import NonEmpty
 import TaggedMoney
 
-struct EditionImpression: Codable, Sendable {
+struct EditionImpression: Codable, Sendable, Equatable {
   var id: Id
   var editionId: Edition.Id
   var adocLength: Int

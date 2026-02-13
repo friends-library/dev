@@ -1,7 +1,7 @@
 import DuetSQL
 import NonEmpty
 
-struct Edition: Codable, Sendable {
+struct Edition: Codable, Sendable, Equatable {
   var id: Id
   var documentId: Document.Id
   var type: EditionType

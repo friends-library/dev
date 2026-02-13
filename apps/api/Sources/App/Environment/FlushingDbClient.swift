@@ -1,10 +1,26 @@
 import DuetSQL
-import FluentSQL
+import PostgresKit
 
 struct FlushingDbClient: DuetSQL.Client {
   var origin: DuetSQL.Client
 
-  func update<M>(_ model: M) async throws -> M where M: DuetSQL.Model {
+  func execute(raw: SQLQueryString) async throws -> [SQLRow] {
+    try await self.origin.execute(raw: raw)
+  }
+
+  func execute(statement: SQL.Statement) async throws -> [SQLRow] {
+    try await self.origin.execute(statement: statement)
+  }
+
+  func execute<M: DuetSQL.Model>(
+    statement: SQL.Statement,
+    returning: M.Type,
+  ) async throws -> [M] {
+    try await self.origin.execute(statement: statement, returning: M.self)
+  }
+
+  @discardableResult
+  func update<M: DuetSQL.Model>(_ model: M) async throws -> M {
     let updated = try await origin.update(model)
     if M.isPreloaded {
       await self.flush()
@@ -12,41 +28,17 @@ struct FlushingDbClient: DuetSQL.Client {
     return updated
   }
 
-  func customQuery<T>(
-    _ Custom: T.Type,
-    withBindings: [DuetSQL.Postgres.Data]?,
-  ) async throws -> [T]
-    where T: DuetSQL.CustomQueryable {
-    try await self.origin.customQuery(Custom, withBindings: withBindings)
+  @discardableResult
+  func create<M: DuetSQL.Model>(_ model: M) async throws -> M {
+    let created = try await origin.create(model)
+    if M.isPreloaded {
+      await self.flush()
+    }
+    return created
   }
 
-  func select<M>(
-    _ Model: M.Type,
-    where constraint: DuetSQL.SQL.WhereConstraint<M>,
-    orderBy order: DuetSQL.SQL.Order<M>?,
-    limit: Int?,
-    offset: Int?,
-    withSoftDeleted: Bool,
-  ) async throws -> [M] where M: DuetSQL.Model {
-    try await self.origin.select(
-      Model,
-      where: constraint,
-      orderBy: order,
-      limit: limit,
-      offset: offset,
-      withSoftDeleted: withSoftDeleted,
-    )
-  }
-
-  func count<M>(
-    _: M.Type,
-    where constraint: DuetSQL.SQL.WhereConstraint<M>,
-    withSoftDeleted: Bool,
-  ) async throws -> Int where M: DuetSQL.Model {
-    try await self.origin.count(M.self, where: constraint, withSoftDeleted: withSoftDeleted)
-  }
-
-  func create<M>(_ models: [M]) async throws -> [M] where M: DuetSQL.Model {
+  @discardableResult
+  func create<M: DuetSQL.Model>(_ models: [M]) async throws -> [M] {
     let created = try await origin.create(models)
     if M.isPreloaded {
       await self.flush()
@@ -57,14 +49,14 @@ struct FlushingDbClient: DuetSQL.Client {
   @discardableResult
   func delete<M: DuetSQL.Model>(
     _ Model: M.Type,
-    where constraints: SQL.WhereConstraint<M>,
+    where constraint: SQL.WhereConstraint<M>,
     orderBy order: SQL.Order<M>?,
     limit: Int?,
     offset: Int?,
-  ) async throws -> [M] {
-    let deleted = try await origin.delete(
+  ) async throws -> Int {
+    let count = try await origin.delete(
       Model,
-      where: constraints,
+      where: constraint,
       orderBy: order,
       limit: limit,
       offset: offset,
@@ -72,19 +64,20 @@ struct FlushingDbClient: DuetSQL.Client {
     if M.isPreloaded {
       await self.flush()
     }
-    return deleted
+    return count
   }
 
-  func forceDelete<M>(
+  @discardableResult
+  func forceDelete<M: DuetSQL.Model>(
     _ Model: M.Type,
-    where constraints: DuetSQL.SQL.WhereConstraint<M>,
-    orderBy order: DuetSQL.SQL.Order<M>?,
+    where constraint: SQL.WhereConstraint<M>,
+    orderBy order: SQL.Order<M>?,
     limit: Int?,
     offset: Int?,
-  ) async throws -> [M] where M: DuetSQL.Model {
-    let deleted = try await origin.forceDelete(
+  ) async throws -> Int {
+    let count = try await origin.forceDelete(
       Model,
-      where: constraints,
+      where: constraint,
       orderBy: order,
       limit: limit,
       offset: offset,
@@ -92,7 +85,7 @@ struct FlushingDbClient: DuetSQL.Client {
     if M.isPreloaded {
       await self.flush()
     }
-    return deleted
+    return count
   }
 
   private func flush() async {
@@ -103,6 +96,6 @@ struct FlushingDbClient: DuetSQL.Client {
 
 extension FlushingDbClient {
   init(_ sql: SQLDatabase) {
-    self.origin = LiveClient(sql: sql)
+    self.origin = SQLDatabaseClient(db: sql)
   }
 }

@@ -38,7 +38,7 @@ extension EditionChapter: Model {
 extension EditionChapter {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case editionId
     case order

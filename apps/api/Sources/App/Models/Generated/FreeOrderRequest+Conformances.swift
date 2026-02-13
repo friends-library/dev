@@ -46,7 +46,7 @@ extension FreeOrderRequest: Model {
 extension FreeOrderRequest {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case name
     case email

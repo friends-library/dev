@@ -1,6 +1,6 @@
 import Foundation
 
-struct FreeOrderRequest: Codable, Sendable {
+struct FreeOrderRequest: Codable, Sendable, Equatable {
   var id: Id
   var name: String
   var email: EmailAddress

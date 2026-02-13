@@ -26,7 +26,7 @@ extension InitOrder: Resolver {
       )
       let tokenDesc = "single-use create order token for order `\(orderId.lowercased)`"
       async let token = Current.db.create(Token(description: tokenDesc, uses: 1))
-      try await TokenScope(tokenId: token.id, scope: .mutateOrders).create()
+      try await Current.db.create(TokenScope(tokenId: token.id, scope: .mutateOrders))
       return try await .init(
         orderId: orderId,
         orderPaymentId: .init(rawValue: pi.id),

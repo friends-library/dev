@@ -56,7 +56,7 @@ final class AudioValidityTests: AppTestCase, @unchecked Sendable {
     var part2 = AudioPart.valid
     part2.audioId = audio.id
     part2.order = 3 // <-- unexpected non-sequential order!!!
-    try await part2.create()
+    try await Current.db.create(part2)
     await expect(audio.model.isValid()).toBeFalse()
   }
 }

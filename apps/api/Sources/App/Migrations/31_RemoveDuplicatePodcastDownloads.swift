@@ -12,7 +12,7 @@ struct RemoveDuplicatePodcastDownloads: AsyncMigration {
     let downloads = try await Current.db.query(Download.self)
       .where(.format == .enum(Download.Format.podcast))
       .where(.not(.isNull(.ip)))
-      .all()
+      .all(in: Current.db)
 
     let duplicates = findDuplicatePodcastDownloads(downloads)
 
@@ -28,7 +28,7 @@ struct RemoveDuplicatePodcastDownloads: AsyncMigration {
       Current.logger.info("  -> deleting chunk of size: \($0.count)")
       try await Current.db.query(Download.self)
         .where(.id |=| $0.map(\.id))
-        .delete()
+        .delete(in: Current.db)
     }
 
     Current.logger.info("  -> completed deletion")

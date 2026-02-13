@@ -1,6 +1,6 @@
 import Foundation
 
-struct NPSubscriber: Codable, Sendable {
+struct NPSubscriber: Codable, Sendable, Equatable {
   var id: Id
   var email: String
   var lang: Lang

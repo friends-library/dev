@@ -11,13 +11,13 @@ enum ConfirmEmailRoute: RouteHandler {
           var subscriber = try? await NPSubscriber
           .query()
           .where(.pendingConfirmationToken == token)
-          .first() else {
+          .first(in: Current.db) else {
       return .npRedirect(.confirmEmailFailure, lang)
     }
 
     do {
       subscriber.pendingConfirmationToken = nil
-      try await subscriber.save()
+      try await Current.db.update(subscriber)
     } catch {
       return .npRedirect(.confirmEmailFailure, lang)
     }
@@ -29,7 +29,7 @@ enum ConfirmEmailRoute: RouteHandler {
       let quote = try await NPQuote.query()
         .where(.lang == subscriber.lang)
         .where(.isFriend == true)
-        .first()
+        .first(in: Current.db)
 
       let email = try await quote.email()
       let template = email.template(to: subscriber.email)
@@ -52,7 +52,7 @@ enum NPResubscribeRoute: RouteHandler {
       return Response(status: .badRequest)
     }
 
-    guard var subscriber = try? await NPSubscriber.find(NPSubscriber.Id(uuid)) else {
+    guard var subscriber = try? await Current.db.find(NPSubscriber.Id(uuid)) else {
       return Response(status: .notFound)
     }
 

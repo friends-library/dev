@@ -19,7 +19,7 @@ struct UpdateAudioPart: Pair {
 extension UpdateAudioPart: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
-    var audioPart = try await AudioPart.find(input.id)
+    var audioPart: AudioPart = try await Current.db.find(input.id)
     audioPart.audioId = input.audioId
     audioPart.title = input.title
     audioPart.duration = .init(input.duration)
@@ -28,7 +28,7 @@ extension UpdateAudioPart: Resolver {
     audioPart.mp3SizeHq = .init(input.mp3SizeHq)
     audioPart.mp3SizeLq = .init(input.mp3SizeLq)
     guard await audioPart.isValid() else { throw ModelError.invalidEntity }
-    try await audioPart.save()
+    try await Current.db.update(audioPart)
     return .success
   }
 }

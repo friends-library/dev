@@ -44,7 +44,7 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testEnglishSubscribingHappyPath() async throws {
     var quote = NPQuote.mock
     quote.lang = .en
-    try await quote.create()
+    try await Current.db.create(quote)
 
     let token = UUID()
     Current.uuid = { token }
@@ -74,14 +74,14 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
 
     let subscriber = try await NPSubscriber.query()
       .where(.email == email)
-      .first()
+      .first(in: Current.db)
 
     expect(subscriber.email).toEqual(email)
-    expect(subscriber.lang).toEqual(.en)
+    expect(subscriber.lang).toEqual(Lang.en)
     expect(subscriber.pendingConfirmationToken).toEqual(token)
 
     try await app.test(.GET, "confirm-email/en/\(token.lowercased)") { res in
-      let retrieved = try await NPSubscriber.find(subscriber.id)
+      let retrieved = try await Current.db.find(subscriber.id)
       expect(retrieved.pendingConfirmationToken).toBeNil()
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
@@ -97,7 +97,7 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testSpanishSubscribingHappyPath() async throws {
     var quote = NPQuote.mock
     quote.lang = .es
-    try await quote.create()
+    try await Current.db.create(quote)
 
     let token = UUID()
     Current.uuid = { token }
@@ -127,14 +127,14 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
 
     let subscriber = try await NPSubscriber.query()
       .where(.email == email)
-      .first()
+      .first(in: Current.db)
 
     expect(subscriber.email).toEqual(email)
-    expect(subscriber.lang).toEqual(.es)
+    expect(subscriber.lang).toEqual(Lang.es)
     expect(subscriber.pendingConfirmationToken).toEqual(token)
 
     try await app.test(.GET, "confirm-email/es/\(token.lowercased)") { res in
-      let retrieved = try await NPSubscriber.find(subscriber.id)
+      let retrieved = try await Current.db.find(subscriber.id)
       expect(retrieved.pendingConfirmationToken).toBeNil()
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
@@ -166,7 +166,7 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testSpamRejectionFromCloudflareChallenge() async throws {
     var quote = NPQuote.mock
     quote.lang = .en
-    try await quote.create()
+    try await Current.db.create(quote)
 
     let token = UUID()
     Current.uuid = { token }

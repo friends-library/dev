@@ -3,11 +3,11 @@ import PackageDescription
 
 let package = Package(
   name: "api",
-  platforms: [.macOS(.v12)],
+  platforms: [.macOS(.v13)],
   dependencies: [
     .github("vapor/vapor@4.120.0"),
     .github("vapor/fluent@4.9.0"),
-    .github("vapor/fluent-postgres-driver@2.8.0"),
+    .github("vapor/fluent-postgres-driver@2.9.2"),
     .github("m-barthelemy/vapor-queues-fluent-driver@1.2.0"),
     .github("jaredh159/swift-tagged@0.8.2"),
     .github("pointfreeco/swift-nonempty@0.5.0"),

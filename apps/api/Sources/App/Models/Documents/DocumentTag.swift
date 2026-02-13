@@ -1,6 +1,6 @@
 import Duet
 
-struct DocumentTag: Codable, Sendable {
+struct DocumentTag: Codable, Sendable, Equatable {
   var id: Id
   var documentId: Document.Id
   var type: TagType

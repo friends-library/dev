@@ -2,7 +2,7 @@ import DuetSQL
 import Tagged
 import TaggedMoney
 
-struct Order: Codable, Sendable {
+struct Order: Codable, Sendable, Equatable {
   var id: Id
   var lang: Lang
   var source: OrderSource
@@ -154,7 +154,7 @@ extension Order {
   func items() async throws -> [OrderItem] {
     try await OrderItem.query()
       .where(.orderId == self.id)
-      .all()
+      .all(in: Current.db)
   }
 }
 

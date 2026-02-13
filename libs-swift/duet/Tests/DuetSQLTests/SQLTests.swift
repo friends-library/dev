@@ -1,366 +1,607 @@
+import Logging
+import NIOEmbedded
+import PostgresKit
+import SQLKit
 import Tagged
-import Testing
+import XCTest
+import XExpect
 
 @testable import DuetSQL
 
-@Suite struct SqlTests {
+final class SqlTests: XCTestCase {
+  func testSelect() async throws {
+    let stmt = try await select(Thing.self)
 
-  @Test func `limit offset`() throws {
-    let stmt = SQL.select(
-      .all,
-      from: Thing.self,
+    let expected = """
+    SELECT * FROM public.things
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([])
+  }
+
+  func testSelectWithoutSoftDeleted() async throws {
+    let stmt = try await select(Thing.self, withSoftDeleted: false)
+
+    let expected = """
+    SELECT * FROM public.things
+    WHERE ("deleted_at" IS NULL OR "deleted_at" > $1)
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([.currentTimestamp])
+  }
+
+  func testSelectAlwaysRemoved() async throws {
+    let stmt = try await select(Thing.self)
+
+    let expected = """
+    SELECT * FROM public.things
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([])
+  }
+
+  func testWhereClauses() async throws {
+    var stmt = try await select(Thing.self, where: .string == "foo")
+    var expected = """
+    SELECT * FROM public.things
+    WHERE "string" = $1
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([.string("foo")])
+
+    stmt = try await select(Thing.self, where: .isNull(.optionalInt))
+    expected = """
+    SELECT * FROM public.things
+    WHERE "optional_int" IS NULL
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([])
+
+    stmt = try await select(Thing.self, where: .not(.isNull(.optionalInt)))
+    expected = """
+    SELECT * FROM public.things
+    WHERE NOT "optional_int" IS NULL
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([])
+
+    stmt = try await select(Thing.self, where: .int < .int(42))
+    expected = """
+    SELECT * FROM public.things
+    WHERE "int" < $1
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([.int(42)])
+
+    stmt = try await select(Thing.self, where: .int >= .int(42))
+    expected = """
+    SELECT * FROM public.things
+    WHERE "int" >= $1
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([.int(42)])
+
+    let ids = [Thing.Id(.init()), Thing.Id(.init())]
+    stmt = try await select(Thing.self, where: .id |=| ids)
+    expected = """
+    SELECT * FROM public.things
+    WHERE "id" IN ($1, $2)
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual(ids.map { .uuid($0.rawValue) })
+  }
+
+  func testMultipleWheres() async throws {
+    let stmt = try await select(
+      Thing.self,
+      where: .id == 123 .&& .int == 789,
+      withSoftDeleted: true,
+    )
+
+    let expected = """
+    SELECT * FROM public.things
+    WHERE ("id" = $1 AND "int" = $2)
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([123, 789])
+  }
+
+  func testWhereInEmpty() async throws {
+    let ids: [Thing.IdValue] = []
+
+    let stmt = try await select(Thing.self, where: .id |=| ids)
+    let expected = """
+    SELECT * FROM public.things
+    WHERE FALSE
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([])
+  }
+
+  func testWhereInOneChangedToEquals() async throws {
+    let ids = [Thing.Id(.init())]
+
+    let stmt = try await select(Thing.self, where: .id |=| ids)
+    let expected = """
+    SELECT * FROM public.things
+    WHERE "id" = $1
+    """
+
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([.uuid(ids[0].rawValue)])
+  }
+
+  func testLimitOffset() async throws {
+    let stmt = try await select(
+      Thing.self,
       orderBy: .init(.string, .asc),
       limit: 2,
       offset: 3,
     )
 
-    let expectedQuery = """
-    SELECT * FROM "things"
+    let expected = """
+    SELECT * FROM public.things
     ORDER BY "string" ASC
     LIMIT 2
-    OFFSET 3;
+    OFFSET 3
     """
 
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [])
+    expect(stmt.prepared).toEqual(expected)
+    expect(stmt.params).toEqual([])
   }
 
-  @Test func `count no where`() throws {
-    let stmt = SQL.count(Thing.self)
+  func testCount() async throws {
+    let client = TestClient()
+    _ = try? await client.count(Thing.self)
 
-    let expectedQuery = """
-    SELECT COUNT(*) FROM "things";
+    let expected = """
+    SELECT COUNT(*) FROM public.things
+    WHERE ("deleted_at" IS NULL OR "deleted_at" > $1)
     """
 
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([.currentTimestamp])
   }
 
-  @Test func `count where`() throws {
-    let stmt = SQL.count(Thing.self, where: .string == "a")
+  func testCountWhere() async throws {
+    let client = TestClient()
+    _ = try? await client.count(Thing.self, where: .string == "a")
 
-    let expectedQuery = """
-    SELECT COUNT(*) FROM "things"
-    WHERE "string" = $1;
+    let expected = """
+    SELECT COUNT(*) FROM public.things
+    WHERE ("string" = $1 AND ("deleted_at" IS NULL OR "deleted_at" > $2))
     """
 
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == ["a"])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual(["a", .currentTimestamp])
   }
 
-  @Test func `where in`() throws {
-    let ids: [Thing.IdValue] = [
-      .init(rawValue: UUID(uuidString: "6b9cfcdc-22a8-4c40-9ea8-eb409725dc34")!),
-      .init(rawValue: UUID(uuidString: "c5bfe387-1e7a-426a-87ff-1aa472057acc")!),
-    ]
+  func testCountWhereWithSoftDeleted() async throws {
+    let client = TestClient()
+    _ = try? await client.count(
+      Thing.self,
+      where: .string == "a",
+      withSoftDeleted: true,
+    )
 
-    let stmt = SQL.select(.all, from: Thing.self, where: .id |=| ids)
-
-    let expectedQuery = """
-    SELECT * FROM "things"
-    WHERE "id" IN ($1, $2);
+    let expected = """
+    SELECT COUNT(*) FROM public.things
+    WHERE "string" = $1
     """
 
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == ids.map { .uuid($0.rawValue) })
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual(["a"])
   }
 
-  @Test func `where in empty values`() throws {
-    let ids: [Thing.IdValue] = []
+  func testForceDelete() async throws {
+    let client = TestClient()
+    _ = try await client.forceDelete(Thing.self)
 
-    let stmt = SQL.select(.all, from: Thing.self, where: .id |=| ids)
-
-    let expectedQuery = """
-    SELECT * FROM "things"
-    WHERE FALSE;
+    let expected = """
+    DELETE FROM public.things
+    RETURNING id
     """
 
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([])
   }
 
-  @Test func `always removed from where clause`() throws {
-    var stmt = SQL.select(.all, from: Thing.self)
+  func testSoftDelete() async throws {
+    let client = TestClient()
+    _ = try await client.delete(all: Thing.self)
 
-    var expectedQuery = """
-    SELECT * FROM "things";
+    let expected = """
+    UPDATE public.things
+    SET "deleted_at" = CURRENT_TIMESTAMP
     """
 
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [])
-
-    stmt = SQL.select(.all, from: Thing.self, where: .and(.always, .int == 3))
-
-    expectedQuery = """
-    SELECT * FROM "things"
-    WHERE "int" = $1;
-    """
-
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [3])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([])
   }
 
-  @Test func `simple select`() throws {
-    let stmt = SQL.select(.all, from: Thing.self)
+  func testForceDeleteWithConstraint() async throws {
+    let client = TestClient()
+    _ = try await client.forceDelete(Thing.self, where: .id == 123)
 
-    let expectedQuery = """
-    SELECT * FROM "things";
+    let expected = """
+    DELETE FROM public.things
+    WHERE "id" = $1
+    RETURNING id
     """
 
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([123])
   }
 
-  @Test func `select with limit`() throws {
-    let stmt = SQL.select(.all, from: Thing.self, limit: 4)
+  func testSoftDeleteWithConstraint() async throws {
+    let client = TestClient()
+    _ = try await client.delete(Thing.self, where: .id == 123)
 
-    let expectedQuery = """
-    SELECT * FROM "things"
-    LIMIT 4;
+    let expected = """
+    UPDATE public.things
+    SET "deleted_at" = CURRENT_TIMESTAMP
+    WHERE "id" = $1
     """
 
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([123])
   }
 
-  @Test func `select with single where`() throws {
-    let stmt = SQL.select(.all, from: Thing.self, where: .id == 123)
+  func testSoftDeleteById() async throws {
+    let client = TestClient()
+    let id: UUID = .init()
+    _ = try await client.delete(Thing.self, byId: id)
 
-    let expectedQuery = """
-    SELECT * FROM "things"
-    WHERE "id" = $1;
+    let expected = """
+    UPDATE public.things
+    SET "deleted_at" = CURRENT_TIMESTAMP
+    WHERE "id" = $1
     """
 
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [123])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([.uuid(id)])
   }
 
-  @Test func `select with multiple wheres`() throws {
-    let stmt = SQL.select(.all, from: Thing.self, where: .id == 123 .&& .int == 789)
-
-    let expectedQuery = """
-    SELECT * FROM "things"
-    WHERE ("id" = $1 AND "int" = $2);
-    """
-
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [123, 789])
-  }
-
-  @Test func `delete with constraint`() throws {
-    let stmt = SQL.delete(from: Thing.self, where: .id == 123)
-
-    let expectedQuery = """
-    DELETE FROM "things"
-    WHERE "id" = $1;
-    """
-
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [123])
-  }
-
-  @Test func `delete with order by and limit`() throws {
-    let stmt = SQL.delete(
-      from: Thing.self,
+  func testForceDeleteWithOrderByAndLimit() async throws {
+    let client = TestClient()
+    _ = try await client.forceDelete(
+      Thing.self,
       where: .id == 123,
       orderBy: .init(.createdAt, .asc),
       limit: 1,
     )
 
-    let expectedQuery = """
-    DELETE FROM "things"
+    let expected = """
+    DELETE FROM public.things
     WHERE "id" = $1
     ORDER BY "created_at" ASC
-    LIMIT 1;
+    LIMIT 1
+    RETURNING id
     """
 
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [123])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([123])
   }
 
-  @Test func `delete all`() throws {
-    let stmt = SQL.delete(from: Thing.self)
-
-    let expectedQuery = """
-    DELETE FROM "things";
-    """
-
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [])
-  }
-
-  @Test func `bulk insert`() throws {
-    let stmt = try SQL.insert(
-      into: Thing.self,
-      values: [[.int: 1, .optionalInt: 2], [.optionalInt: 4, .int: 3]],
-    )
-
-    let expectedQuery = """
-    INSERT INTO "things"
-    ("int", "optional_int")
-    VALUES
-    ($1, $2), ($3, $4);
-    """
-
-    #expect(stmt.query == expectedQuery)
-    #expect(stmt.bindings == [1, 2, 3, 4])
-  }
-
-  @Test func update() {
-    let statement = SQL.update(
+  func testSoftDeleteWithOrderByAndLimit() async throws {
+    let client = TestClient()
+    _ = try await client.delete(
       Thing.self,
-      set: [.optionalInt: 1, .bool: true],
       where: .string == "a",
+      orderBy: .init(.createdAt, .asc),
+      limit: 1,
     )
 
-    let query = """
-    UPDATE "things"
-    SET "bool" = $1, "optional_int" = $2
-    WHERE "string" = $3;
+    let expected = """
+    UPDATE public.things
+    SET "deleted_at" = CURRENT_TIMESTAMP
+    WHERE "string" = $1
+    ORDER BY "created_at" ASC
+    LIMIT 1
     """
 
-    #expect(statement.query == query)
-    #expect(statement.bindings == [true, 1, "a"])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual(["a"])
   }
 
-  @Test func `update without where`() {
-    let statement = SQL.update(Thing.self, set: [.int: 1])
+  func testUpdateDeletedAt() async throws {
+    let thing = LilThing(int: 3, deletedAt: .epoch)
+    let client = TestClient()
+    _ = try? await client.update(thing)
 
-    let query = """
-    UPDATE "things"
-    SET "int" = $1;
+    let expected = """
+    UPDATE public.lil_things
+    SET "int" = $1, "deleted_at" = $2, "updated_at" = $3
+    WHERE "id" = $4
+    RETURNING *
     """
 
-    #expect(statement.query == query)
-    #expect(statement.bindings == [1])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([3, .date(.epoch), .currentTimestamp, .id(thing)])
   }
 
-  @Test func `update producing`() {
-    let statement = SQL.update(
-      Thing.self,
-      set: [.int: 1],
-      where: .string == "a",
-      returning: .all,
-    )
+  func testCreate() async throws {
+    let thing = LilThing(int: 3)
 
-    let query = """
-    UPDATE "things"
-    SET "int" = $1
-    WHERE "string" = $2
-    RETURNING *;
-    """
+    let client = TestClient()
+    _ = try await client.create([thing])
 
-    #expect(statement.query == query)
-    #expect(statement.bindings == [1, "a"])
-  }
-
-  @Test func `basic insert`() throws {
-    let id = UUID()
-    let statement = try SQL.insert(
-      into: Thing.self,
-      values: [.int: 33, .string: "lol", .id: .uuid(id)],
-    )
-
-    let query = """
-    INSERT INTO "things"
-    ("id", "int", "string")
+    let expected = """
+    INSERT INTO public.lil_things
+    ("created_at", "deleted_at", "id", "int", "updated_at")
     VALUES
-    ($1, $2, $3);
+    ($1, $2, $3, $4, $5)
     """
 
-    #expect(statement.query == query)
-    #expect(statement.bindings == [.uuid(id), 33, "lol"])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([
+      .currentTimestamp,
+      .date(nil),
+      .id(thing),
+      .int(3),
+      .currentTimestamp,
+    ])
   }
 
-  @Test func `optional ints`() throws {
-    let statement = try SQL.insert(
-      into: Thing.self,
-      values: [.int: 22, .optionalInt: .int(nil)],
-    )
+  func testCreateTwo() async throws {
+    let thing1 = LilThing(int: 1)
+    let thing2 = LilThing(int: 2)
 
-    let query = """
-    INSERT INTO "things"
-    ("int", "optional_int")
+    let client = TestClient()
+    _ = try await client.create([thing1, thing2])
+
+    let expected = """
+    INSERT INTO public.lil_things
+    ("created_at", "deleted_at", "id", "int", "updated_at")
     VALUES
-    ($1, $2);
+    ($1, $2, $3, $4, $5), ($6, $7, $8, $9, $10)
     """
 
-    #expect(statement.query == query)
-    #expect(statement.bindings == [22, .int(nil)])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([
+      .currentTimestamp,
+      .date(nil),
+      .id(thing1),
+      .int(1),
+      .currentTimestamp,
+      .currentTimestamp,
+      .date(nil),
+      .id(thing2),
+      .int(2),
+      .currentTimestamp,
+    ])
   }
 
-  @Test func `optional strings`() throws {
-    let statement = try SQL.insert(
-      into: Thing.self,
-      values: [.string: "howdy", .optionalString: .string(nil)],
-    )
+  func testCreateOptionalHonest() async throws {
+    let thing = OptLilThing(int: 3, string: "hi")
 
-    let query = """
-    INSERT INTO "things"
-    ("optional_string", "string")
+    let client = TestClient()
+    _ = try await client.create([thing])
+
+    let expected = """
+    INSERT INTO public.opt_lil_things
+    ("created_at", "id", "int", "string")
     VALUES
-    ($1, $2);
+    ($1, $2, $3, $4)
     """
 
-    #expect(statement.query == query)
-    #expect(statement.bindings == [.string(nil), "howdy"])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([.currentTimestamp, .id(thing), 3, "hi"])
   }
 
-  @Test func enums() throws {
-    let statement = try SQL.insert(
-      into: Thing.self,
-      values: [
-        .customEnum: .enum(Thing.CustomEnum.foo),
-        .optionalCustomEnum: .enum(nil),
-      ],
-    )
+  func testCreateOptionalNil() async throws {
+    let thing = OptLilThing(int: nil, string: nil)
 
-    let query = """
-    INSERT INTO "things"
-    ("custom_enum", "optional_custom_enum")
+    let client = TestClient()
+    _ = try await client.create([thing])
+
+    let expected = """
+    INSERT INTO public.opt_lil_things
+    ("created_at", "id", "int", "string")
     VALUES
-    ($1, $2);
+    ($1, $2, $3, $4)
     """
 
-    #expect(statement.query == query)
-    #expect(statement.bindings == [.enum(Thing.CustomEnum.foo), .enum(nil)])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([
+      .currentTimestamp,
+      .id(thing),
+      .int(nil),
+      .string(nil),
+    ])
   }
 
-  @Test func dates() throws {
-    let date = try? Date(fromIsoString: "2021-12-14T17:16:16.896Z")
-    let statement = try SQL.insert(
-      into: Thing.self,
-      values: [.createdAt: .date(date), .updatedAt: .currentTimestamp],
-    )
+  func testUpdate() async throws {
+    let thing = LilThing(int: 5, createdAt: .epoch, updatedAt: .reference)
 
-    let query = """
-    INSERT INTO "things"
-    ("created_at", "updated_at")
-    VALUES
-    ($1, $2);
+    let client = TestClient()
+    _ = try? await client.update(thing)
+
+    let expected = """
+    UPDATE public.lil_things
+    SET "int" = $1, "deleted_at" = $2, "updated_at" = $3
+    WHERE "id" = $4
+    RETURNING *
     """
 
-    #expect(statement.query == query)
-    #expect(statement.bindings == [.date(date), .currentTimestamp])
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([5, .date(nil), .currentTimestamp, .id(thing)])
   }
 
-  @Test func `update removes id and created at from insert values`() throws {
+  func testKitchenSinkInsert() async throws {
     let thing = Thing(
-      string: "foo",
-      int: 1,
-      bool: true,
+      string: "string",
+      version: "version",
+      int: 3,
+      bool: false,
+      customEnum: .foo,
+      optionalCustomEnum: nil,
+      optionalInt: 4,
+      optionalString: nil,
+    )
+
+    let client = TestClient()
+    _ = try await client.create([thing])
+
+    let expected = """
+    INSERT INTO public.things
+    ("bool", "created_at", "custom_enum", "id", "int", "optional_custom_enum", "optional_int", "optional_string", "string", "updated_at", "version")
+    VALUES
+    ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+    """
+
+    expect(client.stmt.prepared).toEqual(expected)
+    expect(client.stmt.params).toEqual([
+      .bool(false),
+      .currentTimestamp,
+      .enum(Thing.CustomEnum.foo),
+      .id(thing),
+      .int(3),
+      .enum(nil),
+      .int(4),
+      .string(nil),
+      .string("string"),
+      .currentTimestamp,
+      .varchar("version"),
+    ])
+  }
+
+  func testNilEnumSerializesToNull() async throws {
+    let thing = Thing(
+      customEnum: .bar,
+      optionalCustomEnum: nil,
+    )
+
+    let client = TestClient()
+    _ = try await client.create([thing])
+
+    let sql = client.stmt.sql
+    var serializer = SQLSerializer(database: TestDatabase())
+    sql.serialize(to: &serializer)
+    let sqlString = serializer.sql
+
+    expect(sqlString).toContain("'bar'::custom_enums")
+    expect(sqlString).toContain(", NULL,")
+  }
+
+  func testNonNilEnumSerializesToTypedValue() async throws {
+    let thing = Thing(
       customEnum: .foo,
       optionalCustomEnum: .bar,
-      optionalInt: 2,
-      optionalString: "opt_foo",
     )
-    let statement = SQL.update(Thing.self, set: thing.insertValues)
 
-    let query = """
-    UPDATE "things"
-    SET "int" = $1, "updated_at" = $2, "bool" = $3, "optional_string" = $4, "custom_enum" = $5, "optional_custom_enum" = $6, "version" = $7, "string" = $8, "optional_int" = $9;
-    """
+    let client = TestClient()
+    _ = try await client.create([thing])
 
-    #expect(statement.query == query)
+    let sql = client.stmt.sql
+    var serializer = SQLSerializer(database: TestDatabase())
+    sql.serialize(to: &serializer)
+    let sqlString = serializer.sql
+
+    expect(sqlString).toContain("'foo'::custom_enums")
+    expect(sqlString).toContain("'bar'::custom_enums")
+  }
+}
+
+// helpers
+
+func select<M: Model>(
+  _ Model: M.Type,
+  where constraint: SQL.WhereConstraint<M> = .always,
+  orderBy order: SQL.Order<M>? = nil,
+  limit: Int? = nil,
+  offset: Int? = nil,
+  withSoftDeleted: Bool = true,
+) async throws -> SQL.Statement {
+  let testClient = TestClient()
+  _ = try? await testClient.select(
+    M.self,
+    where: constraint,
+    orderBy: order,
+    limit: limit,
+    offset: offset,
+    withSoftDeleted: withSoftDeleted,
+  )
+  return testClient.stmt
+}
+
+final class TestClient: Client, @unchecked Sendable {
+  private var stmts: [SQL.Statement] = []
+
+  var stmt: SQL.Statement {
+    if self.stmts.isEmpty {
+      fatalError("No statement was executed")
+    } else if self.stmts.count > 1 {
+      fatalError("Multiple statements were executed")
+    } else {
+      self.stmts[0]
+    }
+  }
+
+  func execute(statement: SQL.Statement) async throws -> [SQLRow] {
+    self.stmts.append(statement)
+    return [TestDbRow()]
+  }
+
+  func execute<M: Model>(statement: SQL.Statement, returning: M.Type) async throws -> [M] {
+    self.stmts.append(statement)
+    throw TestError()
+  }
+
+  func execute(raw: SQLQueryString) async throws -> [SQLRow] {
+    fatalError("TestClient.execute(raw:) not implemented")
+  }
+}
+
+public extension Date {
+  static let epoch = Date(timeIntervalSince1970: 0)
+  static let reference = Date(timeIntervalSinceReferenceDate: 0)
+}
+
+private struct TestError: Error {}
+
+private struct TestDbRow: SQLRow {
+  var allColumns: [String] = []
+
+  func contains(column: String) -> Bool {
+    true
+  }
+
+  func decodeNil(column: String) throws -> Bool {
+    true
+  }
+
+  func decode<D: Decodable>(column: String, as: D.Type) throws -> D {
+    try JSONDecoder().decode(D.self, from: String(column).data(using: .utf8)!)
+  }
+}
+
+private struct TestDatabase: SQLDatabase {
+  var logger: Logger { Logger(label: "test") }
+  var eventLoop: any EventLoop { EmbeddedEventLoop() }
+  var dialect: any SQLDialect { PostgresDialect() }
+
+  func execute(
+    sql query: any SQLExpression,
+    _ onRow: @escaping @Sendable (any SQLRow) -> Void,
+  ) -> EventLoopFuture<Void> {
+    self.eventLoop.makeSucceededVoidFuture()
+  }
+
+  func withSession<R>(
+    _ closure: @escaping @Sendable (any SQLDatabase) async throws -> R,
+  ) async throws -> R {
+    try await closure(self)
   }
 }

@@ -11,7 +11,7 @@ final class EditionValidityTests: AppTestCase, @unchecked Sendable {
     await expect(edition.isValid()).toBeFalse()
   }
 
-  func testSpanishUpdatedEditionsShouldNotHaveEditor() async {
+  func testSpanishUpdatedEditionsShouldNotHaveEditor() async throws {
     var edition = Edition.valid
     edition.editor = "Bob"
     edition.type = .updated
@@ -30,7 +30,7 @@ final class EditionValidityTests: AppTestCase, @unchecked Sendable {
 
   func testLoadedChaptersWithNonSequentialOrderInvalid() async throws {
     let entities = await Entities.create { $0.editionChapter.order = 1 }
-    try await EditionChapter.create(.init(
+    try await Current.db.create(EditionChapter(
       editionId: entities.edition.id,
       order: 3, // <-- unexpected non-sequential order
       shortHeading: "",
