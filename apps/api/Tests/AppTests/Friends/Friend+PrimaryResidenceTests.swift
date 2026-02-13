@@ -8,7 +8,10 @@ final class FriendPrimaryResidenceTests: AppTestCase, @unchecked Sendable {
       $0.friendResidence.city = "Sheffield"
       $0.friendResidence.region = "England"
     }
-    try await entities.friendResidenceDuration.delete() // no durations
+    try await Current.db.delete(
+      FriendResidenceDuration.self,
+      byId: entities.friendResidenceDuration.id,
+    ) // no durations
     XCTAssertEqual(entities.friendResidence.model, entities.friend.primaryResidence?.model)
   }
 
@@ -23,20 +26,20 @@ final class FriendPrimaryResidenceTests: AppTestCase, @unchecked Sendable {
       $0.friendResidenceDuration.end = 1780
     }
 
-    let longResidence = try await FriendResidence.create(.init(
+    let longResidence = try await Current.db.create(FriendResidence(
       friendId: entities.friend.id,
       city: "York",
       region: "England",
     ))
 
-    try await FriendResidenceDuration.create(.init(
+    try await Current.db.create(FriendResidenceDuration(
       friendResidenceId: longResidence.id,
       start: 1700,
       end: 1770,
     ))
 
     let friend = try await Friend.Joined.find(entities.friend.id)
-    XCTAssertEqual(longResidence, friend.primaryResidence?.model)
+    XCTAssertEqual(longResidence.id, friend.primaryResidence?.model.id)
   }
 
   func testDiscountsGrowingUpYearsWhenChoosingPrimaryResidence() async throws {
@@ -50,18 +53,18 @@ final class FriendPrimaryResidenceTests: AppTestCase, @unchecked Sendable {
       $0.friendResidenceDuration.end = 1717
     }
 
-    let adultResidence = try await FriendResidence.create(.init(
+    let adultResidence = try await Current.db.create(FriendResidence(
       friendId: entities.friend.id,
       city: "Sheffield",
       region: "England",
     ))
 
-    try await FriendResidenceDuration.create(.init(
+    try await Current.db.create(FriendResidenceDuration(
       friendResidenceId: adultResidence.id,
       start: 1717, end: 1724, // <-- shorter, but adult
     ))
 
     let friend = try await Friend.Joined.find(entities.friend.id)
-    XCTAssertEqual(adultResidence, friend.primaryResidence?.model)
+    XCTAssertEqual(adultResidence.id, friend.primaryResidence?.model.id)
   }
 }

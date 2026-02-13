@@ -25,7 +25,7 @@ final class NativeDomainTests: AppTestCase, @unchecked Sendable {
 
     let retrieved = try await NativeAppError.query()
       .where(.installId == installId)
-      .first()
+      .first(in: Current.db)
 
     expect(retrieved.buildSemver).toEqual("3.3.3")
     expect(retrieved.buildNumber).toEqual(101)

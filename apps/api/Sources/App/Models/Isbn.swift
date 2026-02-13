@@ -1,6 +1,6 @@
 import Duet
 
-struct Isbn: Codable, Sendable {
+struct Isbn: Codable, Sendable, Equatable {
   var id: Id
   var code: ISBN
   var editionId: Edition.Id?

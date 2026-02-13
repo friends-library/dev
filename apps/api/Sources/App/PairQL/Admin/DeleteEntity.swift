@@ -30,7 +30,7 @@ extension DeleteEntity: Resolver {
       }
     }
 
-    try await model.delete()
+    try await Current.db.delete(model)
     return .success
   }
 }

@@ -42,7 +42,7 @@ extension Friend: Model {
 extension Friend {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case lang
     case name

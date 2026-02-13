@@ -1,6 +1,6 @@
 import Foundation
 
-struct NPSentQuote: Codable, Sendable {
+struct NPSentQuote: Codable, Sendable, Equatable {
   var id: Id
   var createdAt = Current.date()
   var quoteId: NPQuote.Id

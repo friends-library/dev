@@ -11,7 +11,7 @@ enum OrderPrintJobCoordinator {
     do {
       orders = try await Current.db.query(Order.self)
         .where(.printJobStatus == .enum(Order.PrintJobStatus.presubmit))
-        .all()
+        .all(in: Current.db)
     } catch {
       await notifyErr("27fad259", "Error querying presubmit orders", error)
       return
@@ -183,7 +183,7 @@ private func getOrdersWithPrintJobs(
   do {
     orders = try await Current.db.query(Order.self)
       .where(.printJobStatus == .enum(status))
-      .all()
+      .all(in: Current.db)
 
     guard let printJobIds = await orderPrintJobIds(orders) else {
       return nil

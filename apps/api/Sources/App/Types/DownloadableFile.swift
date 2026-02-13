@@ -422,41 +422,46 @@ extension DownloadableFile.Format {
 }
 
 private struct DownloadData: CustomQueryable {
-  static func query(numBindings: Int) -> String {
-    """
-      SELECT
-        e.id as edition_id,
-        d.id AS document_id,
-        d.\(Document.columnName(.filename)) AS document_filename,
-        d.\(Document.columnName(.slug)) AS document_slug,
-        e.\(Edition.columnName(.type)) AS edition_type,
-        f.\(Friend.columnName(.lang)),
-        f.\(Friend.columnName(.slug)) AS friend_slug,
-        i.\(EditionImpression.columnName(.paperbackVolumes)),
-        COUNT(ap.\(AudioPart.columnName(.audioId)))::INTEGER AS num_audio_parts
-      FROM
-        \(Edition.tableName) e
-      JOIN
-        \(Document.tableName) d ON e.\(Edition.columnName(.documentId)) = d.id
-      JOIN
-        \(Friend.tableName) f ON d.\(Document.columnName(.friendId)) = f.id
-      JOIN
-        \(EditionImpression.tableName) i ON e.id = i.\(EditionImpression.columnName(.editionId))
-      LEFT JOIN
-        \(Audio.tableName) a ON e.id = a.\(Audio.columnName(.editionId))
-      LEFT JOIN
-        \(AudioPart.tableName) ap ON a.id = ap.\(AudioPart.columnName(.audioId))
-      WHERE
-        e.id = $1
-      GROUP BY
-        e.id,
-        d.id,
-        d.\(Document.columnName(.filename)),
-        e.\(Edition.columnName(.type)),
-        f.\(Friend.columnName(.slug)),
-        i.\(EditionImpression.columnName(.paperbackVolumes)),
-        f.\(Friend.columnName(.lang));
-    """
+  static func query(bindings: [Postgres.Data]) -> SQL.Statement {
+    var stmt = SQL.Statement("""
+    SELECT
+      e.id as edition_id,
+      d.id AS document_id,
+      d.\(Document.columnName(.filename)) AS document_filename,
+      d.\(Document.columnName(.slug)) AS document_slug,
+      e.\(Edition.columnName(.type)) AS edition_type,
+      f.\(Friend.columnName(.lang)),
+      f.\(Friend.columnName(.slug)) AS friend_slug,
+      i.\(EditionImpression.columnName(.paperbackVolumes)),
+      COUNT(ap.\(AudioPart.columnName(.audioId)))::INTEGER AS num_audio_parts
+    FROM
+      \(Edition.tableName) e
+    JOIN
+      \(Document.tableName) d ON e.\(Edition.columnName(.documentId)) = d.id
+    JOIN
+      \(Friend.tableName) f ON d.\(Document.columnName(.friendId)) = f.id
+    JOIN
+      \(EditionImpression.tableName) i ON e.id = i.\(EditionImpression.columnName(.editionId))
+    LEFT JOIN
+      \(Audio.tableName) a ON e.id = a.\(Audio.columnName(.editionId))
+    LEFT JOIN
+      \(AudioPart.tableName) ap ON a.id = ap.\(AudioPart.columnName(.audioId))
+    WHERE
+      e.id =
+    """)
+    stmt.components.append(.binding(bindings[0]))
+    stmt.components.append(.sql("""
+
+    GROUP BY
+      e.id,
+      d.id,
+      d.\(Document.columnName(.filename)),
+      e.\(Edition.columnName(.type)),
+      f.\(Friend.columnName(.slug)),
+      i.\(EditionImpression.columnName(.paperbackVolumes)),
+      f.\(Friend.columnName(.lang));
+    """))
+    return stmt
   }
 
   var lang: Lang

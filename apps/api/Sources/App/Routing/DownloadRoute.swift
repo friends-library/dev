@@ -73,7 +73,7 @@ enum DownloadRoute: RouteHandler {
           .where(.ip == .string(ipAddress))
           .where(.format == .enum(Download.Format.podcast))
           .where(.editionId == file.editionId)
-          .first()
+          .first(in: Current.db)
 
         if dupe != nil {
           await slackDebug(

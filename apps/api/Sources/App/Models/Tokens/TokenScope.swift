@@ -14,7 +14,7 @@ enum Scope: String, Codable, CaseIterable, Equatable {
   case mutateTokens
 }
 
-struct TokenScope: Codable, Sendable {
+struct TokenScope: Codable, Sendable, Equatable {
   var id: Id
   var scope: Scope
   var tokenId: Token.Id

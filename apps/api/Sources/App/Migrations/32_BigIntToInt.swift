@@ -54,7 +54,7 @@ struct BigIntToInt: AsyncMigration {
       try await sql.execute(
         """
         ALTER TABLE \(unsafeRaw: table)
-        ALTER COLUMN "\(col: column)" TYPE INTEGER
+        ALTER COLUMN "\(unsafeRaw: column.description)" TYPE INTEGER
         """,
       )
     }
@@ -63,7 +63,7 @@ struct BigIntToInt: AsyncMigration {
       try await sql.execute(
         """
         ALTER TABLE \(unsafeRaw: table)
-        ALTER COLUMN "\(col: column)" TYPE INTEGER[]
+        ALTER COLUMN "\(unsafeRaw: column.description)" TYPE INTEGER[]
         """,
       )
     }
@@ -77,7 +77,7 @@ struct BigIntToInt: AsyncMigration {
       try await sql.execute(
         """
         ALTER TABLE \(unsafeRaw: table)
-        ALTER COLUMN "\(col: column)" TYPE BIGINT
+        ALTER COLUMN "\(unsafeRaw: column.description)" TYPE BIGINT
         """,
       )
     }
@@ -86,7 +86,7 @@ struct BigIntToInt: AsyncMigration {
       try await sql.execute(
         """
         ALTER TABLE \(unsafeRaw: table)
-        ALTER COLUMN "\(col: column)" TYPE BIGINT[]
+        ALTER COLUMN "\(unsafeRaw: column.description)" TYPE BIGINT[]
         """,
       )
     }

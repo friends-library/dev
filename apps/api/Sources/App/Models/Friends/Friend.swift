@@ -1,6 +1,6 @@
 import DuetSQL
 
-struct Friend: Codable, Sendable {
+struct Friend: Codable, Sendable, Equatable {
   var id: Id
   var lang: Lang
   var name: String

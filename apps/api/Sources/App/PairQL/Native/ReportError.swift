@@ -17,7 +17,7 @@ struct ReportError: Pair {
 
 extension ReportError: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
-    try await NativeAppError(
+    try await Current.db.create(NativeAppError(
       buildSemver: input.buildSemver,
       buildNumber: input.buildNumber,
       lang: input.lang,
@@ -26,7 +26,7 @@ extension ReportError: Resolver {
       installId: input.installId,
       errorMessage: input.errorMessage,
       errorStack: input.errorStack,
-    ).create()
+    ))
 
     return .success
   }

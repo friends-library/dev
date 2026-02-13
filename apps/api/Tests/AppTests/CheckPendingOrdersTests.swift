@@ -10,7 +10,7 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
     var order = Order.mock
     order.printJobStatus = .pending
     order.printJobId = 33
-    _ = try await Current.db.query(Order.self).delete()
+    try await Current.db.delete(all: Order.self)
     try await Current.db.create(order)
 
     Current.luluClient.listPrintJobs = { ids in
@@ -42,7 +42,7 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
   }
 
   func testSlackLogsErrorIfOrderMissingPrintJobId() async throws {
-    _ = try await Current.db.query(Order.self).delete()
+    try await Current.db.delete(all: Order.self)
     var order = Order.mock
     order.printJobStatus = .pending
     order.printJobId = nil // <-- should never happen
@@ -57,7 +57,7 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
   }
 
   func testRejectedPrintJobUpdatedAndSlacked() async throws {
-    _ = try await Current.db.query(Order.self).delete()
+    try await Current.db.delete(all: Order.self)
     var order = Order.mock
     order.printJobStatus = .pending
     order.printJobId = 33

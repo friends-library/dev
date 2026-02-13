@@ -47,7 +47,7 @@ const Page: NextPage<Params<Path>> = async (props) => {
         </WhiteOverlay>
       </BooksBgBlock>
       <div className="MDX p-10 md:px-16 md:pb-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
-        <MDXRemote source={source} components={components} />
+        <MDXRemote source={source} components={components} options={{ blockJS: false }} />
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ public struct VerifyEntityValidityJob: AsyncScheduledJob {
 // helpers
 
 func checkModelsValidity(_ Model: (some ApiModel).Type, _ name: String) async throws {
-  let models = try await Model.query().all()
+  let models = try await Model.query().all(in: Current.db)
   for model in models {
     if await model.isValid() == false {
       await slackError("\(name) `\(model.id.uuidString.lowercased())` found in invalid state")
@@ -40,7 +40,7 @@ func checkModelsValidity(_ Model: (some ApiModel).Type, _ name: String) async th
 }
 
 func verifyAltLanguageDocumentsPaired() async throws {
-  let documents = try await Current.db.query(Document.self).all()
+  let documents = try await Current.db.query(Document.self).all(in: Current.db)
   for document in documents {
     if let altId = document.altLanguageId {
       let altDoc = try await Current.db.find(altId)

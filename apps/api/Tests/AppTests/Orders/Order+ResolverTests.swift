@@ -51,7 +51,7 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
     let (input, item) = try await orderSetup()
     let output = try await CreateOrder.resolve(with: input, in: .mock)
 
-    let retrieved = try await Order.find(output)
+    let retrieved = try await Current.db.find(output)
     let items = try await retrieved.items()
 
     expect(retrieved.id).toEqual(input.id)
@@ -79,8 +79,8 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
       try await PairQLRoute.respond(to: matched, in: .mock)
     }.toContain("notFound")
 
-    let token = try await Token(description: "one-time", uses: 1).create()
-    try await TokenScope(tokenId: token.id, scope: .mutateOrders).create()
+    let token = try await Current.db.create(Token(description: "one-time", uses: 1))
+    try await Current.db.create(TokenScope(tokenId: token.id, scope: .mutateOrders))
 
     request.setValue("Bearer \(token.value.lowercased)", forHTTPHeaderField: "Authorization")
     matched = try PairQLRoute.router.match(request: request)
@@ -88,7 +88,7 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
     let response = try await PairQLRoute.respond(to: matched, in: .mock)
     expect("\(response.body)").toEqual("\"\(input.id!.lowercased)\"")
 
-    let retrieved = try await Order.find(input.id!)
+    let retrieved = try await Current.db.find(input.id!)
     expect(retrieved.addressState).toEqual("CA")
   }
 
@@ -97,8 +97,8 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
     input.addressState = "Tx" // <-- lulu rejects this, needs "TX"
     input.addressCountry = "US"
 
-    let token = try await Token(description: "one-time", uses: 1).create()
-    try await TokenScope(tokenId: token.id, scope: .mutateOrders).create()
+    let token = try await Current.db.create(Token(description: "one-time", uses: 1))
+    try await Current.db.create(TokenScope(tokenId: token.id, scope: .mutateOrders))
 
     var request = URLRequest(url: URL(string: "order/CreateOrder")!)
     request.httpMethod = "POST"
@@ -110,7 +110,7 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
     let response = try await PairQLRoute.respond(to: matched, in: .mock)
     expect("\(response.body)").toEqual("\"\(input.id!.lowercased)\"")
 
-    let retrieved = try await Order.find(input.id!)
+    let retrieved = try await Current.db.find(input.id!)
     expect(retrieved.addressState).toEqual("TX") // <-- capitalized
   }
 
@@ -120,7 +120,7 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
     input.freeOrderRequestId = req.id
     let output = try await CreateOrder.resolve(with: input, in: .mock)
 
-    let retrieved = try await Order.find(output)
+    let retrieved = try await Current.db.find(output)
 
     expect(retrieved.freeOrderRequestId).toEqual(req.id)
   }

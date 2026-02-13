@@ -23,15 +23,15 @@ public struct SendNarrowPath: AsyncScheduledJob {
     try await NPSubscriber.query()
       .where(.not(.isNull(.pendingConfirmationToken)))
       .where(.createdAt < Current.date().advanced(by: .days(-3)))
-      .delete()
+      .delete(in: Current.db)
   }
 
   public func exec() async throws {
-    let sentQuotes = try await NPSentQuote.query().all()
-    let allQuotes = try await NPQuote.query().all()
+    let sentQuotes = try await NPSentQuote.query().all(in: Current.db)
+    let allQuotes = try await NPQuote.query().all(in: Current.db)
     let subscribers = try await NPSubscriber.query()
       .where(.isNull(.unsubscribedAt))
-      .all()
+      .all(in: Current.db)
     let action = self.determineAction(
       sentQuotes: sentQuotes,
       allQuotes: allQuotes,
@@ -42,7 +42,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
       await slackInfo("Narrow path `\(lang)` quotes exhausted, resetting cycle")
       try await NPSentQuote.query()
         .where(.quoteId |=| allQuotes.filter { $0.lang == lang }.map(\.id))
-        .delete()
+        .delete(in: Current.db)
       return try await self.exec()
     case .send(let groups):
       try await self.send(groups)
@@ -77,7 +77,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
       await slackError("SendNarrowPath batch error: \(batchError)")
     }
 
-    try await NPSentQuote.create(sentQuotes.map { .init(quoteId: $0) })
+    try await Current.db.create(sentQuotes.map { NPSentQuote(quoteId: $0) })
   }
 
   func determineAction(

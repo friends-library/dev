@@ -35,16 +35,16 @@ extension EmailBuilder {
 private func lineItems(_ order: Order) async throws -> String {
   let items = try await OrderItem.query()
     .where(.orderId == order.id)
-    .all()
+    .all(in: Current.db)
 
   var lines: [String] = []
   for item in items {
     let edition = try await Edition.query()
       .where(.id == item.editionId)
-      .first()
+      .first(in: Current.db)
     let document = try await Document.query()
       .where(.id == edition.documentId)
-      .first()
+      .first(in: Current.db)
     lines.append("* (\(item.quantity)) \(document.title)")
   }
 

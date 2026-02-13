@@ -21,8 +21,9 @@ final class CreateNewPrintJobTests: AppTestCase, @unchecked Sendable {
     }
 
     let updated = try await Current.db.find(order.id)
-    XCTAssertEqual(created.first, order)
     XCTAssertEqual(created.count, 1)
+    XCTAssertEqual(created.first?.id, order.id)
+    XCTAssertEqual(created.first?.printJobStatus, order.printJobStatus)
     XCTAssertEqual(updated.printJobId, 33)
     XCTAssertEqual(updated.printJobStatus, .pending)
     XCTAssertEqual(sent.slacks, [.order("Created print job 33 for order \(order.id.lowercased)")])

@@ -1,7 +1,7 @@
 import DuetSQL
 import TaggedMoney
 
-struct OrderItem: Codable, Sendable {
+struct OrderItem: Codable, Sendable, Equatable {
   var id: Id
   var orderId: Order.Id
   var editionId: Edition.Id

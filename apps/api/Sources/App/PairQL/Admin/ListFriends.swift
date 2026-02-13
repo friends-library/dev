@@ -16,7 +16,7 @@ struct ListFriends: Pair {
 extension ListFriends: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
-    let friends = try await Friend.query().all()
+    let friends = try await Friend.query().all(in: Current.db)
     return friends.map(ListFriends.FriendOutput.init)
   }
 }

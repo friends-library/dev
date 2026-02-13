@@ -49,7 +49,7 @@ struct GetOrder: Pair {
 extension GetOrder: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
-    let order = try await Order.find(input)
+    let order = try await Current.db.find(input)
     let items = try await order.items()
     return try await .init(
       id: order.id,

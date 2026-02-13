@@ -30,7 +30,7 @@ extension RelatedDocument: Model {
 extension RelatedDocument {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case description
     case documentId

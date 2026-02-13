@@ -285,16 +285,25 @@ extension Document.Joined {
 }
 
 private struct DocumentDownloads: CustomQueryable {
-  static func query(numBindings: Int) -> String {
-    let bindings = (1 ... numBindings).map { "$\($0)" }.joined(separator: ", ")
-    return """
-      SELECT SUM(document_downloads) AS total
-      FROM (
-        SELECT COUNT(*)::INTEGER AS document_downloads
-        FROM \(Download.tableName)
-        WHERE \(Download.columnName(.editionId)) IN (\(bindings))
-      ) AS subquery;
-    """
+  static func query(bindings: [Postgres.Data]) -> SQL.Statement {
+    var stmt = SQL.Statement("""
+    SELECT SUM(document_downloads) AS total
+    FROM (
+      SELECT COUNT(*)::INTEGER AS document_downloads
+      FROM \(Download.tableName)
+      WHERE \(Download.columnName(.editionId)) IN (
+    """)
+    for (index, binding) in bindings.enumerated() {
+      if index > 0 {
+        stmt.components.append(.sql(", "))
+      }
+      stmt.components.append(.binding(binding))
+    }
+    stmt.components.append(.sql("""
+    )
+    ) AS subquery;
+    """))
+    return stmt
   }
 
   let total: Int

@@ -1,6 +1,6 @@
 import DuetSQL
 
-struct FriendResidence: Codable, Sendable {
+struct FriendResidence: Codable, Sendable, Equatable {
   var id: Id
   var friendId: Friend.Id
   var city: String

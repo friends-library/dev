@@ -1,6 +1,6 @@
 import Duet
 
-struct EditionChapter: Codable, Sendable {
+struct EditionChapter: Codable, Sendable, Equatable {
   var id: Id
   var editionId: Edition.Id
   var order: Int

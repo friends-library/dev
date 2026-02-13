@@ -205,7 +205,7 @@ private func friend(
   lang: Lang = .en,
   gender: Friend.Gender = .male,
 ) async throws -> Friend {
-  try await Friend(
+  try await Current.db.create(Friend(
     lang: lang,
     name: name,
     slug: slug,
@@ -214,7 +214,7 @@ private func friend(
     born: nil,
     died: nil,
     published: nil,
-  ).create()
+  ))
 }
 
 private func document(
@@ -222,7 +222,7 @@ private func document(
   _ slug: String,
   _ friendId: Friend.Id,
 ) async throws -> Document {
-  try await Document(
+  try await Current.db.create(Document(
     friendId: friendId,
     altLanguageId: nil,
     title: title,
@@ -234,5 +234,5 @@ private func document(
     description: "",
     partialDescription: "",
     featuredDescription: nil,
-  ).create()
+  ))
 }

@@ -24,7 +24,7 @@ extension ArtifactProductionVersion: Model {
 extension ArtifactProductionVersion {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case version
     case createdAt

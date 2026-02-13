@@ -28,7 +28,7 @@ extension FriendResidenceDuration: Model {
 extension FriendResidenceDuration {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case friendResidenceId
     case start

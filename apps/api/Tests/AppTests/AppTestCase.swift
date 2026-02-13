@@ -42,10 +42,11 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
 
   override static func tearDown() {
     self.app.shutdown()
-    sync { await SQL.resetPreparedStatements() }
   }
 
-  override func setUp() {
+  override func setUp() async throws {
+    await JoinedEntityCache.shared.flush()
+    await LegacyRest.cachedData.flush()
     Current.uuid = { UUID() }
     Current.date = { Date() }
     Current.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }

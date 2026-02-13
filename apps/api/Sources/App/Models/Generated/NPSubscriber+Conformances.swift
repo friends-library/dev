@@ -46,7 +46,7 @@ extension NPSubscriber: Model {
 extension NPSubscriber {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey, CaseIterable {
+  enum CodingKeys: String, CodingKey, CaseIterable, ModelColumns {
     case id
     case email
     case createdAt

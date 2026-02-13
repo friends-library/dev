@@ -21,7 +21,7 @@ struct CreateFreeOrderRequest: Pair {
 
 extension CreateFreeOrderRequest: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
-    let order = try await FreeOrderRequest(
+    let order = try await Current.db.create(FreeOrderRequest(
       name: input.name,
       email: input.email,
       requestedBooks: input.requestedBooks,
@@ -33,7 +33,7 @@ extension CreateFreeOrderRequest: Resolver {
       addressZip: input.addressZip,
       addressCountry: input.addressCountry,
       source: input.source,
-    ).create()
+    ))
 
     try await sendFreeOrderRequestNotifications(for: order)
 
