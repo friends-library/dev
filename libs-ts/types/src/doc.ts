@@ -8,6 +8,7 @@ export interface DocPrecursor {
   path: string;
   editionId: string;
   isCompilation: boolean;
+  outOfBand: boolean;
   editionType: EditionType;
   asciidocFiles: Array<{ adoc: string; filename: string }>;
   paperbackSplits: number[];
@@ -45,6 +46,7 @@ export function genericDpc(): DocPrecursor {
     path: `en/george-fox/journal/original`,
     editionId: `9414033c-4b70-4b4b-8e48-fec037822173`,
     isCompilation: false,
+    outOfBand: false,
     editionType: `original`,
     asciidocFiles: [{ adoc: ``, filename: `01-journal.adoc` }],
     paperbackSplits: [],

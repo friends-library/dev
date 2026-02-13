@@ -36,12 +36,8 @@ export function halfTitle(dpc: DocPrecursor, volIdx?: number): string {
 
   let markup = `<h1>${prettyTitle}</h1>`;
 
-  if (name === `Gerhard Tersteegen`) {
-    if (lang === `es`) {
-      markup = `${markup}\n<p class="byline">Editado por Samuel Jackson</p>`;
-    } else {
-      markup = `${markup}\n<p class="byline">Edited by Samuel Jackson</p>`;
-    }
+  if (dpc.outOfBand && editor) {
+    markup = `${markup}\n<p class="byline">${lang === `es` ? `Editado por` : `Edited by`} ${editor}</p>`;
     return markup;
   }
 
@@ -101,6 +97,18 @@ export function copyright(dpc: DocPrecursor): string {
 
   const webUrl = `https://www.${t`friendslibrary.com`}`;
   const email = t`info@friendslibrary.com`;
+
+  if (dpc.outOfBand) {
+    return `
+  <div class="copyright-page">
+    <ul>
+      ${published ? `<li>${t`Originally published in ${published}`}</li>` : ``}
+      ${isbn ? `<li id="isbn">ISBN: <code>${isbn}</code></li>` : ``}
+      <li>${t`Text revision ${`<code><a href="${url}">${sha}</a></code> — ${time}`}`}</li>
+    </ul>
+  </div>
+  `;
+  }
 
   return `
   <div class="copyright-page">

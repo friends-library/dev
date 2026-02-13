@@ -35,6 +35,7 @@ function editionToFsDpc(
     path: edition.directoryPath,
     editionId: edition.id,
     isCompilation: edition.friend.isCompilations,
+    outOfBand: edition.friend.outOfBand,
     editionType: edition.type,
     asciidocFiles: [],
     paperbackSplits: edition.paperbackSplits ?? [],

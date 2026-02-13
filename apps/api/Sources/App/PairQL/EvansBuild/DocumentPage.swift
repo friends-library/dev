@@ -118,7 +118,7 @@ extension DocumentPage: Resolver {
     try context.verify(self.auth)
     let publishedDocs = try await Document.Joined.all()
       .filter(\.hasNonDraftEdition)
-      .filter { $0.friend.lang == input.lang }
+      .filter { $0.friend.lang == input.lang && !$0.friend.outOfBand }
 
     let document = publishedDocs.first {
       $0.slug == input.documentSlug && $0.friend.slug == input.friendSlug

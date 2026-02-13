@@ -14,7 +14,7 @@ extension AllFriendPages: Resolver {
     try context.verify(self.auth)
 
     let friends = try await Friend.Joined.all()
-      .filter { $0.lang == lang && $0.hasNonDraftDocument }
+      .filter { $0.lang == lang && $0.hasNonDraftNonOobDocument }
 
     let downloads = try await Current.db.customQuery(
       AllDocumentDownloads.self,

@@ -43,6 +43,7 @@ extension NewsFeedItems: Resolver {
       let friend = document.friend
       guard !edition.isDraft,
             !document.incomplete,
+            !friend.outOfBand,
             edition.id == document.primaryEdition?.id,
             friend.lang == lang else {
         continue
@@ -66,6 +67,7 @@ extension NewsFeedItems: Resolver {
       let friend = document.friend
       guard !edition.isDraft,
             !document.incomplete,
+            !friend.outOfBand,
             edition.id == document.primaryEdition?.id,
             friend.lang == lang else {
         continue
@@ -82,7 +84,7 @@ extension NewsFeedItems: Resolver {
     if lang == .en {
       let documents = try await Document.Joined.all()
         .filter { $0.altLanguageId != nil && !$0.incomplete }
-        .filter { $0.friend.lang == .es && $0.hasNonDraftEdition }
+        .filter { $0.friend.lang == .es && $0.hasNonDraftEdition && !$0.friend.outOfBand }
         .sorted(by: { $0.createdAt > $1.createdAt })
         .prefix(24)
 

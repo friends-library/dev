@@ -20,7 +20,7 @@ extension LegacyRest {
 
   private static func queryData(lang: Lang) async throws -> Data {
     let editions = try await Friend.Joined.all()
-      .filter { $0.lang == lang }
+      .filter { $0.lang == lang && !$0.model.outOfBand }
       .flatMap(\.documents)
       .filter(\.hasNonDraftEdition)
       .flatMap(\.editions)

@@ -32,7 +32,7 @@ extension FriendsPage: Resolver {
     let friends = try await Friend.Joined.all()
       .filter { $0.lang == lang }
     return friends.map { friend -> FriendOutput? in
-      guard !friend.isCompilations else { return nil }
+      guard !friend.isCompilations, !friend.model.outOfBand else { return nil }
       let documents = friend.documents
       let numBooks = documents.filter(\.hasNonDraftEdition).count
       guard numBooks > 0 else { return nil }

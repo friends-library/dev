@@ -59,7 +59,7 @@ extension ExplorePageBooks: Resolver {
 
     let documents = try await Document.Joined.all()
       .filter(\.hasNonDraftEdition)
-      .filter { $0.friend.lang == input }
+      .filter { $0.friend.lang == input && !$0.friend.outOfBand }
       .sorted(by: {
         $0.primaryEdition?.impression?.createdAt ?? .distantPast
           > $1.primaryEdition?.impression?.createdAt ?? .distantPast

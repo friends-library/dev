@@ -40,5 +40,6 @@ extension Configure {
     app.migrations.add(NarrowPath())
     app.migrations.add(NarrowPathUnsub())
     app.migrations.add(OrderRecipientTaxId())
+    app.migrations.add(AddFriendOutOfBand())
   }
 }

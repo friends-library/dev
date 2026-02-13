@@ -19,6 +19,7 @@ export namespace DpcEditions {
     };
     friend: {
       isCompilations: boolean;
+      outOfBand: boolean;
       name: string;
       alphabeticalName: string;
       slug: string;
