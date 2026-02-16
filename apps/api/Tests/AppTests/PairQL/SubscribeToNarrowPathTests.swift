@@ -1,3 +1,4 @@
+import Dependencies
 import DuetSQL
 import XCTest
 import XExpect
@@ -47,7 +48,6 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     try await Current.db.create(quote)
 
     let token = UUID()
-    Current.uuid = { token }
     Current.cloudflareClient.verifyTurnstileToken = { input in
       if input == "turnstile-token-value" {
         .success
@@ -57,15 +57,19 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     }
 
     let email = "you@example.com".random
-    let output = try await SubscribeToNarrowPath.resolve(
-      with: .init(
-        email: .init(rawValue: email),
-        lang: .en,
-        mixedQuotes: false,
-        turnstileToken: "turnstile-token-value",
-      ),
-      in: .mock,
-    )
+    let output = try await withDependencies {
+      $0.uuid = UUIDGenerator { token }
+    } operation: {
+      try await SubscribeToNarrowPath.resolve(
+        with: .init(
+          email: .init(rawValue: email),
+          lang: .en,
+          mixedQuotes: false,
+          turnstileToken: "turnstile-token-value",
+        ),
+        in: .mock,
+      )
+    }
 
     expect(output).toEqual(.success)
     expect(sent.emails.count).toEqual(1)
@@ -100,7 +104,6 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     try await Current.db.create(quote)
 
     let token = UUID()
-    Current.uuid = { token }
     Current.cloudflareClient.verifyTurnstileToken = { input in
       if input == "turnstile-token-value" {
         .success
@@ -110,15 +113,19 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     }
 
     let email = "tu@examplo.com".random
-    let output = try await SubscribeToNarrowPath.resolve(
-      with: .init(
-        email: .init(rawValue: email),
-        lang: .es,
-        mixedQuotes: false,
-        turnstileToken: "turnstile-token-value",
-      ),
-      in: .mock,
-    )
+    let output = try await withDependencies {
+      $0.uuid = UUIDGenerator { token }
+    } operation: {
+      try await SubscribeToNarrowPath.resolve(
+        with: .init(
+          email: .init(rawValue: email),
+          lang: .es,
+          mixedQuotes: false,
+          turnstileToken: "turnstile-token-value",
+        ),
+        in: .mock,
+      )
+    }
 
     expect(output).toEqual(.success)
     expect(sent.emails.count).toEqual(1)
@@ -168,8 +175,6 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     quote.lang = .en
     try await Current.db.create(quote)
 
-    let token = UUID()
-    Current.uuid = { token }
     Current.cloudflareClient.verifyTurnstileToken = { _ in
       .failure(errorCodes: [], messages: nil)
     }

@@ -1,8 +1,14 @@
+import Dependencies
+import Foundation
 import Testing
 
 @testable import App
 
 @Suite struct FriendTests {
+  init() {
+    prepareDependencies { $0.uuid = UUIDGenerator { UUID() } }
+  }
+
   @Test func `alphabetical name`() {
     var friend = Friend.empty
     friend.name = "Jared Henderson"

@@ -1,3 +1,4 @@
+import Dependencies
 import DuetSQL
 import PairQL
 import Vapor
@@ -29,7 +30,8 @@ extension SubscribeToNarrowPath: Resolver {
       throw Abort(.badRequest, reason: "Email already subscribed")
     }
 
-    let token = Current.uuid()
+    @Dependency(\.uuid) var uuid
+    let token = uuid()
     try await Current.db.create(NPSubscriber(
       token: token,
       mixedQuotes: input.mixedQuotes,

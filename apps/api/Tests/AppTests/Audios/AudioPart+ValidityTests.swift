@@ -1,3 +1,5 @@
+import Dependencies
+import Foundation
 import Testing
 
 @testable import App
@@ -5,6 +7,7 @@ import Testing
 @Suite struct AudioPartValidityTests {
   init() {
     Current.logger = .null
+    prepareDependencies { $0.uuid = UUIDGenerator { UUID() } }
   }
 
   @Test func `empty title invalid`() async {

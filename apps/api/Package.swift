@@ -13,6 +13,7 @@ let package = Package(
     .github("pointfreeco/swift-nonempty@0.5.0"),
     .github("pointfreeco/vapor-routing@0.1.3"),
     .github("pointfreeco/swift-concurrency-extras@1.1.0"),
+    .github("pointfreeco/swift-dependencies@1.0.0"),
     .github("kylehughes/RomanNumeralKit@1.0.0"),
     .github("JohnSundell/ShellOut@2.0.0"),
     .github("onevcat/Rainbow@4.0.1"),
@@ -46,6 +47,8 @@ let package = Package(
         .product(name: "XStripe", package: "x-stripe"),
         .product(name: "XSlack", package: "x-slack"),
         .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras"),
+        .product(name: "Dependencies", package: "swift-dependencies"),
+        .product(name: "DependenciesMacros", package: "swift-dependencies"),
         .product(name: "QueuesFluentDriver", package: "vapor-queues-fluent-driver"),
         "RomanNumeralKit",
         "Rainbow",
@@ -60,7 +63,10 @@ let package = Package(
         .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),
       ],
     ),
-    .executableTarget(name: "Run", dependencies: [.target(name: "App")]),
+    .executableTarget(name: "Run", dependencies: [
+      .target(name: "App"),
+      .product(name: "Dependencies", package: "swift-dependencies"),
+    ]),
     .testTarget(
       name: "AppTests",
       dependencies: [
@@ -70,6 +76,7 @@ let package = Package(
         .product(name: "XExpect", package: "x-expect"),
         .product(name: "XCTVapor", package: "vapor"),
         .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras"),
+        .product(name: "Dependencies", package: "swift-dependencies"),
       ],
     ),
   ],

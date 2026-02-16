@@ -6,7 +6,6 @@ import XStripe
 
 #if !DEBUG
   struct Environment: Sendable {
-    let uuid: @Sendable () -> UUID = { UUID() }
     let date: @Sendable () -> Date = { Date() }
     var db: DuetSQL.Client = ThrowingClient()
     let deeplClient: DeepL.Client = .live
@@ -23,7 +22,6 @@ import XStripe
   }
 #else
   struct Environment: Sendable {
-    var uuid: @Sendable () -> UUID = { UUID() }
     var date: @Sendable () -> Date = { Date() }
     var db: DuetSQL.Client = ThrowingClient()
     var deeplClient: DeepL.Client = .live

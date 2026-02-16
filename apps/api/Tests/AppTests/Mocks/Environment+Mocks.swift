@@ -5,7 +5,6 @@ import Foundation
 
 extension Environment {
   static let mock = Environment(
-    uuid: { .mock },
     date: { Date(timeIntervalSince1970: 0) },
     db: ThrowingClient(),
     logger: .null,

@@ -1,4 +1,5 @@
 import ConcurrencyExtras
+import Dependencies
 import FluentSQL
 import Vapor
 import XCTest
@@ -8,6 +9,14 @@ import XPostmark
 @testable import DuetSQL
 
 class AppTestCase: XCTestCase, @unchecked Sendable {
+  override func invokeTest() {
+    withDependencies {
+      $0.uuid = UUIDGenerator { UUID() }
+    } operation: {
+      super.invokeTest()
+    }
+  }
+
   nonisolated(unsafe) static var migrated = false
 
   struct Sent {
@@ -28,7 +37,6 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
     setenv("WEBSITE_URL_ES", "https://bibliotecadelosamigos.org", 1)
     self.app = Application(.testing)
     Current = .mock
-    Current.uuid = { UUID() }
     try! Configure.app(self.app)
     Current.db = FlushingDbClient(self.app.db as! SQLDatabase)
     Current.logger = .null
@@ -47,7 +55,6 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
   override func setUp() async throws {
     await JoinedEntityCache.shared.flush()
     await LegacyRest.cachedData.flush()
-    Current.uuid = { UUID() }
     Current.date = { Date() }
     Current.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }
     Current.postmarkClient.send = { [self] in sent.emails.append($0) }
@@ -59,18 +66,33 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
   }
 }
 
-func mockUUIDs() -> (UUID, UUID, UUID) {
-  let uuids = (UUID(), UUID(), UUID())
-  let array = LockIsolated([uuids.0, uuids.1, uuids.2])
+extension UUIDGenerator {
+  static func mock(_ uuids: MockUUIDs) -> Self {
+    Self { uuids() }
+  }
+}
 
-  Current.uuid = {
-    array.withValue { array in
-      guard !array.isEmpty else { return UUID() }
-      return array.removeFirst()
-    }
+struct MockUUIDs: Sendable {
+  private var stack: LockIsolated<[UUID]>
+  private var copy: LockIsolated<[UUID]>
+
+  var first: UUID { self.copy[0] }
+  var second: UUID { self.copy[1] }
+  var third: UUID { self.copy[2] }
+
+  init() {
+    let uuids = [UUID(), UUID(), UUID(), UUID(), UUID(), UUID()]
+    self.stack = .init(uuids)
+    self.copy = .init(uuids)
   }
 
-  return uuids
+  func callAsFunction() -> UUID {
+    self.stack.withValue { $0.removeFirst() }
+  }
+
+  subscript(index: Int) -> UUID {
+    self.copy[index]
+  }
 }
 
 public extension String {
