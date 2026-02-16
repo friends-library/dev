@@ -8,6 +8,5 @@ extension Environment {
     db: ThrowingClient(),
     logger: .null,
     postmarkClient: .mock,
-    slackClient: RateLimitedSlackClient { _ in },
   )
 }

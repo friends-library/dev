@@ -226,7 +226,7 @@ private func slackDownload(
     channel: file.format.slackChannel,
   )
 
-  await Current.slackClient.send(slack)
+  await get(dependency: \.slackClient).send(slack)
 
   if let location,
      location.slashedSummary.isEmpty,

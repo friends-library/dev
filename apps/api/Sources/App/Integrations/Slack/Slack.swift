@@ -110,27 +110,27 @@ extension FlpSlack.Message {
 }
 
 func slackError(_ msg: String) async {
-  await Current.slackClient.send(.error(msg))
+  await get(dependency: \.slackClient).send(.error(msg))
 }
 
 func slackDebug(_ msg: String) async {
-  await Current.slackClient.send(.debug(msg))
+  await get(dependency: \.slackClient).send(.debug(msg))
 }
 
 func slackAudio(_ msg: String) async {
-  await Current.slackClient.send(.audio(msg))
+  await get(dependency: \.slackClient).send(.audio(msg))
 }
 
 func slackDownload(_ msg: String) async {
-  await Current.slackClient.send(.download(msg))
+  await get(dependency: \.slackClient).send(.download(msg))
 }
 
 func slackInfo(_ msg: String) async {
-  await Current.slackClient.send(.info(msg))
+  await get(dependency: \.slackClient).send(.info(msg))
 }
 
 func slackOrder(_ msg: String) async {
-  await Current.slackClient.send(.order(msg))
+  await get(dependency: \.slackClient).send(.order(msg))
 }
 
 extension FlpSlack.Message.Channel: Equatable {}

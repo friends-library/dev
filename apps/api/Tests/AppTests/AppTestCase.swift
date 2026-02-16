@@ -13,6 +13,7 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
     withDependencies {
       $0.uuid = UUIDGenerator { UUID() }
       $0.date = .constant(Date())
+      $0.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }
     } operation: {
       super.invokeTest()
     }
@@ -56,7 +57,6 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
   override func setUp() async throws {
     await JoinedEntityCache.shared.flush()
     await LegacyRest.cachedData.flush()
-    Current.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }
     Current.postmarkClient.send = { [self] in sent.emails.append($0) }
     Current.postmarkClient.sendTemplateEmail = { [self] in sent.templateEmails.append($0) }
     Current.postmarkClient.sendTemplateEmailBatch = { [self] in

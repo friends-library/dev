@@ -11,6 +11,18 @@ func get<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value {
   return value
 }
 
+private enum SlackClientKey: DependencyKey {
+  static let liveValue: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
+  static let testValue: RateLimitedSlackClient = .init { _ in }
+}
+
+extension DependencyValues {
+  var slackClient: RateLimitedSlackClient {
+    get { self[SlackClientKey.self] }
+    set { self[SlackClientKey.self] = newValue }
+  }
+}
+
 private enum LuluClientKey: DependencyKey {
   static let liveValue: Lulu.Api.Client = .live
   static let testValue: Lulu.Api.Client = .mock
