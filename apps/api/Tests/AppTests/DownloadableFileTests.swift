@@ -1,3 +1,4 @@
+import Dependencies
 import DuetSQL
 import Vapor
 import XCTest
@@ -105,17 +106,20 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
 
   func testDownloadHappyPathNoLocationFound() async throws {
     let entities = try await getEntities()
-    Current.ipApiClient.getIpData = { _ in throw "whoops" }
     let userAgent = "FriendsLibrary".random
-    let device = Current.userAgentParser.parse(userAgent)
+    let device = UserAgentParser.mock.parse(userAgent)
     let file = entities.edition.downloadableFile(format: .ebook(.epub))
 
-    let res = try await DownloadRoute.logAndRedirect(
-      file: file,
-      userAgent: userAgent,
-      ipAddress: "1.2.3.4",
-      referrer: "https://www.friendslibrary.com",
-    )
+    let res = try await withDependencies {
+      $0.ipApiClient = .init(getIpData: { _ in throw "whoops" })
+    } operation: {
+      try await DownloadRoute.logAndRedirect(
+        file: file,
+        userAgent: userAgent,
+        ipAddress: "1.2.3.4",
+        referrer: "https://www.friendslibrary.com",
+      )
+    }
 
     let inserted = try await Current.db.query(Download.self)
       .where(.userAgent == .string(userAgent))
@@ -137,29 +141,31 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
 
   func testDownloadHappyPathLocationFound() async throws {
     let entities = try await getEntities()
-    Current.ipApiClient.getIpData = { ip in
-      XCTAssertEqual(ip, "1.2.3.4")
-      return .init(
-        ip: ip,
-        city: "City",
-        region: "Region",
-        countryName: "CountryName",
-        postal: "Postal",
-        latitude: 123.456,
-        longitude: -123.456,
-      )
-    }
-
     let userAgent = "Netscape 3.0".random
     let file = entities.edition
       .downloadableFile(format: .audio(.mp3(quality: .high, multipartIndex: 3)))
 
-    _ = try await DownloadRoute.logAndRedirect(
-      file: file,
-      userAgent: userAgent,
-      ipAddress: "1.2.3.4",
-      referrer: "https://www.friendslibrary.com",
-    )
+    _ = try await withDependencies {
+      $0.ipApiClient = .init(getIpData: { ip in
+        XCTAssertEqual(ip, "1.2.3.4")
+        return .init(
+          ip: ip,
+          city: "City",
+          region: "Region",
+          countryName: "CountryName",
+          postal: "Postal",
+          latitude: 123.456,
+          longitude: -123.456,
+        )
+      })
+    } operation: {
+      try await DownloadRoute.logAndRedirect(
+        file: file,
+        userAgent: userAgent,
+        ipAddress: "1.2.3.4",
+        referrer: "https://www.friendslibrary.com",
+      )
+    }
 
     let inserted = try await Current.db.query(Download.self)
       .where(.userAgent == .string(userAgent))

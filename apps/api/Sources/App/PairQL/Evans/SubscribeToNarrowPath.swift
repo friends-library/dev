@@ -64,7 +64,7 @@ extension SubscribeToNarrowPath: Resolver {
 // helpers
 
 func checkSpam(_ input: SubscribeToNarrowPath.Input) async throws {
-  switch await Current.cloudflareClient.verifyTurnstileToken(input.turnstileToken) {
+  switch await get(dependency: \.cloudflareClient).verifyTurnstileToken(input.turnstileToken) {
   case .success:
     break
   case .failure:

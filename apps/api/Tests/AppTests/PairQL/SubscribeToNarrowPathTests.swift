@@ -48,17 +48,18 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     try await Current.db.create(quote)
 
     let token = UUID()
-    Current.cloudflareClient.verifyTurnstileToken = { input in
+    let cfClient = CloudflareClient(verifyTurnstileToken: { input in
       if input == "turnstile-token-value" {
         .success
       } else {
         .failure(errorCodes: [], messages: nil)
       }
-    }
+    })
 
     let email = "you@example.com".random
     let output = try await withDependencies {
       $0.uuid = UUIDGenerator { token }
+      $0.cloudflareClient = cfClient
     } operation: {
       try await SubscribeToNarrowPath.resolve(
         with: .init(
@@ -104,17 +105,18 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     try await Current.db.create(quote)
 
     let token = UUID()
-    Current.cloudflareClient.verifyTurnstileToken = { input in
+    let cfClient = CloudflareClient(verifyTurnstileToken: { input in
       if input == "turnstile-token-value" {
         .success
       } else {
         .failure(errorCodes: [], messages: nil)
       }
-    }
+    })
 
     let email = "tu@examplo.com".random
     let output = try await withDependencies {
       $0.uuid = UUIDGenerator { token }
+      $0.cloudflareClient = cfClient
     } operation: {
       try await SubscribeToNarrowPath.resolve(
         with: .init(
@@ -175,20 +177,22 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     quote.lang = .en
     try await Current.db.create(quote)
 
-    Current.cloudflareClient.verifyTurnstileToken = { _ in
-      .failure(errorCodes: [], messages: nil)
+    try await withDependencies {
+      $0.cloudflareClient = .init(verifyTurnstileToken: { _ in
+        .failure(errorCodes: [], messages: nil)
+      })
+    } operation: {
+      try await expectErrorFrom {
+        try await SubscribeToNarrowPath.resolve(
+          with: .init(
+            email: .init(rawValue: "you@example.com"),
+            lang: .en,
+            mixedQuotes: false,
+            turnstileToken: "turnstile-token-value",
+          ),
+          in: .mock,
+        )
+      }.toContain("Bad Request")
     }
-
-    try await expectErrorFrom {
-      try await SubscribeToNarrowPath.resolve(
-        with: .init(
-          email: .init(rawValue: "you@example.com"),
-          lang: .en,
-          mixedQuotes: false,
-          turnstileToken: "turnstile-token-value",
-        ),
-        in: .mock,
-      )
-    }.toContain("Bad Request")
   }
 }

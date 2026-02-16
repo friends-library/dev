@@ -11,7 +11,5 @@ extension Environment {
     slackClient: RateLimitedSlackClient { _ in },
     luluClient: .mock,
     stripeClient: .mock,
-    ipApiClient: .mock,
-    userAgentParser: .mock,
   )
 }

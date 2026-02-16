@@ -93,7 +93,10 @@ extension Lulu.Api.Client {
   if let shippingError = try? decoder.decode(PrintJobCostCalculationsError.self, from: data) {
     if let first = shippingError.shippingAddress.detail.errors.first?.message {
       if lang == .en { return .shippingAddressError(first) }
-      let translation = try? await Current.deeplClient.translate(first, TRANSLATION_CONTEXT)
+      let translation = try? await get(dependency: \.deeplClient).translate(
+        first,
+        TRANSLATION_CONTEXT,
+      )
       return .shippingAddressError(translation ?? first)
     }
     throw MissingShippingErrorDetail(body: String(data: data, encoding: .utf8))

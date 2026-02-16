@@ -52,7 +52,7 @@ enum DownloadRoute: RouteHandler {
 
     // do all db/api/logging work in background task to return response faster
     let bgWork = Task { [source] in
-      guard let device = Current.userAgentParser.parse(userAgent) else {
+      guard let device = get(dependency: \.userAgentParser).parse(userAgent) else {
         await slackError("Failed to parse user agent `\(userAgent)` into device data")
         return
       }
@@ -101,7 +101,7 @@ enum DownloadRoute: RouteHandler {
       var location: IpApi.Response?
       if let ip = ipAddress, ip != "127.0.0.1" {
         do {
-          location = try await Current.ipApiClient.getIpData(ip)
+          location = try await get(dependency: \.ipApiClient).getIpData(ip)
           download.city = location?.city
           download.region = location?.region
           download.postalCode = location?.postal
