@@ -7,11 +7,12 @@ enum OrderPrintJobCoordinator {
   typealias JobCreator = (Order) async throws -> Lulu.Api.PrintJob
 
   static func createNewPrintJobs(_ createPrintJob: JobCreator = PrintJobs.create(_:)) async {
+    let db = get(dependency: \.db)
     let orders: [Order]
     do {
-      orders = try await Current.db.query(Order.self)
+      orders = try await db.query(Order.self)
         .where(.printJobStatus == .enum(Order.PrintJobStatus.presubmit))
-        .all(in: Current.db)
+        .all(in: get(dependency: \.db))
     } catch {
       await notifyErr("27fad259", "Error querying presubmit orders", error)
       return
@@ -47,7 +48,7 @@ enum OrderPrintJobCoordinator {
 
     if !updated.isEmpty {
       do {
-        try await Current.db.update(updated)
+        try await db.update(updated)
       } catch {
         await notifyErr("4ffa0b87", "Error updating orders", error)
       }
@@ -55,7 +56,8 @@ enum OrderPrintJobCoordinator {
   }
 
   static func checkPendingOrders() async {
-    guard let (orders, printJobs) = await getOrdersWithPrintJobs(status: .pending) else {
+    let db = get(dependency: \.db)
+    guard let (orders, printJobs) = await getOrdersWithPrintJobs(status: .pending, in: db) else {
       return
     }
 
@@ -105,11 +107,12 @@ enum OrderPrintJobCoordinator {
       }
     }
 
-    await updateOrders(updated)
+    await updateOrders(updated, in: db)
   }
 
   static func sendTrackingEmails() async {
-    guard let (orders, printJobs) = await getOrdersWithPrintJobs(status: .accepted) else {
+    let db = get(dependency: \.db)
+    guard let (orders, printJobs) = await getOrdersWithPrintJobs(status: .accepted, in: db) else {
       return
     }
 
@@ -137,7 +140,7 @@ enum OrderPrintJobCoordinator {
       case .shipped:
         order.printJobStatus = .shipped
         updated.append(order)
-        await sendOrderShippedEmail(order, printJob)
+        await sendOrderShippedEmail(order, printJob, in: db)
         await slackOrder("Order \(order |> slackLink) shipped")
       case .paymentInProgress,
            .productionReady,
@@ -149,26 +152,30 @@ enum OrderPrintJobCoordinator {
       }
     }
 
-    await updateOrders(updated)
+    await updateOrders(updated, in: db)
   }
 }
 
 // helpers
 
-private func sendOrderShippedEmail(_ order: Order, _ printJob: Lulu.Api.PrintJob) async {
+private func sendOrderShippedEmail(
+  _ order: Order,
+  _ printJob: Lulu.Api.PrintJob,
+  in db: any DuetSQL.Client,
+) async {
   do {
     let trackingUrl = printJob.lineItems.compactMap { $0.trackingUrls?.first }.first
-    let email = try await EmailBuilder.orderShipped(order, trackingUrl: trackingUrl)
+    let email = try await EmailBuilder.orderShipped(order, trackingUrl: trackingUrl, in: db)
     await get(dependency: \.postmarkClient).send(email)
   } catch {
     await notifyErr("8190eb37", "Error sending order shipped email for order \(order.id)", error)
   }
 }
 
-private func updateOrders(_ orders: [Order]) async {
+private func updateOrders(_ orders: [Order], in db: any DuetSQL.Client) async {
   guard !orders.isEmpty else { return }
   do {
-    try await Current.db.update(orders)
+    try await db.update(orders)
   } catch {
     let ids = orders.map(\.id.rawValue.uuidString).joined(separator: ", ")
     await notifyErr("15cc926e", "Error updating orders: [\(ids)]", error)
@@ -177,13 +184,14 @@ private func updateOrders(_ orders: [Order]) async {
 
 private func getOrdersWithPrintJobs(
   status: Order.PrintJobStatus,
+  in db: any DuetSQL.Client,
 ) async -> (orders: [Order], printJobs: [Lulu.Api.PrintJob])? {
   let orders: [Order]
   let printJobs: [Lulu.Api.PrintJob]
   do {
-    orders = try await Current.db.query(Order.self)
+    orders = try await db.query(Order.self)
       .where(.printJobStatus == .enum(status))
-      .all(in: Current.db)
+      .all(in: get(dependency: \.db))
 
     guard let printJobIds = await orderPrintJobIds(orders) else {
       return nil

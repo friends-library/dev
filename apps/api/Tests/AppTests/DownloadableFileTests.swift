@@ -12,8 +12,8 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
   var websiteUrl: String { Env.WEBSITE_URL_EN }
 
   func getEntities() async throws -> Entities {
-    try await Current.db.delete(all: Download.self)
-    _ = try await Friend.query().delete(in: Current.db, force: true)
+    try await self.db.delete(all: Download.self)
+    _ = try await Friend.query().delete(in: self.db, force: true)
     return await Entities.create {
       $0.friend.lang = .en
       $0.edition.type = .updated
@@ -68,7 +68,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
   }
 
   func testPodcastAgentsIdentifiedAsPodcast() async throws {
-    try await Current.db.delete(all: Download.self)
+    try await self.db.delete(all: Download.self)
     let entities = try await getEntities()
     let userAgents = [
       "lol podcasts",
@@ -83,9 +83,9 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
     for userAgent in userAgents {
       let file = entities.edition.downloadableFile(format: .ebook(.epub))
       let res = try await DownloadRoute.logAndRedirect(file: file, userAgent: userAgent)
-      let download = try await Current.db.query(Download.self)
+      let download = try await self.db.query(Download.self)
         .where(.userAgent == .string(userAgent))
-        .first(in: Current.db)
+        .first(in: self.db)
       XCTAssertEqual(download.source, .podcast)
       XCTAssertEqual(res.status, Redirect.permanent.status)
     }
@@ -96,9 +96,9 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
     let botUa = "GoogleBot"
     let file = entities.edition.downloadableFile(format: .ebook(.epub))
     let res = try await DownloadRoute.logAndRedirect(file: file, userAgent: botUa)
-    let downloads = try await Current.db.query(Download.self)
+    let downloads = try await self.db.query(Download.self)
       .where(.userAgent == .string("GoogleBot"))
-      .all(in: Current.db)
+      .all(in: self.db)
     XCTAssertEqual([], downloads) // no downloads inserted in db
     XCTAssertEqual(sent.slacks, [.debug("Bot download: `GoogleBot`")])
     XCTAssertEqual(res.headers.first(name: .location), file.sourceUrl.absoluteString)
@@ -121,9 +121,9 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
       )
     }
 
-    let inserted = try await Current.db.query(Download.self)
+    let inserted = try await self.db.query(Download.self)
       .where(.userAgent == .string(userAgent))
-      .first(in: Current.db)
+      .first(in: self.db)
 
     XCTAssertEqual(inserted.editionId, entities.edition.id)
     XCTAssertEqual(inserted.format, .epub)
@@ -167,9 +167,9 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
       )
     }
 
-    let inserted = try await Current.db.query(Download.self)
+    let inserted = try await self.db.query(Download.self)
       .where(.userAgent == .string(userAgent))
-      .first(in: Current.db)
+      .first(in: self.db)
 
     XCTAssertEqual(inserted.city, "City")
     XCTAssertEqual(inserted.region, "Region")
@@ -188,9 +188,9 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
 
     _ = try await DownloadRoute.logAndRedirect(file: file, userAgent: userAgent)
 
-    let inserted = try await Current.db.query(Download.self)
+    let inserted = try await self.db.query(Download.self)
       .where(.userAgent == .string(userAgent))
-      .first(in: Current.db)
+      .first(in: self.db)
 
     XCTAssertEqual(inserted.editionId, entities.edition.id)
   }
@@ -198,7 +198,7 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
   func testDuplicatePodcastDownloadsAreNotLogged() async throws {
     let entities = await Entities.create()
 
-    try await Current.db.create(Download(
+    try await self.db.create(Download(
       editionId: entities.edition.id,
       format: .podcast,
       source: .podcast,
@@ -206,10 +206,10 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
       ip: "1.2.3.4",
     ))
 
-    let beforeDupe = try await Current.db.query(Download.self)
+    let beforeDupe = try await self.db.query(Download.self)
       .where(.editionId == entities.edition.id)
       .where(.ip == "1.2.3.4")
-      .all(in: Current.db)
+      .all(in: self.db)
 
     XCTAssertEqual(beforeDupe.count, 1)
     XCTAssertEqual(beforeDupe.first?.format, .podcast)
@@ -222,10 +222,10 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
       ipAddress: "1.2.3.4",
     )
 
-    let afterDupe = try await Current.db.query(Download.self)
+    let afterDupe = try await self.db.query(Download.self)
       .where(.editionId == entities.edition.id)
       .where(.ip == "1.2.3.4")
-      .all(in: Current.db)
+      .all(in: self.db)
 
     XCTAssertEqual(afterDupe.count, 1)
     XCTAssertEqual(afterDupe.first?.id, beforeDupe.first?.id)

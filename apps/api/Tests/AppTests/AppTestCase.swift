@@ -9,6 +9,8 @@ import XPostmark
 @testable import DuetSQL
 
 class AppTestCase: XCTestCase, @unchecked Sendable {
+  @Dependency(\.db) var db
+
   override func invokeTest() {
     withDependencies {
       $0.uuid = UUIDGenerator { UUID() }
@@ -47,9 +49,7 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
     setenv("WEBSITE_URL_EN", "https://friendslibrary.com", 1)
     setenv("WEBSITE_URL_ES", "https://bibliotecadelosamigos.org", 1)
     self.app = Application(.testing)
-    Current = .mock
     try! Configure.app(self.app)
-    Current.db = FlushingDbClient(self.app.db as! SQLDatabase)
     self.app.logger = .null
     if !self.migrated {
       try! self.app.autoRevert().wait()

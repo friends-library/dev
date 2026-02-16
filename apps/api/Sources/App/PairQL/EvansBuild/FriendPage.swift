@@ -94,7 +94,7 @@ extension FriendPage: Resolver {
       throw Abort(.notFound)
     }
 
-    let downloads = try await Current.db.customQuery(
+    let downloads = try await context.db.customQuery(
       AllDocumentDownloads.self,
       withBindings: [.enum(input.lang), .uuid(friend.id)],
     ).urlPathDict

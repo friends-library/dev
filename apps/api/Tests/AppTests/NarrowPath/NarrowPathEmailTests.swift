@@ -195,44 +195,44 @@ final class NarrowPathEmailTests: AppTestCase, @unchecked Sendable {
     <a class="doc" href="https://bibliotecadelosamigos.org/compilaciones/piety-promotedo">Piety Promotedo</a>
     """)
   }
-}
 
-// helpers
+  // helpers
 
-private func friend(
-  _ name: String,
-  _ slug: String,
-  lang: Lang = .en,
-  gender: Friend.Gender = .male,
-) async throws -> Friend {
-  try await Current.db.create(Friend(
-    lang: lang,
-    name: name,
-    slug: slug,
-    gender: gender,
-    description: "",
-    born: nil,
-    died: nil,
-    published: nil,
-  ))
-}
+  private func friend(
+    _ name: String,
+    _ slug: String,
+    lang: Lang = .en,
+    gender: Friend.Gender = .male,
+  ) async throws -> Friend {
+    try await self.db.create(Friend(
+      lang: lang,
+      name: name,
+      slug: slug,
+      gender: gender,
+      description: "",
+      born: nil,
+      died: nil,
+      published: nil,
+    ))
+  }
 
-private func document(
-  _ title: String,
-  _ slug: String,
-  _ friendId: Friend.Id,
-) async throws -> Document {
-  try await Current.db.create(Document(
-    friendId: friendId,
-    altLanguageId: nil,
-    title: title,
-    slug: slug,
-    filename: "".random,
-    published: nil,
-    originalTitle: nil,
-    incomplete: false,
-    description: "",
-    partialDescription: "",
-    featuredDescription: nil,
-  ))
+  private func document(
+    _ title: String,
+    _ slug: String,
+    _ friendId: Friend.Id,
+  ) async throws -> Document {
+    try await self.db.create(Document(
+      friendId: friendId,
+      altLanguageId: nil,
+      title: title,
+      slug: slug,
+      filename: "".random,
+      published: nil,
+      originalTitle: nil,
+      incomplete: false,
+      description: "",
+      partialDescription: "",
+      featuredDescription: nil,
+    ))
+  }
 }

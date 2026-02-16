@@ -1,4 +1,6 @@
 import Dependencies
+import DuetSQL
+import Foundation
 import Logging
 import XPostmark
 import XStripe
@@ -11,6 +13,29 @@ func with<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value 
 func get<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value {
   @Dependency(keyPath) var value
   return value
+}
+
+private enum DbClientKey: DependencyKey {
+  static var liveValue: DuetSQL.Client {
+    FlushingDbClient(origin: PgClient(
+      factory: .flpPostgres(),
+      numberOfThreads: ProcessInfo.processInfo.activeProcessorCount,
+    ))
+  }
+
+  static var testValue: DuetSQL.Client {
+    FlushingDbClient(origin: PgClient(
+      factory: .flpPostgres(testDb: true),
+      numberOfThreads: 1,
+    ))
+  }
+}
+
+public extension DependencyValues {
+  var db: DuetSQL.Client {
+    get { self[DbClientKey.self] }
+    set { self[DbClientKey.self] = newValue }
+  }
 }
 
 private enum LoggerKey: DependencyKey {

@@ -7,7 +7,7 @@ import XExpect
 
 final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testUnsubscribeWebhook() async throws {
-    let subscriber = try await Current.db.create(NPSubscriber(
+    let subscriber = try await self.db.create(NPSubscriber(
       token: nil,
       mixedQuotes: true,
       email: "bob@\(Int.random)bob.com",
@@ -37,7 +37,7 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
 
     let path = "postmark/webhook/\(Env.POSTMARK_WEBHOOK_SLUG)"
     try await app.test(.POST, path, body: .init(string: json), afterResponse: { res in
-      let retrieved = try await Current.db.find(subscriber.id)
+      let retrieved = try await self.db.find(subscriber.id)
       expect(retrieved.unsubscribedAt).not.toBeNil()
     })
   }
@@ -45,7 +45,7 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testEnglishSubscribingHappyPath() async throws {
     var quote = NPQuote.mock
     quote.lang = .en
-    try await Current.db.create(quote)
+    try await self.db.create(quote)
 
     let token = UUID()
     let cfClient = CloudflareClient(verifyTurnstileToken: { input in
@@ -79,14 +79,14 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
 
     let subscriber = try await NPSubscriber.query()
       .where(.email == email)
-      .first(in: Current.db)
+      .first(in: self.db)
 
     expect(subscriber.email).toEqual(email)
     expect(subscriber.lang).toEqual(Lang.en)
     expect(subscriber.pendingConfirmationToken).toEqual(token)
 
     try await app.test(.GET, "confirm-email/en/\(token.lowercased)") { res in
-      let retrieved = try await Current.db.find(subscriber.id)
+      let retrieved = try await self.db.find(subscriber.id)
       expect(retrieved.pendingConfirmationToken).toBeNil()
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
@@ -102,7 +102,7 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testSpanishSubscribingHappyPath() async throws {
     var quote = NPQuote.mock
     quote.lang = .es
-    try await Current.db.create(quote)
+    try await self.db.create(quote)
 
     let token = UUID()
     let cfClient = CloudflareClient(verifyTurnstileToken: { input in
@@ -136,14 +136,14 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
 
     let subscriber = try await NPSubscriber.query()
       .where(.email == email)
-      .first(in: Current.db)
+      .first(in: self.db)
 
     expect(subscriber.email).toEqual(email)
     expect(subscriber.lang).toEqual(Lang.es)
     expect(subscriber.pendingConfirmationToken).toEqual(token)
 
     try await app.test(.GET, "confirm-email/es/\(token.lowercased)") { res in
-      let retrieved = try await Current.db.find(subscriber.id)
+      let retrieved = try await self.db.find(subscriber.id)
       expect(retrieved.pendingConfirmationToken).toBeNil()
       expect(res.status).toEqual(.temporaryRedirect)
       expect(res.headers.first(name: .location))
@@ -175,7 +175,7 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testSpamRejectionFromCloudflareChallenge() async throws {
     var quote = NPQuote.mock
     quote.lang = .en
-    try await Current.db.create(quote)
+    try await self.db.create(quote)
 
     try await withDependencies {
       $0.cloudflareClient = .init(verifyTurnstileToken: { _ in

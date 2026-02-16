@@ -90,8 +90,11 @@ extension DevRoute: RouteResponder {
   static func respond(to route: Self, in context: Context) async throws -> Response {
     switch route {
     case .authed(let token, let authedRoute):
-      let token = try await Token.query().where(.value == token).first(in: Current.db)
-      let authed = try await AuthedContext(requestId: context.requestId, scopes: token.scopes())
+      let token = try await Token.query().where(.value == token).first(in: context.db)
+      let authed = try await AuthedContext(
+        requestId: context.requestId,
+        scopes: token.scopes(in: context.db),
+      )
       switch authedRoute {
       case .createArtifactProductionVersion(let input):
         let output = try await CreateArtifactProductionVersion.resolve(with: input, in: authed)

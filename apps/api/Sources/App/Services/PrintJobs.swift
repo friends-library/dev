@@ -6,7 +6,7 @@ enum PrintJobs {
   static func create(_ order: Order) async throws -> Lulu.Api.PrintJob {
     let orderItems = try await OrderItem.query()
       .where(.orderId == order.id)
-      .all(in: Current.db)
+      .all(in: get(dependency: \.db))
 
     let lineItems = try await orderItems.concurrentMap { item in
       let edition = try await Edition.Joined.find(item.editionId)

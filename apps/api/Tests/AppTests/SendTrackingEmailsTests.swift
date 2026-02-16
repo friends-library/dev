@@ -16,8 +16,8 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
   }
 
   func testCheckSendTrackingEmailsHappyPath() async throws {
-    try await Current.db.delete(all: Order.self)
-    try await Current.db.create(self.order)
+    try await self.db.delete(all: Order.self)
+    try await self.db.create(self.order)
 
     await withDependencies {
       $0.luluClient.listPrintJobs = { ids in
@@ -32,7 +32,7 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
       await OrderPrintJobCoordinator.sendTrackingEmails()
     }
 
-    let retrieved = try await Current.db.find(self.order.id)
+    let retrieved = try await self.db.find(self.order.id)
     XCTAssertEqual(retrieved.printJobStatus, .shipped)
     XCTAssertEqual(sent.emails.count, 1)
     XCTAssertEqual(sent.emails.first?.to, "foo@bar.com")
@@ -41,8 +41,8 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
   }
 
   func testOrderCanceledUpdatesOrderAndSlacks() async throws {
-    _ = try await Current.db.query(Order.self).delete(in: Current.db)
-    try await Current.db.create(self.order)
+    _ = try await self.db.query(Order.self).delete(in: self.db)
+    try await self.db.create(self.order)
 
     await withDependencies {
       $0.luluClient.listPrintJobs = { _ in
@@ -52,7 +52,7 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
       await OrderPrintJobCoordinator.sendTrackingEmails()
     }
 
-    let retrieved = try await Current.db.find(self.order.id)
+    let retrieved = try await self.db.find(self.order.id)
     XCTAssertEqual(retrieved.printJobStatus, .canceled)
     XCTAssertEqual(sent.emails.count, 1)
     XCTAssert(sent.emails[0].subject.contains("Print job error"))

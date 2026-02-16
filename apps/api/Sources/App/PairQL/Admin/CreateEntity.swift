@@ -65,7 +65,7 @@ extension CreateEntity: Resolver {
     case .edition(let input):
       var isbn: Isbn
       do {
-        isbn = try await Isbn.query().where(.isNull(.editionId)).first(in: Current.db)
+        isbn = try await Isbn.query().where(.isNull(.editionId)).first(in: context.db)
       } catch {
         await slackError("Failed to query ISBN to assign to new edition: \(error)")
         throw error
@@ -81,8 +81,8 @@ extension CreateEntity: Resolver {
       )
       isbn.editionId = edition.id
       guard await edition.isValid() else { throw ModelError.invalidEntity }
-      try await Current.db.create(edition)
-      try await Current.db.update(isbn)
+      try await context.db.create(edition)
+      try await context.db.update(isbn)
       return .success
 
     case .friend(let input):
@@ -152,7 +152,7 @@ extension CreateEntity: Resolver {
       throw ModelError.invalidEntity
     }
 
-    try await Current.db.create(model)
+    try await context.db.create(model)
     return .success
   }
 }

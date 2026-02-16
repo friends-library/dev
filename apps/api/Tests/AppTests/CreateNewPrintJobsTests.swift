@@ -12,7 +12,7 @@ final class CreateNewPrintJobTests: AppTestCase, @unchecked Sendable {
   func testCreateNewPrintJobHappyPath() async throws {
     var order = Order.random
     order.printJobStatus = .presubmit
-    try await Current.db.create(order)
+    try await self.db.create(order)
     var created: [Order] = []
 
     await OrderPrintJobCoordinator.createNewPrintJobs {
@@ -20,7 +20,7 @@ final class CreateNewPrintJobTests: AppTestCase, @unchecked Sendable {
       return .init(id: 33, status: .init(name: .created), lineItems: [])
     }
 
-    let updated = try await Current.db.find(order.id)
+    let updated = try await self.db.find(order.id)
     XCTAssertEqual(created.count, 1)
     XCTAssertEqual(created.first?.id, order.id)
     XCTAssertEqual(created.first?.printJobStatus, order.printJobStatus)
@@ -32,13 +32,13 @@ final class CreateNewPrintJobTests: AppTestCase, @unchecked Sendable {
   func testUnexpectedLuluStatusLogsErrorWithoutUpdatingOrder() async throws {
     var order = Order.random
     order.printJobStatus = .presubmit
-    try await Current.db.create(order)
+    try await self.db.create(order)
 
     await OrderPrintJobCoordinator.createNewPrintJobs { _ in
       .init(id: 33, status: .init(name: .error), lineItems: [])
     }
 
-    let retrieved = try await Current.db.find(order.id)
+    let retrieved = try await self.db.find(order.id)
     XCTAssertEqual(
       sent.slacks,
       [.error("Unexpected print job status `ERROR` for order \(order.id.lowercased)")],

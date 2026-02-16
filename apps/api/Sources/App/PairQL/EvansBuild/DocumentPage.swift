@@ -128,7 +128,7 @@ extension DocumentPage: Resolver {
       throw Abort(.notFound)
     }
 
-    let rows = try await Current.db.customQuery(
+    let rows = try await context.db.customQuery(
       DocumentDownloads.self,
       withBindings: document.editions.map { .uuid($0.id) },
     )

@@ -50,8 +50,8 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
     var item = OrderItem.random
     item.orderId = order.id
     item.editionId = entities.edition.id
-    try await Current.db.create(order)
-    try await Current.db.create(item)
+    try await self.db.create(order)
+    try await self.db.create(item)
 
     let job = try await withDependencies {
       $0.luluClient.createPrintJob = {
@@ -96,8 +96,8 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
     var item = OrderItem.random
     item.orderId = order.id
     item.editionId = entities.edition.id
-    try await Current.db.create(order)
-    try await Current.db.create(item)
+    try await self.db.create(order)
+    try await self.db.create(item)
 
     let job = try await withDependencies {
       $0.luluClient.createPrintJob = {

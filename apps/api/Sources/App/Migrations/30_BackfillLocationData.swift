@@ -6,9 +6,9 @@ struct BackfillLocationData: AsyncMigration {
   func prepare(on database: Database) async throws {
     get(dependency: \.logger).info("Running migration: BackfillLocationData UP")
 
-    let downloads = try await Current.db.query(Download.self)
+    let downloads = try await get(dependency: \.db).query(Download.self)
       .where(.not(.isNull(.ip)))
-      .all(in: Current.db)
+      .all(in: get(dependency: \.db))
 
     let data = backfillLocationData(downloads)
     let numFillable = data.updates.reduce(into: 0) { acc, update in
@@ -36,7 +36,7 @@ struct BackfillLocationData: AsyncMigration {
 
       try await update.targets.chunked(into: 100).asyncForEach { chunk in
         get(dependency: \.logger).info("  -> updating batch chunk of size: \(chunk.count)")
-        try await Current.db.update(chunk)
+        try await get(dependency: \.db).update(chunk)
       }
     }
   }

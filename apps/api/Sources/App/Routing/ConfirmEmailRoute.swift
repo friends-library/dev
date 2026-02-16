@@ -5,19 +5,20 @@ enum ConfirmEmailRoute: RouteHandler {
   @Sendable static func handler(_ request: Request) async throws -> Response {
     let langString = request.parameters.get("language")
     let lang: Lang = langString == "es" ? .es : .en
+    let db = get(dependency: \.db)
 
     guard let tokenString = request.parameters.get("token"),
           let token = UUID(uuidString: tokenString),
           var subscriber = try? await NPSubscriber
           .query()
           .where(.pendingConfirmationToken == token)
-          .first(in: Current.db) else {
+          .first(in: db) else {
       return .npRedirect(.confirmEmailFailure, lang)
     }
 
     do {
       subscriber.pendingConfirmationToken = nil
-      try await Current.db.update(subscriber)
+      try await db.update(subscriber)
     } catch {
       return .npRedirect(.confirmEmailFailure, lang)
     }
@@ -29,7 +30,7 @@ enum ConfirmEmailRoute: RouteHandler {
       let quote = try await NPQuote.query()
         .where(.lang == subscriber.lang)
         .where(.isFriend == true)
-        .first(in: Current.db)
+        .first(in: db)
 
       let email = try await quote.email()
       let template = email.template(to: subscriber.email)
@@ -52,7 +53,8 @@ enum NPResubscribeRoute: RouteHandler {
       return Response(status: .badRequest)
     }
 
-    guard var subscriber = try? await Current.db.find(NPSubscriber.Id(uuid)) else {
+    let db = get(dependency: \.db)
+    guard var subscriber = try? await db.find(NPSubscriber.Id(uuid)) else {
       return Response(status: .notFound)
     }
 
@@ -65,7 +67,7 @@ enum NPResubscribeRoute: RouteHandler {
       return Response(status: .internalServerError)
     case .success:
       subscriber.unsubscribedAt = nil
-      try await Current.db.update(subscriber)
+      try await db.update(subscriber)
       return .init(
         status: .ok,
         headers: ["Content-Type": "text/html"],

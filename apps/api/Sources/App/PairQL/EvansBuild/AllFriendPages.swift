@@ -16,7 +16,7 @@ extension AllFriendPages: Resolver {
     let friends = try await Friend.Joined.all()
       .filter { $0.lang == lang && $0.hasNonDraftNonOobDocument }
 
-    let downloads = try await Current.db.customQuery(
+    let downloads = try await context.db.customQuery(
       AllDocumentDownloads.self,
       withBindings: [.enum(lang), .null],
     )

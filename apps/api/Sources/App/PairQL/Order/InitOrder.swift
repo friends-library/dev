@@ -25,8 +25,8 @@ extension InitOrder: Resolver {
         Env.STRIPE_SECRET_KEY,
       )
       let tokenDesc = "single-use create order token for order `\(orderId.lowercased)`"
-      async let token = Current.db.create(Token(description: tokenDesc, uses: 1))
-      try await Current.db.create(TokenScope(tokenId: token.id, scope: .mutateOrders))
+      async let token = context.db.create(Token(description: tokenDesc, uses: 1))
+      try await context.db.create(TokenScope(tokenId: token.id, scope: .mutateOrders))
       return try await .init(
         orderId: orderId,
         orderPaymentId: .init(rawValue: pi.id),

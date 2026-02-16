@@ -7,7 +7,7 @@ import XExpect
 
 final class OrderInitializationTests: AppTestCase, @unchecked Sendable {
   func testCreateOrderInitializationSuccess() async throws {
-    try await Current.db.delete(all: Token.self)
+    try await self.db.delete(all: Token.self)
 
     let uuids = MockUUIDs()
 

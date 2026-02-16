@@ -11,8 +11,8 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
     var order = Order.mock
     order.printJobStatus = .pending
     order.printJobId = 33
-    try await Current.db.delete(all: Order.self)
-    try await Current.db.create(order)
+    try await self.db.delete(all: Order.self)
+    try await self.db.create(order)
 
     await withDependencies {
       $0.luluClient.listPrintJobs = { ids in
@@ -27,7 +27,7 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
       await OrderPrintJobCoordinator.checkPendingOrders()
     }
 
-    let retrieved = try await Current.db.find(order.id)
+    let retrieved = try await self.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .accepted)
     XCTAssertEqual(
       sent.slacks,
@@ -36,20 +36,21 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
   }
 
   func testSlackLogsErrorIfDbThrows() async throws {
-    let existingDb = Current.db
-    Current.db = ThrowingClient()
-    await OrderPrintJobCoordinator.checkPendingOrders()
+    await withDependencies {
+      $0.db = ThrowingClient()
+    } operation: {
+      await OrderPrintJobCoordinator.checkPendingOrders()
+    }
     XCTAssertEqual(sent.slacks.count, 1)
     XCTAssertEqual(sent.slacks[0].channel, .errors)
-    Current.db = existingDb
   }
 
   func testSlackLogsErrorIfOrderMissingPrintJobId() async throws {
-    try await Current.db.delete(all: Order.self)
+    try await self.db.delete(all: Order.self)
     var order = Order.mock
     order.printJobStatus = .pending
     order.printJobId = nil // <-- should never happen
-    try await Current.db.create(order)
+    try await self.db.create(order)
 
     await OrderPrintJobCoordinator.checkPendingOrders()
 
@@ -60,11 +61,11 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
   }
 
   func testRejectedPrintJobUpdatedAndSlacked() async throws {
-    try await Current.db.delete(all: Order.self)
+    try await self.db.delete(all: Order.self)
     var order = Order.mock
     order.printJobStatus = .pending
     order.printJobId = 33
-    try await Current.db.create(order)
+    try await self.db.create(order)
 
     await withDependencies {
       $0.luluClient.listPrintJobs = { _ in
@@ -80,7 +81,7 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
       await OrderPrintJobCoordinator.checkPendingOrders()
     }
 
-    let retrieved = try await Current.db.find(order.id)
+    let retrieved = try await self.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .rejected)
     XCTAssertEqual(
       sent.slacks,

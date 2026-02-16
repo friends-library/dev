@@ -18,7 +18,7 @@ struct GetFreeOrderRequest: Pair {
 extension GetFreeOrderRequest: Resolver {
   static func resolve(with id: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
-    let request = try await Current.db.find(id)
+    let request = try await context.db.find(id)
     return .init(email: request.email, address: request.address)
   }
 }

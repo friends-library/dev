@@ -6,8 +6,8 @@ import XExpect
 
 final class DevDomainTests: AppTestCase, @unchecked Sendable {
   func testLatestRevision() async throws {
-    try await Current.db.create(ArtifactProductionVersion(version: "older"))
-    try await Current.db.create(ArtifactProductionVersion(version: "newer"))
+    try await self.db.create(ArtifactProductionVersion(version: "older"))
+    try await self.db.create(ArtifactProductionVersion(version: "newer"))
 
     let output = try await LatestArtifactProductionVersion.resolve(in: .authed)
 
@@ -15,7 +15,7 @@ final class DevDomainTests: AppTestCase, @unchecked Sendable {
   }
 
   func testCreateArtifactProductionVersion() async throws {
-    try await Current.db.delete(all: ArtifactProductionVersion.self)
+    try await self.db.delete(all: ArtifactProductionVersion.self)
     let sha = "d3a484ceb896aadd21adae7cad1a2f6debf05671"
 
     let output = try await CreateArtifactProductionVersion.resolve(
@@ -25,7 +25,7 @@ final class DevDomainTests: AppTestCase, @unchecked Sendable {
 
     let retrieved = try? await ArtifactProductionVersion.query()
       .where(.version == sha)
-      .first(in: Current.db)
+      .first(in: self.db)
 
     expect(retrieved).not.toBeNil()
     expect(output).toEqual(.init(id: retrieved?.id ?? .init()))
@@ -47,15 +47,16 @@ final class DevDomainTests: AppTestCase, @unchecked Sendable {
       in: .authed,
     )
     expect(output.id).toEqual(entities.editionImpression.id)
-    let fetched: EditionImpression = try await Current.db.find(entities.editionImpression.id)
+    let fetched: EditionImpression = try await self.db.find(entities.editionImpression.id)
     expect(fetched.adocLength).toEqual(3333)
   }
 }
 
 extension Token {
   static func allScopes() async -> [TokenScope] {
-    let token = try! await Current.db.create(Token(description: "@testing"))
-    let scope = try! await Current.db.create(TokenScope(tokenId: token.id, scope: .all))
+    let db = get(dependency: \.db)
+    let token = try! await db.create(Token(description: "@testing"))
+    let scope = try! await db.create(TokenScope(tokenId: token.id, scope: .all))
     return [scope]
   }
 }

@@ -24,7 +24,7 @@ extension SubscribeToNarrowPath: Resolver {
     let existing = try? await NPSubscriber.query()
       .where(.email == input.email.rawValue.lowercased())
       .where(.lang == input.lang)
-      .first(in: Current.db)
+      .first(in: context.db)
     if existing != nil {
       await slackError("NP subscribe duplicate email error: `\(input.email)`")
       throw Abort(.badRequest, reason: "Email already subscribed")
@@ -32,7 +32,7 @@ extension SubscribeToNarrowPath: Resolver {
 
     @Dependency(\.uuid) var uuid
     let token = uuid()
-    try await Current.db.create(NPSubscriber(
+    try await context.db.create(NPSubscriber(
       token: token,
       mixedQuotes: input.mixedQuotes,
       email: input.email.rawValue.lowercased(),

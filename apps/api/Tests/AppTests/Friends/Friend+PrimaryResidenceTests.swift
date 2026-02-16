@@ -8,7 +8,7 @@ final class FriendPrimaryResidenceTests: AppTestCase, @unchecked Sendable {
       $0.friendResidence.city = "Sheffield"
       $0.friendResidence.region = "England"
     }
-    try await Current.db.delete(
+    try await self.db.delete(
       FriendResidenceDuration.self,
       byId: entities.friendResidenceDuration.id,
     ) // no durations
@@ -26,13 +26,13 @@ final class FriendPrimaryResidenceTests: AppTestCase, @unchecked Sendable {
       $0.friendResidenceDuration.end = 1780
     }
 
-    let longResidence = try await Current.db.create(FriendResidence(
+    let longResidence = try await self.db.create(FriendResidence(
       friendId: entities.friend.id,
       city: "York",
       region: "England",
     ))
 
-    try await Current.db.create(FriendResidenceDuration(
+    try await self.db.create(FriendResidenceDuration(
       friendResidenceId: longResidence.id,
       start: 1700,
       end: 1770,
@@ -53,13 +53,13 @@ final class FriendPrimaryResidenceTests: AppTestCase, @unchecked Sendable {
       $0.friendResidenceDuration.end = 1717
     }
 
-    let adultResidence = try await Current.db.create(FriendResidence(
+    let adultResidence = try await self.db.create(FriendResidence(
       friendId: entities.friend.id,
       city: "Sheffield",
       region: "England",
     ))
 
-    try await Current.db.create(FriendResidenceDuration(
+    try await self.db.create(FriendResidenceDuration(
       friendResidenceId: adultResidence.id,
       start: 1717, end: 1724, // <-- shorter, but adult
     ))

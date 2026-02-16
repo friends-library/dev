@@ -9,10 +9,10 @@ struct RemoveDuplicatePodcastDownloads: AsyncMigration {
       return
     }
 
-    let downloads = try await Current.db.query(Download.self)
+    let downloads = try await get(dependency: \.db).query(Download.self)
       .where(.format == .enum(Download.Format.podcast))
       .where(.not(.isNull(.ip)))
-      .all(in: Current.db)
+      .all(in: get(dependency: \.db))
 
     let duplicates = findDuplicatePodcastDownloads(downloads)
 
@@ -26,9 +26,9 @@ struct RemoveDuplicatePodcastDownloads: AsyncMigration {
 
     try await duplicates.chunked(into: Postgres.MAX_BIND_PARAMS / 2).asyncForEach {
       get(dependency: \.logger).info("  -> deleting chunk of size: \($0.count)")
-      try await Current.db.query(Download.self)
+      try await get(dependency: \.db).query(Download.self)
         .where(.id |=| $0.map(\.id))
-        .delete(in: Current.db)
+        .delete(in: get(dependency: \.db))
     }
 
     get(dependency: \.logger).info("  -> completed deletion")

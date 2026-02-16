@@ -52,6 +52,7 @@ enum DownloadRoute: RouteHandler {
 
     // do all db/api/logging work in background task to return response faster
     let bgWork = Task { [source] in
+      let db = get(dependency: \.db)
       guard let device = get(dependency: \.userAgentParser).parse(userAgent) else {
         await slackError("Failed to parse user agent `\(userAgent)` into device data")
         return
@@ -69,11 +70,11 @@ enum DownloadRoute: RouteHandler {
 
       // prevent duplicate podcast downloads
       if downloadFormat == .podcast, let ipAddress {
-        let dupe = try? await Current.db.query(Download.self)
+        let dupe = try? await db.query(Download.self)
           .where(.ip == .string(ipAddress))
           .where(.format == .enum(Download.Format.podcast))
           .where(.editionId == file.editionId)
-          .first(in: Current.db)
+          .first(in: db)
 
         if dupe != nil {
           await slackDebug(
@@ -113,7 +114,7 @@ enum DownloadRoute: RouteHandler {
       }
 
       do {
-        try await Current.db.create(download)
+        try await db.create(download)
         await slackDownload(file: file, location: location, device: device, referrer: referrer)
       } catch {
         await slackError("Error creating download: \(error)")

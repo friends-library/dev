@@ -11,9 +11,9 @@ struct ListTokens: Pair {
 extension ListTokens: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
-    let tokens = try await Token.query().all(in: Current.db)
+    let tokens = try await Token.query().all(in: context.db)
     return try await tokens.concurrentMap { token in
-      let scopes = try await token.scopes()
+      let scopes = try await token.scopes(in: context.db)
       return .init(
         id: token.id,
         value: token.value,
