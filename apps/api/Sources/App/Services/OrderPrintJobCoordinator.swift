@@ -159,7 +159,7 @@ private func sendOrderShippedEmail(_ order: Order, _ printJob: Lulu.Api.PrintJob
   do {
     let trackingUrl = printJob.lineItems.compactMap { $0.trackingUrls?.first }.first
     let email = try await EmailBuilder.orderShipped(order, trackingUrl: trackingUrl)
-    await Current.postmarkClient.send(email)
+    await get(dependency: \.postmarkClient).send(email)
   } catch {
     await notifyErr("8190eb37", "Error sending order shipped email for order \(order.id)", error)
   }
@@ -253,7 +253,7 @@ func notifyErr(_ id: String, _ slackMessage: String, _ error: (any Error)? = nil
       message += ", Error: `\(error)`"
     }
   }
-  await Current.postmarkClient.send(.init(
+  await get(dependency: \.postmarkClient).send(.init(
     to: Env.JARED_CONTACT_FORM_EMAIL,
     from: "info@friendslibrary.com",
     subject: "[FLP Api] Print job error \(id)",

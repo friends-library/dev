@@ -1,4 +1,5 @@
 import Dependencies
+import XPostmark
 import XStripe
 
 func with<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value {
@@ -9,6 +10,18 @@ func with<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value 
 func get<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value {
   @Dependency(keyPath) var value
   return value
+}
+
+private enum PostmarkClientKey: DependencyKey {
+  static let liveValue: XPostmark.Client.SlackErrorLogging = .live
+  static let testValue: XPostmark.Client.SlackErrorLogging = .mock
+}
+
+extension DependencyValues {
+  var postmarkClient: XPostmark.Client.SlackErrorLogging {
+    get { self[PostmarkClientKey.self] }
+    set { self[PostmarkClientKey.self] = newValue }
+  }
 }
 
 private enum SlackClientKey: DependencyKey {

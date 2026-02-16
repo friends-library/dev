@@ -72,7 +72,7 @@ private func sendFreeOrderRequestNotifications(for order: FreeOrderRequest) asyn
       </a>
       """,
     )
-    await Current.postmarkClient.send(email)
+    await get(dependency: \.postmarkClient).send(email)
   }
 
   if Env.mode == .prod {

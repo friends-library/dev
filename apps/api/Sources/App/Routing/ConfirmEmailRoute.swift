@@ -33,7 +33,7 @@ enum ConfirmEmailRoute: RouteHandler {
 
       let email = try await quote.email()
       let template = email.template(to: subscriber.email)
-      await Current.postmarkClient.sendTemplateEmail(template)
+      await get(dependency: \.postmarkClient).sendTemplateEmail(template)
       await slackInfo("NP Subscriber confirmed: `\(subscriber.email)`")
     }
 
@@ -56,7 +56,10 @@ enum NPResubscribeRoute: RouteHandler {
       return Response(status: .notFound)
     }
 
-    let result = await Current.postmarkClient.deleteSuppression(subscriber.email, subscriber.lang)
+    let result = await get(dependency: \.postmarkClient).deleteSuppression(
+      subscriber.email,
+      subscriber.lang,
+    )
     switch result {
     case .failure:
       return Response(status: .internalServerError)

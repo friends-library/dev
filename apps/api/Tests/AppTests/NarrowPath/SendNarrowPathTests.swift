@@ -76,10 +76,6 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testSendNarrowPathIntegration() async throws {
     // setup dependencies
     let sentEmails = ActorIsolated<[TemplateEmail]>([])
-    Current.postmarkClient.sendTemplateEmailBatch = { emails in
-      await sentEmails.setValue(emails)
-      return .success([])
-    }
 
     // setup database
     try await Current.db.delete(all: NPSentQuote.self)
@@ -121,6 +117,10 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     try await withDependencies {
       $0.date = .constant(Date(timeIntervalSinceReferenceDate: 43000))
       $0.randomNumberGenerator = { stableRng(seed: .max) }
+      $0.postmarkClient.sendTemplateEmailBatch = { emails in
+        await sentEmails.setValue(emails)
+        return .success([])
+      }
     } operation: {
       try await SendNarrowPath().exec()
     }

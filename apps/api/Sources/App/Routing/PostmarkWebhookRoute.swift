@@ -59,7 +59,7 @@ enum PostmarkWebhookRoute: RouteHandler {
 
 private func sendEnglishResubEmail(_ subscriber: NPSubscriber) async throws {
   let resubUrl = "\(Env.SELF_URL)/np-resubscribe/\(subscriber.id.lowercased)"
-  await Current.postmarkClient.send(.init(
+  await get(dependency: \.postmarkClient).send(.init(
     to: subscriber.email,
     from: EmailBuilder.fromAddress(lang: .en),
     subject: "[,] Unsubscribed from The Narrow Path",
@@ -69,7 +69,7 @@ private func sendEnglishResubEmail(_ subscriber: NPSubscriber) async throws {
 
 private func sendSpanishResubEmail(_ subscriber: NPSubscriber) async throws {
   let resubUrl = "\(Env.SELF_URL)/np-resubscribe/\(subscriber.id.lowercased)"
-  await Current.postmarkClient.send(.init(
+  await get(dependency: \.postmarkClient).send(.init(
     to: subscriber.email,
     from: EmailBuilder.fromAddress(lang: .es),
     subject: "[,] Suscripción cancelada de El Camino Estrecho",

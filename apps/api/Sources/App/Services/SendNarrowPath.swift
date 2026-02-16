@@ -68,7 +68,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
       await slackError("SendNarrowPath: approaching batch send limit \(emails.count)/500")
     }
 
-    switch await Current.postmarkClient.sendTemplateEmailBatch(emails) {
+    switch await get(dependency: \.postmarkClient).sendTemplateEmailBatch(emails) {
     case .success(let messageErrors):
       for messageError in messageErrors {
         await slackError("SendNarrowPath message error: \(messageError)")

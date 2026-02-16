@@ -1,19 +1,16 @@
 import DuetSQL
 import Foundation
 import Vapor
-import XPostmark
 
 #if !DEBUG
   struct Environment: Sendable {
     var db: DuetSQL.Client = ThrowingClient()
     var logger = Logger(label: "api.friendslibrary")
-    var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
   }
 #else
   struct Environment: Sendable {
     var db: DuetSQL.Client = ThrowingClient()
     var logger = Logger(label: "api.friendslibrary")
-    var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
   }
 #endif
 

@@ -14,6 +14,15 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
       $0.uuid = UUIDGenerator { UUID() }
       $0.date = .constant(Date())
       $0.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }
+      $0.postmarkClient = .init(
+        send: { [self] in sent.emails.append($0) },
+        sendTemplateEmail: { [self] in sent.templateEmails.append($0) },
+        sendTemplateEmailBatch: { [self] in
+          sent.templateEmails.append(contentsOf: $0)
+          return .success([])
+        },
+        deleteSuppression: { _, _ in .success(()) },
+      )
     } operation: {
       super.invokeTest()
     }
@@ -57,12 +66,6 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
   override func setUp() async throws {
     await JoinedEntityCache.shared.flush()
     await LegacyRest.cachedData.flush()
-    Current.postmarkClient.send = { [self] in sent.emails.append($0) }
-    Current.postmarkClient.sendTemplateEmail = { [self] in sent.templateEmails.append($0) }
-    Current.postmarkClient.sendTemplateEmailBatch = { [self] in
-      sent.templateEmails.append(contentsOf: $0)
-      return .success([])
-    }
   }
 }
 

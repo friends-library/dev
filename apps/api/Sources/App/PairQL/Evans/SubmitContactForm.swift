@@ -26,7 +26,7 @@ extension SubmitContactForm: Resolver {
     try await checkSpam(input)
 
     let task = Task {
-      await Current.postmarkClient.send(XPostmark.Email(
+      await get(dependency: \.postmarkClient).send(XPostmark.Email(
         to: input |> emailTo,
         from: EmailBuilder.fromAddress(lang: input.lang),
         replyTo: input.email,

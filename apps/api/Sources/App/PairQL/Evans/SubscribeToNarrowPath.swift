@@ -82,7 +82,7 @@ func checkSpam(_ input: SubscribeToNarrowPath.Input) async throws {
 
 func sendEnglishConfirm(to email: EmailAddress, confirming token: UUID) async throws {
   let confirmUrl = "\(Env.SELF_URL)/confirm-email/en/\(token.lowercased)"
-  await Current.postmarkClient.send(.init(
+  await get(dependency: \.postmarkClient).send(.init(
     to: email.rawValue,
     from: EmailBuilder.fromAddress(lang: .en),
     subject: "Action Required: Confirm your email",
@@ -92,7 +92,7 @@ func sendEnglishConfirm(to email: EmailAddress, confirming token: UUID) async th
 
 func sendSpanishConfirm(to email: EmailAddress, confirming token: UUID) async throws {
   let confirmUrl = "\(Env.SELF_URL)/confirm-email/es/\(token.lowercased)"
-  await Current.postmarkClient.send(.init(
+  await get(dependency: \.postmarkClient).send(.init(
     to: email.rawValue,
     from: EmailBuilder.fromAddress(lang: .es),
     subject: "Acción requerida: Confirma tu correo electrónico",

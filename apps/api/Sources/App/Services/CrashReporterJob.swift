@@ -43,7 +43,7 @@ struct CrashReporterJob: AsyncScheduledJob {
 
     await slackError("\(num_crashes) crashes detected in production API")
 
-    await Current.postmarkClient.send(.init(
+    await get(dependency: \.postmarkClient).send(.init(
       to: Env.JARED_CONTACT_FORM_EMAIL,
       from: "info@friendslibrary.com",
       subject: "[FLP Api] Crash report",

@@ -51,7 +51,7 @@ struct RateLimitedSlackClient: Sendable {
       if state.numAttempted >= self.dailyLimit {
         if state.numAttempted - 1 < self.dailyLimit {
           await self.execSend(.error("Exceeded daily slack limit"))
-          await Current.postmarkClient.send(.init(
+          await get(dependency: \.postmarkClient).send(.init(
             to: Env.JARED_CONTACT_FORM_EMAIL,
             from: "info@friendslibrary.com",
             subject: "[FLP Api] Exceeded daily slack limit",

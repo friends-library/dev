@@ -7,6 +7,5 @@ extension Environment {
   static let mock = Environment(
     db: ThrowingClient(),
     logger: .null,
-    postmarkClient: .mock,
   )
 }
