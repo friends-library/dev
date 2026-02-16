@@ -1,4 +1,5 @@
 import ConcurrencyExtras
+import Dependencies
 import XCTest
 import XExpect
 
@@ -132,16 +133,7 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
     try await Current.db.create(order)
 
     let refundedPaymentIntentId = ActorIsolated<String?>(nil)
-    Current.stripeClient.createRefund = { pi, _ in
-      await refundedPaymentIntentId.setValue(pi)
-      return .init(id: "pi_refund_id")
-    }
-
     let canceledPaymentId = ActorIsolated<String?>(nil)
-    Current.stripeClient.cancelPaymentIntent = { pi, _ in
-      await canceledPaymentId.setValue(pi)
-      return .init(id: pi, clientSecret: "")
-    }
 
     let input = BrickOrder.Input(
       orderPaymentId: "stripe_pi_id",
@@ -150,7 +142,18 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
       stateHistory: ["foo", "bar"],
     )
 
-    let output = try await BrickOrder.resolve(with: input, in: .mock)
+    let output = try await withDependencies {
+      $0.stripe.createRefund = { pi, _ in
+        await refundedPaymentIntentId.setValue(pi)
+        return .init(id: "pi_refund_id")
+      }
+      $0.stripe.cancelPaymentIntent = { pi, _ in
+        await canceledPaymentId.setValue(pi)
+        return .init(id: pi, clientSecret: "")
+      }
+    } operation: {
+      try await BrickOrder.resolve(with: input, in: .mock)
+    }
 
     expect(output).toEqual(.success)
 

@@ -1,4 +1,5 @@
 import Dependencies
+import XStripe
 
 func with<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value {
   @Dependency(keyPath) var value
@@ -8,6 +9,18 @@ func with<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value 
 func get<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value {
   @Dependency(keyPath) var value
   return value
+}
+
+private enum StripeClientKey: DependencyKey {
+  static let liveValue: Stripe.Client = .live
+  static let testValue: Stripe.Client = .mock
+}
+
+extension DependencyValues {
+  var stripe: Stripe.Client {
+    get { self[StripeClientKey.self] }
+    set { self[StripeClientKey.self] = newValue }
+  }
 }
 
 private enum CloudflareClientKey: DependencyKey {

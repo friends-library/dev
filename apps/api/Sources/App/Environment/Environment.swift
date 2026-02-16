@@ -2,7 +2,6 @@ import DuetSQL
 import Foundation
 import Vapor
 import XPostmark
-import XStripe
 
 #if !DEBUG
   struct Environment: Sendable {
@@ -11,7 +10,6 @@ import XStripe
     var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
     let slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
     let luluClient: Lulu.Api.Client = .live
-    let stripeClient = Stripe.Client()
   }
 #else
   struct Environment: Sendable {
@@ -20,7 +18,6 @@ import XStripe
     var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
     var slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
     var luluClient: Lulu.Api.Client = .live
-    var stripeClient = Stripe.Client()
   }
 #endif
 

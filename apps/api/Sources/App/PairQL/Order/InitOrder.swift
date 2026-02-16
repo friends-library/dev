@@ -19,7 +19,7 @@ extension InitOrder: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     let orderId = Order.Id()
     do {
-      async let pi = Current.stripeClient.createPaymentIntent(
+      async let pi = get(dependency: \.stripe).createPaymentIntent(
         input.rawValue, .USD,
         ["orderId": orderId.lowercased],
         Env.STRIPE_SECRET_KEY,

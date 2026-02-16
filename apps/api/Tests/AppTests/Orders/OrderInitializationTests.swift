@@ -11,15 +11,14 @@ final class OrderInitializationTests: AppTestCase, @unchecked Sendable {
 
     let uuids = MockUUIDs()
 
-    Current.stripeClient.createPaymentIntent = { amount, currency, metadata, _ in
-      expect(amount).toEqual(555)
-      expect(currency).toEqual(.USD)
-      expect(metadata).toEqual(["orderId": uuids.first.lowercased])
-      return .init(id: "pi_id", clientSecret: "pi_secret")
-    }
-
     let output = try await withDependencies {
       $0.uuid = .mock(uuids)
+      $0.stripe.createPaymentIntent = { amount, currency, metadata, _ in
+        expect(amount).toEqual(555)
+        expect(currency).toEqual(.USD)
+        expect(metadata).toEqual(["orderId": uuids.first.lowercased])
+        return .init(id: "pi_id", clientSecret: "pi_secret")
+      }
     } operation: {
       try await InitOrder.resolve(with: 555, in: .mock)
     }
@@ -33,11 +32,13 @@ final class OrderInitializationTests: AppTestCase, @unchecked Sendable {
   }
 
   func testCreateOrderInitializationFailure() async throws {
-    Current.stripeClient.createPaymentIntent = { _, _, _, _ in throw "some error" }
-
-    try await expectErrorFrom {
-      try await InitOrder.resolve(with: 555, in: .mock)
-    }.toContain("500")
+    try await withDependencies {
+      $0.stripe.createPaymentIntent = { _, _, _, _ in throw "some error" }
+    } operation: {
+      try await expectErrorFrom {
+        try await InitOrder.resolve(with: 555, in: .mock)
+      }.toContain("500")
+    }
 
     expect(sent.slacks).toEqual([.error("InitOrder error: some error")])
   }

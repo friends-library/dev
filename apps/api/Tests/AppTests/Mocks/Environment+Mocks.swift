@@ -10,6 +10,5 @@ extension Environment {
     postmarkClient: .mock,
     slackClient: RateLimitedSlackClient { _ in },
     luluClient: .mock,
-    stripeClient: .mock,
   )
 }
