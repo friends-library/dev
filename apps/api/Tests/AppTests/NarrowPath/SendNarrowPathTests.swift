@@ -8,44 +8,50 @@ import XPostmark
 
 final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testSendsFriendQuoteToBothGroupsIfNoNonFriends() {
-    Current.randomNumberGenerator = { stableRng() }
-    let action = SendNarrowPath().determineAction(
-      sentQuotes: [],
-      allQuotes: [self.enFriendId1, self.enFriendId2, self.esFriendId4],
-      subscribers: self.allSubscribers,
-    )
+    withDependencies {
+      $0.randomNumberGenerator = { stableRng() }
+    } operation: {
+      let action = SendNarrowPath().determineAction(
+        sentQuotes: [],
+        allQuotes: [self.enFriendId1, self.enFriendId2, self.esFriendId4],
+        subscribers: self.allSubscribers,
+      )
 
-    switch action {
-    case .send(let groups):
-      expect(groups.map(\.testable)).toEqual([
-        .init(to: ["en.friends"], quoteId: self.enFriendId1.id),
-        .init(to: ["en.mixed"], quoteId: self.enFriendId1.id), // <-- same as friends
-        .init(to: ["es.friends"], quoteId: self.esFriendId4.id),
-        .init(to: ["es.mixed"], quoteId: self.esFriendId4.id), // <-- same as friends
-      ])
-    default:
-      XCTFail("Expected .send, got \(action)")
+      switch action {
+      case .send(let groups):
+        expect(groups.map(\.testable)).toEqual([
+          .init(to: ["en.friends"], quoteId: self.enFriendId1.id),
+          .init(to: ["en.mixed"], quoteId: self.enFriendId1.id), // <-- same as friends
+          .init(to: ["es.friends"], quoteId: self.esFriendId4.id),
+          .init(to: ["es.mixed"], quoteId: self.esFriendId4.id), // <-- same as friends
+        ])
+      default:
+        XCTFail("Expected .send, got \(action)")
+      }
     }
   }
 
   func testSendsNonFriendQuotesToNonFriendOptins() {
-    Current.randomNumberGenerator = { stableRng(seed: .max) }
-    let action = SendNarrowPath().determineAction(
-      sentQuotes: [],
-      allQuotes: [self.enFriendId2, self.enFriendId1, self.enOtherId3, self.esFriendId4],
-      subscribers: self.allSubscribers,
-    )
+    withDependencies {
+      $0.randomNumberGenerator = { stableRng(seed: .max) }
+    } operation: {
+      let action = SendNarrowPath().determineAction(
+        sentQuotes: [],
+        allQuotes: [self.enFriendId2, self.enFriendId1, self.enOtherId3, self.esFriendId4],
+        subscribers: self.allSubscribers,
+      )
 
-    switch action {
-    case .send(let groups):
-      expect(groups.map(\.testable)).toEqual([
-        .init(to: ["en.friends"], quoteId: self.enFriendId1.id),
-        .init(to: ["en.mixed"], quoteId: self.enOtherId3.id), // <- other
-        .init(to: ["es.friends"], quoteId: self.esFriendId4.id),
-        .init(to: ["es.mixed"], quoteId: self.esFriendId4.id),
-      ])
-    default:
-      XCTFail("Expected .send, got \(action)")
+      switch action {
+      case .send(let groups):
+        expect(groups.map(\.testable)).toEqual([
+          .init(to: ["en.friends"], quoteId: self.enFriendId1.id),
+          .init(to: ["en.mixed"], quoteId: self.enOtherId3.id), // <- other
+          .init(to: ["es.friends"], quoteId: self.esFriendId4.id),
+          .init(to: ["es.mixed"], quoteId: self.esFriendId4.id),
+        ])
+      default:
+        XCTFail("Expected .send, got \(action)")
+      }
     }
   }
 
@@ -69,7 +75,6 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
 
   func testSendNarrowPathIntegration() async throws {
     // setup dependencies
-    Current.randomNumberGenerator = { stableRng(seed: .max) }
     let sentEmails = ActorIsolated<[TemplateEmail]>([])
     Current.postmarkClient.sendTemplateEmailBatch = { emails in
       await sentEmails.setValue(emails)
@@ -115,6 +120,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     // act
     try await withDependencies {
       $0.date = .constant(Date(timeIntervalSinceReferenceDate: 43000))
+      $0.randomNumberGenerator = { stableRng(seed: .max) }
     } operation: {
       try await SendNarrowPath().exec()
     }

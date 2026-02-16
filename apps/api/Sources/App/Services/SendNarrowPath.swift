@@ -137,7 +137,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
 }
 
 private func random(from quotes: [NPQuote], mixed: Bool) -> NPQuote {
-  var rng = Current.randomNumberGenerator()
+  var rng = get(dependency: \.randomNumberGenerator)()
   if !mixed {
     return quotes.filter(\.isFriend).randomElement(using: &rng)!
   } else {
