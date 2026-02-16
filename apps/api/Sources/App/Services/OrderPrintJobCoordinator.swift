@@ -189,7 +189,7 @@ private func getOrdersWithPrintJobs(
       return nil
     }
 
-    printJobs = try await Current.luluClient.listPrintJobs(printJobIds)
+    printJobs = try await get(dependency: \.luluClient).listPrintJobs(printJobIds)
   } catch {
     // don't log/notify near daily lulu signature expiration time
     if "\(error)".contains("Signature has expired") {

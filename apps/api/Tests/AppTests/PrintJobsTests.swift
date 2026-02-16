@@ -1,3 +1,4 @@
+import Dependencies
 import XCTest
 import XExpect
 
@@ -10,19 +11,21 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
       .init(shipping: "10.99", tax: "4.33", total: "20.12", fee: "1.50"),
     ])
 
-    Current.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
-      await .success(responses.next())
+    let result = try await withDependencies {
+      $0.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
+        await .success(responses.next())
+      }
+    } operation: {
+      try await GetPrintJobExploratoryMetadata.resolve(
+        with: .init(
+          items: [.init(volumes: .init(55), printSize: .m, quantity: 1)],
+          email: "foo@bar",
+          address: .mock,
+          lang: .en,
+        ),
+        in: .mock,
+      )
     }
-
-    let result = try await GetPrintJobExploratoryMetadata.resolve(
-      with: .init(
-        items: [.init(volumes: .init(55), printSize: .m, quantity: 1)],
-        email: "foo@bar",
-        address: .mock,
-        lang: .en,
-      ),
-      in: .mock,
-    )
 
     guard case .success(var output) = result else {
       return XCTFail("Expected success, got \(result)")
@@ -42,11 +45,6 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
   func testCreatePrintJob() async throws {
     nonisolated(unsafe) var payload: Lulu.Api.CreatePrintJobBody!
 
-    Current.luluClient.createPrintJob = {
-      payload = $0
-      return .init(id: 1, status: .init(name: .created), lineItems: [])
-    }
-
     let entities = await Entities.create()
     let order = Order.random
     var item = OrderItem.random
@@ -55,7 +53,14 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
     try await Current.db.create(order)
     try await Current.db.create(item)
 
-    let job = try await PrintJobs.create(order)
+    let job = try await withDependencies {
+      $0.luluClient.createPrintJob = {
+        payload = $0
+        return .init(id: 1, status: .init(name: .created), lineItems: [])
+      }
+    } operation: {
+      try await PrintJobs.create(order)
+    }
 
     expect(job.id).toEqual(1)
 
@@ -83,11 +88,6 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
   func testCreatePrintJobWithFauxVolumes() async throws {
     nonisolated(unsafe) var payload: Lulu.Api.CreatePrintJobBody!
 
-    Current.luluClient.createPrintJob = {
-      payload = $0
-      return .init(id: 1, status: .init(name: .created), lineItems: [])
-    }
-
     let entities = await Entities.create {
       $0.editionImpression.paperbackVolumes = .init(123, 234)
     }
@@ -99,7 +99,14 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
     try await Current.db.create(order)
     try await Current.db.create(item)
 
-    let job = try await PrintJobs.create(order)
+    let job = try await withDependencies {
+      $0.luluClient.createPrintJob = {
+        payload = $0
+        return .init(id: 1, status: .init(name: .created), lineItems: [])
+      }
+    } operation: {
+      try await PrintJobs.create(order)
+    }
 
     expect(job.id).toEqual(1)
     expect(payload).toEqual(
@@ -142,14 +149,16 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
       .init(shipping: "10.99", tax: "4.33", total: "20.12", fee: "1.50"),
     ])
 
-    Current.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
-      await .success(responses.next())
+    let result = try await withDependencies {
+      $0.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
+        await .success(responses.next())
+      }
+    } operation: {
+      try await PrintJobs.getExploratoryMetadata(
+        for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
+        shippedTo: .mock, email: "bob@email.com", lang: .en,
+      )
     }
-
-    let result = try await PrintJobs.getExploratoryMetadata(
-      for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
-      shippedTo: .mock, email: "bob@email.com", lang: .en,
-    )
 
     guard case .success(let meta) = result else {
       return XCTFail("Expected success, got \(result)")
@@ -172,14 +181,16 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
       .init(shipping: "46.44", tax: "6.46", total: "114.05", fee: "3.00"), // express
     ])
 
-    Current.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
-      await .success(responses.next())
+    let meta = try await withDependencies {
+      $0.luluClient.createPrintJobCostCalculation = { _, _, _, _ in
+        await .success(responses.next())
+      }
+    } operation: {
+      try await PrintJobs.getExploratoryMetadata(
+        for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
+        shippedTo: .mock, email: "", lang: .en,
+      )
     }
-
-    let meta = try await PrintJobs.getExploratoryMetadata(
-      for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
-      shippedTo: .mock, email: "", lang: .en,
-    )
 
     guard case .success(let meta) = meta else {
       return XCTFail("Expected success, got \(meta)")

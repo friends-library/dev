@@ -41,7 +41,7 @@ enum PrintJobs {
       externalId: order.id.rawValue.uuidString,
       lineItems: lineItems,
     )
-    return try await Current.luluClient.createPrintJob(payload)
+    return try await get(dependency: \.luluClient).createPrintJob(payload)
   }
 
   struct ExploratoryItem: Equatable, Codable {
@@ -75,7 +75,7 @@ enum PrintJobs {
       for level in Order.ShippingLevel.allCases {
         group.addTask {
           do {
-            let result = try await Current.luluClient.createPrintJobCostCalculation(
+            let result = try await get(dependency: \.luluClient).createPrintJobCostCalculation(
               lang,
               address.lulu,
               level.lulu,

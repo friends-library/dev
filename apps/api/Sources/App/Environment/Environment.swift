@@ -9,7 +9,6 @@ import XPostmark
     var logger = Logger(label: "api.friendslibrary")
     var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
     let slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
-    let luluClient: Lulu.Api.Client = .live
   }
 #else
   struct Environment: Sendable {
@@ -17,7 +16,6 @@ import XPostmark
     var logger = Logger(label: "api.friendslibrary")
     var postmarkClient: XPostmark.Client.SlackErrorLogging = .live
     var slackClient: RateLimitedSlackClient = .init(send: FlpSlack.Client().send)
-    var luluClient: Lulu.Api.Client = .live
   }
 #endif
 

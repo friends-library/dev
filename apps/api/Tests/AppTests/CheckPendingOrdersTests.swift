@@ -1,3 +1,4 @@
+import Dependencies
 import DuetSQL
 import Foundation
 import Vapor
@@ -13,16 +14,18 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
     try await Current.db.delete(all: Order.self)
     try await Current.db.create(order)
 
-    Current.luluClient.listPrintJobs = { ids in
-      XCTAssertEqual(ids, .init(33))
-      return [.init(
-        id: 33,
-        status: .init(name: .productionDelayed),
-        lineItems: [],
-      )]
+    await withDependencies {
+      $0.luluClient.listPrintJobs = { ids in
+        XCTAssertEqual(ids, .init(33))
+        return [.init(
+          id: 33,
+          status: .init(name: .productionDelayed),
+          lineItems: [],
+        )]
+      }
+    } operation: {
+      await OrderPrintJobCoordinator.checkPendingOrders()
     }
-
-    await OrderPrintJobCoordinator.checkPendingOrders()
 
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .accepted)
@@ -63,17 +66,19 @@ final class CheckPendingOrdersTests: AppTestCase, @unchecked Sendable {
     order.printJobId = 33
     try await Current.db.create(order)
 
-    Current.luluClient.listPrintJobs = { _ in
-      [
-        .init(
-          id: 33,
-          status: .init(name: .rejected),
-          lineItems: [],
-        ),
-      ]
+    await withDependencies {
+      $0.luluClient.listPrintJobs = { _ in
+        [
+          .init(
+            id: 33,
+            status: .init(name: .rejected),
+            lineItems: [],
+          ),
+        ]
+      }
+    } operation: {
+      await OrderPrintJobCoordinator.checkPendingOrders()
     }
-
-    await OrderPrintJobCoordinator.checkPendingOrders()
 
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .rejected)

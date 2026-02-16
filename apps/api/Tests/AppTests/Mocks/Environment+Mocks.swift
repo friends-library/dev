@@ -9,6 +9,5 @@ extension Environment {
     logger: .null,
     postmarkClient: .mock,
     slackClient: RateLimitedSlackClient { _ in },
-    luluClient: .mock,
   )
 }

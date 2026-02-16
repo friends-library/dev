@@ -11,6 +11,18 @@ func get<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value {
   return value
 }
 
+private enum LuluClientKey: DependencyKey {
+  static let liveValue: Lulu.Api.Client = .live
+  static let testValue: Lulu.Api.Client = .mock
+}
+
+extension DependencyValues {
+  var luluClient: Lulu.Api.Client {
+    get { self[LuluClientKey.self] }
+    set { self[LuluClientKey.self] = newValue }
+  }
+}
+
 private enum StripeClientKey: DependencyKey {
   static let liveValue: Stripe.Client = .live
   static let testValue: Stripe.Client = .mock

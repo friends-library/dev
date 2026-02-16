@@ -1,3 +1,4 @@
+import Dependencies
 import Foundation
 import XCTest
 
@@ -18,16 +19,18 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
     try await Current.db.delete(all: Order.self)
     try await Current.db.create(self.order)
 
-    Current.luluClient.listPrintJobs = { ids in
-      XCTAssertEqual(ids, .init(33))
-      return [.init(
-        id: 33,
-        status: .init(name: .shipped),
-        lineItems: [.init(trackingUrls: ["/track/me"])],
-      )]
+    await withDependencies {
+      $0.luluClient.listPrintJobs = { ids in
+        XCTAssertEqual(ids, .init(33))
+        return [.init(
+          id: 33,
+          status: .init(name: .shipped),
+          lineItems: [.init(trackingUrls: ["/track/me"])],
+        )]
+      }
+    } operation: {
+      await OrderPrintJobCoordinator.sendTrackingEmails()
     }
-
-    await OrderPrintJobCoordinator.sendTrackingEmails()
 
     let retrieved = try await Current.db.find(self.order.id)
     XCTAssertEqual(retrieved.printJobStatus, .shipped)
@@ -41,11 +44,13 @@ final class SendTrackingEmailsTests: AppTestCase, @unchecked Sendable {
     _ = try await Current.db.query(Order.self).delete(in: Current.db)
     try await Current.db.create(self.order)
 
-    Current.luluClient.listPrintJobs = { _ in
-      [.init(id: 33, status: .init(name: .canceled), lineItems: [])]
+    await withDependencies {
+      $0.luluClient.listPrintJobs = { _ in
+        [.init(id: 33, status: .init(name: .canceled), lineItems: [])]
+      }
+    } operation: {
+      await OrderPrintJobCoordinator.sendTrackingEmails()
     }
-
-    await OrderPrintJobCoordinator.sendTrackingEmails()
 
     let retrieved = try await Current.db.find(self.order.id)
     XCTAssertEqual(retrieved.printJobStatus, .canceled)
