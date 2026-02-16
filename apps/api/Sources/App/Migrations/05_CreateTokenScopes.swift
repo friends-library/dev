@@ -3,7 +3,7 @@ import Vapor
 
 struct CreateTokenScopes: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateTokenScopes UP")
+    get(dependency: \.logger).info("Running migration: CreateTokenScopes UP")
     let scopes = try await database.enum(TokenScope.M5.dbEnumName)
       .case(TokenScope.M5.Scope.queryDownloads)
       .case(TokenScope.M5.Scope.mutateDownloads)
@@ -26,7 +26,7 @@ struct CreateTokenScopes: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateTokenScopes DOWN")
+    get(dependency: \.logger).info("Running migration: CreateTokenScopes DOWN")
     try await database.schema(TokenScope.M5.tableName).delete()
     try await database.enum(TokenScope.M5.dbEnumName).delete()
   }

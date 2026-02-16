@@ -4,7 +4,7 @@ struct CreateRelatedDocuments: AsyncMigration {
   private typealias M23 = RelatedDocument.M23
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateRelatedDocuments UP")
+    get(dependency: \.logger).info("Running migration: CreateRelatedDocuments UP")
     try await database.schema(M23.tableName)
       .id()
       .field(
@@ -26,7 +26,7 @@ struct CreateRelatedDocuments: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateRelatedDocuments DOWN")
+    get(dependency: \.logger).info("Running migration: CreateRelatedDocuments DOWN")
     try await database.schema(M23.tableName).delete()
   }
 }

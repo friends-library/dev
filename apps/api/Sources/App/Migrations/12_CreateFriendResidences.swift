@@ -5,7 +5,7 @@ struct CreateFriendResidences: AsyncMigration {
   private typealias M12 = FriendResidence.M12
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateFriendResidences UP")
+    get(dependency: \.logger).info("Running migration: CreateFriendResidences UP")
     try await database.schema(M12.tableName)
       .id()
       .field(
@@ -23,7 +23,7 @@ struct CreateFriendResidences: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateFriendResidences DOWN")
+    get(dependency: \.logger).info("Running migration: CreateFriendResidences DOWN")
     try await database.schema(M12.tableName).delete()
   }
 }

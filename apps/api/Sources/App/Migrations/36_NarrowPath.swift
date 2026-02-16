@@ -3,7 +3,7 @@ import Vapor
 
 struct NarrowPath: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: NarrowPath UP")
+    get(dependency: \.logger).info("Running migration: NarrowPath UP")
     let lang = try await database.enum(Order.M2.LangEnum.name).read()
     try await database.schema(NPSubscriber.M36.tableName)
       .id()
@@ -48,7 +48,7 @@ struct NarrowPath: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: NarrowPath DOWN")
+    get(dependency: \.logger).info("Running migration: NarrowPath DOWN")
     try await database.schema(NPSentQuote.M38.tableName).delete()
     try await database.schema(NPQuote.M37.tableName).delete()
     try await database.schema(NPSubscriber.M36.tableName).delete()

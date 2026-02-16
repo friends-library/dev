@@ -6,7 +6,6 @@ import Testing
 
 @Suite struct AudioPartValidityTests {
   init() {
-    Current.logger = .null
     prepareDependencies { $0.uuid = UUIDGenerator { UUID() } }
   }
 

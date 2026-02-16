@@ -37,7 +37,7 @@ struct CrashReporterJob: AsyncScheduledJob {
 
     let num_crashes = prod.pm2_env.restart_time
     if num_crashes == 0 {
-      Current.logger.info("No crashes in production API detected")
+      get(dependency: \.logger).info("No crashes in production API detected")
       return
     }
 

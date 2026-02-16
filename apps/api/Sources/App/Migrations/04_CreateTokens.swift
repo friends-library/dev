@@ -3,7 +3,7 @@ import Vapor
 
 struct CreateTokens: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateTokens UP")
+    get(dependency: \.logger).info("Running migration: CreateTokens UP")
     try await database.schema(Token.M4.tableName)
       .id()
       .field(Token.M4.value, .uuid, .required)
@@ -14,7 +14,7 @@ struct CreateTokens: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateTokens DOWN")
+    get(dependency: \.logger).info("Running migration: CreateTokens DOWN")
     try await database.schema(Token.M4.tableName).delete()
   }
 }

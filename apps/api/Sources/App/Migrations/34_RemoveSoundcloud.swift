@@ -3,7 +3,7 @@ import Vapor
 
 struct RemoveSoundcloud: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: RemoveSoundcloud UP")
+    get(dependency: \.logger).info("Running migration: RemoveSoundcloud UP")
     try await database.schema(Audio.M20.tableName)
       .deleteField(Audio.M20.externalPlaylistIdHq)
       .update()
@@ -19,7 +19,7 @@ struct RemoveSoundcloud: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: RemoveSoundcloud DOWN")
+    get(dependency: \.logger).info("Running migration: RemoveSoundcloud DOWN")
     try await database.schema(Audio.M20.tableName)
       .field(Audio.M20.externalPlaylistIdHq, .int)
       .update()

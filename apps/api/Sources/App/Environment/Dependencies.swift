@@ -1,4 +1,5 @@
 import Dependencies
+import Logging
 import XPostmark
 import XStripe
 
@@ -10,6 +11,18 @@ func with<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value 
 func get<Value>(dependency keyPath: KeyPath<DependencyValues, Value>) -> Value {
   @Dependency(keyPath) var value
   return value
+}
+
+private enum LoggerKey: DependencyKey {
+  static let liveValue = Logger(label: "api.friendslibrary")
+  static let testValue = Logger.null
+}
+
+extension DependencyValues {
+  var logger: Logger {
+    get { self[LoggerKey.self] }
+    set { self[LoggerKey.self] = newValue }
+  }
 }
 
 private enum PostmarkClientKey: DependencyKey {

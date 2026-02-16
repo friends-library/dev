@@ -2,7 +2,7 @@ import Vapor
 
 extension LegacyRest {
   static func appEditions(lang: Lang) async throws -> Response {
-    Current.logger.info("Serving app editions, lang=\(lang)")
+    get(dependency: \.logger).info("Serving app editions, lang=\(lang)")
     let data: Data
     if let cachedData = await cachedData.getLegacyAppEditions(lang: lang) {
       data = cachedData

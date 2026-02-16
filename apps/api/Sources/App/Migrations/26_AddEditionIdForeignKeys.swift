@@ -3,7 +3,7 @@ import FluentSQL
 
 struct AddEditionIdForeignKeys: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: AddEditionIdForeignKeys UP")
+    get(dependency: \.logger).info("Running migration: AddEditionIdForeignKeys UP")
     let sql = database as! SQLDatabase
 
     _ = try await sql.raw(
@@ -28,7 +28,7 @@ struct AddEditionIdForeignKeys: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: AddEditionIdForeignKeys DOWN")
+    get(dependency: \.logger).info("Running migration: AddEditionIdForeignKeys DOWN")
     let sql = database as! SQLDatabase
 
     _ = try await sql.raw(

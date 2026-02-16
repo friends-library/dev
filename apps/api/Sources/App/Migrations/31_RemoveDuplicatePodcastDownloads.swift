@@ -4,7 +4,7 @@ import Vapor
 
 struct RemoveDuplicatePodcastDownloads: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: RemoveDuplicatePodcastDownloads UP")
+    get(dependency: \.logger).info("Running migration: RemoveDuplicatePodcastDownloads UP")
     guard Env.mode == .prod else {
       return
     }
@@ -16,26 +16,26 @@ struct RemoveDuplicatePodcastDownloads: AsyncMigration {
 
     let duplicates = findDuplicatePodcastDownloads(downloads)
 
-    Current.logger.info("  -> found \(duplicates.count) duplicates")
-    Current.logger.info("  -> preserving \(downloads.count - duplicates.count) unique")
+    get(dependency: \.logger).info("  -> found \(duplicates.count) duplicates")
+    get(dependency: \.logger).info("  -> preserving \(downloads.count - duplicates.count) unique")
 
     // uploaded to: s3://storage/duplicate-podcast-downloads.json
     let encoded = try JSONEncoder().encode(duplicates)
     try encoded.write(to: URL(fileURLWithPath: "duplicate-podcast-downloads.json"))
-    Current.logger.info("  -> wrote duplicates to duplicate-podcast-downloads.json")
+    get(dependency: \.logger).info("  -> wrote duplicates to duplicate-podcast-downloads.json")
 
     try await duplicates.chunked(into: Postgres.MAX_BIND_PARAMS / 2).asyncForEach {
-      Current.logger.info("  -> deleting chunk of size: \($0.count)")
+      get(dependency: \.logger).info("  -> deleting chunk of size: \($0.count)")
       try await Current.db.query(Download.self)
         .where(.id |=| $0.map(\.id))
         .delete(in: Current.db)
     }
 
-    Current.logger.info("  -> completed deletion")
+    get(dependency: \.logger).info("  -> completed deletion")
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: RemoveDuplicatePodcastDownloads DOWN")
+    get(dependency: \.logger).info("Running migration: RemoveDuplicatePodcastDownloads DOWN")
   }
 }
 

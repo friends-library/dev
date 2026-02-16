@@ -50,7 +50,6 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
     Current = .mock
     try! Configure.app(self.app)
     Current.db = FlushingDbClient(self.app.db as! SQLDatabase)
-    Current.logger = .null
     self.app.logger = .null
     if !self.migrated {
       try! self.app.autoRevert().wait()

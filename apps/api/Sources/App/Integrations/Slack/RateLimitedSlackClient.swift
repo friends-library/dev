@@ -100,7 +100,7 @@ struct RateLimitedSlackClient: Sendable {
   }
 
   func drop(_ slack: FlpSlack.Message) {
-    Current.logger
+    get(dependency: \.logger)
       .error("Dropped rate-limited Slack to `\(slack.channel)`: \(slack.message.text)")
   }
 }

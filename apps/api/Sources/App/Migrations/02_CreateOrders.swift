@@ -4,7 +4,7 @@ struct CreateOrders: AsyncMigration {
   private typealias M2 = Order.M2
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateOrders UP")
+    get(dependency: \.logger).info("Running migration: CreateOrders UP")
     let printJobStatus = try await database.enum(M2.PrintJobStatusEnum.name)
       .case(M2.PrintJobStatusEnum.casePresubmit)
       .case(M2.PrintJobStatusEnum.casePending)
@@ -60,7 +60,7 @@ struct CreateOrders: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateOrders DOWN")
+    get(dependency: \.logger).info("Running migration: CreateOrders DOWN")
     try await database.schema(M2.tableName).delete()
     try await database.enum(M2.PrintJobStatusEnum.name).delete()
     try await database.enum(M2.ShippingLevelEnum.name).delete()

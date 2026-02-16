@@ -3,14 +3,14 @@ import Vapor
 
 struct OrderRecipientTaxId: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: OrderRecipientTaxId UP")
+    get(dependency: \.logger).info("Running migration: OrderRecipientTaxId UP")
     try await database.schema(Order.M2.tableName)
       .field(Order.M38.recipientTaxId, .string)
       .update()
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: OrderRecipientTaxId DOWN")
+    get(dependency: \.logger).info("Running migration: OrderRecipientTaxId DOWN")
     try await database.schema(Order.M2.tableName)
       .deleteField(Order.M38.recipientTaxId)
       .update()

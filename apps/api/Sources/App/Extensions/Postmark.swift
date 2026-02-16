@@ -35,7 +35,7 @@ extension XPostmark.Client.SlackErrorLogging {
         await get(dependency: \.slackClient).send(.error(msg))
 
       case .success where Env.POSTMARK_API_KEY == "POSTMARK_API_TEST":
-        Current.logger.info("Test Postmark email accepted (not sent)")
+        get(dependency: \.logger).info("Test Postmark email accepted (not sent)")
 
       case .success:
         break
@@ -55,7 +55,7 @@ extension XPostmark.Client.SlackErrorLogging {
         await get(dependency: \.slackClient).send(.error(msg))
 
       case .success where Env.POSTMARK_API_KEY == "POSTMARK_API_TEST":
-        Current.logger.info("Test Postmark email accepted (not sent)")
+        get(dependency: \.logger).info("Test Postmark email accepted (not sent)")
 
       case .success:
         break

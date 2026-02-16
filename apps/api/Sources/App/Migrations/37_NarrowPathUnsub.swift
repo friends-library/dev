@@ -3,14 +3,14 @@ import Vapor
 
 struct NarrowPathUnsub: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: NarrowPathUnsub UP")
+    get(dependency: \.logger).info("Running migration: NarrowPathUnsub UP")
     try await database.schema(NPSubscriber.M36.tableName)
       .field(NPSubscriber.M37.unsubscribedAt, .datetime)
       .update()
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: NarrowPathUnsub DOWN")
+    get(dependency: \.logger).info("Running migration: NarrowPathUnsub DOWN")
     try await database.schema(NPSubscriber.M36.tableName)
       .deleteField(NPSubscriber.M37.unsubscribedAt)
       .update()

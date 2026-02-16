@@ -4,7 +4,7 @@ struct CreateOrderItems: AsyncMigration {
   private typealias M3 = OrderItem.M3
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateOrderItems UP")
+    get(dependency: \.logger).info("Running migration: CreateOrderItems UP")
     let editionType = try await database.enum(Download.M1.EditionTypeEnum.name).read()
     try await database.schema(M3.tableName)
       .id()
@@ -24,7 +24,7 @@ struct CreateOrderItems: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateOrderItems DOWN")
+    get(dependency: \.logger).info("Running migration: CreateOrderItems DOWN")
     try await database.schema(M3.tableName).delete()
   }
 }
