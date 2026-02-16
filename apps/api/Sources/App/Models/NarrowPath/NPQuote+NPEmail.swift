@@ -3,7 +3,7 @@ extension NPQuote {
     var email = NPEmail(
       quoteId: id,
       lang: lang,
-      date: Current.date(),
+      date: get(dependency: \.date.now),
       htmlQuote: self.htmlQuote,
       textQuote: self.textQuote,
       authorName: authorName ?? "",

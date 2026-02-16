@@ -25,8 +25,8 @@ struct Order: Codable, Sendable, Equatable {
   var addressCountry: String
   var freeOrderRequestId: FreeOrderRequest.Id?
   var recipientTaxId: String?
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   var address: ShippingAddress {
     .init(

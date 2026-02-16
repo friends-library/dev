@@ -7,8 +7,8 @@ struct FriendQuote: Codable, Sendable, Equatable {
   var text: String
   var order: Int
   var context: String?
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   init(
     id: Id = .init(),

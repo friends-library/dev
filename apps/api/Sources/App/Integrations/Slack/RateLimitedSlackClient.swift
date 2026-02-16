@@ -29,7 +29,7 @@ struct RateLimitedSlackClient: Sendable {
 
   func send(_ slack: FlpSlack.Message) async {
     var state = state.value
-    let today = self.dateFormatter.string(from: Current.date())
+    let today = self.dateFormatter.string(from: get(dependency: \.date.now))
     switch state.currentDay {
 
     // first time initializing

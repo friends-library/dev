@@ -4,8 +4,8 @@ struct Isbn: Codable, Sendable, Equatable {
   var id: Id
   var code: ISBN
   var editionId: Edition.Id?
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   init(id: Id = .init(), code: ISBN, editionId: Edition.Id?) {
     self.id = id

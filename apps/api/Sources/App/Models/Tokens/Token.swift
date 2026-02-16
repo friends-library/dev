@@ -6,7 +6,7 @@ struct Token: Codable, Sendable, Equatable {
   var value: Value
   var description: String
   var uses: Int?
-  var createdAt = Current.date()
+  var createdAt = Date()
 
   init(
     id: Id = .init(),

@@ -7,7 +7,7 @@ struct OrderItem: Codable, Sendable, Equatable {
   var editionId: Edition.Id
   var quantity: Int
   var unitPrice: Cents<Int>
-  var createdAt = Current.date()
+  var createdAt = Date()
 
   init(
     id: Id = .init(),

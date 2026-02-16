@@ -5,8 +5,8 @@ struct FriendResidence: Codable, Sendable, Equatable {
   var friendId: Friend.Id
   var city: String
   var region: String
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   init(id: Id = .init(), friendId: Friend.Id, city: String, region: String) {
     self.id = id

@@ -7,8 +7,8 @@ struct NPSubscriber: Codable, Sendable, Equatable {
   var pendingConfirmationToken: UUID?
   var mixedQuotes: Bool
   var unsubscribedAt: Date? = nil
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   var confirmed: Bool {
     self.pendingConfirmationToken == nil

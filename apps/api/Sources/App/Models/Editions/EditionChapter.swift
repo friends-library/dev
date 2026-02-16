@@ -9,8 +9,8 @@ struct EditionChapter: Codable, Sendable, Equatable {
   var customId: String?
   var sequenceNumber: Int?
   var nonSequenceTitle: String?
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   var slug: String {
     "chapter-\(self.order)"

@@ -5,7 +5,7 @@ struct FriendResidenceDuration: Codable, Sendable, Equatable {
   var friendResidenceId: FriendResidence.Id
   var start: Int
   var end: Int
-  var createdAt = Current.date()
+  var createdAt = Date()
 
   init(
     id: Id = .init(),

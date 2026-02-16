@@ -6,7 +6,6 @@ import XStripe
 
 #if !DEBUG
   struct Environment: Sendable {
-    let date: @Sendable () -> Date = { Date() }
     var db: DuetSQL.Client = ThrowingClient()
     let deeplClient: DeepL.Client = .live
     let cloudflareClient: CloudflareClient = .live
@@ -22,7 +21,6 @@ import XStripe
   }
 #else
   struct Environment: Sendable {
-    var date: @Sendable () -> Date = { Date() }
     var db: DuetSQL.Client = ThrowingClient()
     var deeplClient: DeepL.Client = .live
     var cloudflareClient: CloudflareClient = .live

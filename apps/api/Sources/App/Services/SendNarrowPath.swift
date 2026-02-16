@@ -22,7 +22,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
     // delete unconfirmed subscribers after 3 days
     try await NPSubscriber.query()
       .where(.not(.isNull(.pendingConfirmationToken)))
-      .where(.createdAt < Current.date().advanced(by: .days(-3)))
+      .where(.createdAt < get(dependency: \.date.now).advanced(by: .days(-3)))
       .delete(in: Current.db)
   }
 

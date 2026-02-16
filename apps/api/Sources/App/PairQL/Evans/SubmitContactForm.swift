@@ -105,5 +105,5 @@ private func subject(_ lang: Lang) -> String {
   let start = lang == .en
     ? "friendslibrary.com contact form"
     : "bibliotecadelosamigos.org formulario de contacto"
-  return start + " -- \(Current.date())"
+  return start + " -- \(get(dependency: \.date.now))"
 }

@@ -12,6 +12,7 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
   override func invokeTest() {
     withDependencies {
       $0.uuid = UUIDGenerator { UUID() }
+      $0.date = .constant(Date())
     } operation: {
       super.invokeTest()
     }
@@ -55,7 +56,6 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
   override func setUp() async throws {
     await JoinedEntityCache.shared.flush()
     await LegacyRest.cachedData.flush()
-    Current.date = { Date() }
     Current.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }
     Current.postmarkClient.send = { [self] in sent.emails.append($0) }
     Current.postmarkClient.sendTemplateEmail = { [self] in sent.templateEmails.append($0) }
@@ -132,6 +132,11 @@ func sync(
   default:
     fatalError("Unexpected result waiting for \(exp.description)")
   }
+}
+
+public extension Date {
+  static let epoch = Date(timeIntervalSince1970: 0)
+  static let reference = Date(timeIntervalSinceReferenceDate: 0)
 }
 
 #if DEBUG && os(macOS)

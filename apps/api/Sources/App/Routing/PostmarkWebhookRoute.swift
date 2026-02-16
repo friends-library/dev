@@ -35,7 +35,7 @@ enum PostmarkWebhookRoute: RouteHandler {
       return Response(status: .ok)
     }
 
-    subscriber.unsubscribedAt = Current.date()
+    subscriber.unsubscribedAt = get(dependency: \.date.now)
     _ = try? await Current.db.update(subscriber)
 
     switch lang {

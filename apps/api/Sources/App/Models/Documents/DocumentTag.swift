@@ -4,7 +4,7 @@ struct DocumentTag: Codable, Sendable, Equatable {
   var id: Id
   var documentId: Document.Id
   var type: TagType
-  var createdAt = Current.date()
+  var createdAt = Date()
 
   init(id: Id = .init(), documentId: Document.Id, type: TagType) {
     self.id = id

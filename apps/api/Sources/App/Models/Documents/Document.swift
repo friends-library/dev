@@ -13,8 +13,8 @@ struct Document: Codable, Sendable, Equatable {
   var description: String
   var partialDescription: String
   var featuredDescription: String?
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
   var deletedAt: Date? = nil
 
   var htmlTitle: String {

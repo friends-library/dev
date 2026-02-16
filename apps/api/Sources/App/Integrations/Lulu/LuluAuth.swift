@@ -10,7 +10,7 @@ extension Lulu.Api.Client {
     private var requestInFlight = false
 
     func get() async throws -> String {
-      if let token, token.expiration > Current.date() {
+      if let token, token.expiration > with(dependency: \.date.now) {
         return token.value
       } else if self.requestInFlight {
         try? await Task.sleep(nanoseconds: 150_000_000)
@@ -27,7 +27,7 @@ extension Lulu.Api.Client {
       )
       token = (
         value: creds.accessToken,
-        expiration: Current.date().addingTimeInterval(creds.expiresIn - 5.0),
+        expiration: with(dependency: \.date.now).addingTimeInterval(creds.expiresIn - 5.0),
       )
       return creds.accessToken
     }

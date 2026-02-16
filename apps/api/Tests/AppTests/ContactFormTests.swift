@@ -5,7 +5,7 @@ import XExpect
 
 final class ContactFormTests: AppTestCase, @unchecked Sendable {
   func testSubmitContactFormEnglish() async throws {
-    Current.date = { Date(timeIntervalSinceReferenceDate: 0) }
+    let date = get(dependency: \.date.now)
     Current.cloudflareClient.verifyTurnstileToken = { _ in .success }
 
     let output = try await SubmitContactForm.resolve(
@@ -23,7 +23,7 @@ final class ContactFormTests: AppTestCase, @unchecked Sendable {
     expect(output).toEqual(.success)
     let email = sent.emails.first
     XCTAssertEqual(sent.emails.count, 1)
-    XCTAssertEqual(email?.subject, "friendslibrary.com contact form -- \(Current.date())")
+    XCTAssertEqual(email?.subject, "friendslibrary.com contact form -- \(date)")
     XCTAssertEqual(email?.replyTo, "bob@thisoldhouse.com")
     XCTAssertEqual(email?.from, "Friends Library <info@friendslibrary.com>")
     XCTAssertContains(email?.body, "Name: Bob Villa")
@@ -35,7 +35,7 @@ final class ContactFormTests: AppTestCase, @unchecked Sendable {
   }
 
   func testSubmitContactFormSpanish() async throws {
-    Current.date = { Date(timeIntervalSinceReferenceDate: 0) }
+    let date = get(dependency: \.date.now)
     Current.cloudflareClient.verifyTurnstileToken = { _ in .success }
 
     _ = try await SubmitContactForm.resolve(
@@ -54,7 +54,7 @@ final class ContactFormTests: AppTestCase, @unchecked Sendable {
     XCTAssertEqual(sent.emails.count, 1)
     XCTAssertEqual(
       email?.subject,
-      "bibliotecadelosamigos.org formulario de contacto -- \(Current.date())",
+      "bibliotecadelosamigos.org formulario de contacto -- \(date)",
     )
     XCTAssertEqual(email?.replyTo, "pablo@mexico.gov")
     XCTAssertEqual(email?.from, "Biblioteca de los Amigos <info@bibliotecadelosamigos.org>")

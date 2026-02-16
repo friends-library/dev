@@ -9,8 +9,8 @@ struct Edition: Codable, Sendable, Equatable {
   var isDraft: Bool
   var paperbackSplits: NonEmpty<[Int]>?
   var paperbackOverrideSize: PrintSizeVariant?
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
   var deletedAt: Date? = nil
 
   init(

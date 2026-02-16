@@ -11,8 +11,8 @@ struct Friend: Codable, Sendable, Equatable {
   var died: Int?
   var published: Date?
   var outOfBand: Bool
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
   var deletedAt: Date?
 
   var isCompilations: Bool {

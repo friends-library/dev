@@ -11,7 +11,7 @@ struct NativeAppError: Codable, Sendable, Equatable {
   var installId: String
   var errorMessage: String?
   var errorStack: String?
-  var createdAt = Current.date()
+  var createdAt = Date()
 
   init(
     id: Id = .init(),

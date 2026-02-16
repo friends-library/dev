@@ -8,8 +8,8 @@ struct NPQuote: Codable, Sendable, Equatable {
   var quote: String
   var friendId: Friend.Id? = nil
   var documentId: Document.Id? = nil
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   init(
     id: Id = .init(),

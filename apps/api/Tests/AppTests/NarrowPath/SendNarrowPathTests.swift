@@ -1,4 +1,5 @@
 import ConcurrencyExtras
+import Dependencies
 import XCTest
 import XExpect
 import XPostmark
@@ -69,7 +70,6 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testSendNarrowPathIntegration() async throws {
     // setup dependencies
     Current.randomNumberGenerator = { stableRng(seed: .max) }
-    Current.date = { Date(timeIntervalSinceReferenceDate: 43000) }
     let sentEmails = ActorIsolated<[TemplateEmail]>([])
     Current.postmarkClient.sendTemplateEmailBatch = { emails in
       await sentEmails.setValue(emails)
@@ -113,7 +113,11 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     ])
 
     // act
-    try await SendNarrowPath().exec()
+    try await withDependencies {
+      $0.date = .constant(Date(timeIntervalSinceReferenceDate: 43000))
+    } operation: {
+      try await SendNarrowPath().exec()
+    }
 
     // this proves the spanish sent quotes were reset
     await expect(try? Current.db.find(NPSentQuote.Id(7))).toBeNil()

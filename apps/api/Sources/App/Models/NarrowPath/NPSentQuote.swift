@@ -2,7 +2,7 @@ import Foundation
 
 struct NPSentQuote: Codable, Sendable, Equatable {
   var id: Id
-  var createdAt = Current.date()
+  var createdAt = Date()
   var quoteId: NPQuote.Id
 
   init(id: Id = .init(), quoteId: NPQuote.Id) {
