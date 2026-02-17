@@ -6,7 +6,7 @@ struct CreateTags: AsyncMigration {
   private typealias M15 = DocumentTag.M15
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateTags UP")
+    get(dependency: \.logger).info("Running migration: CreateTags UP")
     let tags = try await database.enum(M15.DocumentTagEnum.name)
       .case(M15.DocumentTagEnum.caseJournal)
       .case(M15.DocumentTagEnum.caseLetters)
@@ -33,7 +33,7 @@ struct CreateTags: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateTags DOWN")
+    get(dependency: \.logger).info("Running migration: CreateTags DOWN")
     try await database.schema(M15.tableName).delete()
     try await database.enum(M15.DocumentTagEnum.name).delete()
   }

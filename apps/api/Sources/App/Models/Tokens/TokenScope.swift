@@ -18,7 +18,7 @@ struct TokenScope: Codable, Sendable, Equatable {
   var id: Id
   var scope: Scope
   var tokenId: Token.Id
-  var createdAt = Current.date()
+  var createdAt = Date()
 
   init(id: Id = .init(), tokenId: Token.Id, scope: Scope) {
     self.id = id

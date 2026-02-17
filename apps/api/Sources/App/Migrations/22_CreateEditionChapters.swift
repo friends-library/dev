@@ -5,7 +5,7 @@ struct CreateEditionChaptersTable: AsyncMigration {
   var name: String { "App.CreateEditionChapters" }
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateEditionChaptersTable UP")
+    get(dependency: \.logger).info("Running migration: CreateEditionChaptersTable UP")
     try await database.schema(M22.tableName)
       .id()
       .field(
@@ -27,7 +27,7 @@ struct CreateEditionChaptersTable: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateEditionChaptersTable DOWN")
+    get(dependency: \.logger).info("Running migration: CreateEditionChaptersTable DOWN")
     try await database.schema(M22.tableName).delete()
   }
 }

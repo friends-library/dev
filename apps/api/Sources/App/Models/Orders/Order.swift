@@ -25,8 +25,8 @@ struct Order: Codable, Sendable, Equatable {
   var addressCountry: String
   var freeOrderRequestId: FreeOrderRequest.Id?
   var recipientTaxId: String?
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   var address: ShippingAddress {
     .init(
@@ -151,10 +151,10 @@ extension Order {
 // loaders
 
 extension Order {
-  func items() async throws -> [OrderItem] {
+  func items(in db: any DuetSQL.Client) async throws -> [OrderItem] {
     try await OrderItem.query()
       .where(.orderId == self.id)
-      .all(in: Current.db)
+      .all(in: db)
   }
 }
 

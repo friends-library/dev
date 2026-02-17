@@ -3,7 +3,8 @@
 extension EditionChapter {
   static var mock: EditionChapter {
     EditionChapter(
-      editionId: .init(),
+      id: .init(.init()),
+      editionId: .init(.init()),
       order: 42,
       shortHeading: "@mock shortHeading",
       isIntermediateTitle: true,
@@ -11,12 +12,19 @@ extension EditionChapter {
   }
 
   static var empty: EditionChapter {
-    EditionChapter(editionId: .init(), order: 0, shortHeading: "", isIntermediateTitle: false)
+    EditionChapter(
+      id: .init(.init()),
+      editionId: .init(.init()),
+      order: 0,
+      shortHeading: "",
+      isIntermediateTitle: false,
+    )
   }
 
   static var random: EditionChapter {
     EditionChapter(
-      editionId: .init(),
+      id: .init(.init()),
+      editionId: .init(.init()),
       order: Int.random,
       shortHeading: "@random".random,
       isIntermediateTitle: Bool.random(),

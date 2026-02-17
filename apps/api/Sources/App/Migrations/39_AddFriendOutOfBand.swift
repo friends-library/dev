@@ -4,7 +4,7 @@ import Vapor
 
 struct AddFriendOutOfBand: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: AddFriendOutOfBand UP")
+    get(dependency: \.logger).info("Running migration: AddFriendOutOfBand UP")
     try await database.schema(Friend.M11.tableName)
       .field(Friend.M39.outOfBand, .bool, .required, .sql(.default(false)))
       .update()
@@ -23,7 +23,7 @@ struct AddFriendOutOfBand: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: AddFriendOutOfBand DOWN")
+    get(dependency: \.logger).info("Running migration: AddFriendOutOfBand DOWN")
     try await database.schema(Friend.M11.tableName)
       .deleteField(Friend.M39.outOfBand)
       .update()

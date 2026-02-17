@@ -20,7 +20,7 @@ struct Download: Codable, Sendable, Equatable {
   var country: String?
   var latitude: String?
   var longitude: String?
-  var createdAt = Current.date()
+  var createdAt = Date()
 
   init(
     id: Id = .init(),

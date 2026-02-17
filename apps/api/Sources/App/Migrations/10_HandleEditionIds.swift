@@ -5,7 +5,7 @@ import Vapor
 struct HandleEditionIds: AsyncMigration {
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: HandleEditionIds UP")
+    get(dependency: \.logger).info("Running migration: HandleEditionIds UP")
     let sqlDb = database as! SQLDatabase
 
     try await self.createNonForeignKeyNullableColumns(database)
@@ -67,7 +67,7 @@ struct HandleEditionIds: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: HandleEditionIds DOWN")
+    get(dependency: \.logger).info("Running migration: HandleEditionIds DOWN")
     // don't really care to try to reverse this one...
   }
 }

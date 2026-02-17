@@ -4,7 +4,7 @@ struct CreateNativeAppErrors: AsyncMigration {
   private typealias M35 = NativeAppError.M35
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateNativeAppErrors UP")
+    get(dependency: \.logger).info("Running migration: CreateNativeAppErrors UP")
     let lang = try await database.enum(Order.M2.LangEnum.name).read()
     try await database.schema(M35.tableName)
       .id()
@@ -21,7 +21,7 @@ struct CreateNativeAppErrors: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateNativeAppErrors DOWN")
+    get(dependency: \.logger).info("Running migration: CreateNativeAppErrors DOWN")
     try await database.schema(M35.tableName).delete()
   }
 }

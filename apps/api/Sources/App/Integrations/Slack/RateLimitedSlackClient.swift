@@ -29,7 +29,7 @@ struct RateLimitedSlackClient: Sendable {
 
   func send(_ slack: FlpSlack.Message) async {
     var state = state.value
-    let today = self.dateFormatter.string(from: Current.date())
+    let today = self.dateFormatter.string(from: get(dependency: \.date.now))
     switch state.currentDay {
 
     // first time initializing
@@ -51,7 +51,7 @@ struct RateLimitedSlackClient: Sendable {
       if state.numAttempted >= self.dailyLimit {
         if state.numAttempted - 1 < self.dailyLimit {
           await self.execSend(.error("Exceeded daily slack limit"))
-          await Current.postmarkClient.send(.init(
+          await get(dependency: \.postmarkClient).send(.init(
             to: Env.JARED_CONTACT_FORM_EMAIL,
             from: "info@friendslibrary.com",
             subject: "[FLP Api] Exceeded daily slack limit",
@@ -100,7 +100,7 @@ struct RateLimitedSlackClient: Sendable {
   }
 
   func drop(_ slack: FlpSlack.Message) {
-    Current.logger
+    get(dependency: \.logger)
       .error("Dropped rate-limited Slack to `\(slack.channel)`: \(slack.message.text)")
   }
 }

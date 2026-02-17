@@ -4,7 +4,7 @@ struct CreateAudios: AsyncMigration {
   private typealias M20 = Audio.M20
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateAudios UP")
+    get(dependency: \.logger).info("Running migration: CreateAudios UP")
     try await database.schema(M20.tableName)
       .id()
       .field(
@@ -28,7 +28,7 @@ struct CreateAudios: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateAudios DOWN")
+    get(dependency: \.logger).info("Running migration: CreateAudios DOWN")
     try await database.schema(M20.tableName).delete()
   }
 }

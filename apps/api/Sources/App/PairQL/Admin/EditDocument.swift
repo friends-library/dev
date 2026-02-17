@@ -111,7 +111,7 @@ extension EditDocument.EditDocumentOutput {
     let relatedDocuments = document.relatedDocuments
     let tags = try await DocumentTag.query()
       .where(.documentId == document.id)
-      .all(in: Current.db)
+      .all(in: get(dependency: \.db))
 
     id = document.id
     altLanguageId = document.altLanguageId

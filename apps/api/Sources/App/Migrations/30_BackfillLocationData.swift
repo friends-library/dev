@@ -4,19 +4,19 @@ import Vapor
 
 struct BackfillLocationData: AsyncMigration {
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: BackfillLocationData UP")
+    get(dependency: \.logger).info("Running migration: BackfillLocationData UP")
 
-    let downloads = try await Current.db.query(Download.self)
+    let downloads = try await get(dependency: \.db).query(Download.self)
       .where(.not(.isNull(.ip)))
-      .all(in: Current.db)
+      .all(in: get(dependency: \.db))
 
     let data = backfillLocationData(downloads)
     let numFillable = data.updates.reduce(into: 0) { acc, update in
       acc += update.targets.count
     }
 
-    Current.logger.info("  -> found \(numFillable) rows for backfilling")
-    Current.logger.info("  -> \(data.missing) will still be missing data")
+    get(dependency: \.logger).info("  -> found \(numFillable) rows for backfilling")
+    get(dependency: \.logger).info("  -> \(data.missing) will still be missing data")
 
     // sanity check: ensure pattern ids are unique
     let patternIds = data.updates.map(\.pattern.id)
@@ -35,14 +35,14 @@ struct BackfillLocationData: AsyncMigration {
       }
 
       try await update.targets.chunked(into: 100).asyncForEach { chunk in
-        Current.logger.info("  -> updating batch chunk of size: \(chunk.count)")
-        try await Current.db.update(chunk)
+        get(dependency: \.logger).info("  -> updating batch chunk of size: \(chunk.count)")
+        try await get(dependency: \.db).update(chunk)
       }
     }
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: BackfillLocationData DOWN")
+    get(dependency: \.logger).info("Running migration: BackfillLocationData DOWN")
   }
 }
 

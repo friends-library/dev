@@ -18,7 +18,7 @@ struct UpdateAudio: Pair {
 extension UpdateAudio: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
-    var audio: Audio = try await Current.db.find(input.id)
+    var audio: Audio = try await context.db.find(input.id)
     audio.editionId = input.editionId
     audio.reader = input.reader
     audio.isIncomplete = input.isIncomplete
@@ -27,7 +27,7 @@ extension UpdateAudio: Resolver {
     audio.m4bSizeHq = input.m4bSizeHq
     audio.m4bSizeLq = input.m4bSizeLq
     guard await audio.isValid() else { throw ModelError.invalidEntity }
-    try await Current.db.update(audio)
+    try await context.db.update(audio)
     return .success
   }
 }

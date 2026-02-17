@@ -17,7 +17,7 @@ extension BrickOrder: Resolver {
     let forOrder = "for bricked order `\(input.orderId ?? "<no order id>")`"
     if let paymentIntentId = input.orderPaymentId, !paymentIntentId.isEmpty {
       do {
-        let refund = try await Current.stripeClient.createRefund(
+        let refund = try await get(dependency: \.stripe).createRefund(
           paymentIntentId,
           Env.STRIPE_SECRET_KEY,
         )
@@ -26,7 +26,7 @@ extension BrickOrder: Resolver {
         await slackError("Error creating refund \(forOrder): `\(error)`")
       }
       do {
-        let pi = try await Current.stripeClient.cancelPaymentIntent(
+        let pi = try await get(dependency: \.stripe).cancelPaymentIntent(
           paymentIntentId,
           Env.STRIPE_SECRET_KEY,
         )
@@ -37,9 +37,9 @@ extension BrickOrder: Resolver {
     }
     if let rawId = input.orderId, let orderId = UUID(uuidString: rawId) {
       do {
-        var order = try await Current.db.find(Order.Id(rawValue: orderId))
+        var order = try await context.db.find(Order.Id(rawValue: orderId))
         order.printJobStatus = .bricked
-        try await Current.db.update(order)
+        try await context.db.update(order)
         await slackError("Updated order `\(rawId)` to printJobStatus `.bricked`")
       } catch {
         await slackError("Failed to update order `\(rawId)` to printJobStatus `.bricked`")

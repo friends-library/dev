@@ -6,7 +6,7 @@ struct Token: Codable, Sendable, Equatable {
   var value: Value
   var description: String
   var uses: Int?
-  var createdAt = Current.date()
+  var createdAt = Date()
 
   init(
     id: Id = .init(),
@@ -26,9 +26,9 @@ struct Token: Codable, Sendable, Equatable {
 extension Token {
   typealias Value = Tagged<(Token, value: ()), UUID>
 
-  func scopes() async throws -> [TokenScope] {
+  func scopes(in db: any DuetSQL.Client) async throws -> [TokenScope] {
     try await TokenScope.query()
       .where(.tokenId == self.id)
-      .all(in: Current.db)
+      .all(in: db)
   }
 }

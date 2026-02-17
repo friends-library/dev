@@ -16,11 +16,11 @@ extension DeleteEntities: Resolver {
     try context.verify(self.auth)
     switch input {
     case .editionImpression(let id):
-      try await Current.db.delete(id)
+      try await context.db.delete(id)
     case .editionChapters(let editionId):
-      try await Current.db.query(EditionChapter.self)
+      try await context.db.query(EditionChapter.self)
         .where(.editionId == editionId)
-        .delete(in: Current.db)
+        .delete(in: context.db)
     }
     return .success
   }

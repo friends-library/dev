@@ -3,12 +3,15 @@
   "projectType": "library",
   "targets": {
     "build": {
+      "inputs": ["swift-sources"],
       "command": "cd libs-swift/x-stripe && swift build"
     },
     "format": {
+      "inputs": ["swift-sources"],
       "command": "cd libs-swift/x-stripe && swiftformat ."
     },
     "format:check": {
+      "inputs": ["swift-sources"],
       "command": "cd libs-swift/x-stripe && swiftformat --lint ."
     }
   }

@@ -19,14 +19,14 @@ extension InitOrder: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     let orderId = Order.Id()
     do {
-      async let pi = Current.stripeClient.createPaymentIntent(
+      async let pi = get(dependency: \.stripe).createPaymentIntent(
         input.rawValue, .USD,
         ["orderId": orderId.lowercased],
         Env.STRIPE_SECRET_KEY,
       )
       let tokenDesc = "single-use create order token for order `\(orderId.lowercased)`"
-      async let token = Current.db.create(Token(description: tokenDesc, uses: 1))
-      try await Current.db.create(TokenScope(tokenId: token.id, scope: .mutateOrders))
+      async let token = context.db.create(Token(description: tokenDesc, uses: 1))
+      try await context.db.create(TokenScope(tokenId: token.id, scope: .mutateOrders))
       return try await .init(
         orderId: orderId,
         orderPaymentId: .init(rawValue: pi.id),

@@ -5,7 +5,8 @@ import NonEmpty
 extension AudioPart {
   static var mock: AudioPart {
     AudioPart(
-      audioId: .init(),
+      id: .init(.init()),
+      audioId: .init(.init()),
       title: "@mock title",
       duration: 42,
       chapters: NonEmpty<[Int]>(42),
@@ -17,7 +18,8 @@ extension AudioPart {
 
   static var empty: AudioPart {
     AudioPart(
-      audioId: .init(),
+      id: .init(.init()),
+      audioId: .init(.init()),
       title: "",
       duration: 0,
       chapters: NonEmpty<[Int]>(0),
@@ -29,7 +31,8 @@ extension AudioPart {
 
   static var random: AudioPart {
     AudioPart(
-      audioId: .init(),
+      id: .init(.init()),
+      audioId: .init(.init()),
       title: "@random".random,
       duration: .init(rawValue: Double.random(in: 100 ... 999)),
       chapters: NonEmpty<[Int]>(Int.random),

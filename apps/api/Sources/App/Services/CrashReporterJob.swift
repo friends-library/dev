@@ -37,13 +37,13 @@ struct CrashReporterJob: AsyncScheduledJob {
 
     let num_crashes = prod.pm2_env.restart_time
     if num_crashes == 0 {
-      Current.logger.info("No crashes in production API detected")
+      get(dependency: \.logger).info("No crashes in production API detected")
       return
     }
 
     await slackError("\(num_crashes) crashes detected in production API")
 
-    await Current.postmarkClient.send(.init(
+    await get(dependency: \.postmarkClient).send(.init(
       to: Env.JARED_CONTACT_FORM_EMAIL,
       from: "info@friendslibrary.com",
       subject: "[FLP Api] Crash report",

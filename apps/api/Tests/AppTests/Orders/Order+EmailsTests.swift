@@ -16,14 +16,14 @@ final class OrderEmailsTests: AppTestCase, @unchecked Sendable {
     item.quantity = 1
     item.orderId = order.id
     item.editionId = entities.edition.id
-    try! await Current.db.create(order)
-    try! await Current.db.create(item)
+    try! await self.db.create(order)
+    try! await self.db.create(item)
     return (order, entities.document.title)
   }
 
   func testEnglishShippedEmail() async throws {
     let (order, docTitle) = await mockOrder(lang: .en)
-    let email = try await EmailBuilder.orderShipped(order, trackingUrl: "/track/123")
+    let email = try await EmailBuilder.orderShipped(order, trackingUrl: "/track/123", in: self.db)
 
     XCTAssertEqual(email.from, "Friends Library <info@friendslibrary.com>")
     XCTAssertEqual("[,] Friends Library Order Shipped", email.subject)
@@ -35,7 +35,7 @@ final class OrderEmailsTests: AppTestCase, @unchecked Sendable {
 
   func testSpanishShippedEmail() async throws {
     let (order, docTitle) = await mockOrder(lang: .es)
-    let email = try await EmailBuilder.orderShipped(order, trackingUrl: "/track/123")
+    let email = try await EmailBuilder.orderShipped(order, trackingUrl: "/track/123", in: self.db)
 
     XCTAssertEqual(email.from, "Biblioteca de los Amigos <info@bibliotecadelosamigos.org>")
     XCTAssertEqual("[,] Pedido Enviado – Biblioteca de Amigos", email.subject)
@@ -50,8 +50,8 @@ final class OrderEmailsTests: AppTestCase, @unchecked Sendable {
     enOrder.addressName = ""
     var (esOrder, _) = await mockOrder(lang: .es)
     esOrder.addressName = ""
-    let enEmail = try await EmailBuilder.orderShipped(enOrder, trackingUrl: nil)
-    let esEmail = try await EmailBuilder.orderShipped(esOrder, trackingUrl: nil)
+    let enEmail = try await EmailBuilder.orderShipped(enOrder, trackingUrl: nil, in: self.db)
+    let esEmail = try await EmailBuilder.orderShipped(esOrder, trackingUrl: nil, in: self.db)
     XCTAssertTrue(enEmail.body.hasPrefix("Hello!"))
     XCTAssertTrue(esEmail.body.hasPrefix("¡Hola!"))
     XCTAssertTrue(enEmail.body.contains("(Sorry, not available)"))

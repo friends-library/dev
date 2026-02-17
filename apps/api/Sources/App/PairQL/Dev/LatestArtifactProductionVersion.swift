@@ -13,7 +13,7 @@ extension LatestArtifactProductionVersion: NoInputResolver {
     try context.verify(self.auth)
     let latest = try await ArtifactProductionVersion.query()
       .orderBy(.createdAt, .desc)
-      .first(in: Current.db)
+      .first(in: context.db)
     return .init(version: latest.version.rawValue)
   }
 }

@@ -1,19 +1,32 @@
 {
   "root": "apps/api",
   "projectType": "app",
-  "implicitDependencies": [],
+  "implicitDependencies": [
+    "duet",
+    "pairql",
+    "ts-interop",
+    "x-http",
+    "x-postmark",
+    "x-stripe",
+    "x-slack",
+    "x-expect"
+  ],
   "targets": {
     "build": {
+      "inputs": ["swift-sources", "^swift-sources"],
       "outputs": ["{projectRoot}/.build/debug/Run"],
       "command": "cd apps/api && swift build"
     },
     "test": {
+      "inputs": ["swift-tests", "^swift-sources"],
       "command": "cd apps/api && SWIFT_DETERMINISTIC_HASHING=1 swift test"
     },
     "format": {
+      "inputs": ["swift-sources"],
       "command": "cd apps/api && swiftformat ."
     },
     "format:check": {
+      "inputs": ["swift-sources"],
       "command": "cd apps/api && swiftformat --lint ."
     }
   }

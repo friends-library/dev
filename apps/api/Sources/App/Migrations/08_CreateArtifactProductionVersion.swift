@@ -6,7 +6,7 @@ struct CreateArtifactProductionVersions: AsyncMigration {
   var name: String { "App.CreateArtifactProductionVersion" }
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateArtifactProductionVersions UP")
+    get(dependency: \.logger).info("Running migration: CreateArtifactProductionVersions UP")
     try await database.schema(ArtifactProductionVersion.M8.tableName)
       .id()
       .field(ArtifactProductionVersion.M8.version, .string, .required)
@@ -16,7 +16,7 @@ struct CreateArtifactProductionVersions: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateArtifactProductionVersions DOWN")
+    get(dependency: \.logger).info("Running migration: CreateArtifactProductionVersions DOWN")
     try await database.schema(ArtifactProductionVersion.M8.tableName).delete()
   }
 }

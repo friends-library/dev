@@ -26,7 +26,7 @@ extension SubmitContactForm: Resolver {
     try await checkSpam(input)
 
     let task = Task {
-      await Current.postmarkClient.send(XPostmark.Email(
+      await get(dependency: \.postmarkClient).send(XPostmark.Email(
         to: input |> emailTo,
         from: EmailBuilder.fromAddress(lang: input.lang),
         replyTo: input.email,
@@ -55,7 +55,7 @@ extension SubmitContactForm: Resolver {
 // helpers
 
 private func checkSpam(_ input: SubmitContactForm.Input) async throws {
-  switch await Current.cloudflareClient.verifyTurnstileToken(input.turnstileToken) {
+  switch await get(dependency: \.cloudflareClient).verifyTurnstileToken(input.turnstileToken) {
   case .success:
     break
   case .failure:
@@ -105,5 +105,5 @@ private func subject(_ lang: Lang) -> String {
   let start = lang == .en
     ? "friendslibrary.com contact form"
     : "bibliotecadelosamigos.org formulario de contacto"
-  return start + " -- \(Current.date())"
+  return start + " -- \(get(dependency: \.date.now))"
 }

@@ -5,7 +5,7 @@ struct CreateFriends: AsyncMigration {
   private typealias M11 = Friend.M11
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateFriends UP")
+    get(dependency: \.logger).info("Running migration: CreateFriends UP")
     let genders = try await database.enum(M11.GenderEnum.name)
       .case(M11.GenderEnum.caseMale)
       .case(M11.GenderEnum.caseFemale)
@@ -32,7 +32,7 @@ struct CreateFriends: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateFriends DOWN")
+    get(dependency: \.logger).info("Running migration: CreateFriends DOWN")
     try await database.schema(M11.tableName).delete()
     try await database.enum(M11.GenderEnum.name).delete()
   }

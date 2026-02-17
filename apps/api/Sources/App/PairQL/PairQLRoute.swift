@@ -98,6 +98,7 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
 // helpers
 
 private func logOperation(_ route: PairQLRoute, _ request: Request, _ duration: TimeInterval) {
+  let logger = get(dependency: \.logger)
   let operation = "\(request.parameters.get("operation") ?? "")".yellow
   var elapsed = ""
   switch duration {
@@ -108,22 +109,16 @@ private func logOperation(_ route: PairQLRoute, _ request: Request, _ duration: 
   }
   switch route {
   case .dev:
-    Current.logger
-      .notice("PairQL request: \("Dev".magenta) \(operation) \(elapsed)")
+    logger.notice("PairQL request: \("Dev".magenta) \(operation) \(elapsed)")
   case .admin:
-    Current.logger
-      .notice("PairQL request: \("Admin".cyan) \(operation) \(elapsed)")
+    logger.notice("PairQL request: \("Admin".cyan) \(operation) \(elapsed)")
   case .order:
-    Current.logger
-      .notice("PairQL request: \("Order".red) \(operation) \(elapsed)")
+    logger.notice("PairQL request: \("Order".red) \(operation) \(elapsed)")
   case .evans:
-    Current.logger
-      .notice("PairQL request: \("Evans".lightBlue) \(operation) \(elapsed)")
+    logger.notice("PairQL request: \("Evans".lightBlue) \(operation) \(elapsed)")
   case .evansBuild:
-    Current.logger
-      .notice("PairQL request: \("EvansBuild".green) \(operation) \(elapsed)")
+    logger.notice("PairQL request: \("EvansBuild".green) \(operation) \(elapsed)")
   case .native:
-    Current.logger
-      .notice("PairQL request: \("Native".lightGreen) \(operation) \(elapsed)")
+    logger.notice("PairQL request: \("Native".lightGreen) \(operation) \(elapsed)")
   }
 }

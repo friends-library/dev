@@ -19,7 +19,7 @@ struct CreateEditionChapters: Pair {
 extension CreateEditionChapters: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
-    try await Current.db.create(input.map(EditionChapter.init(input:)))
+    try await context.db.create(input.map(EditionChapter.init(input:)))
     return .success
   }
 }

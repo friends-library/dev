@@ -291,19 +291,20 @@ extension EditionImpression {
   }
 
   private func load() async throws {
-    async let asyncFriends = Friend.query().all(in: Current.db)
-    async let asyncDocuments = Document.query().all(in: Current.db)
-    async let asyncEditions = Edition.query().all(in: Current.db)
-    async let asyncChapters = EditionChapter.query().all(in: Current.db)
-    async let asyncImpressions = EditionImpression.query().all(in: Current.db)
-    async let asyncIsbns = Isbn.query().all(in: Current.db)
-    async let asyncAudios = Audio.query().all(in: Current.db)
-    async let asyncAudioParts = AudioPart.query().all(in: Current.db)
-    async let asyncTags = DocumentTag.query().all(in: Current.db)
-    async let asyncResidences = FriendResidence.query().all(in: Current.db)
-    async let asyncDurations = FriendResidenceDuration.query().all(in: Current.db)
-    async let asyncRelatedDocuments = RelatedDocument.query().all(in: Current.db)
-    async let asyncQuotes = FriendQuote.query().all(in: Current.db)
+    let db = with(dependency: \.db)
+    async let asyncFriends = Friend.query().all(in: db)
+    async let asyncDocuments = Document.query().all(in: db)
+    async let asyncEditions = Edition.query().all(in: db)
+    async let asyncChapters = EditionChapter.query().all(in: db)
+    async let asyncImpressions = EditionImpression.query().all(in: db)
+    async let asyncIsbns = Isbn.query().all(in: db)
+    async let asyncAudios = Audio.query().all(in: db)
+    async let asyncAudioParts = AudioPart.query().all(in: db)
+    async let asyncTags = DocumentTag.query().all(in: db)
+    async let asyncResidences = FriendResidence.query().all(in: db)
+    async let asyncDurations = FriendResidenceDuration.query().all(in: db)
+    async let asyncRelatedDocuments = RelatedDocument.query().all(in: db)
+    async let asyncQuotes = FriendQuote.query().all(in: db)
 
     let durations = try await asyncDurations
     let friends = try await asyncFriends

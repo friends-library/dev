@@ -52,7 +52,8 @@ enum DownloadRoute: RouteHandler {
 
     // do all db/api/logging work in background task to return response faster
     let bgWork = Task { [source] in
-      guard let device = Current.userAgentParser.parse(userAgent) else {
+      let db = get(dependency: \.db)
+      guard let device = get(dependency: \.userAgentParser).parse(userAgent) else {
         await slackError("Failed to parse user agent `\(userAgent)` into device data")
         return
       }
@@ -69,11 +70,11 @@ enum DownloadRoute: RouteHandler {
 
       // prevent duplicate podcast downloads
       if downloadFormat == .podcast, let ipAddress {
-        let dupe = try? await Current.db.query(Download.self)
+        let dupe = try? await db.query(Download.self)
           .where(.ip == .string(ipAddress))
           .where(.format == .enum(Download.Format.podcast))
           .where(.editionId == file.editionId)
-          .first(in: Current.db)
+          .first(in: db)
 
         if dupe != nil {
           await slackDebug(
@@ -101,7 +102,7 @@ enum DownloadRoute: RouteHandler {
       var location: IpApi.Response?
       if let ip = ipAddress, ip != "127.0.0.1" {
         do {
-          location = try await Current.ipApiClient.getIpData(ip)
+          location = try await get(dependency: \.ipApiClient).getIpData(ip)
           download.city = location?.city
           download.region = location?.region
           download.postalCode = location?.postal
@@ -113,7 +114,7 @@ enum DownloadRoute: RouteHandler {
       }
 
       do {
-        try await Current.db.create(download)
+        try await db.create(download)
         await slackDownload(file: file, location: location, device: device, referrer: referrer)
       } catch {
         await slackError("Error creating download: \(error)")
@@ -226,7 +227,7 @@ private func slackDownload(
     channel: file.format.slackChannel,
   )
 
-  await Current.slackClient.send(slack)
+  await get(dependency: \.slackClient).send(slack)
 
   if let location,
      location.slashedSummary.isEmpty,

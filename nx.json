@@ -1,4 +1,12 @@
 {
+  "namedInputs": {
+    "swift-sources": ["{projectRoot}/Sources/**/*.swift", "{projectRoot}/Package.swift"],
+    "swift-tests": [
+      "{projectRoot}/Sources/**/*.swift",
+      "{projectRoot}/Tests/**/*.swift",
+      "{projectRoot}/Package.swift"
+    ]
+  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx/tasks-runners/default",

@@ -5,7 +5,7 @@ struct CreateDownloads: AsyncMigration {
   private typealias M1 = Download.M1
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateDownloads UP")
+    get(dependency: \.logger).info("Running migration: CreateDownloads UP")
     let editionType = try await database.enum(M1.EditionTypeEnum.name)
       .case(M1.EditionTypeEnum.caseUpdated)
       .case(M1.EditionTypeEnum.caseModernized)
@@ -61,7 +61,7 @@ struct CreateDownloads: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateDownloads DOWN")
+    get(dependency: \.logger).info("Running migration: CreateDownloads DOWN")
     try await database.schema(M1.tableName).delete()
     try await database.enum(M1.EditionTypeEnum.name).delete()
     try await database.enum(M1.SourceEnum.name).delete()

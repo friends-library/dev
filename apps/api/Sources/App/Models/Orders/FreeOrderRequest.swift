@@ -13,8 +13,8 @@ struct FreeOrderRequest: Codable, Sendable, Equatable {
   var addressZip: String
   var addressCountry: String
   var source: String
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   var address: ShippingAddress {
     .init(

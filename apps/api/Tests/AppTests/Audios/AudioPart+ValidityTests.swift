@@ -1,12 +1,9 @@
+import Foundation
 import Testing
 
 @testable import App
 
 @Suite struct AudioPartValidityTests {
-  init() {
-    Current.logger = .null
-  }
-
   @Test func `empty title invalid`() async {
     var part = AudioPart.valid
     part.title = ""

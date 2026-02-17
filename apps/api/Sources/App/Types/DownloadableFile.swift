@@ -142,7 +142,7 @@ extension DownloadableFile {
       throw ParseLogPathError.invalidEditionId(logPath)
     }
 
-    guard let rows = try? await Current.db.customQuery(
+    guard let rows = try? await get(dependency: \.db).customQuery(
       DownloadData.self,
       withBindings: [.uuid(editionUuid)],
     ), let data = rows.first else {

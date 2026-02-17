@@ -3,15 +3,19 @@
   "projectType": "library",
   "targets": {
     "build": {
+      "inputs": ["swift-sources"],
       "command": "cd libs-swift/x-http && swift build"
     },
     "test": {
+      "inputs": ["swift-tests"],
       "command": "cd libs-swift/x-http && SWIFT_DETERMINISTIC_HASHING=1 swift test"
     },
     "format": {
+      "inputs": ["swift-sources"],
       "command": "cd libs-swift/x-http && swiftformat ."
     },
     "format:check": {
+      "inputs": ["swift-sources"],
       "command": "cd libs-swift/x-http && swiftformat --lint ."
     }
   }

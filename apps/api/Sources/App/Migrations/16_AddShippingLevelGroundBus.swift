@@ -4,7 +4,7 @@ import Vapor
 struct AddShippingLevelGroundBus: AsyncMigration {
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: AddShippingLevelGroundBus UP")
+    get(dependency: \.logger).info("Running migration: AddShippingLevelGroundBus UP")
     try await addDbEnumCases(
       db: database,
       enumName: Order.M2.ShippingLevelEnum.name,
@@ -13,7 +13,7 @@ struct AddShippingLevelGroundBus: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: AddShippingLevelGroundBus DOWN")
+    get(dependency: \.logger).info("Running migration: AddShippingLevelGroundBus DOWN")
     // I don't think postgres supports deleting enum cases... ¯\_(ツ)_/¯
   }
 }

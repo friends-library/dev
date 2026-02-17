@@ -3,7 +3,7 @@ import Foundation
 struct ArtifactProductionVersion: Codable, Sendable, Equatable {
   var id: Id
   var version: GitCommitSha
-  var createdAt = Current.date()
+  var createdAt = Date()
 
   init(id: Id = .init(), version: GitCommitSha) {
     self.id = id

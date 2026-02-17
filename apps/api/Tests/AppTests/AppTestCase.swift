@@ -1,4 +1,5 @@
 import ConcurrencyExtras
+import Dependencies
 import FluentSQL
 import Vapor
 import XCTest
@@ -8,6 +9,27 @@ import XPostmark
 @testable import DuetSQL
 
 class AppTestCase: XCTestCase, @unchecked Sendable {
+  @Dependency(\.db) var db
+
+  override func invokeTest() {
+    withDependencies {
+      $0.uuid = UUIDGenerator { UUID() }
+      $0.date = .constant(Date())
+      $0.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }
+      $0.postmarkClient = .init(
+        send: { [self] in sent.emails.append($0) },
+        sendTemplateEmail: { [self] in sent.templateEmails.append($0) },
+        sendTemplateEmailBatch: { [self] in
+          sent.templateEmails.append(contentsOf: $0)
+          return .success([])
+        },
+        deleteSuppression: { _, _ in .success(()) },
+      )
+    } operation: {
+      super.invokeTest()
+    }
+  }
+
   nonisolated(unsafe) static var migrated = false
 
   struct Sent {
@@ -27,11 +49,7 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
     setenv("WEBSITE_URL_EN", "https://friendslibrary.com", 1)
     setenv("WEBSITE_URL_ES", "https://bibliotecadelosamigos.org", 1)
     self.app = Application(.testing)
-    Current = .mock
-    Current.uuid = { UUID() }
     try! Configure.app(self.app)
-    Current.db = FlushingDbClient(self.app.db as! SQLDatabase)
-    Current.logger = .null
     self.app.logger = .null
     if !self.migrated {
       try! self.app.autoRevert().wait()
@@ -47,30 +65,36 @@ class AppTestCase: XCTestCase, @unchecked Sendable {
   override func setUp() async throws {
     await JoinedEntityCache.shared.flush()
     await LegacyRest.cachedData.flush()
-    Current.uuid = { UUID() }
-    Current.date = { Date() }
-    Current.slackClient = RateLimitedSlackClient { [self] in sent.slacks.append($0) }
-    Current.postmarkClient.send = { [self] in sent.emails.append($0) }
-    Current.postmarkClient.sendTemplateEmail = { [self] in sent.templateEmails.append($0) }
-    Current.postmarkClient.sendTemplateEmailBatch = { [self] in
-      sent.templateEmails.append(contentsOf: $0)
-      return .success([])
-    }
   }
 }
 
-func mockUUIDs() -> (UUID, UUID, UUID) {
-  let uuids = (UUID(), UUID(), UUID())
-  let array = LockIsolated([uuids.0, uuids.1, uuids.2])
+extension UUIDGenerator {
+  static func mock(_ uuids: MockUUIDs) -> Self {
+    Self { uuids() }
+  }
+}
 
-  Current.uuid = {
-    array.withValue { array in
-      guard !array.isEmpty else { return UUID() }
-      return array.removeFirst()
-    }
+struct MockUUIDs: Sendable {
+  private var stack: LockIsolated<[UUID]>
+  private var copy: LockIsolated<[UUID]>
+
+  var first: UUID { self.copy[0] }
+  var second: UUID { self.copy[1] }
+  var third: UUID { self.copy[2] }
+
+  init() {
+    let uuids = [UUID(), UUID(), UUID(), UUID(), UUID(), UUID()]
+    self.stack = .init(uuids)
+    self.copy = .init(uuids)
   }
 
-  return uuids
+  func callAsFunction() -> UUID {
+    self.stack.withValue { $0.removeFirst() }
+  }
+
+  subscript(index: Int) -> UUID {
+    self.copy[index]
+  }
 }
 
 public extension String {
@@ -110,6 +134,19 @@ func sync(
   default:
     fatalError("Unexpected result waiting for \(exp.description)")
   }
+}
+
+func withUUID<T: Sendable>(
+  _ f: @Sendable () async throws -> T,
+) async rethrows -> T {
+  try await withDependencies { $0.uuid = .init { UUID() } } operation: {
+    try await f()
+  }
+}
+
+public extension Date {
+  static let epoch = Date(timeIntervalSince1970: 0)
+  static let reference = Date(timeIntervalSinceReferenceDate: 0)
 }
 
 #if DEBUG && os(macOS)

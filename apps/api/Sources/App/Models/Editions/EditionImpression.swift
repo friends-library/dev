@@ -10,7 +10,7 @@ struct EditionImpression: Codable, Sendable, Equatable {
   var paperbackVolumes: NonEmpty<[Int]>
   var publishedRevision: GitCommitSha
   var productionToolchainRevision: GitCommitSha
-  var createdAt = Current.date()
+  var createdAt = Date()
 
   var paperbackSize: PrintSize {
     self.paperbackSizeVariant.printSize

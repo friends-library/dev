@@ -21,7 +21,7 @@ struct CreateFreeOrderRequest: Pair {
 
 extension CreateFreeOrderRequest: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
-    let order = try await Current.db.create(FreeOrderRequest(
+    let order = try await context.db.create(FreeOrderRequest(
       name: input.name,
       email: input.email,
       requestedBooks: input.requestedBooks,
@@ -72,13 +72,13 @@ private func sendFreeOrderRequestNotifications(for order: FreeOrderRequest) asyn
       </a>
       """,
     )
-    await Current.postmarkClient.send(email)
+    await get(dependency: \.postmarkClient).send(email)
   }
 
   if Env.mode == .prod {
     let text =
       "New *Spanish Free Book Order Request:*\n  → _Name_ `\(order.name)`\n  → _Books_ `\(order.requestedBooks)`\n  → _About_ `\(order.aboutRequester.replacingOccurrences(of: "\n", with: ""))`"
-    await Current.slackClient.send(.order(text, emoji: .orangeBook))
+    await get(dependency: \.slackClient).send(.order(text, emoji: .orangeBook))
   }
 }
 

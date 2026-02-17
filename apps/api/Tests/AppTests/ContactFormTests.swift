@@ -1,3 +1,4 @@
+import Dependencies
 import XCTVapor
 import XExpect
 
@@ -5,25 +6,28 @@ import XExpect
 
 final class ContactFormTests: AppTestCase, @unchecked Sendable {
   func testSubmitContactFormEnglish() async throws {
-    Current.date = { Date(timeIntervalSinceReferenceDate: 0) }
-    Current.cloudflareClient.verifyTurnstileToken = { _ in .success }
+    let date = get(dependency: \.date.now)
 
-    let output = try await SubmitContactForm.resolve(
-      with: .init(
-        lang: .en,
-        name: "Bob Villa",
-        email: "bob@thisoldhouse.com",
-        subject: .tech,
-        message: "hey there",
-        turnstileToken: "not-real",
-      ),
-      in: .mock,
-    )
+    let output = try await withDependencies {
+      $0.cloudflareClient = .init(verifyTurnstileToken: { _ in .success })
+    } operation: {
+      try await SubmitContactForm.resolve(
+        with: .init(
+          lang: .en,
+          name: "Bob Villa",
+          email: "bob@thisoldhouse.com",
+          subject: .tech,
+          message: "hey there",
+          turnstileToken: "not-real",
+        ),
+        in: .mock,
+      )
+    }
 
     expect(output).toEqual(.success)
     let email = sent.emails.first
     XCTAssertEqual(sent.emails.count, 1)
-    XCTAssertEqual(email?.subject, "friendslibrary.com contact form -- \(Current.date())")
+    XCTAssertEqual(email?.subject, "friendslibrary.com contact form -- \(date)")
     XCTAssertEqual(email?.replyTo, "bob@thisoldhouse.com")
     XCTAssertEqual(email?.from, "Friends Library <info@friendslibrary.com>")
     XCTAssertContains(email?.body, "Name: Bob Villa")
@@ -35,26 +39,29 @@ final class ContactFormTests: AppTestCase, @unchecked Sendable {
   }
 
   func testSubmitContactFormSpanish() async throws {
-    Current.date = { Date(timeIntervalSinceReferenceDate: 0) }
-    Current.cloudflareClient.verifyTurnstileToken = { _ in .success }
+    let date = get(dependency: \.date.now)
 
-    _ = try await SubmitContactForm.resolve(
-      with: .init(
-        lang: .es,
-        name: "Pablo Smith",
-        email: "pablo@mexico.gov",
-        subject: .other,
-        message: "hola",
-        turnstileToken: "not-real",
-      ),
-      in: .mock,
-    )
+    try await withDependencies {
+      $0.cloudflareClient = .init(verifyTurnstileToken: { _ in .success })
+    } operation: {
+      _ = try await SubmitContactForm.resolve(
+        with: .init(
+          lang: .es,
+          name: "Pablo Smith",
+          email: "pablo@mexico.gov",
+          subject: .other,
+          message: "hola",
+          turnstileToken: "not-real",
+        ),
+        in: .mock,
+      )
+    }
 
     let email = sent.emails.first
     XCTAssertEqual(sent.emails.count, 1)
     XCTAssertEqual(
       email?.subject,
-      "bibliotecadelosamigos.org formulario de contacto -- \(Current.date())",
+      "bibliotecadelosamigos.org formulario de contacto -- \(date)",
     )
     XCTAssertEqual(email?.replyTo, "pablo@mexico.gov")
     XCTAssertEqual(email?.from, "Biblioteca de los Amigos <info@bibliotecadelosamigos.org>")
@@ -66,27 +73,29 @@ final class ContactFormTests: AppTestCase, @unchecked Sendable {
   }
 
   func testSubmitContactFormRejectedTurnstileToken() async throws {
-    Current.cloudflareClient.verifyTurnstileToken = { _ in
-      .failure(errorCodes: [], messages: nil)
+    try await withDependencies {
+      $0.cloudflareClient = .init(verifyTurnstileToken: { _ in
+        .failure(errorCodes: [], messages: nil)
+      })
+    } operation: {
+      try await expectErrorFrom {
+        try await SubmitContactForm.resolve(
+          with: .init(
+            lang: .en,
+            name: "Spammy McSpamface",
+            email: "spam@example.com",
+            subject: .tech,
+            message: "Buy my product!",
+            turnstileToken: "bad-token",
+          ),
+          in: .mock,
+        )
+      }.toContain("Bad Request")
+
+      XCTAssertEqual(sent.emails.count, 0)
+      XCTAssertEqual(sent.slacks.count, 1)
+      XCTAssertContains(sent.slacks.first?.message.text, "Turnstile token rejected")
+      XCTAssertContains(sent.slacks.first?.message.text, "spam@example.com")
     }
-
-    try await expectErrorFrom {
-      try await SubmitContactForm.resolve(
-        with: .init(
-          lang: .en,
-          name: "Spammy McSpamface",
-          email: "spam@example.com",
-          subject: .tech,
-          message: "Buy my product!",
-          turnstileToken: "bad-token",
-        ),
-        in: .mock,
-      )
-    }.toContain("Bad Request")
-
-    XCTAssertEqual(sent.emails.count, 0)
-    XCTAssertEqual(sent.slacks.count, 1)
-    XCTAssertContains(sent.slacks.first?.message.text, "Turnstile token rejected")
-    XCTAssertContains(sent.slacks.first?.message.text, "spam@example.com")
   }
 }

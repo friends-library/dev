@@ -52,6 +52,6 @@ extension Audio {
   }
 
   private func logInvalid(_ message: String) {
-    Current.logger.warning("Invalid audio: \(message)")
+    get(dependency: \.logger).warning("Invalid audio: \(message)")
   }
 }

@@ -3,7 +3,11 @@ import XCore
 import XPostmark
 
 extension EmailBuilder {
-  static func orderShipped(_ order: Order, trackingUrl: String?) async throws -> XPostmark.Email {
+  static func orderShipped(
+    _ order: Order,
+    trackingUrl: String?,
+    in db: any DuetSQL.Client,
+  ) async throws -> XPostmark.Email {
     try await XPostmark.Email(
       to: order.email.rawValue,
       from: fromAddress(lang: order.lang),
@@ -11,12 +15,15 @@ extension EmailBuilder {
         ? "[,] Friends Library Order Shipped"
         : "[,] Pedido Enviado – Biblioteca de Amigos",
       textBody: order.lang == .en
-        ? shippedBodyEn(for: order, trackingUrl: trackingUrl)
-        : shippedBodyEs(for: order, trackingUrl: trackingUrl),
+        ? shippedBodyEn(for: order, trackingUrl: trackingUrl, in: db)
+        : shippedBodyEs(for: order, trackingUrl: trackingUrl, in: db),
     )
   }
 
-  static func orderConfirmation(_ order: Order) async throws -> XPostmark.Email {
+  static func orderConfirmation(
+    _ order: Order,
+    in db: any DuetSQL.Client,
+  ) async throws -> XPostmark.Email {
     try await XPostmark.Email(
       to: order.email.rawValue,
       from: fromAddress(lang: order.lang),
@@ -24,27 +31,27 @@ extension EmailBuilder {
         ? "[,] Friends Library Order Confirmation"
         : "[,] Confirmación de Pedido – Biblioteca de Amigos",
       textBody: order.lang == .en
-        ? confirmationBodyEn(for: order)
-        : confirmationBodyEs(for: order),
+        ? confirmationBodyEn(for: order, in: db)
+        : confirmationBodyEs(for: order, in: db),
     )
   }
 }
 
 // helpers
 
-private func lineItems(_ order: Order) async throws -> String {
+private func lineItems(_ order: Order, in db: any DuetSQL.Client) async throws -> String {
   let items = try await OrderItem.query()
     .where(.orderId == order.id)
-    .all(in: Current.db)
+    .all(in: db)
 
   var lines: [String] = []
   for item in items {
     let edition = try await Edition.query()
       .where(.id == item.editionId)
-      .first(in: Current.db)
+      .first(in: db)
     let document = try await Document.query()
       .where(.id == edition.documentId)
-      .first(in: Current.db)
+      .first(in: db)
     lines.append("* (\(item.quantity)) \(document.title)")
   }
 
@@ -58,7 +65,11 @@ func salutation(_ order: Order) -> String {
   return order.lang == .en ? "Hello!" : "¡Hola!"
 }
 
-private func shippedBodyEs(for order: Order, trackingUrl: String?) async throws -> String {
+private func shippedBodyEs(
+  for order: Order,
+  trackingUrl: String?,
+  in db: any DuetSQL.Client,
+) async throws -> String {
   try await """
   \(order |> salutation)
 
@@ -67,7 +78,7 @@ private func shippedBodyEs(for order: Order, trackingUrl: String?) async throws 
       .lowercased
   )) que contiene los siguientes artículos ha sido enviado:
 
-  \(lineItems(order))
+  \(lineItems(order, in: db))
 
   Puedes usar el enlace a continuación para rastrear tu paquete:
 
@@ -79,7 +90,11 @@ private func shippedBodyEs(for order: Order, trackingUrl: String?) async throws 
   """
 }
 
-private func shippedBodyEn(for order: Order, trackingUrl: String?) async throws -> String {
+private func shippedBodyEn(
+  for order: Order,
+  trackingUrl: String?,
+  in db: any DuetSQL.Client,
+) async throws -> String {
   try await """
   \(order |> salutation)
 
@@ -88,7 +103,7 @@ private func shippedBodyEn(for order: Order, trackingUrl: String?) async throws 
       .lowercased
   )) containing the following item(s) has shipped:
 
-  \(lineItems(order))
+  \(lineItems(order, in: db))
 
   To track your package, you can use the below link:
 
@@ -100,13 +115,16 @@ private func shippedBodyEn(for order: Order, trackingUrl: String?) async throws 
   """
 }
 
-private func confirmationBodyEs(for order: Order) async throws -> String {
+private func confirmationBodyEs(
+  for order: Order,
+  in db: any DuetSQL.Client,
+) async throws -> String {
   try await """
   \(order |> salutation)
 
   ¡Gracias por realizar un pedido de la Biblioteca de Amigos!  Tu pedido ha sido registrado exitosamente con los siguientes artículos:
 
-  \(lineItems(order))
+  \(lineItems(order, in: db))
 
   Para tu información, el número de referencia de tu pedido es: \(
     order.id
@@ -119,13 +137,16 @@ private func confirmationBodyEs(for order: Order) async throws -> String {
   """
 }
 
-private func confirmationBodyEn(for order: Order) async throws -> String {
+private func confirmationBodyEn(
+  for order: Order,
+  in db: any DuetSQL.Client,
+) async throws -> String {
   try await """
   \(order |> salutation)
 
   Thanks for ordering from Friends Library Publishing! Your order was successfully created with the following item(s):
 
-  \(lineItems(order))
+  \(lineItems(order, in: db))
 
   For your reference, your order id is: \(
     order.id

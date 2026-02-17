@@ -30,7 +30,7 @@ final class EditionValidityTests: AppTestCase, @unchecked Sendable {
 
   func testLoadedChaptersWithNonSequentialOrderInvalid() async throws {
     let entities = await Entities.create { $0.editionChapter.order = 1 }
-    try await Current.db.create(EditionChapter(
+    try await self.db.create(EditionChapter(
       editionId: entities.edition.id,
       order: 3, // <-- unexpected non-sequential order
       shortHeading: "",

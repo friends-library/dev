@@ -4,7 +4,7 @@ import Vapor
 struct CreateFreeOrderRequests: AsyncMigration {
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateFreeOrderRequests UP")
+    get(dependency: \.logger).info("Running migration: CreateFreeOrderRequests UP")
     try await database.schema(FreeOrderRequest.M6.tableName)
       .id()
       .field(FreeOrderRequest.M6.name, .string, .required)
@@ -24,7 +24,7 @@ struct CreateFreeOrderRequests: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateFreeOrderRequests DOWN")
+    get(dependency: \.logger).info("Running migration: CreateFreeOrderRequests DOWN")
     try await database.schema(FreeOrderRequest.M6.tableName).delete()
   }
 }

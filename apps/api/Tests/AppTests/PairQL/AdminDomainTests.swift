@@ -6,7 +6,7 @@ import XExpect
 
 final class AdminDomainTests: AppTestCase, @unchecked Sendable {
   func testCreateEditionAlsoAssociatesIsbn() async throws {
-    try await Current.db.create(Isbn.random) // will be assigned to new edition
+    try await self.db.create(Isbn.random) // will be assigned to new edition
     let entities = await Entities.create()
     let newId = Edition.Id()
 
@@ -24,10 +24,10 @@ final class AdminDomainTests: AppTestCase, @unchecked Sendable {
     )
 
     expect(output).toEqual(.success)
-    let edition: Edition = try await Current.db.find(newId)
+    let edition: Edition = try await self.db.find(newId)
     let isbn = try? await Isbn.query()
       .where(.editionId == edition.id)
-      .first(in: Current.db)
+      .first(in: self.db)
     expect(isbn).not.toBeNil()
   }
 }

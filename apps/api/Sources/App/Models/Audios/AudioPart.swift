@@ -12,8 +12,8 @@ struct AudioPart: Codable, Sendable, Equatable {
   var order: Int
   var mp3SizeHq: Bytes
   var mp3SizeLq: Bytes
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   var isPublished: Bool {
     // detect intermediate state between when we have created the audio part row

@@ -43,8 +43,8 @@ extension CreateOrder: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     let order = Order(input)
     let items = input.items.map { OrderItem($0, orderId: order.id) }
-    try await Current.db.create(order)
-    try await Current.db.create(items)
+    try await context.db.create(order)
+    try await context.db.create(items)
     return order.id
   }
 }
@@ -53,17 +53,18 @@ extension CreateOrder: Resolver {
 
 extension CreateOrder {
   static func authenticate(with value: Token.Value) async throws {
-    var token = try await Token.query().where(.value == value).first(in: Current.db)
-    let scopes = try await token.scopes()
+    let db = get(dependency: \.db)
+    var token = try await Token.query().where(.value == value).first(in: db)
+    let scopes = try await token.scopes(in: db)
     guard scopes.can(.mutateOrders) else {
       throw Abort(.unauthorized)
     }
     if let remaining = token.uses {
       if remaining < 2 {
-        try await Current.db.delete(Token.self, byId: token.id)
+        try await db.delete(Token.self, byId: token.id)
       } else {
         token.uses = remaining - 1
-        try await Current.db.update(token)
+        try await db.update(token)
       }
     }
   }

@@ -1,3 +1,4 @@
+import Dependencies
 import DuetSQL
 import Queues
 import Vapor
@@ -16,22 +17,25 @@ extension SendNarrowPath {
 }
 
 public struct SendNarrowPath: AsyncScheduledJob {
+  @Dependency(\.db) var db
+  @Dependency(\.date.now) var now
+
   public func run(context: QueueContext) async throws {
     try await self.exec()
 
     // delete unconfirmed subscribers after 3 days
     try await NPSubscriber.query()
       .where(.not(.isNull(.pendingConfirmationToken)))
-      .where(.createdAt < Current.date().advanced(by: .days(-3)))
-      .delete(in: Current.db)
+      .where(.createdAt < self.now.advanced(by: .days(-3)))
+      .delete(in: self.db)
   }
 
   public func exec() async throws {
-    let sentQuotes = try await NPSentQuote.query().all(in: Current.db)
-    let allQuotes = try await NPQuote.query().all(in: Current.db)
+    let sentQuotes = try await NPSentQuote.query().all(in: self.db)
+    let allQuotes = try await NPQuote.query().all(in: self.db)
     let subscribers = try await NPSubscriber.query()
       .where(.isNull(.unsubscribedAt))
-      .all(in: Current.db)
+      .all(in: self.db)
     let action = self.determineAction(
       sentQuotes: sentQuotes,
       allQuotes: allQuotes,
@@ -42,7 +46,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
       await slackInfo("Narrow path `\(lang)` quotes exhausted, resetting cycle")
       try await NPSentQuote.query()
         .where(.quoteId |=| allQuotes.filter { $0.lang == lang }.map(\.id))
-        .delete(in: Current.db)
+        .delete(in: self.db)
       return try await self.exec()
     case .send(let groups):
       try await self.send(groups)
@@ -68,7 +72,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
       await slackError("SendNarrowPath: approaching batch send limit \(emails.count)/500")
     }
 
-    switch await Current.postmarkClient.sendTemplateEmailBatch(emails) {
+    switch await get(dependency: \.postmarkClient).sendTemplateEmailBatch(emails) {
     case .success(let messageErrors):
       for messageError in messageErrors {
         await slackError("SendNarrowPath message error: \(messageError)")
@@ -77,7 +81,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
       await slackError("SendNarrowPath batch error: \(batchError)")
     }
 
-    try await Current.db.create(sentQuotes.map { NPSentQuote(quoteId: $0) })
+    try await self.db.create(sentQuotes.map { NPSentQuote(quoteId: $0) })
   }
 
   func determineAction(
@@ -137,7 +141,7 @@ public struct SendNarrowPath: AsyncScheduledJob {
 }
 
 private func random(from quotes: [NPQuote], mixed: Bool) -> NPQuote {
-  var rng = Current.randomNumberGenerator()
+  var rng = get(dependency: \.randomNumberGenerator)()
   if !mixed {
     return quotes.filter(\.isFriend).randomElement(using: &rng)!
   } else {

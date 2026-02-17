@@ -86,5 +86,5 @@ extension Document {
 }
 
 private func logInvalid(_ message: String) {
-  Current.logger.warning("Invalid document: \(message)")
+  get(dependency: \.logger).warning("Invalid document: \(message)")
 }

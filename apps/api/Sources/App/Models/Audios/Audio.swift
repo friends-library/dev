@@ -10,8 +10,8 @@ struct Audio: Codable, Sendable, Equatable {
   var mp3ZipSizeLq: Bytes
   var m4bSizeHq: Bytes
   var m4bSizeLq: Bytes
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   init(
     id: Id = .init(),

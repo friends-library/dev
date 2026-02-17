@@ -1,4 +1,5 @@
 import ConcurrencyExtras
+import Dependencies
 import XCTest
 import XExpect
 import XPostmark
@@ -7,44 +8,50 @@ import XPostmark
 
 final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
   func testSendsFriendQuoteToBothGroupsIfNoNonFriends() {
-    Current.randomNumberGenerator = { stableRng() }
-    let action = SendNarrowPath().determineAction(
-      sentQuotes: [],
-      allQuotes: [self.enFriendId1, self.enFriendId2, self.esFriendId4],
-      subscribers: self.allSubscribers,
-    )
+    withDependencies {
+      $0.randomNumberGenerator = { stableRng() }
+    } operation: {
+      let action = SendNarrowPath().determineAction(
+        sentQuotes: [],
+        allQuotes: [self.enFriendId1, self.enFriendId2, self.esFriendId4],
+        subscribers: self.allSubscribers,
+      )
 
-    switch action {
-    case .send(let groups):
-      expect(groups.map(\.testable)).toEqual([
-        .init(to: ["en.friends"], quoteId: self.enFriendId1.id),
-        .init(to: ["en.mixed"], quoteId: self.enFriendId1.id), // <-- same as friends
-        .init(to: ["es.friends"], quoteId: self.esFriendId4.id),
-        .init(to: ["es.mixed"], quoteId: self.esFriendId4.id), // <-- same as friends
-      ])
-    default:
-      XCTFail("Expected .send, got \(action)")
+      switch action {
+      case .send(let groups):
+        expect(groups.map(\.testable)).toEqual([
+          .init(to: ["en.friends"], quoteId: self.enFriendId1.id),
+          .init(to: ["en.mixed"], quoteId: self.enFriendId1.id), // <-- same as friends
+          .init(to: ["es.friends"], quoteId: self.esFriendId4.id),
+          .init(to: ["es.mixed"], quoteId: self.esFriendId4.id), // <-- same as friends
+        ])
+      default:
+        XCTFail("Expected .send, got \(action)")
+      }
     }
   }
 
   func testSendsNonFriendQuotesToNonFriendOptins() {
-    Current.randomNumberGenerator = { stableRng(seed: .max) }
-    let action = SendNarrowPath().determineAction(
-      sentQuotes: [],
-      allQuotes: [self.enFriendId2, self.enFriendId1, self.enOtherId3, self.esFriendId4],
-      subscribers: self.allSubscribers,
-    )
+    withDependencies {
+      $0.randomNumberGenerator = { stableRng(seed: .max) }
+    } operation: {
+      let action = SendNarrowPath().determineAction(
+        sentQuotes: [],
+        allQuotes: [self.enFriendId2, self.enFriendId1, self.enOtherId3, self.esFriendId4],
+        subscribers: self.allSubscribers,
+      )
 
-    switch action {
-    case .send(let groups):
-      expect(groups.map(\.testable)).toEqual([
-        .init(to: ["en.friends"], quoteId: self.enFriendId1.id),
-        .init(to: ["en.mixed"], quoteId: self.enOtherId3.id), // <- other
-        .init(to: ["es.friends"], quoteId: self.esFriendId4.id),
-        .init(to: ["es.mixed"], quoteId: self.esFriendId4.id),
-      ])
-    default:
-      XCTFail("Expected .send, got \(action)")
+      switch action {
+      case .send(let groups):
+        expect(groups.map(\.testable)).toEqual([
+          .init(to: ["en.friends"], quoteId: self.enFriendId1.id),
+          .init(to: ["en.mixed"], quoteId: self.enOtherId3.id), // <- other
+          .init(to: ["es.friends"], quoteId: self.esFriendId4.id),
+          .init(to: ["es.mixed"], quoteId: self.esFriendId4.id),
+        ])
+      default:
+        XCTFail("Expected .send, got \(action)")
+      }
     }
   }
 
@@ -68,18 +75,12 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
 
   func testSendNarrowPathIntegration() async throws {
     // setup dependencies
-    Current.randomNumberGenerator = { stableRng(seed: .max) }
-    Current.date = { Date(timeIntervalSinceReferenceDate: 43000) }
     let sentEmails = ActorIsolated<[TemplateEmail]>([])
-    Current.postmarkClient.sendTemplateEmailBatch = { emails in
-      await sentEmails.setValue(emails)
-      return .success([])
-    }
 
     // setup database
-    try await Current.db.delete(all: NPSentQuote.self)
-    try await Current.db.delete(all: NPSubscriber.self)
-    let quoteEn = try await Current.db.create(NPQuote(
+    try await self.db.delete(all: NPSentQuote.self)
+    try await self.db.delete(all: NPSubscriber.self)
+    let quoteEn = try await self.db.create(NPQuote(
       lang: .en,
       quote: "q1",
       isFriend: true,
@@ -87,7 +88,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
       friendId: nil,
       documentId: nil,
     ))
-    let quoteEs = try await Current.db.create(NPQuote(
+    let quoteEs = try await self.db.create(NPQuote(
       lang: .es,
       quote: "q2",
       isFriend: true,
@@ -95,7 +96,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
       friendId: nil,
       documentId: nil,
     ))
-    let quoteEs2 = try await Current.db.create(NPQuote(
+    let quoteEs2 = try await self.db.create(NPQuote(
       lang: .es,
       quote: "q3",
       isFriend: true,
@@ -103,21 +104,30 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
       friendId: nil,
       documentId: nil,
     ))
-    try await Current.db.create([self.enFriendsSub, self.esFriendsSub])
+    try await self.db.create([self.enFriendsSub, self.esFriendsSub])
 
     // both spanish quotes have been sent, which exercizes the .reset path
     // these will be deleted, we should end up with one sent spanish quote
-    try await Current.db.create([
+    try await self.db.create([
       NPSentQuote(id: 7, quoteId: quoteEs.id),
       NPSentQuote(id: 8, quoteId: quoteEs2.id),
     ])
 
     // act
-    try await SendNarrowPath().exec()
+    try await withDependencies {
+      $0.date = .constant(Date(timeIntervalSinceReferenceDate: 43000))
+      $0.randomNumberGenerator = { stableRng(seed: .max) }
+      $0.postmarkClient.sendTemplateEmailBatch = { emails in
+        await sentEmails.setValue(emails)
+        return .success([])
+      }
+    } operation: {
+      try await SendNarrowPath().exec()
+    }
 
     // this proves the spanish sent quotes were reset
-    await expect(try? Current.db.find(NPSentQuote.Id(7))).toBeNil()
-    await expect(try? Current.db.find(NPSentQuote.Id(8))).toBeNil()
+    await expect(try? self.db.find(NPSentQuote.Id(7))).toBeNil()
+    await expect(try? self.db.find(NPSentQuote.Id(8))).toBeNil()
 
     // correct emails were sent
     await expect(sentEmails.value).toEqual([
@@ -162,7 +172,7 @@ final class SendNarrowPathTests: AppTestCase, @unchecked Sendable {
     ])
 
     // and we recorded the sent quotes
-    let sentQuotes = try await NPSentQuote.query().all(in: Current.db)
+    let sentQuotes = try await NPSentQuote.query().all(in: self.db)
     expect(Set(sentQuotes.map(\.quoteId))).toEqual(Set([quoteEn.id, quoteEs2.id]))
   }
 

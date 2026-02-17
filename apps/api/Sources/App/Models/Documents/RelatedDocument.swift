@@ -5,8 +5,8 @@ struct RelatedDocument: Codable, Sendable, Equatable {
   var description: String
   var documentId: Document.Id
   var parentDocumentId: Document.Id
-  var createdAt = Current.date()
-  var updatedAt = Current.date()
+  var createdAt = Date()
+  var updatedAt = Date()
 
   init(
     id: Id = .init(),

@@ -10,11 +10,10 @@ extension Configure {
       return
     }
 
-    Current.logger = app.logger
-    Current.logger.notice("\("[,]".magenta.bold) API environment is \(Env.mode.coloredName)")
+    app.logger.notice("\("[,]".magenta.bold) API environment is \(Env.mode.coloredName)")
 
     if Env.mode == .dev {
-      Current.logger.notice("Connected to database `\(Env.DATABASE_NAME)`")
+      app.logger.notice("Connected to database `\(Env.DATABASE_NAME)`")
     }
   }
 }

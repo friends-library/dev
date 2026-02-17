@@ -1,3 +1,5 @@
+import Dependencies
+import DuetSQL
 import PairQL
 import TypeScriptInterop
 import Vapor
@@ -14,11 +16,13 @@ extension ResolverContext {
 
 struct Context: ResolverContext {
   var requestId: String
+  @Dependency(\.db) var db
 }
 
 struct AuthedContext: ResolverContext {
   var requestId: String
   var scopes: [TokenScope]
+  @Dependency(\.db) var db
 
   func verify(_ scope: Scope) throws {
     guard self.scopes.can(scope) else {

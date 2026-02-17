@@ -13,7 +13,7 @@ extension AllDocumentPages: Resolver {
     let documents = try await Document.Joined.all()
       .filter { $0.friend.lang == lang && $0.hasNonDraftEdition && !$0.friend.outOfBand }
 
-    let downloads = try await Current.db.customQuery(
+    let downloads = try await context.db.customQuery(
       AllDocumentDownloads.self,
       withBindings: [.enum(lang), .null],
     )

@@ -47,7 +47,7 @@ struct BigIntToInt: AsyncMigration {
   }
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: BigIntToInt UP")
+    get(dependency: \.logger).info("Running migration: BigIntToInt UP")
     let sql = database as! SQLDatabase
 
     for (table, column) in self.columns {
@@ -70,7 +70,7 @@ struct BigIntToInt: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: BigIntToInt DOWN")
+    get(dependency: \.logger).info("Running migration: BigIntToInt DOWN")
     let sql = database as! SQLDatabase
 
     for (table, column) in self.columns {

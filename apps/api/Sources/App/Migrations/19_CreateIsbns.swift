@@ -4,7 +4,7 @@ struct CreateIsbns: AsyncMigration {
   private typealias M19 = Isbn.M19
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateIsbns UP")
+    get(dependency: \.logger).info("Running migration: CreateIsbns UP")
     try await database.schema(M19.tableName)
       .id()
       .field(M19.code, .string, .required)
@@ -20,7 +20,7 @@ struct CreateIsbns: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateIsbns DOWN")
+    get(dependency: \.logger).info("Running migration: CreateIsbns DOWN")
     try await database.schema(M19.tableName).delete()
   }
 }

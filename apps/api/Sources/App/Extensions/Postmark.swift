@@ -32,10 +32,10 @@ extension XPostmark.Client.SlackErrorLogging {
         Body: \(email.htmlBody ?? email.textBody ?? "(no body)")
         Error: `\(JSON.encode(error) ?? "\(String(describing: error))")`
         """
-        await Current.slackClient.send(.error(msg))
+        await get(dependency: \.slackClient).send(.error(msg))
 
       case .success where Env.POSTMARK_API_KEY == "POSTMARK_API_TEST":
-        Current.logger.info("Test Postmark email accepted (not sent)")
+        get(dependency: \.logger).info("Test Postmark email accepted (not sent)")
 
       case .success:
         break
@@ -52,10 +52,10 @@ extension XPostmark.Client.SlackErrorLogging {
         TemplateModel: \(String(describing: email.templateModel))
         Error: `\(JSON.encode(error) ?? "\(String(describing: error))")`
         """
-        await Current.slackClient.send(.error(msg))
+        await get(dependency: \.slackClient).send(.error(msg))
 
       case .success where Env.POSTMARK_API_KEY == "POSTMARK_API_TEST":
-        Current.logger.info("Test Postmark email accepted (not sent)")
+        get(dependency: \.logger).info("Test Postmark email accepted (not sent)")
 
       case .success:
         break
@@ -71,7 +71,7 @@ extension XPostmark.Client.SlackErrorLogging {
         Stream \(emails.first?.messageStream ?? "unknown")
         Error: `\(JSON.encode(error) ?? "\(String(describing: error))")`
         """
-        await Current.slackClient.send(.error(msg))
+        await get(dependency: \.slackClient).send(.error(msg))
         return .failure(error)
 
       case .success(let results):
@@ -98,7 +98,7 @@ extension XPostmark.Client.SlackErrorLogging {
         Stream: `narrow-path-\(lang)`
         Error: `\(JSON.encode(error) ?? "\(String(describing: error))")`
         """
-        await Current.slackClient.send(.error(msg))
+        await get(dependency: \.slackClient).send(.error(msg))
         return .failure(error)
       case .success:
         return .success(())

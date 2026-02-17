@@ -4,7 +4,7 @@ struct CreateEditionImpressions: AsyncMigration {
   private typealias M18 = EditionImpression.M18
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateEditionImpressions UP")
+    get(dependency: \.logger).info("Running migration: CreateEditionImpressions UP")
     let printSizeVariants = try await database.enum(Edition.M17.PrintSizeVariantEnum.name)
       .read()
     try await database.schema(M18.tableName)
@@ -26,7 +26,7 @@ struct CreateEditionImpressions: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: CreateEditionImpressions DOWN")
+    get(dependency: \.logger).info("Running migration: CreateEditionImpressions DOWN")
     try await database.schema(M18.tableName).delete()
   }
 }

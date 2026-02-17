@@ -1,3 +1,4 @@
+import Dependencies
 import DuetSQL
 import PairQL
 import Vapor
@@ -23,14 +24,15 @@ extension SubscribeToNarrowPath: Resolver {
     let existing = try? await NPSubscriber.query()
       .where(.email == input.email.rawValue.lowercased())
       .where(.lang == input.lang)
-      .first(in: Current.db)
+      .first(in: context.db)
     if existing != nil {
       await slackError("NP subscribe duplicate email error: `\(input.email)`")
       throw Abort(.badRequest, reason: "Email already subscribed")
     }
 
-    let token = Current.uuid()
-    try await Current.db.create(NPSubscriber(
+    @Dependency(\.uuid) var uuid
+    let token = uuid()
+    try await context.db.create(NPSubscriber(
       token: token,
       mixedQuotes: input.mixedQuotes,
       email: input.email.rawValue.lowercased(),
@@ -62,7 +64,7 @@ extension SubscribeToNarrowPath: Resolver {
 // helpers
 
 func checkSpam(_ input: SubscribeToNarrowPath.Input) async throws {
-  switch await Current.cloudflareClient.verifyTurnstileToken(input.turnstileToken) {
+  switch await get(dependency: \.cloudflareClient).verifyTurnstileToken(input.turnstileToken) {
   case .success:
     break
   case .failure:
@@ -80,7 +82,7 @@ func checkSpam(_ input: SubscribeToNarrowPath.Input) async throws {
 
 func sendEnglishConfirm(to email: EmailAddress, confirming token: UUID) async throws {
   let confirmUrl = "\(Env.SELF_URL)/confirm-email/en/\(token.lowercased)"
-  await Current.postmarkClient.send(.init(
+  await get(dependency: \.postmarkClient).send(.init(
     to: email.rawValue,
     from: EmailBuilder.fromAddress(lang: .en),
     subject: "Action Required: Confirm your email",
@@ -90,7 +92,7 @@ func sendEnglishConfirm(to email: EmailAddress, confirming token: UUID) async th
 
 func sendSpanishConfirm(to email: EmailAddress, confirming token: UUID) async throws {
   let confirmUrl = "\(Env.SELF_URL)/confirm-email/es/\(token.lowercased)"
-  await Current.postmarkClient.send(.init(
+  await get(dependency: \.postmarkClient).send(.init(
     to: email.rawValue,
     from: EmailBuilder.fromAddress(lang: .es),
     subject: "Acción requerida: Confirma tu correo electrónico",

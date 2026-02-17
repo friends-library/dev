@@ -22,7 +22,7 @@ extension CreateArtifactProductionVersion: Resolver {
         detail: "invalid version, must be 40 char full git sha",
       )
     }
-    let apf = try await Current.db.create(ArtifactProductionVersion(version: .init(input.version)))
+    let apf = try await context.db.create(ArtifactProductionVersion(version: .init(input.version)))
     return Output(id: apf.id)
   }
 }

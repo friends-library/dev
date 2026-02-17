@@ -4,7 +4,7 @@ import Vapor
 struct AddTokenScopes: AsyncMigration {
 
   func prepare(on database: Database) async throws {
-    Current.logger.info("Running migration: AddTokenScopes UP")
+    get(dependency: \.logger).info("Running migration: AddTokenScopes UP")
     try await addDbEnumCases(db: database, enumName: TokenScope.M5.dbEnumName, newCases: [
       TokenScope.M24.Scope.caseAll,
       TokenScope.M24.Scope.caseQueryArtifactProductionVersions,
@@ -16,7 +16,7 @@ struct AddTokenScopes: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    Current.logger.info("Running migration: AddTokenScopes DOWN")
+    get(dependency: \.logger).info("Running migration: AddTokenScopes DOWN")
     // I don't think postgres supports deleting enum cases... ¯\_(ツ)_/¯
   }
 }
