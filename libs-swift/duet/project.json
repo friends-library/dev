@@ -1,12 +1,14 @@
 {
   "root": "libs-swift/duet",
   "projectType": "library",
-  "implicitDependencies": ["x-kit"],
+  "implicitDependencies": ["x-kit", "x-expect"],
   "targets": {
     "build": {
+      "inputs": ["swift-sources", "^swift-sources"],
       "command": "cd libs-swift/duet && swift build"
     },
     "test": {
+      "inputs": ["swift-tests", "^swift-sources"],
       "command": "cd libs-swift/duet && SWIFT_DETERMINISTIC_HASHING=1 swift test"
     }
   }
