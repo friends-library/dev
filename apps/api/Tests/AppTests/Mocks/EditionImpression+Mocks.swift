@@ -5,7 +5,8 @@ import NonEmpty
 extension EditionImpression {
   static var mock: EditionImpression {
     EditionImpression(
-      editionId: .init(),
+      id: .init(.init()),
+      editionId: .init(.init()),
       adocLength: 42,
       paperbackSizeVariant: .s,
       paperbackVolumes: NonEmpty<[Int]>(42),
@@ -16,7 +17,8 @@ extension EditionImpression {
 
   static var empty: EditionImpression {
     EditionImpression(
-      editionId: .init(),
+      id: .init(.init()),
+      editionId: .init(.init()),
       adocLength: 0,
       paperbackSizeVariant: .s,
       paperbackVolumes: NonEmpty<[Int]>(0),
@@ -27,7 +29,8 @@ extension EditionImpression {
 
   static var random: EditionImpression {
     EditionImpression(
-      editionId: .init(),
+      id: .init(.init()),
+      editionId: .init(.init()),
       adocLength: Int.random,
       paperbackSizeVariant: PrintSizeVariant.allCases.shuffled().first!,
       paperbackVolumes: NonEmpty<[Int]>(Int.random),

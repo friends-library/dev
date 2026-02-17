@@ -1,14 +1,9 @@
-import Dependencies
 import Foundation
 import Testing
 
 @testable import App
 
 @Suite struct AudioPartValidityTests {
-  init() {
-    prepareDependencies { $0.uuid = UUIDGenerator { UUID() } }
-  }
-
   @Test func `empty title invalid`() async {
     var part = AudioPart.valid
     part.title = ""

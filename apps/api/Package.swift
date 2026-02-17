@@ -48,7 +48,6 @@ let package = Package(
         .product(name: "XSlack", package: "x-slack"),
         .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras"),
         .product(name: "Dependencies", package: "swift-dependencies"),
-        .product(name: "DependenciesMacros", package: "swift-dependencies"),
         .product(name: "QueuesFluentDriver", package: "vapor-queues-fluent-driver"),
         "RomanNumeralKit",
         "Rainbow",

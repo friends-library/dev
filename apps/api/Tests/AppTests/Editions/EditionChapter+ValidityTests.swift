@@ -1,14 +1,9 @@
-import Dependencies
 import Foundation
 import Testing
 
 @testable import App
 
 @Suite struct EditionChapterValidityTests {
-  init() {
-    prepareDependencies { $0.uuid = UUIDGenerator { UUID() } }
-  }
-
   @Test func `order less than 1 or super big invalid`() async {
     var chapter = EditionChapter.valid
     chapter.order = 0

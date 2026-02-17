@@ -1,14 +1,9 @@
-import Dependencies
 import Foundation
 import Testing
 
 @testable import App
 
 @Suite struct EditionImpressionValidityTests {
-  init() {
-    prepareDependencies { $0.uuid = UUIDGenerator { UUID() } }
-  }
-
   @Test func `out of bound paperback volumes invalid`() async {
     var impression = EditionImpression.valid
     impression.paperbackVolumes = .init(0)

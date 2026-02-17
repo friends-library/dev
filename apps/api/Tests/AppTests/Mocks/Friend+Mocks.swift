@@ -5,6 +5,7 @@ import Foundation
 extension Friend {
   static var mock: Friend {
     Friend(
+      id: .init(.init()),
       lang: .en,
       name: "@mock name",
       slug: "mock-slug",
@@ -18,6 +19,7 @@ extension Friend {
 
   static var empty: Friend {
     Friend(
+      id: .init(.init()),
       lang: .en,
       name: "",
       slug: "",
@@ -31,6 +33,7 @@ extension Friend {
 
   static var random: Friend {
     Friend(
+      id: .init(.init()),
       lang: Lang.allCases.shuffled().first!,
       name: "@random".random,
       slug: "random-slug-\(Int.random)",

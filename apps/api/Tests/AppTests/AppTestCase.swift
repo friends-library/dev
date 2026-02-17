@@ -136,6 +136,14 @@ func sync(
   }
 }
 
+func withUUID<T: Sendable>(
+  _ f: @Sendable () async throws -> T,
+) async rethrows -> T {
+  try await withDependencies { $0.uuid = .init { UUID() } } operation: {
+    try await f()
+  }
+}
+
 public extension Date {
   static let epoch = Date(timeIntervalSince1970: 0)
   static let reference = Date(timeIntervalSinceReferenceDate: 0)
