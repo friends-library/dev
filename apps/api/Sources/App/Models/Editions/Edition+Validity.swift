@@ -1,15 +1,19 @@
 extension Edition {
   func isValid() async -> Bool {
-    if type != .updated, editor != nil {
-      return false
-    }
-
     guard let joined = try? await joined() else {
+      if type != .updated, editor != nil {
+        return false
+      }
       return true
     }
 
-    if joined.document.friend.lang == .es, editor != nil {
-      return false
+    if !joined.document.friend.outOfBand {
+      if type != .updated, editor != nil {
+        return false
+      }
+      if joined.document.friend.lang == .es, editor != nil {
+        return false
+      }
     }
 
     let sorted = joined.chapters.sorted { $0.order < $1.order }

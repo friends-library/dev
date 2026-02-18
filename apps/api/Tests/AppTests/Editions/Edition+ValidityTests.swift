@@ -28,6 +28,25 @@ final class EditionValidityTests: AppTestCase, @unchecked Sendable {
     await expect(entities.edition.model.isValid()).toBeFalse()
   }
 
+  func testEditorAllowedOnOutOfBandEditions() async throws {
+    let original = await Entities.create {
+      $0.edition.editor = "Bob"
+      $0.edition.type = .original
+      $0.friend.outOfBand = true
+      $0.editionChapter.order = 1
+    }
+    await expect(original.edition.model.isValid()).toBeTrue()
+
+    let spanish = await Entities.create {
+      $0.edition.editor = "Bob"
+      $0.edition.type = .updated
+      $0.friend.lang = .es
+      $0.friend.outOfBand = true
+      $0.editionChapter.order = 1
+    }
+    await expect(spanish.edition.model.isValid()).toBeTrue()
+  }
+
   func testLoadedChaptersWithNonSequentialOrderInvalid() async throws {
     let entities = await Entities.create { $0.editionChapter.order = 1 }
     try await self.db.create(EditionChapter(
