@@ -51,6 +51,10 @@ typecheck:
 lint:
 	@just nx-run-many lint
 
+fix:
+  @just format
+  @just lint-fix
+
 lint-fix:
 	@just nx-run-many lint:fix
 
