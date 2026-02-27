@@ -25,13 +25,14 @@ export async function publish(
   volumes: number[];
   paths: string[];
 }> {
-  const [singlePages, singleFiles] = await makeSingleVolumes(dpc, opts);
+  const adocLength = dpc.asciidocFiles.reduce((acc, { adoc }) => acc + adoc.length, 0);
+  const [singlePages, singleFiles] = await makeSingleVolumes(dpc, opts, adocLength);
 
   let splitPages: MultiPages = undefined;
   let splitFiles: MultiFiles = undefined;
 
-  if (!canSkipMultiVolumeCheck(singlePages)) {
-    [splitPages, splitFiles] = await makeMultiVolumes(dpc, opts);
+  if (!canSkipMultiVolumeCheck(singlePages, dpc.paperbackSplits.length)) {
+    [splitPages, splitFiles] = await makeMultiVolumes(dpc, opts, adocLength);
   } else {
     logDebug(`Skipping unneeded multi-volume page size check`);
   }
@@ -80,12 +81,30 @@ export function editionChapters(dpc: FsDocPrecursor): T.CreateEditionChapters.In
 async function makeSingleVolumes(
   dpc: FsDocPrecursor,
   opts: { namespace: string; srcPath: string },
+  adocLength: number,
 ): Promise<[SinglePages, SingleFiles]> {
   logDebug(`Determining paperback interior page counts...`);
   const pages: SinglePages = { s: 0, m: 0, xl: 0, 'xl--condensed': 0 };
   const files: SingleFiles = { s: ``, m: ``, xl: ``, 'xl--condensed': `` };
 
-  const variants = [...PRINT_SIZE_VARIANTS];
+  const skipS = !dpc.printSize && adocLength > SKIP_S_ADOC_THRESHOLD;
+  const skipM = !dpc.printSize && adocLength > SKIP_M_ADOC_THRESHOLD;
+  if (skipS) pages.s = Infinity;
+  if (skipM) pages.m = Infinity;
+
+  const variants = [...PRINT_SIZE_VARIANTS].filter((v) => {
+    if (v === `s` && skipS) return false;
+    if (v === `m` && skipM) return false;
+    return true;
+  });
+
+  if (skipS || skipM) {
+    const skipped = [skipS && `s`, skipM && `m`].filter(Boolean).join(`, `);
+    logDebug(
+      `Skipping too-small sizes based on adoc length (${adocLength}): [${skipped}]`,
+    );
+  }
+
   let variant: PrintSizeVariant | undefined = undefined;
   while ((variant = variants.shift())) {
     log(c`     {magenta.dim ->} {gray size:} {cyan ${variant}}`);
@@ -113,12 +132,23 @@ async function makeSingleVolumes(
 async function makeMultiVolumes(
   dpc: FsDocPrecursor,
   opts: { namespace: string; srcPath: string },
+  adocLength: number,
 ): Promise<[MultiPages, MultiFiles]> {
   const pages: MultiPages = { m: [], xl: [], 'xl--condensed': [] };
   const files: MultiFiles = { m: [], xl: [], 'xl--condensed': [] };
+  const numVols = dpc.paperbackSplits.length + 1;
+  const skipMSplit = adocLength > SKIP_M_SPLIT_ADOC_THRESHOLD;
 
   logDebug(`Determining paperback interior page counts for split faux-volumes...`);
   for (const variant of [`m`, `xl`, `xl--condensed`] as const) {
+    if (variant === `m` && skipMSplit) {
+      pages.m = Array(numVols).fill(Infinity);
+      files.m = Array(numVols).fill(``);
+      logDebug(
+        `Skipping m split variant (adoc length ${adocLength} > ${SKIP_M_SPLIT_ADOC_THRESHOLD})`,
+      );
+      continue;
+    }
     log(c`     {magenta.dim ->} {gray size (split):} {cyan ${variant}}`);
     const size = variant === `xl--condensed` ? `xl` : variant;
     const manifests = await paperbackManifest(dpc, {
@@ -186,7 +216,11 @@ function canSkipLargerSizes(
   }
 }
 
-function canSkipMultiVolumeCheck(single: SinglePages): boolean {
+function canSkipMultiVolumeCheck(
+  single: SinglePages,
+  paperbackSplitsCount: number,
+): boolean {
+  if (paperbackSplitsCount === 0) return true;
   return single.m === 0 || single.xl < 600 || single[`xl--condensed`] < 600;
 }
 
@@ -231,3 +265,9 @@ function add(a: number, b: number): number {
 const CONDENSE_THRESHOLD = 650;
 const CONDENSED = true;
 const NOT_CONDENSED = false;
+
+// adoc length thresholds for skipping sizes that can't possibly fit
+// derived from production data: largest `s` book is 194K, largest `m` book is 844K
+const SKIP_S_ADOC_THRESHOLD = 200_000;
+const SKIP_M_ADOC_THRESHOLD = 850_000;
+const SKIP_M_SPLIT_ADOC_THRESHOLD = 1_700_000;
