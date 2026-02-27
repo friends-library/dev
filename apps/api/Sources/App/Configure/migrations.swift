@@ -41,5 +41,6 @@ extension Configure {
     app.migrations.add(NarrowPathUnsub())
     app.migrations.add(OrderRecipientTaxId())
     app.migrations.add(AddFriendOutOfBand())
+    app.migrations.add(AudioSizeBigInt())
   }
 }
