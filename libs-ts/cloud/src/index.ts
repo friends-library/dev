@@ -106,7 +106,7 @@ export async function uploadFile(
   await client.send(
     new PutObjectCommand({
       Key: cloudFilePath,
-      Body: fs.readFileSync(localFilePath),
+      Body: fs.createReadStream(localFilePath),
       Bucket: CLOUD_STORAGE_BUCKET,
       ContentType: getContentType(localFilePath),
       ACL: opts.acl ?? `public-read`,
