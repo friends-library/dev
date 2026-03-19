@@ -28,7 +28,7 @@ function getClient(): S3Client {
       endpoint = `https://${endpoint}`;
     }
     clientInstance = new S3Client({
-      requestHandler: { requestTimeout: 1200000 },
+      requestHandler: { requestTimeout: 2400000 },
       endpoint,
       region: `us-east-1`,
       forcePathStyle: false,
