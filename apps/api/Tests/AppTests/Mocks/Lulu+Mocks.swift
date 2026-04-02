@@ -41,7 +41,7 @@ extension Lulu.Api.ShippingAddress {
 extension Lulu.Api.PrintJobCostCalculationsBody.LineItem {
   static let mock: Self = .init(
     pageCount: 22,
-    podPackageId: "0425X0687BWSTDSS060UW444GXX",
+    podPackageId: "0425X0687.BW.STD.SS.060UW444.GXX",
     quantity: 1,
   )
 }
