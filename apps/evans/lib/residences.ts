@@ -171,7 +171,7 @@ function getPosition(residence: { city: string; region: string }): Position {
     case `London, England`:
       return { top: 73.5, left: 59.5, map: `UK` };
     case `Sunderland, England`:
-      return { top: 36.5, left: 54.9, map: `UK` };
+      return { top: 38.7, left: 47.8, map: `UK` };
     case `Whitehaven, England`:
       return { top: 41.0, left: 46.9, map: `UK` };
     case `Retford, England`:

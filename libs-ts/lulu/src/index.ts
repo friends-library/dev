@@ -43,10 +43,8 @@ export function podPackageId(printSize: PrintSize, numPages: number): string {
     `STD`, // standard quality
     numPages < 32 ? `SS` : `PB`, // saddle-stitch || perfect bound
     `060UW444`, // 60# uncoated white paper, bulk = 444 pages/inch
-    `G`, // glossy cover (`M`: matte)
-    `X`, // no linen,
-    `X`, // no foil
-  ].join(``);
+    `GXX`, // glossy cover, no linen, no foil
+  ].join(`.`);
 }
 
 export const sizes: { [K in PrintSize]: PrintSizeDetails } = {

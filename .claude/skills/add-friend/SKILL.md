@@ -20,8 +20,8 @@ Prompt the user for the following details:
 - **Born** year (integer, e.g. 1624)
 - **Died** year (integer or null if still living)
 - **Language(s)** — English (`en`), Spanish (`es`), or both
-- **Out of band** — explicitly ask the user whether this friend is considered "out of band"
-  (true/false). Do not assume a default; always ask.
+- **Out of band** — explicitly ask the user whether this friend is considered "out of
+  band" (true/false). Do not assume a default; always ask.
 
 ## Step 2: Create GitHub Repository
 

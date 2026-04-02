@@ -30,10 +30,8 @@ extension Lulu {
       "STD", // standard quality
       pages < 32 ? "SS" : "PB", // saddle-stitch || perfect bound
       "060UW444", // 60# uncoated white paper, bulk = 444 pages/inch
-      "G", // glossy cover ("M": matte)
-      "X", // no linen,
-      "X", // no foil
-    ].joined(separator: "")
+      "GXX", // glossy cover, no linen, no foil
+    ].joined(separator: ".")
   }
 }
 
