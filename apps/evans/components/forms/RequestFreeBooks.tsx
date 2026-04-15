@@ -153,6 +153,7 @@ const RequestFreeBooksContainer: React.FC<{ currentPageBook: string }> = ({
               addressState: address.state,
               addressZip: address.zip,
               addressCountry: address.country,
+              recipientTaxId: address.recipientTaxId,
               source: window.location.href,
             };
             const client = OrderClient.web(window.location.href, () => undefined);

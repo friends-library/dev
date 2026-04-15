@@ -12,6 +12,7 @@ export namespace CreateFreeOrderRequest {
     addressState: string;
     addressZip: string;
     addressCountry: string;
+    recipientTaxId?: string;
     source: string;
   }
 

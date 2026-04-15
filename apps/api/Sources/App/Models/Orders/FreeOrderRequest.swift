@@ -12,6 +12,7 @@ struct FreeOrderRequest: Codable, Sendable, Equatable {
   var addressState: String
   var addressZip: String
   var addressCountry: String
+  var recipientTaxId: String?
   var source: String
   var createdAt = Date()
   var updatedAt = Date()
@@ -25,6 +26,7 @@ struct FreeOrderRequest: Codable, Sendable, Equatable {
       state: self.addressState,
       zip: self.addressZip,
       country: self.addressCountry,
+      recipientTaxId: self.recipientTaxId,
     )
   }
 
@@ -40,6 +42,7 @@ struct FreeOrderRequest: Codable, Sendable, Equatable {
     addressState: String,
     addressZip: String,
     addressCountry: String,
+    recipientTaxId: String? = nil,
     source: String,
   ) {
     self.id = id
@@ -53,6 +56,7 @@ struct FreeOrderRequest: Codable, Sendable, Equatable {
     self.addressState = addressState
     self.addressZip = addressZip
     self.addressCountry = addressCountry
+    self.recipientTaxId = recipientTaxId
     self.source = source
   }
 }
@@ -80,6 +84,7 @@ extension FreeOrderRequest {
       addressState: address.state,
       addressZip: address.zip,
       addressCountry: address.country,
+      recipientTaxId: address.recipientTaxId,
       source: source,
     )
   }

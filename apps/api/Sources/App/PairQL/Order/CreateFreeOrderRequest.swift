@@ -13,6 +13,7 @@ struct CreateFreeOrderRequest: Pair {
     let addressState: String
     let addressZip: String
     let addressCountry: String
+    let recipientTaxId: String?
     let source: String
   }
 }
@@ -32,6 +33,7 @@ extension CreateFreeOrderRequest: Resolver {
       addressState: input.addressState,
       addressZip: input.addressZip,
       addressCountry: input.addressCountry,
+      recipientTaxId: nilIfEmpty(input.recipientTaxId),
       source: input.source,
     ))
 
@@ -62,6 +64,7 @@ private func sendFreeOrderRequestNotifications(for order: FreeOrderRequest) asyn
       \(entry("State", order.addressState))
       \(entry("Zip", order.addressZip))
       \(entry("Country", order.addressCountry))
+      \(entry("Recipient Tax ID", order.recipientTaxId))
       \(entry("Source", order.source))
 
       <br />
