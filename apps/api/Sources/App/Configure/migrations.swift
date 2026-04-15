@@ -42,5 +42,6 @@ extension Configure {
     app.migrations.add(OrderRecipientTaxId())
     app.migrations.add(AddFriendOutOfBand())
     app.migrations.add(AudioSizeBigInt())
+    app.migrations.add(FreeOrderRequestRecipientTaxId())
   }
 }

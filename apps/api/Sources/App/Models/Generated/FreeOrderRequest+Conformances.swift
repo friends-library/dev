@@ -33,6 +33,8 @@ extension FreeOrderRequest: Model {
       .string(addressZip)
     case .addressCountry:
       .string(addressCountry)
+    case .recipientTaxId:
+      .string(recipientTaxId)
     case .source:
       .string(source)
     case .createdAt:
@@ -58,6 +60,7 @@ extension FreeOrderRequest {
     case addressState
     case addressZip
     case addressCountry
+    case recipientTaxId
     case source
     case createdAt
     case updatedAt
@@ -78,6 +81,7 @@ extension FreeOrderRequest {
       .addressState: .string(addressState),
       .addressZip: .string(addressZip),
       .addressCountry: .string(addressCountry),
+      .recipientTaxId: .string(recipientTaxId),
       .source: .string(source),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,

@@ -13,6 +13,7 @@ extension FreeOrderRequest {
       addressState: "@mock addressState",
       addressZip: "@mock addressZip",
       addressCountry: "@mock addressCountry",
+      recipientTaxId: nil,
       source: "@mock source",
     )
   }
@@ -29,6 +30,7 @@ extension FreeOrderRequest {
       addressState: "",
       addressZip: "",
       addressCountry: "",
+      recipientTaxId: nil,
       source: "",
     )
   }
@@ -45,6 +47,7 @@ extension FreeOrderRequest {
       addressState: "@random".random,
       addressZip: "@random".random,
       addressCountry: "@random".random,
+      recipientTaxId: Bool.random() ? "@random".random : nil,
       source: "@random".random,
     )
   }
