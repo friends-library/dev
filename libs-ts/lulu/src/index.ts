@@ -15,7 +15,7 @@ const defaultMargins = {
 export function price(size: PrintSize, pages: number[]): number {
   return pages.reduce((sum, volPages) => {
     const isSaddleStitch = size === `s` && volPages < 32;
-    const basePrice = isSaddleStitch ? 200 : 125;
+    const basePrice = isSaddleStitch ? 376 : 197;
     return sum + basePrice + Math.round(volPages * PRICE_PER_PAGE);
   }, 0);
 }
@@ -106,4 +106,4 @@ export function getPrintSizeDetails(id: string): PrintSizeDetails {
 }
 
 export const PAGES_PER_INCH = 444;
-const PRICE_PER_PAGE = 1.4;
+const PRICE_PER_PAGE = 2.496;
