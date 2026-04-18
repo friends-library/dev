@@ -18,11 +18,11 @@ describe(`podPackageId()`, () => {
 
 describe(`price()`, () => {
   const priceCases: [number, PrintSize, number[]][] = [
-    [214, `s`, [10]],
-    [265, `s`, [100]],
-    [265, `m`, [100]],
-    [405, `m`, [200]],
-    [685, `xl`, [400]],
+    [401, `s`, [10]],
+    [447, `s`, [100]],
+    [447, `m`, [100]],
+    [696, `m`, [200]],
+    [1195, `xl`, [400]],
   ];
 
   test.each(priceCases)(

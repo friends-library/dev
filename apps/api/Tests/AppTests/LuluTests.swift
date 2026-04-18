@@ -7,13 +7,13 @@ import Testing
 @Suite struct LuluTests {
   @Test func prices() {
     let cases: [(PrintSize, NonEmpty<[Int]>, Cents<Int>)] = [
-      (.s, .init(10), 214),
-      (.s, .init(100), 265),
-      (.m, .init(100), 265),
-      (.m, .init(100, 100), 530),
-      (.m, .init(200), 405),
-      (.m, .init(259), 488),
-      (.xl, .init(400), 685),
+      (.s, .init(10), 401),
+      (.s, .init(100), 447),
+      (.m, .init(100), 447),
+      (.m, .init(100, 100), 894),
+      (.m, .init(200), 696),
+      (.m, .init(259), 843),
+      (.xl, .init(400), 1195),
     ]
 
     for (size, pages, expected) in cases {
