@@ -75,7 +75,10 @@ export async function createOrder(
   const result = await client.createOrder(createOrderInput);
   return result.reduce<UUID | Error>({
     success: (id) => id,
-    error: (err) => Error(`Error creating order: ${err}`),
+    error: (err) =>
+      Error(
+        `Error creating order (status ${err.statusCode}, ${err.type}): ${err.detail ?? `no detail provided`}`,
+      ),
   });
 }
 

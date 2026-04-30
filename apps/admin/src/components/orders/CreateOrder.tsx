@@ -219,7 +219,7 @@ const CreateOrder: React.FC = () => {
               label="Recipient Tax ID"
               value={address.recipientTaxId ?? ``}
               isValid={(val) => (val?.trim().length ?? 0) > 0}
-              invalidMessage="Required for Brazil, Chile, Mexico, Peru, and Argentina"
+              invalidMessage="Required for Argentina, Brazil, Chile, Colombia, Ecuador, Mexico, and Peru"
               onChange={(newValue) =>
                 setAddress({ ...address, recipientTaxId: newValue })
               }
@@ -232,6 +232,8 @@ const CreateOrder: React.FC = () => {
             optional
             placeholder="12034482-5410-4db7-a9f3-c12f34565a55"
             value={requestId}
+            isValid={isValidRequestId}
+            invalidMessage="Must be a UUID, or blank - usually is filled out automatically from the request form. Not a tax ID."
             onChange={(newValue) => setRequestId(newValue)}
           />
         </div>
@@ -262,7 +264,12 @@ const CreateOrder: React.FC = () => {
           </PillButton>
         </div>
         <Button
-          disabled={items.length === 0 || !addressIsValid || submittingOrder}
+          disabled={
+            items.length === 0 ||
+            !addressIsValid ||
+            !isValidRequestId(requestId) ||
+            submittingOrder
+          }
           className="my-8"
           type="button"
           fullWidth
@@ -362,6 +369,13 @@ function makeQuantityIncrement(
     const newQty = Math.max(1, item.quantity + (dir === `+` ? 1 : -1 * 1));
     setItems([...items.filter((i) => i.id !== item.id), { ...item, quantity: newQty }]);
   };
+}
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function isValidRequestId(value: string): boolean {
+  const trimmed = value.trim();
+  return trimmed === `` || UUID_RE.test(trimmed);
 }
 
 function emptyAddress(): T.ShippingAddress {

@@ -249,20 +249,24 @@ export const COUNTRIES = {
   ZW: `Zimbabwe`,
 } as const;
 
-export const TAX_ID_COUNTRIES = [`BR`, `CL`, `MX`, `PE`, `AR`];
+export const TAX_ID_COUNTRIES = [`AR`, `BR`, `CL`, `CO`, `EC`, `MX`, `PE`];
 
 export function recipientTaxIdType(country: string): string {
   switch (country) {
+    case `AR`:
+      return `CUIT`;
     case `BR`:
       return `CPF`;
     case `CL`:
       return `RUT/RUN`;
+    case `CO`:
+      return `RUT/NIT/Cédula`;
+    case `EC`:
+      return `RUC/Cédula`;
     case `MX`:
       return `RFC`;
     case `PE`:
       return `RUC`;
-    case `AR`:
-      return `CUIT`;
     default:
       return ``;
   }
