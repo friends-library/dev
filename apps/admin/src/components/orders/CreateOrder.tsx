@@ -219,7 +219,7 @@ const CreateOrder: React.FC = () => {
               label="Recipient Tax ID"
               value={address.recipientTaxId ?? ``}
               isValid={(val) => (val?.trim().length ?? 0) > 0}
-              invalidMessage="Required for Brazil, Chile, Mexico, Peru, and Argentina"
+              invalidMessage="Required for Argentina, Brazil, Chile, Colombia, Ecuador, Mexico, and Peru"
               onChange={(newValue) =>
                 setAddress({ ...address, recipientTaxId: newValue })
               }
