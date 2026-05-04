@@ -9,7 +9,7 @@ extension Lulu {
   static func paperbackPrice(size: PrintSize, volumes: NonEmpty<[Int]>) -> Cents<Int> {
     volumes.reduce(Cents<Int>(rawValue: 0)) { acc, pagesInVolume in
       let isSaddleStitch = size == .s && pagesInVolume < 32
-      let basePrice: Cents<Int> = isSaddleStitch ? 200 : 125
+      let basePrice: Cents<Int> = isSaddleStitch ? 376 : 197
       let pagesPrice = (Double(pagesInVolume) * PRICE_PER_PAGE).rounded(.toNearestOrAwayFromZero)
       return acc + basePrice + .init(rawValue: Int(pagesPrice))
     }
@@ -35,5 +35,6 @@ extension Lulu {
   }
 }
 
-// docs say 2.0, but we are grandfathered in @ 1.4, verified on 1/20/2022
-private let PRICE_PER_PAGE: Double = 1.4
+// Verified against Lulu API on 2026-04-18, includes 4% print-cost increase effective 2026-05-04.
+// Bases set 1¢ below Lulu's so our total always lands 1-2¢ under their charge (we don't profit).
+private let PRICE_PER_PAGE: Double = 2.496
