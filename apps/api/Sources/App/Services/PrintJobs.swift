@@ -36,7 +36,7 @@ enum PrintJobs {
 
     let payload = Lulu.Api.CreatePrintJobBody(
       shippingLevel: order.shippingLevel.lulu,
-      shippingAddress: order.address.lulu,
+      shippingAddress: order.address.lulu(email: order.email),
       contactEmail: "jared@netrivet.com",
       externalId: order.id.rawValue.uuidString,
       lineItems: lineItems,
@@ -77,7 +77,7 @@ enum PrintJobs {
           do {
             let result = try await get(dependency: \.luluClient).createPrintJobCostCalculation(
               lang,
-              address.lulu,
+              address.lulu(email: email),
               level.lulu,
               items.flatMap { item in
                 item.volumes.map { pages in
