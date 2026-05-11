@@ -11,6 +11,7 @@ extension Lulu.Api.ShippingAddress {
     postcode: "44281",
     phoneNumber: "5555555555",
     recipientTaxId: nil,
+    email: nil,
   )
 
   static let random: Self = .init(
@@ -23,6 +24,7 @@ extension Lulu.Api.ShippingAddress {
     postcode: "@postcode".random,
     phoneNumber: "5555555555",
     recipientTaxId: nil,
+    email: nil,
   )
 
   static let empty: Self = .init(
@@ -35,6 +37,7 @@ extension Lulu.Api.ShippingAddress {
     postcode: "",
     phoneNumber: "5555555555",
     recipientTaxId: nil,
+    email: nil,
   )
 }
 

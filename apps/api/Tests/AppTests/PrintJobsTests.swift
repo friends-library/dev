@@ -67,7 +67,7 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
     expect(payload).toEqual(
       .init(
         shippingLevel: order.shippingLevel.lulu,
-        shippingAddress: order.address.lulu,
+        shippingAddress: order.address.lulu(email: order.email),
         contactEmail: "jared@netrivet.com",
         externalId: order.id.rawValue.uuidString,
         lineItems: [.init(
@@ -83,6 +83,53 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
         )],
       ),
     )
+  }
+
+  func testCreatePrintJobSendsCustomerEmailInShippingAddress() async throws {
+    nonisolated(unsafe) var payload: Lulu.Api.CreatePrintJobBody!
+
+    let entities = await Entities.create()
+    var order = Order.random
+    order.email = "customer@example.com"
+    var item = OrderItem.random
+    item.orderId = order.id
+    item.editionId = entities.edition.id
+    try await self.db.create(order)
+    try await self.db.create(item)
+
+    _ = try await withDependencies {
+      $0.luluClient.createPrintJob = {
+        payload = $0
+        return .init(id: 1, status: .init(name: .created), lineItems: [])
+      }
+    } operation: {
+      try await PrintJobs.create(order)
+    }
+
+    expect(payload.shippingAddress.email).toEqual("customer@example.com")
+    expect(payload.contactEmail).toEqual("jared@netrivet.com")
+  }
+
+  func testGetExploratoryMetadataSendsCustomerEmailInShippingAddress() async throws {
+    nonisolated(unsafe) var sentAddress: Lulu.Api.ShippingAddress!
+
+    _ = try await withDependencies {
+      $0.luluClient.createPrintJobCostCalculation = { _, address, _, _ in
+        sentAddress = address
+        return .success(.init(
+          shipping: "9.99", tax: "3.33", total: "19.12", fee: "1.50",
+        ))
+      }
+    } operation: {
+      try await PrintJobs.getExploratoryMetadata(
+        for: [.init(volumes: .init(55), printSize: .m, quantity: 1)],
+        shippedTo: .mock,
+        email: "shopper@example.com",
+        lang: .en,
+      )
+    }
+
+    expect(sentAddress.email).toEqual("shopper@example.com")
   }
 
   func testCreatePrintJobWithFauxVolumes() async throws {
@@ -112,7 +159,7 @@ final class PrintJobsTests: AppTestCase, @unchecked Sendable {
     expect(payload).toEqual(
       .init(
         shippingLevel: order.shippingLevel.lulu,
-        shippingAddress: order.address.lulu,
+        shippingAddress: order.address.lulu(email: order.email),
         contactEmail: "jared@netrivet.com",
         externalId: order.id.rawValue.uuidString,
         lineItems: [
