@@ -3,6 +3,7 @@ export * from '../shared';
 export * from './BrickOrder';
 export * from './CreateFreeOrderRequest';
 export * from './CreateOrder';
+export * from './GetOrderInvoice';
 export * from './GetPrintJobExploratoryMetadata';
 export * from './InitOrder';
 export * from './LogJsError';

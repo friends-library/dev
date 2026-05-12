@@ -73,10 +73,8 @@ private func shippedBodyEs(
   try await """
   \(order |> salutation)
 
-  ¡Buenas noticias! Tu pedido (\(
-    order.id
-      .lowercased
-  )) que contiene los siguientes artículos ha sido enviado:
+  ¡Buenas noticias! Tu pedido (\(order.id.lowercased)) que \
+  contiene los siguientes artículos ha sido enviado:
 
   \(lineItems(order, in: db))
 
@@ -98,10 +96,8 @@ private func shippedBodyEn(
   try await """
   \(order |> salutation)
 
-  Good news! Your order (\(
-    order.id
-      .lowercased
-  )) containing the following item(s) has shipped:
+  Good news! Your order (\(order.id.lowercased)) containing \
+  the following item(s) has shipped:
 
   \(lineItems(order, in: db))
 
@@ -122,14 +118,19 @@ private func confirmationBodyEs(
   try await """
   \(order |> salutation)
 
-  ¡Gracias por realizar un pedido de la Biblioteca de Amigos!  Tu pedido ha sido registrado exitosamente con los siguientes artículos:
+  ¡Gracias por realizar un pedido de la Biblioteca de Amigos! \
+  Tu pedido ha sido registrado exitosamente con los siguientes artículos:
 
   \(lineItems(order, in: db))
 
-  Para tu información, el número de referencia de tu pedido es: \(
-    order.id
-      .lowercased
-  ). Dentro de unos pocos días, cuando el envío sea realizado, vamos a enviarte otro correo electrónico con tu número de rastreo. En la mayoría de los casos, el tiempo normal de entrega es de unos 14 a 21 días después de la compra.
+  Para tu información, el número de referencia de tu pedido es: \(order.id.lowercased). \
+  Dentro de unos pocos días, cuando el envío sea realizado, vamos a enviarte otro \
+  correo electrónico con tu número de rastreo. En la mayoría de los casos, el tiempo \
+  normal de entrega es de unos 14 a 21 días después de la compra.
+
+  Ver o imprimir tu factura (útil para aduana o registros fiscales):
+
+  \(order.lang.website)/order/\(order.id.lowercased)/invoice
 
   ¡Por favor no dudes en hacernos saber si tienes alguna pregunta!
 
@@ -144,14 +145,19 @@ private func confirmationBodyEn(
   try await """
   \(order |> salutation)
 
-  Thanks for ordering from Friends Library Publishing! Your order was successfully created with the following item(s):
+  Thanks for ordering from Friends Library Publishing! \
+  Your order was successfully created with the following item(s):
 
   \(lineItems(order, in: db))
 
-  For your reference, your order id is: \(
-    order.id
-      .lowercased
-  ). We'll be sending you one more email in a few days with your tracking number, as soon as it ships. For many shipping addresses, a normal delivery date is around 14 to 21 days after purchase.
+  For your reference, your order id is: \(order.id.lowercased). \
+  We'll be sending you one more email in a few days with your tracking number, \
+  as soon as it ships. For many shipping addresses, a normal delivery date \
+  is around 14 to 21 days after purchase.
+
+  View or print your receipt:
+
+  \(order.lang.website)/order/\(order.id.lowercased)/invoice
 
   Please don't hesitate to let us know if you have any questions!
 
