@@ -8,6 +8,7 @@ enum OrderRoute: PairRoute {
   case brickOrder(BrickOrder.Input)
   case createFreeOrderRequest(CreateFreeOrderRequest.Input)
   case createOrder(UUID, CreateOrder.Input)
+  case getOrderInvoice(Order.Id)
   case initOrder(Cents<Int>)
   case getPrintJobExploratoryMetadata(GetPrintJobExploratoryMetadata.Input)
   case sendOrderConfirmationEmail(Order.Id)
@@ -20,6 +21,10 @@ enum OrderRoute: PairRoute {
     Route(/Self.createFreeOrderRequest) {
       Operation(CreateFreeOrderRequest.self)
       Body(.input(CreateFreeOrderRequest.self))
+    }
+    Route(/Self.getOrderInvoice) {
+      Operation(GetOrderInvoice.self)
+      Body(.input(GetOrderInvoice.self))
     }
     Route(/Self.getPrintJobExploratoryMetadata) {
       Operation(GetPrintJobExploratoryMetadata.self)
@@ -54,6 +59,9 @@ extension OrderRoute: RouteResponder {
       return try self.respond(with: output)
     case .createFreeOrderRequest(let input):
       let output = try await CreateFreeOrderRequest.resolve(with: input, in: context)
+      return try self.respond(with: output)
+    case .getOrderInvoice(let input):
+      let output = try await GetOrderInvoice.resolve(with: input, in: context)
       return try self.respond(with: output)
     case .getPrintJobExploratoryMetadata(let input):
       let output = try await GetPrintJobExploratoryMetadata.resolve(with: input, in: context)

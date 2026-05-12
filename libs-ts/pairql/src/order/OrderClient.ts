@@ -34,6 +34,12 @@ export default class OrderClient extends Client {
     return this.query<P.CreateOrder.Output>(input, `CreateOrder`);
   }
 
+  public getOrderInvoice(
+    input: P.GetOrderInvoice.Input,
+  ): Promise<Result<P.GetOrderInvoice.Output>> {
+    return this.query<P.GetOrderInvoice.Output>(input, `GetOrderInvoice`);
+  }
+
   public getPrintJobExploratoryMetadata(
     input: P.GetPrintJobExploratoryMetadata.Input,
   ): Promise<Result<P.GetPrintJobExploratoryMetadata.Output>> {

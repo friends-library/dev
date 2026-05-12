@@ -14,6 +14,7 @@ extension CodegenRoute.Order: CodegenRouteHandler {
       BrickOrder.self,
       CreateOrder.self,
       CreateFreeOrderRequest.self,
+      GetOrderInvoice.self,
       GetPrintJobExploratoryMetadata.self,
       LogJsError.self,
       InitOrder.self,
