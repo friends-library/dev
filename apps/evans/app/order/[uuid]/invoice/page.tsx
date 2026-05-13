@@ -147,6 +147,12 @@ const Page: NextPage<Params<Path>> = async ({ params }) => {
               {order.taxesInCents > 0 && (
                 <Line label={t`Taxes`} value={formatCents(order.taxesInCents)} />
               )}
+              {order.feesInCents + order.ccFeeOffsetInCents > 0 && (
+                <Line
+                  label={t`Handling`}
+                  value={formatCents(order.feesInCents + order.ccFeeOffsetInCents)}
+                />
+              )}
               <div className="border-t border-gray-900 pt-1 mt-1 flex justify-between font-bold">
                 <span>{t`Total`}</span>
                 <span>{formatCents(order.amountInCents)} USD</span>
