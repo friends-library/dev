@@ -41,6 +41,18 @@ export const ViewOrder: React.FC<Props> = ({ order }) => (
             </li>
             <li>{order.address.country}</li>
           </ul>
+          <div className="mt-2">
+            <a
+              className="border-b border-dotted text-flblue subtle-text"
+              href={`https://www.${
+                order.lang === `es` ? `bibliotecadelosamigos.org` : `friendslibrary.com`
+              }/order/${order.id}/invoice`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View invoice
+            </a>
+          </div>
         </div>
         {order.source !== `internal` ? (
           <div>
