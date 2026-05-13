@@ -195,6 +195,7 @@ const strings: { [k: string]: string } = {
   Subtotal: `Subtotal`,
   Shipping: `Envío`,
   Taxes: `Impuestos`,
+  Handling: `Gestión`,
   'Credit Card Fee Offset': `Tarifa de Tarjeta de Crédito`,
   'Grand Total': `Total General`,
   'Enter credit card details': `Introduce la información de tu tarjeta de Crédito`,
