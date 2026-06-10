@@ -115,6 +115,25 @@ final class OrderResolverTests: AppTestCase, @unchecked Sendable {
     expect(retrieved.addressState).toEqual("TX") // <-- capitalized
   }
 
+  func testCreateOrderRejectsEmailContainingSpace() async throws {
+    var (input, _) = try await orderSetup()
+    input.email = .init(rawValue: "john doe@example.com")
+
+    try await expectErrorFrom {
+      try await CreateOrder.resolve(with: input, in: .mock)
+    }.toContain("badRequest")
+  }
+
+  func testCreateOrderTrimsSurroundingWhitespaceFromEmail() async throws {
+    var (input, _) = try await orderSetup()
+    input.email = .init(rawValue: "  john@example.com  ")
+
+    let output = try await CreateOrder.resolve(with: input, in: .mock)
+
+    let retrieved = try await self.db.find(output)
+    expect(retrieved.email).toEqual("john@example.com")
+  }
+
   func testCreateOrderWithFreeRequestId() async throws {
     let req = try await self.db.create(FreeOrderRequest.random)
     var (input, _) = try await orderSetup()

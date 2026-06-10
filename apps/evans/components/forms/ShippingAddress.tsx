@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import { COUNTRIES, TAX_ID_COUNTRIES, recipientTaxIdType } from '@friends-library/lulu';
 import Input from './Input';
+import { isValidEmail } from './validation';
 
 export interface Props {
   email: string;
@@ -73,7 +74,7 @@ const ShippingAddress: React.FC<Props> = ({
       <Input
         wrapClassName="md:order-3"
         invalidMsg={email ? t`Valid email is required` : t`Email is required`}
-        valid={!emailBlurred || !!email.match(/^\S+@\S+$/)}
+        valid={!emailBlurred || isValidEmail(email)}
         onChange={(val) => setEmail(val)}
         onFocus={() => setEmailBlurred(false)}
         onBlur={() => setEmailBlurred(true)}

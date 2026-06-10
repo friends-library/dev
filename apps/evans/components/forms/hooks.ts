@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { TAX_ID_COUNTRIES } from '@friends-library/lulu';
 import type { AddressWithEmail } from '@/lib/types';
 import type { Props as AddressProps } from './ShippingAddress';
+import { isValidEmail } from './validation';
 
 export function useAddress(
   initial: Partial<AddressWithEmail>,
@@ -43,7 +44,7 @@ export function useAddress(
       setRecipientTaxId,
     },
     {
-      email,
+      email: email.trim(),
       name,
       street,
       street2,
@@ -62,7 +63,7 @@ export function useAddress(
       state.trim().length > 0 &&
       zip.trim().length > 0 &&
       country.trim().length > 0 &&
-      email.includes(`@`) &&
+      isValidEmail(email) &&
       (!TAX_ID_COUNTRIES.includes(country) || recipientTaxId.trim().length > 0)
     ),
   ];

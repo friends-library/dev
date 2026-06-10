@@ -38,7 +38,7 @@ extension FreeOrderRequest {
   static var random: FreeOrderRequest {
     FreeOrderRequest(
       name: "@random".random,
-      email: .init(rawValue: "@random".random),
+      email: .init(rawValue: "random-\(Int.random)@example.com"),
       requestedBooks: "@random".random,
       aboutRequester: "@random".random,
       addressStreet: "@random".random,
