@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""Extract inline italic text with surrounding context from an HTML file
-exported by LibreOffice. Filters out structural italics (block quotes,
-headings, etc.) and footnote superscripts, outputting only ad-hoc
-emphasis italics that need to be manually transferred to AsciiDoc."""
+"""Extract inline italic text with surrounding context from a LibreOffice XHTML
+export (the `XHTML Writer File` filter, whose styles carry `font-style:italic`
+CSS classes). Filters out structural italics (italic paragraphs such as headings
+and block quotes) and footnote superscripts, and merges the spans LibreOffice
+fragments a single italic run into at accent/quote boundaries, outputting only
+the ad-hoc emphasis italics that must be transferred to AsciiDoc."""
 
 import re
 import sys
 
-def extract_italics(html_path):
-    with open(html_path, "r") as f:
+def extract_italics(xhtml_path):
+    with open(xhtml_path, "r") as f:
         content = f.read()
 
     # find all CSS classes that have font-style:italic
@@ -39,23 +41,32 @@ def extract_italics(html_path):
             continue
         p_content = m.group(2)
 
+        # collect every emphasis-span range in this paragraph, in document order
+        spans = []
         for cls in emphasis_classes:
             for sm in re.finditer(
                 rf'<span class="{cls}">(.*?)</span>', p_content, re.DOTALL
             ):
-                italic_text = strip_tags(sm.group(1)).strip()
-                if not italic_text:
-                    continue
+                spans.append((sm.start(), sm.end(), strip_tags(sm.group(1))))
+        spans.sort()
 
-                before_text = strip_tags(p_content[: sm.start()])
-                words_before = before_text.split()[-8:]
-                before_ctx = " ".join(words_before)
+        # merge spans separated only by empty/whitespace text — LibreOffice fragments
+        # one italic run into several spans at accent/quote boundaries
+        merged = []
+        for start, end, text in spans:
+            if merged and strip_tags(p_content[merged[-1][1] : start]).strip() == "":
+                ps, _, pt = merged[-1]
+                merged[-1] = (ps, end, pt + text)
+            else:
+                merged.append((start, end, text))
 
-                after_text = strip_tags(p_content[sm.end() :])
-                words_after = after_text.split()[:8]
-                after_ctx = " ".join(words_after)
-
-                results.append((before_ctx, italic_text, after_ctx))
+        for start, end, text in merged:
+            italic_text = text.strip()
+            if not italic_text:
+                continue
+            before_ctx = " ".join(strip_tags(p_content[:start]).split()[-8:])
+            after_ctx = " ".join(strip_tags(p_content[end:]).split()[:8])
+            results.append((before_ctx, italic_text, after_ctx))
 
     print(f"Found {len(results)} inline italic(s)\n")
     for i, (before, text, after) in enumerate(results):
@@ -64,6 +75,6 @@ def extract_italics(html_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <html-file>", file=sys.stderr)
+        print(f"Usage: {sys.argv[0]} <xhtml-file>", file=sys.stderr)
         sys.exit(1)
     extract_italics(sys.argv[1])

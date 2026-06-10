@@ -1,6 +1,6 @@
 ## Italics
 
-Italics are lost during the ODT → DocBook → AsciiDoc conversion. Use the HTML export from
+Italics are lost during the ODT → DocBook → AsciiDoc conversion. Use the XHTML export from
 Step 2 to identify where inline emphasis italics need to be restored.
 
 ### Scope: primarily free-standing, ad-hoc italics within paragraph text.
@@ -16,7 +16,7 @@ a clear structural role.
 Run the extraction script bundled with this skill:
 
 ```
-python3 ${CLAUDE_SKILL_DIR}/extract-italics.py <html-file>
+python3 ${CLAUDE_SKILL_DIR}/extract-italics.py <xhtml-file>
 ```
 
 This outputs a numbered list of italic text with ~8 words of surrounding context on each

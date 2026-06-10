@@ -34,11 +34,18 @@ cleaner DocBook than pandoc (proper `<footnote>` tags, `<sect1>` elements, etc.)
 
 The output file will have the same basename with an `.xml` extension.
 
-Also export each .odt file to HTML (needed later for restoring italics):
+Also export each .odt file to XHTML (needed later for restoring italics). Use the
+`XHTML Writer File` filter specifically: it emits CSS classes carrying
+`font-style:italic`, which the italics-extraction script (Step 13) depends on. The plain
+`--convert-to html` filter is unreliable — depending on the LibreOffice version it either
+fails outright ("no export filter for ...html found") or emits bare `<i>` tags the script
+cannot read (it will then report "Found 0 inline italic(s)"):
 
 ```
-/Applications/LibreOffice.app/Contents/MacOS/soffice --headless --convert-to html --outdir <output-dir> <file>.odt
+/Applications/LibreOffice.app/Contents/MacOS/soffice --headless --convert-to 'xhtml:XHTML Writer File' --outdir <output-dir> <file>.odt
 ```
+
+The output file will have the same basename with an `.xhtml` extension.
 
 ## Step 3: Convert DocBook XML to AsciiDoc
 
@@ -79,6 +86,10 @@ Query existing rows to compare conventions:
 SELECT name, slug FROM friends WHERE lang = '<lang>' ORDER BY name;
 SELECT title, slug, filename FROM documents d JOIN friends f ON d.friend_id = f.id WHERE f.lang = '<lang>' ORDER BY title;
 ```
+
+If your query returns **no matching friend**, this is a brand-new author: pause here and
+run the `add-friend` skill to create the friend (GitHub repo + production SQL) first, then
+resume.
 
 Present your best guesses to the user and confirm before proceeding.
 
@@ -162,6 +173,12 @@ Before that, help the user verify the headings are correct:
    (the conversion sometimes produces spurious `==` headings).
 4. Wait for the user to confirm the headings look good before proceeding.
 
+**Watch for duplicated content.** The source ODT occasionally repeats a block — a whole
+chapter, a poem, or a paragraph appearing twice. Repeated `==`/`===` headings or a
+recurring opening sentence are tells, but a fully-duplicated chapter whose synopsis is
+plain text can be invisible. If a chapter looks suspiciously long or a sentence recurs,
+check for and remove the duplicate before chapterizing.
+
 ## Step 10: Chapterize
 
 The user may have changed the headings during manual review, so re-scan each raw.adoc for
@@ -184,8 +201,8 @@ Where `dest` is the relative path to the edition directory (e.g.
 After chapterizing:
 
 1. Delete the generated `rename.sh` file from the edition directory.
-2. Move `raw.adoc` to `/tmp/` (preserving the filename, e.g. `/tmp/raw.adoc`) so it can be
-   restored if needed.
+2. Move `raw.adoc` to `/tmp/` so it can be restored if needed. With multiple editions,
+   give each a distinct name (e.g. `/tmp/raw-modernized.adoc`) to avoid collisions.
 
 Tell the user: "If the chapterization looks wrong, I can restore the raw.adoc file and we
 can redo it."
@@ -233,9 +250,9 @@ Run `fl lint <path> --fix` on the edition directory twice in a row — some fixe
 become possible after other fixes have been applied.
 
 After both passes, run `fl lint <path>` once more without `--fix`. If there are remaining
-lint failures, present them to the user one by one and ask how they want to fix each one.
-Every lint error must be resolved — either fixed or explicitly disabled with a lint ignore
-comment. Books cannot be published with any lint errors.
+lint failures, present them to the user (grouped by rule when there are many) and ask how
+they want to fix each one. Every lint error must be resolved — either fixed or explicitly
+disabled with a lint ignore comment. Books cannot be published with any lint errors.
 
 To disable a lint rule, add a comment on the line immediately before the offending line:
 
