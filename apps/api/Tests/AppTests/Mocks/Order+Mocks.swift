@@ -59,7 +59,7 @@ extension Order {
       ccFeeOffset: .init(rawValue: Int.random),
       shipping: .init(rawValue: Int.random),
       shippingLevel: ShippingLevel.allCases.shuffled().first!,
-      email: .init(rawValue: "@random".random),
+      email: .init(rawValue: "random-\(Int.random)@example.com"),
       addressName: "@random".random,
       addressStreet: "@random".random,
       addressStreet2: Bool.random() ? "@random".random : nil,

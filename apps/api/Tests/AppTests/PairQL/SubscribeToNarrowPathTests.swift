@@ -172,6 +172,24 @@ final class SubscribeToNarrowPathTests: AppTestCase, @unchecked Sendable {
     }
   }
 
+  func testRejectsEmailContainingSpace() async throws {
+    try await withDependencies {
+      $0.cloudflareClient = .init(verifyTurnstileToken: { _ in .success })
+    } operation: {
+      try await expectErrorFrom {
+        try await SubscribeToNarrowPath.resolve(
+          with: .init(
+            email: .init(rawValue: "john doe@example.com"),
+            lang: .en,
+            mixedQuotes: false,
+            turnstileToken: "turnstile-token-value",
+          ),
+          in: .mock,
+        )
+      }.toContain("Invalid email address")
+    }
+  }
+
   func testSpamRejectionFromCloudflareChallenge() async throws {
     var quote = NPQuote.mock
     quote.lang = .en

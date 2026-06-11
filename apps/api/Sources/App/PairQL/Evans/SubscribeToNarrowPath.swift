@@ -20,13 +20,14 @@ struct SubscribeToNarrowPath: Pair {
 extension SubscribeToNarrowPath: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     try await checkSpam(input)
+    let email = try input.email.validated(in: context)
 
     let existing = try? await NPSubscriber.query()
-      .where(.email == input.email.rawValue.lowercased())
+      .where(.email == email.rawValue.lowercased())
       .where(.lang == input.lang)
       .first(in: context.db)
     if existing != nil {
-      await slackError("NP subscribe duplicate email error: `\(input.email)`")
+      await slackError("NP subscribe duplicate email error: `\(email)`")
       throw Abort(.badRequest, reason: "Email already subscribed")
     }
 
@@ -35,7 +36,7 @@ extension SubscribeToNarrowPath: Resolver {
     try await context.db.create(NPSubscriber(
       token: token,
       mixedQuotes: input.mixedQuotes,
-      email: input.email.rawValue.lowercased(),
+      email: email.rawValue.lowercased(),
       lang: input.lang,
     ))
 
@@ -43,7 +44,7 @@ extension SubscribeToNarrowPath: Resolver {
       await slackInfo(
         """
         *New Narrow Path subscriber:*
-        _Email:_ \(input.email.rawValue.lowercased())
+        _Email:_ \(email.rawValue.lowercased())
         _Language:_ \(input.lang == .en ? "English" : "Spanish")
         _Mixed quotes:_ \(input.mixedQuotes ? "yes" : "no")
         """,
@@ -52,9 +53,9 @@ extension SubscribeToNarrowPath: Resolver {
 
     switch input.lang {
     case .en:
-      try await sendEnglishConfirm(to: input.email, confirming: token)
+      try await sendEnglishConfirm(to: email, confirming: token)
     case .es:
-      try await sendSpanishConfirm(to: input.email, confirming: token)
+      try await sendSpanishConfirm(to: email, confirming: token)
     }
 
     return .success

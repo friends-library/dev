@@ -24,7 +24,7 @@ extension CreateFreeOrderRequest: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     let order = try await context.db.create(FreeOrderRequest(
       name: input.name,
-      email: input.email,
+      email: input.email.validated(in: context),
       requestedBooks: input.requestedBooks,
       aboutRequester: input.aboutRequester,
       addressStreet: input.addressStreet,
