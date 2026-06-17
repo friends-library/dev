@@ -107,12 +107,13 @@ export function joinTokens(tokens: Token[]): string {
 
 export function wrap(
   tag: string | ((node: AstNode) => string | null),
-  classList?: string[],
+  classList?: string[] | ((node: AstNode) => string[]),
 ): Visitable<unknown> {
   return {
     enter({ node }) {
       const el = typeof tag === `function` ? tag(node) : tag;
-      el && c.append(`<${el}${classAttr(node, classList) || classAttr(node.parent)}>`);
+      const classes = typeof classList === `function` ? classList(node) : classList;
+      el && c.append(`<${el}${classAttr(node, classes) || classAttr(node.parent)}>`);
     },
     exit({ node }) {
       const el = typeof tag === `function` ? tag(node) : tag;

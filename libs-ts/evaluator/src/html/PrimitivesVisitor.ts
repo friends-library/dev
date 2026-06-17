@@ -92,9 +92,18 @@ const PrimitivesVisitor: Visitor<
   descriptionListItemTerm: wrap(`dt`),
   descriptionListItemContent: wrap(`dd`),
   verseLine: wrap(`span`, [`verse-line`]),
-  verseStanza: wrap((n) => (n.isInFootnote() ? `span` : `div`), [`verse-stanza`]),
+  verseStanza: wrap(
+    (n) => (n.isInFootnote() ? `span` : `div`),
+    (n) =>
+      !n.isInFootnote() && n.children.length > LONG_VERSE_STANZA_THRESHOLD
+        ? [`verse-stanza`, `verse-stanza--long`]
+        : [`verse-stanza`],
+  ),
 };
 
 export default PrimitivesVisitor;
 
 const RETURN_SYMBOL_DECIMAL_ENTITY = `&#9166;`;
+
+// longer stanzas may break across pages; shorter ones stay together as one unit
+const LONG_VERSE_STANZA_THRESHOLD = 10;

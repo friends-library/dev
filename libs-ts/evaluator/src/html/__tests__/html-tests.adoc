@@ -437,6 +437,57 @@ ____
 ++++
 
 // ********************************
+## poetry with long stanza
+// ********************************
+
+****
+== Preface
+
+[verse]
+____
+Alpha
+Bravo
+Charlie
+Delta
+Echo
+Foxtrot
+Golf
+Hotel
+India
+Juliet
+Kilo
+
+Short and sweet
+ends the song
+____
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <section class="poetry">
+    <div class="verse-stanza verse-stanza--long">
+      <span class="verse-line">Alpha</span>
+      <span class="verse-line">Bravo</span>
+      <span class="verse-line">Charlie</span>
+      <span class="verse-line">Delta</span>
+      <span class="verse-line">Echo</span>
+      <span class="verse-line">Foxtrot</span>
+      <span class="verse-line">Golf</span>
+      <span class="verse-line">Hotel</span>
+      <span class="verse-line">India</span>
+      <span class="verse-line">Juliet</span>
+      <span class="verse-line">Kilo</span>
+    </div>
+    <div class="verse-stanza">
+      <span class="verse-line">Short and sweet</span>
+      <span class="verse-line">ends the song</span>
+    </div>
+  </section>
+</div>
+++++
+
+// ********************************
 ## asterism and small break
 // ********************************
 
