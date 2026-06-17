@@ -12,6 +12,11 @@ export default css`
     -webkit-column-break-inside: avoid;
   }
 
+  .verse-stanza--long {
+    page-break-inside: auto;
+    -webkit-column-break-inside: auto;
+  }
+
   .signed-section-signature,
   .signed-section-context-close,
   blockquote + figcaption {
