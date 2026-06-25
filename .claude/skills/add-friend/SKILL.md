@@ -51,6 +51,11 @@ Example:
 gh repo create friends-library/george-fox --public --description "👴 George Fox (1624-1691) source documents"
 ```
 
+After cloning each newly created source repository into `DOCS_REPOS_ROOT`, install the
+standard GitHub workflows before opening any document PRs: run `fell workflows`, verify
+that `.github/workflows/lint-adoc.yml` exists in the new repository, then commit and push
+the generated workflow files.
+
 ## Step 3: Verify locally, then prepare production SQL
 
 Use the local PostgreSQL database only as a reference source to verify the current schema
