@@ -104,6 +104,4 @@ extension Friend {
   }
 }
 
-extension Friend.Gender: PostgresEnum {
-  var typeName: String { Friend.M11.GenderEnum.name }
-}
+extension Friend.Gender: PostgresRawBindable {}

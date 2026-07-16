@@ -16,11 +16,11 @@ extension Download: Model {
     case .editionId:
       .uuid(editionId)
     case .format:
-      .enum(format)
+      format.postgresData
     case .source:
-      .enum(source)
+      source.postgresData
     case .audioQuality:
-      .enum(audioQuality)
+      audioQuality.postgresData
     case .audioPartNumber:
       .int(audioPartNumber)
     case .isMobile:
@@ -87,9 +87,9 @@ extension Download {
     [
       .id: .id(self),
       .editionId: .uuid(editionId),
-      .format: .enum(format),
-      .source: .enum(source),
-      .audioQuality: .enum(audioQuality),
+      .format: format.postgresData,
+      .source: source.postgresData,
+      .audioQuality: audioQuality.postgresData,
       .audioPartNumber: .int(audioPartNumber),
       .isMobile: .bool(isMobile),
       .userAgent: .string(userAgent),

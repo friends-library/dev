@@ -6,7 +6,7 @@ extension NPSubscriber: ApiModel {
     [
       .id: .id(self),
       .email: .string(email),
-      .lang: .enum(lang),
+      .lang: lang.postgresData,
       .pendingConfirmationToken: .uuid(pendingConfirmationToken),
       .mixedQuotes: .bool(mixedQuotes),
       .createdAt: .currentTimestamp,
@@ -36,7 +36,7 @@ extension NPSubscriber: Model {
     case .pendingConfirmationToken:
       .uuid(pendingConfirmationToken)
     case .lang:
-      .enum(lang)
+      lang.postgresData
     case .mixedQuotes:
       .bool(mixedQuotes)
     }

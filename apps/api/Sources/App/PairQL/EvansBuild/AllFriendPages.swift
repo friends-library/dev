@@ -18,7 +18,7 @@ extension AllFriendPages: Resolver {
 
     let downloads = try await context.db.customQuery(
       AllDocumentDownloads.self,
-      withBindings: [.enum(lang), .null],
+      withBindings: [lang.postgresData, .null],
     )
 
     return try friends.reduce(into: [:]) { result, friend in

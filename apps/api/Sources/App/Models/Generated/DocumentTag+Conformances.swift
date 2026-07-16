@@ -16,7 +16,7 @@ extension DocumentTag: Model {
     case .documentId:
       .uuid(documentId)
     case .type:
-      .enum(type)
+      type.postgresData
     case .createdAt:
       .date(createdAt)
     }
@@ -39,7 +39,7 @@ extension DocumentTag {
     [
       .id: .id(self),
       .documentId: .uuid(documentId),
-      .type: .enum(type),
+      .type: type.postgresData,
       .createdAt: .currentTimestamp,
     ]
   }

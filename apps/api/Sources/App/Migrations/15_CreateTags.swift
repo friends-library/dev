@@ -58,8 +58,4 @@ extension DocumentTag {
   }
 }
 
-extension DocumentTag.TagType: PostgresEnum {
-  var typeName: String {
-    DocumentTag.M15.DocumentTagEnum.name
-  }
-}
+extension DocumentTag.TagType: PostgresRawBindable {}

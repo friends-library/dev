@@ -11,7 +11,7 @@ enum OrderPrintJobCoordinator {
     let orders: [Order]
     do {
       orders = try await db.query(Order.self)
-        .where(.printJobStatus == .enum(Order.PrintJobStatus.presubmit))
+        .where(.printJobStatus == Order.PrintJobStatus.presubmit.postgresData)
         .all(in: get(dependency: \.db))
     } catch {
       await notifyErr("27fad259", "Error querying presubmit orders", error)
@@ -190,7 +190,7 @@ private func getOrdersWithPrintJobs(
   let printJobs: [Lulu.Api.PrintJob]
   do {
     orders = try await db.query(Order.self)
-      .where(.printJobStatus == .enum(status))
+      .where(.printJobStatus == status.postgresData)
       .all(in: get(dependency: \.db))
 
     guard let printJobIds = await orderPrintJobIds(orders) else {

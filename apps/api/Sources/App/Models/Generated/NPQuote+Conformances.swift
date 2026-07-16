@@ -5,7 +5,7 @@ extension NPQuote: ApiModel {
   var insertValues: [ColumnName: Postgres.Data] {
     [
       .id: .id(self),
-      .lang: .enum(lang),
+      .lang: lang.postgresData,
       .isFriend: .bool(isFriend),
       .authorName: .string(authorName),
       .quote: .string(quote),
@@ -27,7 +27,7 @@ extension NPQuote: Model {
     case .id:
       .id(self)
     case .lang:
-      .enum(lang)
+      lang.postgresData
     case .isFriend:
       .bool(isFriend)
     case .authorName:

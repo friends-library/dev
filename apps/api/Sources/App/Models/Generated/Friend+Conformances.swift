@@ -14,13 +14,13 @@ extension Friend: Model {
     case .id:
       .id(self)
     case .lang:
-      .enum(lang)
+      lang.postgresData
     case .name:
       .string(name)
     case .slug:
       .string(slug)
     case .gender:
-      .enum(gender)
+      gender.postgresData
     case .description:
       .string(description)
     case .born:
@@ -65,10 +65,10 @@ extension Friend {
   var insertValues: [ColumnName: Postgres.Data] {
     [
       .id: .id(self),
-      .lang: .enum(lang),
+      .lang: lang.postgresData,
       .name: .string(name),
       .slug: .string(slug),
-      .gender: .enum(gender),
+      .gender: gender.postgresData,
       .description: .string(description),
       .born: .int(born),
       .died: .int(died),

@@ -15,7 +15,7 @@ extension AllDocumentPages: Resolver {
 
     let downloads = try await context.db.customQuery(
       AllDocumentDownloads.self,
-      withBindings: [.enum(lang), .null],
+      withBindings: [lang.postgresData, .null],
     )
 
     return try documents.reduce(into: [:]) { result, document in

@@ -14,15 +14,15 @@ extension Order: Model {
     case .id:
       .id(self)
     case .lang:
-      .enum(lang)
+      lang.postgresData
     case .source:
-      .enum(source)
+      source.postgresData
     case .paymentId:
       .string(paymentId.rawValue)
     case .printJobId:
       .int(printJobId?.rawValue)
     case .printJobStatus:
-      .enum(printJobStatus)
+      printJobStatus.postgresData
     case .amount:
       .int(amount.rawValue)
     case .taxes:
@@ -34,7 +34,7 @@ extension Order: Model {
     case .shipping:
       .int(shipping.rawValue)
     case .shippingLevel:
-      .enum(shippingLevel)
+      shippingLevel.postgresData
     case .email:
       .string(email.rawValue)
     case .addressName:
@@ -98,17 +98,17 @@ extension Order {
   var insertValues: [ColumnName: Postgres.Data] {
     [
       .id: .id(self),
-      .lang: .enum(lang),
-      .source: .enum(source),
+      .lang: lang.postgresData,
+      .source: source.postgresData,
       .paymentId: .string(paymentId.rawValue),
       .printJobId: .int(printJobId?.rawValue),
-      .printJobStatus: .enum(printJobStatus),
+      .printJobStatus: printJobStatus.postgresData,
       .amount: .int(amount.rawValue),
       .taxes: .int(taxes.rawValue),
       .fees: .int(fees.rawValue),
       .ccFeeOffset: .int(ccFeeOffset.rawValue),
       .shipping: .int(shipping.rawValue),
-      .shippingLevel: .enum(shippingLevel),
+      .shippingLevel: shippingLevel.postgresData,
       .email: .string(email.rawValue),
       .addressName: .string(addressName),
       .addressStreet: .string(addressStreet),

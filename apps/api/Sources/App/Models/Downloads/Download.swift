@@ -91,8 +91,4 @@ extension Download {
   }
 }
 
-extension EditionType: PostgresEnum {
-  var typeName: String {
-    Download.M1.EditionTypeEnum.name
-  }
-}
+extension EditionType: PostgresRawBindable {}

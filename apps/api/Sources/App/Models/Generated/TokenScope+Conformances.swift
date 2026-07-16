@@ -14,7 +14,7 @@ extension TokenScope: Model {
     case .id:
       .id(self)
     case .scope:
-      .enum(scope)
+      scope.postgresData
     case .tokenId:
       .uuid(tokenId)
     case .createdAt:
@@ -38,7 +38,7 @@ extension TokenScope {
   var insertValues: [ColumnName: Postgres.Data] {
     [
       .id: .id(self),
-      .scope: .enum(scope),
+      .scope: scope.postgresData,
       .tokenId: .uuid(tokenId),
       .createdAt: .currentTimestamp,
     ]

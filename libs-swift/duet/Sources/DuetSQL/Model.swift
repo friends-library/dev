@@ -8,7 +8,6 @@ public protocol Model: Duet.Identifiable, Codable, Sendable {
   static var tableName: String { get }
   static var schemaName: String { get }
   var insertValues: [ColumnName: Postgres.Data] { get }
-  func postgresData(for: ColumnName) -> Postgres.Data
 }
 
 public protocol ModelColumns {

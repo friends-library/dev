@@ -186,10 +186,6 @@ public extension SQL.Statement {
         sql.appendInterpolation(expression: .currentTimestamp)
       case .binding(.id(let id)):
         sql.appendInterpolation(expression: .uuid(id.uuidId.uuidString))
-      case .binding(.enum(.some(let customEnum))):
-        sql.appendInterpolation(expression: .customEnum(customEnum.typeName, customEnum.rawValue))
-      case .binding(.enum(.none)):
-        sql.appendInterpolation(expression: .null)
       case .binding(.intArray(.some(let ints))):
         sql += SQLQueryString(stringLiteral: "'{\(ints.map(String.init).joined(separator: ","))}'")
       case .binding(.intArray(.none)):
@@ -197,6 +193,10 @@ public extension SQL.Statement {
       case .binding(.json(.some(let json))):
         sql.appendInterpolation(expression: .jsonb(json))
       case .binding(.json(.none)):
+        sql.appendInterpolation(expression: .null)
+      case .binding(.bytea(.some(let data))):
+        sql.appendInterpolation(expression: .bytea(data.base64EncodedString()))
+      case .binding(.bytea(.none)):
         sql.appendInterpolation(expression: .null)
       case .binding(.null):
         sql.appendInterpolation(expression: .null)

@@ -16,7 +16,7 @@ extension Edition: Model {
     case .documentId:
       .uuid(documentId)
     case .type:
-      .enum(type)
+      type.postgresData
     case .editor:
       .string(editor)
     case .isDraft:
@@ -24,7 +24,7 @@ extension Edition: Model {
     case .paperbackSplits:
       .intArray(paperbackSplits?.array)
     case .paperbackOverrideSize:
-      .enum(paperbackOverrideSize)
+      paperbackOverrideSize.postgresData
     case .createdAt:
       .date(createdAt)
     case .updatedAt:
@@ -57,11 +57,11 @@ extension Edition {
     [
       .id: .id(self),
       .documentId: .uuid(documentId),
-      .type: .enum(type),
+      .type: type.postgresData,
       .editor: .string(editor),
       .isDraft: .bool(isDraft),
       .paperbackSplits: .intArray(paperbackSplits?.array),
-      .paperbackOverrideSize: .enum(paperbackOverrideSize),
+      .paperbackOverrideSize: paperbackOverrideSize.postgresData,
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
     ]

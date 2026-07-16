@@ -17,7 +17,7 @@ extension NativeAppError: Model {
     case .buildNumber:
       .int(buildNumber)
     case .lang:
-      .enum(lang)
+      lang.postgresData
     case .detail:
       .string(detail)
     case .platform:
@@ -57,7 +57,7 @@ extension NativeAppError {
       .id: .id(self),
       .buildSemver: .string(buildSemver),
       .buildNumber: .int(buildNumber),
-      .lang: .enum(lang),
+      .lang: lang.postgresData,
       .detail: .string(detail),
       .platform: .string(platform),
       .installId: .string(installId),

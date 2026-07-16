@@ -1,3 +1,4 @@
+import Foundation
 import Logging
 import NIOEmbedded
 import PostgresKit
@@ -465,15 +466,15 @@ final class SqlTests: XCTestCase {
     expect(client.stmt.params).toEqual([
       .bool(false),
       .currentTimestamp,
-      .enum(Thing.CustomEnum.foo),
+      .string("foo"),
       .id(thing),
       .int(3),
-      .enum(nil),
+      .string(nil),
       .int(4),
       .string(nil),
       .string("string"),
       .currentTimestamp,
-      .varchar("version"),
+      .string("version"),
     ])
   }
 
@@ -487,40 +488,15 @@ final class SqlTests: XCTestCase {
     expect(serializer.sql).not.toContain("$1")
   }
 
-  func testNilEnumSerializesToNull() async throws {
-    let thing = Thing(
-      customEnum: .bar,
-      optionalCustomEnum: nil,
-    )
+  func testByteaSerializesToDecode() throws {
+    var stmt = SQL.Statement("SELECT ")
+    stmt.components.append(.binding(.bytea(Data("hello".utf8))))
 
-    let client = TestClient()
-    _ = try await client.create([thing])
-
-    let sql = client.stmt.sql
+    let sql = stmt.sql
     var serializer = SQLSerializer(database: TestDatabase())
     sql.serialize(to: &serializer)
-    let sqlString = serializer.sql
 
-    expect(sqlString).toContain("'bar'::custom_enums")
-    expect(sqlString).toContain(", NULL,")
-  }
-
-  func testNonNilEnumSerializesToTypedValue() async throws {
-    let thing = Thing(
-      customEnum: .foo,
-      optionalCustomEnum: .bar,
-    )
-
-    let client = TestClient()
-    _ = try await client.create([thing])
-
-    let sql = client.stmt.sql
-    var serializer = SQLSerializer(database: TestDatabase())
-    sql.serialize(to: &serializer)
-    let sqlString = serializer.sql
-
-    expect(sqlString).toContain("'foo'::custom_enums")
-    expect(sqlString).toContain("'bar'::custom_enums")
+    expect(serializer.sql).toContain("decode('aGVsbG8=', 'base64')")
   }
 }
 

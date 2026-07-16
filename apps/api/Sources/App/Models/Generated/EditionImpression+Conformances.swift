@@ -18,7 +18,7 @@ extension EditionImpression: Model {
     case .adocLength:
       .int(adocLength)
     case .paperbackSizeVariant:
-      .enum(paperbackSizeVariant)
+      paperbackSizeVariant.postgresData
     case .paperbackVolumes:
       .intArray(paperbackVolumes.array)
     case .publishedRevision:
@@ -52,7 +52,7 @@ extension EditionImpression {
       .id: .id(self),
       .editionId: .uuid(editionId),
       .adocLength: .int(adocLength),
-      .paperbackSizeVariant: .enum(paperbackSizeVariant),
+      .paperbackSizeVariant: paperbackSizeVariant.postgresData,
       .paperbackVolumes: .intArray(paperbackVolumes.array),
       .publishedRevision: .string(publishedRevision.rawValue),
       .productionToolchainRevision: .string(productionToolchainRevision.rawValue),

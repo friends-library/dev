@@ -29,9 +29,7 @@ struct TokenScope: Codable, Sendable, Equatable {
 
 // extensions
 
-extension Scope: PostgresEnum {
-  var typeName: String { TokenScope.M5.dbEnumName }
-}
+extension Scope: PostgresRawBindable {}
 
 extension Scope {
   func can(_ requested: Scope) -> Bool {
