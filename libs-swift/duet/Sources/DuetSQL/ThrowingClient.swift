@@ -18,5 +18,11 @@ public struct ThrowingClient: Client {
     throw Error(message: "DuetSQL.ThrowingClient.execute(raw:) not implemented")
   }
 
+  public func transaction<R>(
+    _ operation: @escaping @Sendable (any Client) async throws -> R,
+  ) async throws -> R {
+    throw DuetSQLError.transactionUnavailable
+  }
+
   public init() {}
 }

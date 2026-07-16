@@ -38,6 +38,21 @@ public extension DependencyValues {
   }
 }
 
+extension DuetSQL.Client {
+  @discardableResult
+  func withTransaction<R>(
+    _ operation: @escaping @Sendable (any DuetSQL.Client) async throws -> R,
+  ) async throws -> R {
+    try await withEscapedDependencies { dependencies in
+      try await self.transaction { db in
+        try await dependencies.yield {
+          try await operation(db)
+        }
+      }
+    }
+  }
+}
+
 private enum LoggerKey: DependencyKey {
   static let liveValue = Logger(label: "api.friendslibrary")
   static let testValue = Logger.null

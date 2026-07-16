@@ -11,6 +11,7 @@ public enum DuetSQLError: Error, Equatable, LocalizedError {
   case invalidEntity
   case missingExpectedColumn(String)
   case notImplemented(String)
+  case transactionUnavailable
 
   public var errorMessage: String {
     switch self {
@@ -34,6 +35,8 @@ public enum DuetSQLError: Error, Equatable, LocalizedError {
       "Error: missing expected column `\(name)`"
     case .notImplemented(let message):
       "Error: \(message)"
+    case .transactionUnavailable:
+      "Database error: Transactions are unavailable for this client"
     }
   }
 

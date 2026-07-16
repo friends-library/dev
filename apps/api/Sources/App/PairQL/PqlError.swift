@@ -107,6 +107,12 @@ extension DuetSQLError: PqlErrorConvertible {
         type: .serverError,
         detail: "DuetSQL: too many results for delete one",
       )
+    case .transactionUnavailable:
+      context.error(
+        id: "b4acd0d5",
+        type: .serverError,
+        detail: "DuetSQL: transactions unavailable for client",
+      )
     }
   }
 }
