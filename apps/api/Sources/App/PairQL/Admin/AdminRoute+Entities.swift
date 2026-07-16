@@ -1,6 +1,7 @@
 import Foundation
 import PairQL
 import TaggedTime
+import TSCodable
 
 extension AdminRoute {
   enum EntityType: String, PairNestable {
@@ -20,6 +21,7 @@ extension AdminRoute {
 }
 
 extension AdminRoute {
+  @TSCodable
   enum Upsert: PairInput, PairNestable {
     case audio(entity: AudioInput)
     case audioPart(entity: AudioPartInput)
