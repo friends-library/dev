@@ -1,5 +1,7 @@
+import DuetSQL
 import Foundation
 
+@DuetModel(table: "free_order_requests")
 struct FreeOrderRequest: Codable, Sendable, Equatable {
   var id: Id
   var name: String

@@ -1,6 +1,7 @@
 import DuetSQL
 import Tagged
 
+@DuetModel(table: "edition_audios")
 struct Audio: Codable, Sendable, Equatable {
   var id: Id
   var editionId: Edition.Id

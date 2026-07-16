@@ -1,8 +1,10 @@
 import Duet
+import DuetSQL
 import NonEmpty
 import Tagged
 import TaggedTime
 
+@DuetModel(table: "edition_audio_parts")
 struct AudioPart: Codable, Sendable, Equatable {
   var id: Id
   var audioId: Audio.Id

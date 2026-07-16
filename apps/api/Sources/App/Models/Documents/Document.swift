@@ -1,5 +1,6 @@
 import DuetSQL
 
+@DuetModel(table: "documents")
 struct Document: Codable, Sendable, Equatable {
   var id: Id
   var friendId: Friend.Id

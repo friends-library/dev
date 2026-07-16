@@ -1,6 +1,7 @@
 import DuetSQL
 import TaggedMoney
 
+@DuetModel(table: "order_items")
 struct OrderItem: Codable, Sendable, Equatable {
   var id: Id
   var orderId: Order.Id

@@ -1,5 +1,7 @@
 import Duet
+import DuetSQL
 
+@DuetModel(table: "isbns")
 struct Isbn: Codable, Sendable, Equatable {
   var id: Id
   var code: ISBN

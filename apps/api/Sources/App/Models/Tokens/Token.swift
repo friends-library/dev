@@ -1,6 +1,7 @@
 import DuetSQL
 import Tagged
 
+@DuetModel(table: "tokens")
 struct Token: Codable, Sendable, Equatable {
   var id: Id
   var value: Value

@@ -2,6 +2,7 @@ import DuetSQL
 import Tagged
 import TaggedMoney
 
+@DuetModel(table: "orders")
 struct Order: Codable, Sendable, Equatable {
   var id: Id
   var lang: Lang

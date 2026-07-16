@@ -1,5 +1,7 @@
 import Duet
+import DuetSQL
 
+@DuetModel(table: "document_tags")
 struct DocumentTag: Codable, Sendable, Equatable {
   var id: Id
   var documentId: Document.Id

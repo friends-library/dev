@@ -1,5 +1,7 @@
 import Duet
+import DuetSQL
 
+@DuetModel(table: "edition_chapters")
 struct EditionChapter: Codable, Sendable, Equatable {
   var id: Id
   var editionId: Edition.Id

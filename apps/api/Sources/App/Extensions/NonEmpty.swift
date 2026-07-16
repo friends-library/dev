@@ -1,3 +1,4 @@
+import DuetSQL
 import NonEmpty
 import TypeScriptInterop
 
@@ -28,5 +29,15 @@ extension NonEmpty where Collection: RangeReplaceableCollection {
   static func fromArray(_ collection: Collection) throws -> NonEmpty<Collection> {
     guard let first = collection.first else { throw InitError.emptyCollection }
     return NonEmpty<Collection>(first) + collection.dropFirst()
+  }
+}
+
+extension NonEmpty: @retroactive PostgresBindable where Collection == [Int] {
+  public var postgresData: Postgres.Data {
+    .intArray(self.array)
+  }
+
+  public static var nilPostgresData: Postgres.Data {
+    .intArray(nil)
   }
 }

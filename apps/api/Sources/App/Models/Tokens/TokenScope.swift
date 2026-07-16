@@ -14,6 +14,7 @@ enum Scope: String, Codable, CaseIterable, Equatable {
   case mutateTokens
 }
 
+@DuetModel(table: "token_scopes")
 struct TokenScope: Codable, Sendable, Equatable {
   var id: Id
   var scope: Scope

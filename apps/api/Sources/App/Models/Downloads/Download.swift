@@ -1,5 +1,6 @@
 import DuetSQL
 
+@DuetModel(table: "downloads")
 struct Download: Codable, Sendable, Equatable {
   var id: Id
   var editionId: Edition.Id

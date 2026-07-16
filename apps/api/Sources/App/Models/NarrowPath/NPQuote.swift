@@ -1,5 +1,7 @@
+import DuetSQL
 import Foundation
 
+@DuetModel(table: "np_quotes")
 struct NPQuote: Codable, Sendable, Equatable {
   var id: Id
   var lang: Lang
