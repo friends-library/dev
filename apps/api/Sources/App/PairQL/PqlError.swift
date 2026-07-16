@@ -65,6 +65,18 @@ extension DuetSQLError: PqlErrorConvertible {
         type: .serverError,
         detail: "DuetSQL: empty bulk insert input",
       )
+    case .emptyConflictTarget:
+      context.error(
+        id: "4a3496d2",
+        type: .serverError,
+        detail: "DuetSQL: empty conflict target",
+      )
+    case .emptyConflictUpdate:
+      context.error(
+        id: "f9c4157b",
+        type: .serverError,
+        detail: "DuetSQL: empty conflict update",
+      )
     case .invalidEntity:
       context.error(
         id: "7a20146d",
