@@ -109,6 +109,21 @@ import Testing
     )
   }
 
+  @Test func `string raw enum uses raw values`() throws {
+    enum StripeStatus: String, CaseIterable {
+      case active
+      case pastDue = "past_due"
+      case incompleteExpired = "incomplete_expired"
+    }
+
+    #expect(
+      try CodeGen().declaration(for: StripeStatus.self) ==
+        """
+        export type StripeStatus = 'active' | 'past_due' | 'incomplete_expired'
+        """,
+    )
+  }
+
   @Test func `enum with named associated values`() throws {
     enum Bar {
       case a
