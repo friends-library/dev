@@ -88,6 +88,8 @@ function getPosition(residence: { city: string; region: string }): Position {
       return { top: 37.6, left: 54.6, map: `US` };
     case `Cornwall, New York`:
       return { top: 41.6, left: 53.8, map: `US` };
+    case `New York, New York`:
+      return { top: 46.5, left: 53.8, map: `US` };
     case `Wilmington, Delaware`:
       return { top: 53.6, left: 48.5, map: `US` };
     case `Flushing, Ohio`:
