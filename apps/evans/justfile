@@ -22,6 +22,10 @@ storybook:
 test:
   @pnpm vitest . --watch
 
+# manually trigger the algolia search reindex (pass site url + CRON_SECRET value)
+reindex-search url token:
+  @curl -fsS -H "Authorization: Bearer {{token}}" "{{url}}/api/cron/reindex-search"; echo
+
 # helpers
 
 [private]

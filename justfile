@@ -68,7 +68,7 @@ nx-reset:
 	@pnpm exec nx reset
 
 test-typescript:
-  @pnpm exec nx run-many --targets=test --exclude=duet,x-http,x-kit,x-postmark,x-slack,x-stripe,apps/api,ts-interop,x-expect
+  @pnpm exec nx run-many --targets=test --exclude=duet,x-http,x-kit,x-postmark,x-slack,x-stripe,apps/api,ts-interop,x-expect,ts-codable-macro
 
 clean-swift-build:
   @find . -type d -name ".build" -exec rm -rf {} +
