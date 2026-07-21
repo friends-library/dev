@@ -1,5 +1,7 @@
+import DuetSQL
 import Foundation
 
+@DuetModel(table: "np_sent_quotes")
 struct NPSentQuote: Codable, Sendable, Equatable {
   var id: Id
   var createdAt = Date()

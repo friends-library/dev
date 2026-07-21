@@ -4,6 +4,7 @@
   "implicitDependencies": [
     "duet",
     "pairql",
+    "ts-codable-macro",
     "ts-interop",
     "x-http",
     "x-postmark",

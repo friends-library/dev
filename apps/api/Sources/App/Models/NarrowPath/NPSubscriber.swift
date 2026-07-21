@@ -1,5 +1,7 @@
+import DuetSQL
 import Foundation
 
+@DuetModel(table: "np_subscribers")
 struct NPSubscriber: Codable, Sendable, Equatable {
   var id: Id
   var email: String

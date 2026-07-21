@@ -72,7 +72,7 @@ enum DownloadRoute: RouteHandler {
       if downloadFormat == .podcast, let ipAddress {
         let dupe = try? await db.query(Download.self)
           .where(.ip == .string(ipAddress))
-          .where(.format == .enum(Download.Format.podcast))
+          .where(.format == Download.Format.podcast.postgresData)
           .where(.editionId == file.editionId)
           .first(in: db)
 

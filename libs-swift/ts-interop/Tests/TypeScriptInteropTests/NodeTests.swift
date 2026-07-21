@@ -64,6 +64,26 @@ import Testing
     #expect(try Node(from: Foo.self) == .stringUnion(["bar", "baz"], .init(Foo.self)))
   }
 
+  @Test func `parse string raw enum uses raw values`() throws {
+    enum Foo: String, CaseIterable {
+      case bar
+      case pastDue = "past_due"
+      case incompleteExpired = "incomplete_expired"
+    }
+    #expect(
+      try Node(from: Foo.self)
+        == .stringUnion(["bar", "past_due", "incomplete_expired"], .init(Foo.self)),
+    )
+  }
+
+  @Test func `parse non string raw enum uses case names`() throws {
+    enum Foo: Int, CaseIterable {
+      case bar = 1
+      case baz = 2
+    }
+    #expect(try Node(from: Foo.self) == .stringUnion(["bar", "baz"], .init(Foo.self)))
+  }
+
   @Test func `flattens enum case with single struct payload`() throws {
     enum Screen {
       struct Connected {

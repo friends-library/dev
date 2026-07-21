@@ -29,7 +29,7 @@ extension UpsertEditionImpression: Resolver {
       productionToolchainRevision: input.productionToolchainRevision,
     )
     guard await impression.isValid() else { throw ModelError.invalidEntity }
-    try await context.db.upsert(impression)
+    try await context.db.upsert(impression, conflictOn: [.id])
     let joined = try await EditionImpression.Joined.find(input.id)
     return .init(id: impression.id, cloudFiles: .init(files: joined.files))
   }

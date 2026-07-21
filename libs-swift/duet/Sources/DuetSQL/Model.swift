@@ -2,13 +2,24 @@ import Duet
 import Foundation
 import XCore
 
+@attached(member, names: named(Id), named(CodingKeys))
+@attached(
+  extension,
+  conformances: Model,
+  names: named(schemaName), named(tableName), named(ColumnName), named(insertValues)
+)
+public macro DuetModel(
+  schema: String = "public",
+  table: String,
+  clientCreatedAt: Bool = false,
+) = #externalMacro(module: "DuetMacros", type: "DuetModelMacro")
+
 public protocol Model: Duet.Identifiable, Codable, Sendable {
   associatedtype ColumnName: CodingKey, Hashable, CaseIterable, ModelColumns
   static func columnName(_ column: ColumnName) -> String
   static var tableName: String { get }
   static var schemaName: String { get }
   var insertValues: [ColumnName: Postgres.Data] { get }
-  func postgresData(for: ColumnName) -> Postgres.Data
 }
 
 public protocol ModelColumns {

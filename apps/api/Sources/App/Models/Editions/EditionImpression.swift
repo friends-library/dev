@@ -2,6 +2,7 @@ import DuetSQL
 import NonEmpty
 import TaggedMoney
 
+@DuetModel(table: "edition_impressions")
 struct EditionImpression: Codable, Sendable, Equatable {
   var id: Id
   var editionId: Edition.Id

@@ -1,6 +1,8 @@
 import Duet
+import DuetSQL
 import Fluent
 
+@DuetModel(table: "native_app_errors")
 struct NativeAppError: Codable, Sendable, Equatable {
   var id: Id
   var buildSemver: String

@@ -1,5 +1,6 @@
 import DuetSQL
 
+@DuetModel(table: "downloads")
 struct Download: Codable, Sendable, Equatable {
   var id: Id
   var editionId: Edition.Id
@@ -91,8 +92,4 @@ extension Download {
   }
 }
 
-extension EditionType: PostgresEnum {
-  var typeName: String {
-    Download.M1.EditionTypeEnum.name
-  }
-}
+extension EditionType: PostgresRawBindable {}

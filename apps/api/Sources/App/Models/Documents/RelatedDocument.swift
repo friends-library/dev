@@ -1,5 +1,7 @@
 import Duet
+import DuetSQL
 
+@DuetModel(table: "related_documents")
 struct RelatedDocument: Codable, Sendable, Equatable {
   var id: Id
   var description: String

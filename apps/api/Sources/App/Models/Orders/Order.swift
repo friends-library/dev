@@ -2,6 +2,7 @@ import DuetSQL
 import Tagged
 import TaggedMoney
 
+@DuetModel(table: "orders")
 struct Order: Codable, Sendable, Equatable {
   var id: Id
   var lang: Lang
@@ -187,21 +188,13 @@ extension Order {
   }
 }
 
-extension Lang: PostgresEnum {
-  var typeName: String { Order.M2.LangEnum.name }
-}
+extension Lang: PostgresRawBindable {}
 
-extension Order.OrderSource: PostgresEnum {
-  var typeName: String { Order.M2.SourceEnum.name }
-}
+extension Order.OrderSource: PostgresRawBindable {}
 
-extension Order.ShippingLevel: PostgresEnum {
-  var typeName: String { Order.M2.ShippingLevelEnum.name }
-}
+extension Order.ShippingLevel: PostgresRawBindable {}
 
-extension Order.PrintJobStatus: PostgresEnum {
-  var typeName: String { Order.M2.PrintJobStatusEnum.name }
-}
+extension Order.PrintJobStatus: PostgresRawBindable {}
 
 extension Order {
   typealias PaymentId = Tagged<(order: Order, paymentId: ()), String>

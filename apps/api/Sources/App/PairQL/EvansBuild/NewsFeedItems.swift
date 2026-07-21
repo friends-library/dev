@@ -1,6 +1,7 @@
 import DuetSQL
 import Foundation
 import PairQL
+import TSCodable
 
 struct NewsFeedItems: Pair {
   static let auth: Scope = .queryEntities
@@ -8,6 +9,7 @@ struct NewsFeedItems: Pair {
   typealias Input = Lang
 
   struct NewsFeedItem: PairOutput {
+    @TSCodable
     enum Kind: PairNestable {
       case book
       case audiobook

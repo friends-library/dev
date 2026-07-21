@@ -116,6 +116,10 @@ the user to confirm they've created the record before proceeding.
 
 ## Step 6: Place the raw AsciiDoc file
 
+Before opening the first PR for a newly created source repository, verify that
+`.github/workflows/lint-adoc.yml` exists. If it does not, run `fell workflows`, then
+commit and push the generated workflow files so AsciiDoc lint runs on subsequent PRs.
+
 Source files live at `{lang}/{friend-slug}/{doc-slug}/{editionType}/` where:
 
 - `lang` is `en` or `es`

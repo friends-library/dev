@@ -10,7 +10,7 @@ struct RemoveDuplicatePodcastDownloads: AsyncMigration {
     }
 
     let downloads = try await get(dependency: \.db).query(Download.self)
-      .where(.format == .enum(Download.Format.podcast))
+      .where(.format == Download.Format.podcast.postgresData)
       .where(.not(.isNull(.ip)))
       .all(in: get(dependency: \.db))
 

@@ -53,6 +53,8 @@ final class WhereConstraintTests: XCTestCase {
       (.optionalInt != nil, #"NOT "optional_int" IS NULL"#, []),
       (.optionalCustomEnum == nil, #""optional_custom_enum" IS NULL"#, []),
       (.optionalCustomEnum != nil, #"NOT "optional_custom_enum" IS NULL"#, []),
+      (.customEnum == Thing.CustomEnum.foo, #""custom_enum" = $1"#, [.string("foo")]),
+      (.customEnum != Thing.CustomEnum.foo, #"NOT "custom_enum" = $1"#, [.string("foo")]),
     ]
 
     for (constraint, expectedSQL, expectedParams) in cases {

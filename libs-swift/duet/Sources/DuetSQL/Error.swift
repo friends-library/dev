@@ -5,10 +5,13 @@ public enum DuetSQLError: Error, Equatable, LocalizedError {
   case decodingFailed
   case nonUniformBulkInsertInput
   case emptyBulkInsertInput
+  case emptyConflictTarget
+  case emptyConflictUpdate
   case tooManyResultsForDeleteOne
   case invalidEntity
   case missingExpectedColumn(String)
   case notImplemented(String)
+  case transactionUnavailable
 
   public var errorMessage: String {
     switch self {
@@ -20,6 +23,10 @@ public enum DuetSQLError: Error, Equatable, LocalizedError {
       "Database error: Non-uniform bulk insert input"
     case .emptyBulkInsertInput:
       "Database error: Empty bulk insert input"
+    case .emptyConflictTarget:
+      "Database error: ON CONFLICT requires at least one target column"
+    case .emptyConflictUpdate:
+      "Database error: ON CONFLICT DO UPDATE requires at least one column to set"
     case .tooManyResultsForDeleteOne:
       "Database error: Too many results for delete one"
     case .invalidEntity:
@@ -28,6 +35,8 @@ public enum DuetSQLError: Error, Equatable, LocalizedError {
       "Error: missing expected column `\(name)`"
     case .notImplemented(let message):
       "Error: \(message)"
+    case .transactionUnavailable:
+      "Database error: Transactions are unavailable for this client"
     }
   }
 

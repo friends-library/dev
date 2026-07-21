@@ -1,5 +1,7 @@
+import DuetSQL
 import Foundation
 
+@DuetModel(table: "artifact_production_versions")
 struct ArtifactProductionVersion: Codable, Sendable, Equatable {
   var id: Id
   var version: GitCommitSha

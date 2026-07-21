@@ -1,6 +1,7 @@
 import DuetSQL
 import Foundation
 import PairQL
+import TSCodable
 
 struct GetPrintJobExploratoryMetadata: Pair {
   struct Input: PairInput {
@@ -10,6 +11,7 @@ struct GetPrintJobExploratoryMetadata: Pair {
     var lang: Lang
   }
 
+  @TSCodable
   enum Output: PairOutput {
     case success(metadata: PrintJobs.ExploratoryMetadata)
     case shippingAddressError(PrintJobs.ShippingAddressError)

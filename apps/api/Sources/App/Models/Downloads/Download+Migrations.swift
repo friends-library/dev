@@ -59,14 +59,8 @@ extension Download {
   }
 }
 
-extension Download.AudioQuality: PostgresEnum {
-  var typeName: String { Download.M1.AudioQualityEnum.name }
-}
+extension Download.AudioQuality: PostgresRawBindable {}
 
-extension Download.Format: PostgresEnum {
-  var typeName: String { Download.M1.FormatEnum.name }
-}
+extension Download.Format: PostgresRawBindable {}
 
-extension Download.DownloadSource: PostgresEnum {
-  var typeName: String { Download.M1.SourceEnum.name }
-}
+extension Download.DownloadSource: PostgresRawBindable {}

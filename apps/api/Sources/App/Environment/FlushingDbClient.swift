@@ -20,6 +20,15 @@ struct FlushingDbClient: DuetSQL.Client {
   }
 
   @discardableResult
+  func transaction<R>(
+    _ operation: @escaping @Sendable (any DuetSQL.Client) async throws -> R,
+  ) async throws -> R {
+    try await self.origin.transaction { db in
+      try await operation(FlushingDbClient(origin: db))
+    }
+  }
+
+  @discardableResult
   func update<M: DuetSQL.Model>(_ model: M) async throws -> M {
     let updated = try await origin.update(model)
     if M.isPreloaded {

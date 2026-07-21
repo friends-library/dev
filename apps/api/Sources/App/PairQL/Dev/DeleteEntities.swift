@@ -1,10 +1,12 @@
 import DuetSQL
 import Foundation
 import PairQL
+import TSCodable
 
 struct DeleteEntities: Pair {
   static let auth: Scope = .mutateEntities
 
+  @TSCodable
   enum Input: PairInput {
     case editionImpression(id: EditionImpression.Id)
     case editionChapters(id: Edition.Id)

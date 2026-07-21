@@ -96,7 +96,7 @@ extension FriendPage: Resolver {
 
     let downloads = try await context.db.customQuery(
       AllDocumentDownloads.self,
-      withBindings: [.enum(input.lang), .uuid(friend.id)],
+      withBindings: [input.lang.postgresData, .uuid(friend.id)],
     ).urlPathDict
 
     return try .init(friend, downloads: downloads, in: context)

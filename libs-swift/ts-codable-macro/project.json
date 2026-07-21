@@ -1,0 +1,14 @@
+{
+  "root": "libs-swift/ts-codable-macro",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "inputs": ["swift-sources"],
+      "command": "cd libs-swift/ts-codable-macro && swift build"
+    },
+    "test": {
+      "inputs": ["swift-tests"],
+      "command": "cd libs-swift/ts-codable-macro && SWIFT_DETERMINISTIC_HASHING=1 swift test"
+    }
+  }
+}

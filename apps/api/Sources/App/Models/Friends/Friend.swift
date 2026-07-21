@@ -1,5 +1,6 @@
 import DuetSQL
 
+@DuetModel(table: "friends")
 struct Friend: Codable, Sendable, Equatable {
   var id: Id
   var lang: Lang
@@ -104,6 +105,4 @@ extension Friend {
   }
 }
 
-extension Friend.Gender: PostgresEnum {
-  var typeName: String { Friend.M11.GenderEnum.name }
-}
+extension Friend.Gender: PostgresRawBindable {}

@@ -20,8 +20,4 @@ extension Edition {
   }
 }
 
-extension PrintSizeVariant: PostgresEnum {
-  var typeName: String {
-    Edition.M17.PrintSizeVariantEnum.name
-  }
-}
+extension PrintSizeVariant: PostgresRawBindable {}
