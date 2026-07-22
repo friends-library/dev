@@ -22,6 +22,7 @@ export async function create(
   const m4bDir = `${src.derivedPath}/m4b`;
   const relWorkDir = `Religion/${friend.name}/${shortTitle}`;
   const workDir = `${m4bDir}/${relWorkDir}`;
+  const tmpDir = `${m4bDir}/tmp`;
   const isMultipart = audio.parts.length > 1;
 
   if (fs.existsSync(m4bDir)) {
@@ -29,13 +30,14 @@ export async function create(
   }
 
   fs.ensureDirSync(workDir);
+  fs.ensureDirSync(tmpDir);
   exec.exit(`cp ${src.derivedPath}/cover.png "${workDir}"`);
   fs.writeFileSync(`${workDir}/description.txt`, document.description);
 
   let durationAccum = 0;
   const chapterFileLines: string[] = [];
 
-  src.parts.forEach(async (part, idx) => {
+  for (const [idx, part] of src.parts.entries()) {
     chapterFileLines.push(`${secsToStr(durationAccum)} ${audio.parts[idx]!.title}`);
     if (!fs.existsSync(part.srcLocalPath)) {
       logAction(`downloading source .wav file ${c`{cyan pt. ${idx + 1}}`} for m4b`);
@@ -48,7 +50,7 @@ export async function create(
       const [, duration] = ffmpeg.getDuration(part.srcLocalPath);
       durationAccum += duration;
     }
-  });
+  }
 
   if (isMultipart) {
     const chaptersFilePath = `${workDir}/chapters.txt`;
@@ -61,6 +63,7 @@ export async function create(
     `--rm`,
     `--user ${user}`,
     `--volume "${m4bDir}":/mnt`,
+    `--env TMPDIR=/mnt/tmp`,
     IMAGE,
   ];
 
