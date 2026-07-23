@@ -17,7 +17,7 @@ enum PrintJobs {
         let titleSuffix = impression.paperbackVolumes.count > 1 ? ", vol. \(index + 1)" : ""
         var cover = impression.files.paperback.cover[index].sourceUrl.absoluteString
         if impression.edition.document.friend.outOfBand {
-          let dirPath = impression.edition.document.friend.directoryPath
+          let dirPath = impression.edition.document.directoryPath
           cover =
             "https://flp-assets.nyc3.digitaloceanspaces.com/\(dirPath)/custom-cover.pdf"
         }
