@@ -50,6 +50,27 @@ final class DevDomainTests: AppTestCase, @unchecked Sendable {
     let fetched: EditionImpression = try await self.db.find(entities.editionImpression.id)
     expect(fetched.adocLength).toEqual(3333)
   }
+
+  func testUpsertNewEditionImpressionCanImmediatelyResolveCloudFilesAfterCacheLoad() async throws {
+    let entities = await Entities.create()
+    try await self.db.delete(entities.editionImpression.id)
+    _ = try await Edition.Joined.find(entities.edition.id)
+    let id = EditionImpression.Id()
+
+    let output = try await UpsertEditionImpression.resolve(
+      with: .init(
+        id: id,
+        editionId: entities.edition.id,
+        adocLength: 3333,
+        paperbackSizeVariant: .xl,
+        paperbackVolumes: [233],
+        publishedRevision: "a499db17511b75407a1229447946138481d05dd6",
+        productionToolchainRevision: "a499db17511b75407a1229447946138481d05dd5",
+      ),
+      in: .authed,
+    )
+    expect(output.id).toEqual(id)
+  }
 }
 
 extension Token {

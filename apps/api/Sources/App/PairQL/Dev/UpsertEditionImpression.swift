@@ -30,6 +30,8 @@ extension UpsertEditionImpression: Resolver {
     )
     guard await impression.isValid() else { throw ModelError.invalidEntity }
     try await context.db.upsert(impression, conflictOn: [.id])
+    await JoinedEntityCache.shared.flush()
+    await LegacyRest.cachedData.flush()
     let joined = try await EditionImpression.Joined.find(input.id)
     return .init(id: impression.id, cloudFiles: .init(files: joined.files))
   }
