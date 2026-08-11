@@ -1,6 +1,19 @@
+import DuetSQL
+
 extension Edition {
   func isValid() async -> Bool {
-    guard let joined = try? await joined() else {
+    // not-found means not yet persisted (create path), so nothing to cross-check
+    let loaded: Edition.Joined?
+    do {
+      loaded = try await self.joined()
+    } catch DuetSQLError.notFound {
+      loaded = nil
+    } catch {
+      get(dependency: \.logger).warning("Invalid edition: failed to load joined: \(error)")
+      return false
+    }
+
+    guard let joined = loaded else {
       if type != .updated, editor != nil {
         return false
       }

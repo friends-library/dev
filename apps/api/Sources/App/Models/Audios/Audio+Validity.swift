@@ -1,3 +1,5 @@
+import DuetSQL
+
 extension Audio {
   func isValid() async -> Bool {
     if reader.isEmpty {
@@ -35,9 +37,19 @@ extension Audio {
       return false
     }
 
-    // test for sequential parts, when loaded
-    if let joined = try? await joined() {
-      let sorted = joined.parts.sorted { $0.order < $1.order }
+    // not-found means not yet persisted (create path), so nothing to cross-check
+    let loaded: Audio.Joined?
+    do {
+      loaded = try await self.joined()
+    } catch DuetSQLError.notFound {
+      loaded = nil
+    } catch {
+      self.logInvalid("failed to load joined audio: \(error)")
+      return false
+    }
+
+    if let loaded {
+      let sorted = loaded.parts.sorted { $0.order < $1.order }
       var prev = 0
       for part in sorted {
         if part.order != prev + 1 {
