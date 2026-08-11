@@ -65,6 +65,9 @@ export const EditAudio: React.FC<AudioProps> = ({ audio, replace }) => (
       renderItem={(item, index) => (
         <EditAudioPart
           part={item}
+          siblingTitles={audio.parts
+            .filter((_, partIndex) => partIndex !== index)
+            .map((sibling) => sibling.title)}
           replace={(path, preprocess) => replace(`parts[${index}].${path}`, preprocess)}
         />
       )}
@@ -74,10 +77,15 @@ export const EditAudio: React.FC<AudioProps> = ({ audio, replace }) => (
 
 interface AudioPartProps {
   part: T.EditableAudioPart;
+  siblingTitles: string[];
   replace: ReducerReplace;
 }
 
-export const EditAudioPart: React.FC<AudioPartProps> = ({ part, replace }) => {
+export const EditAudioPart: React.FC<AudioPartProps> = ({
+  part,
+  siblingTitles,
+  replace,
+}) => {
   const [chapters, setChapters] = useState(JSON.stringify(part.chapters));
   const updateChapters = nonEmptyIntArray.makeUpdater(setChapters, replace(`chapters`));
   return (
@@ -87,6 +95,8 @@ export const EditAudioPart: React.FC<AudioPartProps> = ({ part, replace }) => {
         type="text"
         className="w-[75%]"
         value={part.title}
+        isValid={(input) => input.trim() !== `` && !siblingTitles.includes(input)}
+        invalidMessage="Title must be non-empty and unique within the audio."
         onChange={replace(`title`)}
       />
       <TextInput
