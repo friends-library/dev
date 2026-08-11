@@ -19,7 +19,13 @@ struct CreateEditionChapters: Pair {
 extension CreateEditionChapters: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(self.auth)
-    try await context.db.create(input.map(EditionChapter.init(input:)))
+    let chapters = input.map(EditionChapter.init(input:))
+    for chapter in chapters {
+      guard await chapter.isValid() else {
+        throw ModelError.invalidEntity
+      }
+    }
+    try await context.db.create(chapters)
     return .success
   }
 }

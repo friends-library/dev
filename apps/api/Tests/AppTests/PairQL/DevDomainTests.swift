@@ -31,6 +31,29 @@ final class DevDomainTests: AppTestCase, @unchecked Sendable {
     expect(output).toEqual(.init(id: retrieved?.id ?? .init()))
   }
 
+  func testCreateEditionChaptersRejectsInvalidChapter() async throws {
+    let entities = await Entities.create()
+    try await self.db.delete(all: EditionChapter.self)
+
+    try await expectErrorFrom {
+      try await CreateEditionChapters.resolve(
+        with: [.init(
+          editionId: entities.edition.id,
+          order: 1,
+          shortHeading: "lowercase heading", // <-- invalid
+          isIntermediateTitle: false,
+          customId: nil,
+          sequenceNumber: 1,
+          nonSequenceTitle: nil,
+        )],
+        in: .authed,
+      )
+    }.toContain("invalid")
+
+    let created = try await EditionChapter.query().all(in: self.db)
+    expect(created.isEmpty).toBeTrue()
+  }
+
   func testUpsertEditionImpressionCanImmediatelyResolveCloudFiles() async throws {
     let entities = await Entities.create()
 
