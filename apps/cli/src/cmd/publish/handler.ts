@@ -441,20 +441,11 @@ async function uploadFiles(
 }
 
 async function replaceEditionChapters(dpc: FsDocPrecursor): Promise<void> {
-  const deleteRes = await api.deleteEntitiesResult({
-    case: `editionChapters`,
-    id: dpc.editionId,
-  });
-  if (deleteRes.isError) {
+  const input = paperback.editionChapters(dpc);
+  const res = await api.replaceEditionChaptersResult(input);
+  if (res.isError) {
     throw new Error(
-      `Error deleting existing EditionChapter entities for ${dpc.path}, (${deleteRes.error})`,
-    );
-  }
-  const inputs = paperback.editionChapters(dpc);
-  const createRes = await api.createEditionChaptersResult(inputs);
-  if (createRes.isError) {
-    throw new Error(
-      `Error creating EditionChapter entities for ${dpc.path}, (${createRes.error})`,
+      `Error replacing EditionChapter entities for ${dpc.path}, (${res.error})`,
     );
   }
 }

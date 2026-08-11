@@ -66,16 +66,18 @@ export async function publish(
   };
 }
 
-export function editionChapters(dpc: FsDocPrecursor): T.CreateEditionChapters.Input {
-  return evaluate.toPdfSrcHtml(dpc).chapters.map((chapterResult, index) => ({
+export function editionChapters(dpc: FsDocPrecursor): T.ReplaceEditionChapters.Input {
+  return {
     editionId: dpc.editionId,
-    order: index + 1,
-    shortHeading: chapterResult.shortHeading,
-    isIntermediateTitle: chapterResult.isIntermediateTitle,
-    sequenceNumber: chapterResult.sequenceNumber,
-    nonSequenceTitle: chapterResult.nonSequenceTitle,
-    customId: chapterResult.id === chapterResult.slug ? undefined : chapterResult.id,
-  }));
+    chapters: evaluate.toPdfSrcHtml(dpc).chapters.map((chapterResult, index) => ({
+      order: index + 1,
+      shortHeading: chapterResult.shortHeading,
+      isIntermediateTitle: chapterResult.isIntermediateTitle,
+      sequenceNumber: chapterResult.sequenceNumber,
+      nonSequenceTitle: chapterResult.nonSequenceTitle,
+      customId: chapterResult.id === chapterResult.slug ? undefined : chapterResult.id,
+    })),
+  };
 }
 
 async function makeSingleVolumes(

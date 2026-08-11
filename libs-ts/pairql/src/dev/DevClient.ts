@@ -40,16 +40,6 @@ export default class DevClient extends Client {
     return result.unwrap();
   }
 
-  public async createEditionChapters(
-    input: P.CreateEditionChapters.Input,
-  ): Promise<P.CreateEditionChapters.Output> {
-    const result = await this.query<P.CreateEditionChapters.Output>(
-      input,
-      `CreateEditionChapters`,
-    );
-    return result.unwrap();
-  }
-
   public async deleteEntities(
     input: P.DeleteEntities.Input,
   ): Promise<P.DeleteEntities.Output> {
@@ -102,6 +92,16 @@ export default class DevClient extends Client {
     return result.unwrap();
   }
 
+  public async replaceEditionChapters(
+    input: P.ReplaceEditionChapters.Input,
+  ): Promise<P.ReplaceEditionChapters.Output> {
+    const result = await this.query<P.ReplaceEditionChapters.Output>(
+      input,
+      `ReplaceEditionChapters`,
+    );
+    return result.unwrap();
+  }
+
   public async updateAudio(input: P.UpdateAudio.Input): Promise<P.UpdateAudio.Output> {
     const result = await this.query<P.UpdateAudio.Output>(input, `UpdateAudio`);
     return result.unwrap();
@@ -137,12 +137,6 @@ export default class DevClient extends Client {
       input,
       `CreateArtifactProductionVersion`,
     );
-  }
-
-  public createEditionChaptersResult(
-    input: P.CreateEditionChapters.Input,
-  ): Promise<Result<P.CreateEditionChapters.Output>> {
-    return this.query<P.CreateEditionChapters.Output>(input, `CreateEditionChapters`);
   }
 
   public deleteEntitiesResult(
@@ -186,6 +180,12 @@ export default class DevClient extends Client {
       input,
       `LatestArtifactProductionVersion`,
     );
+  }
+
+  public replaceEditionChaptersResult(
+    input: P.ReplaceEditionChapters.Input,
+  ): Promise<Result<P.ReplaceEditionChapters.Output>> {
+    return this.query<P.ReplaceEditionChapters.Output>(input, `ReplaceEditionChapters`);
   }
 
   public updateAudioPartResult(

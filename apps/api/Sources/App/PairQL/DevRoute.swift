@@ -21,7 +21,6 @@ enum DevRoute: PairRoute {
 
 enum AuthedDevRoute: PairRoute {
   case createArtifactProductionVersion(CreateArtifactProductionVersion.Input)
-  case createEditionChapters(CreateEditionChapters.Input)
   case coverWebAppFriends
   case deleteEntities(DeleteEntities.Input)
   case dpcEditions
@@ -30,6 +29,7 @@ enum AuthedDevRoute: PairRoute {
   case getEdition(Edition.Id)
   case getEditionImpression(EditionImpression.Id)
   case latestArtifactProductionVersion
+  case replaceEditionChapters(ReplaceEditionChapters.Input)
   case updateAudio(UpdateAudio.Input)
   case updateAudioPart(UpdateAudioPart.Input)
   case upsertEditionImpression(UpsertEditionImpression.Input)
@@ -38,10 +38,6 @@ enum AuthedDevRoute: PairRoute {
     Route(/Self.createArtifactProductionVersion) {
       Operation(CreateArtifactProductionVersion.self)
       Body(.input(CreateArtifactProductionVersion.self))
-    }
-    Route(/Self.createEditionChapters) {
-      Operation(CreateEditionChapters.self)
-      Body(.input(CreateEditionChapters.self))
     }
     Route(/Self.coverWebAppFriends) {
       Operation(CoverWebAppFriends.self)
@@ -69,6 +65,10 @@ enum AuthedDevRoute: PairRoute {
     }
     Route(/Self.latestArtifactProductionVersion) {
       Operation(LatestArtifactProductionVersion.self)
+    }
+    Route(/Self.replaceEditionChapters) {
+      Operation(ReplaceEditionChapters.self)
+      Body(.input(ReplaceEditionChapters.self))
     }
     Route(/Self.updateAudio) {
       Operation(UpdateAudio.self)
@@ -99,9 +99,6 @@ extension DevRoute: RouteResponder {
       case .createArtifactProductionVersion(let input):
         let output = try await CreateArtifactProductionVersion.resolve(with: input, in: authed)
         return try self.respond(with: output)
-      case .createEditionChapters(let input):
-        let output = try await CreateEditionChapters.resolve(with: input, in: authed)
-        return try self.respond(with: output)
       case .coverWebAppFriends:
         let output = try await CoverWebAppFriends.resolve(in: authed)
         return try self.respond(with: output)
@@ -125,6 +122,9 @@ extension DevRoute: RouteResponder {
         return try self.respond(with: output)
       case .getEditionImpression(let input):
         let output = try await GetEditionImpression.resolve(with: input, in: authed)
+        return try self.respond(with: output)
+      case .replaceEditionChapters(let input):
+        let output = try await ReplaceEditionChapters.resolve(with: input, in: authed)
         return try self.respond(with: output)
       case .updateAudio(let input):
         let output = try await UpdateAudio.resolve(with: input, in: authed)

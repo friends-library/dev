@@ -9,7 +9,6 @@ struct DeleteEntities: Pair {
   @TSCodable
   enum Input: PairInput {
     case editionImpression(id: EditionImpression.Id)
-    case editionChapters(id: Edition.Id)
   }
 }
 
@@ -19,10 +18,6 @@ extension DeleteEntities: Resolver {
     switch input {
     case .editionImpression(let id):
       try await context.db.delete(id)
-    case .editionChapters(let editionId):
-      try await context.db.query(EditionChapter.self)
-        .where(.editionId == editionId)
-        .delete(in: context.db)
     }
     return .success
   }
