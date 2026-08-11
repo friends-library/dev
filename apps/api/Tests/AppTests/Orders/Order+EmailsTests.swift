@@ -7,7 +7,7 @@ import XExpect
 
 final class OrderEmailsTests: AppTestCase, @unchecked Sendable {
   func mockOrder(lang: Lang) async -> (Order, String) {
-    var order = Order.empty
+    var order = Order.valid
     order.lang = lang
     order.email = "foo@bar.com"
     order.addressName = "Bob Villa"
