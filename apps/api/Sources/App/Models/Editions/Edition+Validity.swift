@@ -29,6 +29,11 @@ extension Edition {
       }
     }
 
+    // the gapless check below passes vacuously when empty, so guard explicitly
+    if deletedAt == nil, !isDraft, joined.chapters.isEmpty {
+      return false
+    }
+
     let sorted = joined.chapters.sorted { $0.order < $1.order }
     var prev = 0
     for chapter in sorted {

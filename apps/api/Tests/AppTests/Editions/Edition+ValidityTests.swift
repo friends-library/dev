@@ -47,6 +47,18 @@ final class EditionValidityTests: AppTestCase, @unchecked Sendable {
     await expect(spanish.edition.model.isValid()).toBeTrue()
   }
 
+  func testPublishedEditionWithNoChaptersInvalid() async throws {
+    let entities = await Entities.create { $0.edition.isDraft = false }
+    try await self.db.delete(all: EditionChapter.self)
+    await expect(entities.edition.model.isValid()).toBeFalse()
+  }
+
+  func testDraftEditionWithNoChaptersValid() async throws {
+    let entities = await Entities.create { $0.edition.isDraft = true }
+    try await self.db.delete(all: EditionChapter.self)
+    await expect(entities.edition.model.isValid()).toBeTrue()
+  }
+
   func testLoadedChaptersWithNonSequentialOrderInvalid() async throws {
     let entities = await Entities.create { $0.editionChapter.order = 1 }
     try await self.db.create(EditionChapter(
