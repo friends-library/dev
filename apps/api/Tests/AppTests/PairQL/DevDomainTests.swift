@@ -31,6 +31,84 @@ final class DevDomainTests: AppTestCase, @unchecked Sendable {
     expect(output).toEqual(.init(id: retrieved?.id ?? .init()))
   }
 
+  func testReplaceEditionChaptersRejectsInvalidChapter() async throws {
+    let entities = await Entities.create()
+    try await self.db.delete(all: EditionChapter.self)
+
+    try await expectErrorFrom {
+      try await ReplaceEditionChapters.resolve(
+        with: .init(editionId: entities.edition.id, chapters: [.init(
+          order: 1,
+          shortHeading: "lowercase heading", // <-- invalid
+          isIntermediateTitle: false,
+          customId: nil,
+          sequenceNumber: 1,
+          nonSequenceTitle: nil,
+        )]),
+        in: .authed,
+      )
+    }.toContain("invalid")
+
+    let created = try await EditionChapter.query().all(in: self.db)
+    expect(created.isEmpty).toBeTrue()
+  }
+
+  func testReplaceEditionChaptersKeepsExistingWhenNewOnesInvalid() async throws {
+    let entities = await Entities.create()
+
+    try await expectErrorFrom {
+      try await ReplaceEditionChapters.resolve(
+        with: .init(editionId: entities.edition.id, chapters: [.init(
+          order: 1,
+          shortHeading: "lowercase heading", // <-- invalid
+          isIntermediateTitle: false,
+          customId: nil,
+          sequenceNumber: 1,
+          nonSequenceTitle: nil,
+        )]),
+        in: .authed,
+      )
+    }.toContain("invalid")
+
+    let remaining = try await EditionChapter.query()
+      .where(.editionId == entities.edition.id)
+      .all(in: self.db)
+    expect(remaining.count).toEqual(1)
+  }
+
+  func testReplaceEditionChaptersSwapsOutExistingChapters() async throws {
+    let entities = await Entities.create()
+
+    let output = try await ReplaceEditionChapters.resolve(
+      with: .init(editionId: entities.edition.id, chapters: [
+        .init(
+          order: 1,
+          shortHeading: "Chapter 1",
+          isIntermediateTitle: false,
+          customId: nil,
+          sequenceNumber: 1,
+          nonSequenceTitle: nil,
+        ),
+        .init(
+          order: 2,
+          shortHeading: "Chapter 2",
+          isIntermediateTitle: false,
+          customId: nil,
+          sequenceNumber: 2,
+          nonSequenceTitle: nil,
+        ),
+      ]),
+      in: .authed,
+    )
+
+    expect(output).toEqual(.success)
+    let chapters = try await EditionChapter.query()
+      .where(.editionId == entities.edition.id)
+      .all(in: self.db)
+    expect(chapters.count).toEqual(2)
+    expect(chapters.map(\.shortHeading).sorted()).toEqual(["Chapter 1", "Chapter 2"])
+  }
+
   func testUpsertEditionImpressionCanImmediatelyResolveCloudFiles() async throws {
     let entities = await Entities.create()
 

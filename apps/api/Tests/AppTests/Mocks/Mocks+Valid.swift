@@ -105,3 +105,11 @@ extension Isbn {
     return isbn
   }
 }
+
+extension Order {
+  static var valid: Order {
+    var order = Order.empty
+    order.paymentId = .init(rawValue: "pi_\(UUID().lowercased)")
+    return order
+  }
+}

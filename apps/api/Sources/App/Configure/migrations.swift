@@ -44,5 +44,6 @@ extension Configure {
     app.migrations.add(AudioSizeBigInt())
     app.migrations.add(FreeOrderRequestRecipientTaxId())
     app.migrations.add(PgEnumsToText())
+    app.migrations.add(AddUniqueConstraints())
   }
 }

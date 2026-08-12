@@ -61,6 +61,7 @@ export async function create(
   const dockerArgs = [
     `docker run`,
     `--rm`,
+    `--platform linux/amd64`,
     `--user ${user}`,
     `--volume "${m4bDir}":/mnt`,
     `--env TMPDIR=/mnt/tmp`,

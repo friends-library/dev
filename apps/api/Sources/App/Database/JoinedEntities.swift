@@ -1,10 +1,12 @@
 import DuetSQL
 
+// NB: don't add `static func find(_ id: Model.IdValue) -> Self` here. Swift (thru
+// 6.3.2) mis-resolves the nested associated type, so adding a file to the module
+// breaks conformance checking with a bogus error. Concrete `find(_:)`s are below.
 protocol QueryableJoinedEntity {
   associatedtype Model: ApiModel
   var model: Model { get }
   static func all() async throws -> [Self]
-  static func find(_ id: Model.IdValue) async throws -> Self
 }
 
 extension Friend {

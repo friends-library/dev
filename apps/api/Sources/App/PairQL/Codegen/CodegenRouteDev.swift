@@ -10,7 +10,6 @@ extension CodegenRoute.Dev: CodegenRouteHandler {
   static var pairqlPairs: [any Pair.Type] {
     [
       CreateArtifactProductionVersion.self,
-      CreateEditionChapters.self,
       CoverWebAppFriends.self,
       DeleteEntities.self,
       DpcEditions.self,
@@ -19,6 +18,7 @@ extension CodegenRoute.Dev: CodegenRouteHandler {
       GetEdition.self,
       GetEditionImpression.self,
       LatestArtifactProductionVersion.self,
+      ReplaceEditionChapters.self,
       UpdateAudio.self,
       UpdateAudioPart.self,
       UpsertEditionImpression.self,
