@@ -93,7 +93,7 @@ See [docs/dependencies.md](docs/dependencies.md) for dependency update guideline
 ## Tech Stack
 
 - **Frontend**: React 18, Next.js 14, TailwindCSS 3, React Native 0.72
-- **Backend**: Swift 6.2.1, Vapor 4, Duet ORM, PostgreSQL
+- **Backend**: Swift 6.3.1, Vapor 4, Duet ORM, PostgreSQL
 - **Build**: pnpm 10, Nx 19, esbuild/SWC, Vite 4
 - **Testing**: Vitest, Jest, XCTest
 - **Quality**: ESLint, Prettier 3.3, SwiftFormat 0.58.5, TypeScript 5.5
