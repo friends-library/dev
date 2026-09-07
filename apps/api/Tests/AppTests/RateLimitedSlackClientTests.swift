@@ -3,6 +3,7 @@ import Dependencies
 import Vapor
 import XCTest
 import XExpect
+import XPostmark
 
 @testable import App
 
@@ -132,6 +133,38 @@ final class RateLimitedSlackClientTests: AppTestCase, @unchecked Sendable {
         "msg 28 (info)",
       ])
     }
+  }
+
+  func testDailyLimitThresholdIsAtomic() async {
+    let sent = ActorIsolated<[String]>([])
+    let emailsSent = LockIsolated(0)
+    let client = RateLimitedSlackClient(dailyLimit: 2) { slack in
+      if slack.message.text == "Exceeded daily slack limit" {
+        try? await Task.sleep(for: .milliseconds(100))
+      }
+      await sent.withValue { $0.append(slack.message.text) }
+    }
+    var postmarkClient = XPostmark.Client.SlackErrorLogging.mock
+    postmarkClient.send = { _ in emailsSent.withValue { $0 += 1 } }
+
+    await withDependencies {
+      $0.date = .constant(.epoch)
+      $0.logger = .null
+      $0.postmarkClient = postmarkClient
+    } operation: {
+      await client.send(.debug("first"))
+      await withTaskGroup(of: Void.self) { group in
+        for index in 2 ... 100 {
+          group.addTask {
+            await client.send(.debug("msg \(index)"))
+          }
+        }
+      }
+    }
+
+    let sentMessages = await sent.value
+    expect(sentMessages).toEqual(["first", "Exceeded daily slack limit"])
+    expect(emailsSent.value).toEqual(1)
   }
 }
 
