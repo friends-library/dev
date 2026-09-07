@@ -1,3 +1,4 @@
+import ConcurrencyExtras
 import Dependencies
 import DuetSQL
 import Vapor
@@ -95,12 +96,20 @@ final class DownloadableFileTests: AppTestCase, @unchecked Sendable {
     let entities = try await getEntities()
     let botUa = "GoogleBot"
     let file = entities.edition.downloadableFile(format: .ebook(.epub))
-    let res = try await DownloadRoute.logAndRedirect(file: file, userAgent: botUa)
+    let logged = LockIsolated<[String]>([])
+    let res = try await withDependencies {
+      $0.logger = .passthrough { _, message in
+        logged.withValue { $0.append(message.description) }
+      }
+    } operation: {
+      try await DownloadRoute.logAndRedirect(file: file, userAgent: botUa)
+    }
     let downloads = try await self.db.query(Download.self)
       .where(.userAgent == .string("GoogleBot"))
       .all(in: self.db)
     XCTAssertEqual([], downloads) // no downloads inserted in db
-    XCTAssertEqual(sent.slacks, [.debug("Bot download: `GoogleBot`")])
+    XCTAssertEqual(sent.slacks, [])
+    XCTAssertEqual(logged.value, ["Bot download: `GoogleBot`"])
     XCTAssertEqual(res.headers.first(name: .location), file.sourceUrl.absoluteString)
   }
 

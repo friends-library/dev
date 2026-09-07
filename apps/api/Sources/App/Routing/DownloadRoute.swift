@@ -59,7 +59,7 @@ enum DownloadRoute: RouteHandler {
       }
 
       if !isAppUserAgent, device.isBot == true {
-        await slackDebug("Bot download: `\(userAgent)`")
+        get(dependency: \.logger).debug("Bot download: `\(userAgent)`")
         return
       }
 
